@@ -1,0 +1,74 @@
+﻿@model IEnumerable<SymViewModel.Tax.SchedulePolicyVM>
+ @using (Html.BeginForm("Edit", "SchedulePolicy", FormMethod.Post, new { @Id = "frmSchedulePolicy" }))
+    {
+        for (int i = 0; i < Model.Count(); i++)
+        {
+                           
+        <div class="row">
+            <div class="col-md-1">
+                @Html.HiddenFor(model => Model.ToList()[i].Id)
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => Model.ToList()[i].LineNumber, new { @class = " required form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].LineNumber)
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => Model.ToList()[i].ScheduleNo, new { @class = " required form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].ScheduleNo)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => Model.ToList()[i].SalaryHead, new { @class = " required form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].SalaryHead)
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => Model.ToList()[i].FromBasic, new { @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].FromBasic)
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => Model.ToList()[i].IsFixed, new { @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].IsFixed)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => Model.ToList()[i].BasicPortion, new { @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].BasicPortion)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => Model.ToList()[i].EqualMaxMinAmount, new { @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].EqualMaxMinAmount)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => Model.ToList()[i].Remarks, new { @class = "  form-control" })
+                    @Html.ValidationMessageFor(model => Model.ToList()[i].Remarks)
+                </div>
+            </div>
+
+        </div>
+        }
+
+    }
+
+@*LineNumber
+ScheduleNo	
+SalaryHead
+FromBasic	
+IsFixed	
+BasicPortion	
+EqualMaxMinAmount
+Remarks*@

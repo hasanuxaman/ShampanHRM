@@ -1,0 +1,588 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>ETL</title>
+<link href="css/bootstrap-3.1.1.min.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
+ <link href="~/assets/stylesheets/font-awesome.css" rel="stylesheet" />
+ 
+<link href="css/circle.css?v94" rel="stylesheet" type="text/css"  media="all">
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+		font-family: 'Oswald', sans-serif;
+	}
+	
+	body {
+		background: url(../images/texture_green_cup.jpg);
+	}
+	
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+	
+	.content {
+		width: 80%;
+		margin: 50px auto;
+		padding: 20px;
+	}
+	.content h1 {
+		font-weight: 400;
+		text-transform: uppercase;
+		margin: 0;
+		color: #fff;
+	}
+	.content h2 {
+		font-weight: 400;
+		text-transform: uppercase;
+		color: #333;
+		margin: 0 0 20px;
+	}
+	.content p {
+		font-size: 1em;
+		font-weight: 300;
+		line-height: 1.5em;
+		margin: 0 0 20px;
+	}
+	.content p:last-child {
+		margin: 0;
+	}
+	.content a.button {
+		display: inline-block;
+		padding: 10px 20px;
+		background: #ff0;
+		color: #000;
+		text-decoration: none;
+	}
+	.content a.button:hover {
+		background: #000;
+		color: #ff0;
+	}
+	.content.title {
+		position: relative;
+		background: #333;
+	}
+	.content.title h1 span.demo {
+		display: inline-block;
+		font-size: .5em;
+		padding: 10px;
+		background: #fff;
+		color: #333;
+		vertical-align: top;
+	}
+	.content.title .back-to-article {
+		position: absolute;
+		bottom: -20px;
+		left: 20px;
+	}
+	.content.title .back-to-article a {
+		padding: 10px 20px;
+		background: #f60;
+		color: #fff;
+		text-decoration: none;
+	}
+	.content.title .back-to-article a:hover {
+		background: #f90;
+	}
+	.content.title .back-to-article a i {
+		margin-left: 5px;
+	}
+	.content.white {
+		background: #fff;
+		box-shadow: 0 0 10px #999;
+	}
+	.content.black {
+		background: #000;
+	}
+	.content.black p {
+		color: #999;
+	}
+	.content.black p a {
+		color: #08c;
+	}
+	
+	
+	.dropdown-menu {
+		min-width: 200px;
+	}
+	.dropdown-menu.columns-2 {
+		min-width: 400px;
+	}
+	.dropdown-menu.columns-3 {
+		min-width: 600px;
+	}
+	.dropdown-menu li a {
+		padding: 5px 15px;
+		font-weight: 300;
+	}
+	.multi-column-dropdown {
+		list-style: none;
+	}
+	.multi-column-dropdown li a {
+		display: block;
+		clear: both;
+		line-height: 1.428571429;
+		color: #333;
+		white-space: normal;
+	}
+	.multi-column-dropdown li a:hover {
+		text-decoration: none;
+		color: #262626;
+		background-color: #f5f5f5;
+	}
+	
+	@media (max-width: 767px) {
+		.dropdown-menu.multi-column {
+			min-width: 240px !important;
+			overflow-x: hidden;
+		}
+	}
+	
+	@media (max-width: 480px) {
+		.content {
+			width: 90%;
+			margin: 50px auto;
+			padding: 10px;
+		}
+	}
+</style>
+  <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jssor.slider-21.1.5.mini.js"></script>
+    <!-- use jssor.slider-21.1.5.debug.js instead for debug -->
+    <script>
+        jQuery(document).ready(function ($) {
+            
+            var jssor_1_SlideshowTransitions = [
+              {$Duration:1200,$Opacity:2}
+            ];
+            
+            var jssor_1_SlideoTransitions = [
+              [{b:0,d:1160,x:783,y:3}],
+              [{b:260,d:780,x:-869,y:18}],
+              [{b:1160,d:840,x:667,y:2}],
+              [{b:2020,d:760,x:-11,y:-315}],
+              [{b:2780,d:520,x:-272,y:-6}],
+              [{b:3300,d:640,x:-3,y:-145}],
+              [{b:0,d:700,x:307,y:-1,i:2}],
+              [{b:0,d:700,x:-851,y:-5,i:1}],
+              [{b:700,d:800,x:-827,y:-11}],
+              [{b:1500,d:500,x:-10,y:-114}],
+              [{b:2000,d:500,x:-9,y:141}],
+              [{b:2000,d:420,x:14,y:-158}],
+              [{b:2500,d:1100,x:-281}],
+              [{b:0,d:800,x:-870,y:3}],
+              [{b:800,d:500,x:7,y:112}],
+              [{b:800,d:500,x:103,y:-202}],
+              [{b:1300,d:900,x:12,y:-264}],
+              [{b:2200,d:1000,x:-450,y:5}]
+            ];
+            
+            var jssor_1_options = {
+              $AutoPlay: true,
+              $SlideshowOptions: {
+                $Class: $JssorSlideshowRunner$,
+                $Transitions: jssor_1_SlideshowTransitions,
+                $TransitionsOrder: 1
+              },
+              $CaptionSliderOptions: {
+                $Class: $JssorCaptionSlideo$,
+                $Transitions: jssor_1_SlideoTransitions
+              },
+              $ArrowNavigatorOptions: {
+                $Class: $JssorArrowNavigator$
+              },
+              $BulletNavigatorOptions: {
+                $Class: $JssorBulletNavigator$
+              }
+            };
+            
+            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+            
+            //responsive code begin
+            //you can remove responsive code if you don't want the slider scales while window resizing
+            function ScaleSlider() {
+                var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                if (refSize) {
+                    refSize = Math.min(refSize, 870);
+                    jssor_1_slider.$ScaleWidth(refSize);
+                }
+                else {
+                    window.setTimeout(ScaleSlider, 30);
+                }
+            }
+            ScaleSlider();
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            //responsive code end
+        });
+    </script>
+
+    <style>
+        
+        /* jssor slider bullet navigator skin 05 css */
+        /*
+        .jssorb05 div           (normal)
+        .jssorb05 div:hover     (normal mouseover)
+        .jssorb05 .av           (active)
+        .jssorb05 .av:hover     (active mouseover)
+        .jssorb05 .dn           (mousedown)
+        */
+        .jssorb05 {
+            position: absolute;
+        }
+        .jssorb05 div, .jssorb05 div:hover, .jssorb05 .av {
+            position: absolute;
+            /* size of bullet elment */
+            width: 16px;
+            height: 16px;
+            background: url('img/b05.png') no-repeat;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .jssorb05 div { background-position: -7px -7px; }
+        .jssorb05 div:hover, .jssorb05 .av:hover { background-position: -37px -7px; }
+        .jssorb05 .av { background-position: -67px -7px; }
+        .jssorb05 .dn, .jssorb05 .dn:hover { background-position: -97px -7px; }
+
+        /* jssor slider arrow navigator skin 12 css */
+        /*
+        .jssora12l                  (normal)
+        .jssora12r                  (normal)
+        .jssora12l:hover            (normal mouseover)
+        .jssora12r:hover            (normal mouseover)
+        .jssora12l.jssora12ldn      (mousedown)
+        .jssora12r.jssora12rdn      (mousedown)
+        */
+        .jssora12l, .jssora12r {
+            display: block;
+            position: absolute;
+            /* size of arrow element */
+            width: 30px;
+            height: 46px;
+            cursor: pointer;
+            background: url('img/a12.png') no-repeat;
+            overflow: hidden;
+        }
+        .jssora12l { background-position: -16px -37px; }
+        .jssora12r { background-position: -75px -37px; }
+        .jssora12l:hover { background-position: -136px -37px; }
+        .jssora12r:hover { background-position: -195px -37px; }
+        .jssora12l.jssora12ldn { background-position: -256px -37px; }
+        .jssora12r.jssora12rdn { background-position: -315px -37px; }
+    </style>
+</head>
+
+<body  >
+ 
+<!--/.content-->
+<div class="row">
+	<div class="col-sm-1">
+	&nbsp;
+	</div>
+		<div class="col-sm-10">
+
+<div class="row">
+	<nav class="navbar navbar-default" role="navigation">
+	    <div class="navbar-header">
+	        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+	        </button>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+	        </button>
+			
+	       
+	    </div>
+	    <!--/.navbar-header-->
+	 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	        <ul class="row nav navbar-nav">
+		 <div  class="col-sm-2 "> <li class="dropdown">
+		            <a href="#" class=" dropdown-toggle" data-toggle="dropdown">One Column 1<b class="caret"></b></a>
+		            <ul class="dropdown-menu">
+			            <li><a href="#">Action1</a></li>
+			            <li><a href="#">Another action</a></li>
+			            <li><a href="#">Something else here</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">One more separated link</a></li>
+		            </ul>
+		        </li></div>
+		  <div  class="col-sm-1 "> B</div>
+		   <div  class="col-sm-1 "> C</div>
+		    <div  class="col-sm-1 "> D</div>
+			 <div  class="col-sm-1 "> E</div>
+			  <div  class="col-sm-1 "> F</div>
+			   <div  class="col-sm-1 "> G</div>
+		        <li class="dropdown">
+		            <a href="#" class=" dropdown-toggle" data-toggle="dropdown">One Column 1<b class="caret"></b></a>
+		            <ul class="dropdown-menu">
+			            <li><a href="#">Action1</a></li>
+			            <li><a href="#">Another action</a></li>
+			            <li><a href="#">Something else here</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">One more separated link</a></li>
+		            </ul>
+		        </li>
+			 
+				 <li class="dropdown">
+		            <a href="#" class=" "  >One Column 11<b class=""></b></a>
+		            
+		        </li>
+		        <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Two Column <b class="caret"></b></a>
+		            <ul class="dropdown-menu multi-column columns-2">
+			            <div class="row">
+				            <div class="col-sm-6">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here that's extra long so we can see how it looks</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+				            <div class="col-sm-6">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+			            </div>
+		            </ul>
+		        </li>
+		        <li class="dropdown">
+		        	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Three Column <b class="caret"></b></a>
+		            <ul class="dropdown-menu multi-column columns-3">
+			            <div class="row">
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+			            </div>
+		            </ul>
+		        </li>
+		        <li><a href="#">Link</a></li>
+	        </ul>
+	    </div>
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+	        <ul class="nav navbar-nav">
+		        <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">One Column 2<b class="caret"></b></a>
+		            <ul class="dropdown-menu">
+			            <li><a href="#">Action</a></li>
+			            <li><a href="#">Another action</a></li>
+			            <li><a href="#">Something else here</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">One more separated link</a></li>
+		            </ul>
+		        </li>
+		        <li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Two Column <b class="caret"></b></a>
+		            <ul class="dropdown-menu multi-column columns-2">
+			            <div class="row">
+				            <div class="col-sm-6">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here that's extra long so we can see how it looks</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+				            <div class="col-sm-6">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+			            </div>
+		            </ul>
+		        </li>
+		        <li class="dropdown">
+		        	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Three Column <b class="caret"></b></a>
+		            <ul class="dropdown-menu multi-column columns-3">
+			            <div class="row">
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+				            <div class="col-sm-4">
+					            <ul class="multi-column-dropdown">
+						            <li><a href="#">Action</a></li>
+						            <li><a href="#">Another action</a></li>
+						            <li><a href="#">Something else here</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">Separated link</a></li>
+						            <li class="divider"></li>
+						            <li><a href="#">One more separated link</a></li>
+					            </ul>
+				            </div>
+			            </div>
+		            </ul>
+		        </li>
+		        <li><a href="#">Link</a></li>
+	        </ul>
+	    </div>
+	    <!--/.navbar-collapse-->
+	</nav>
+	<!--/.navbar-->
+	  
+	</div>
+	<div class="col-sm-1">
+	&nbsp;
+	</div>
+	</div>	
+	<div class="row">
+	<div class="col-sm-2">
+	&nbsp;
+	</div>
+	<div class="col-sm-6">
+	 <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 870px; height: 400px; overflow: hidden; visibility: hidden;">
+        <!-- Loading Screen -->
+        <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+            <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+            <div style="position:absolute;display:block;background:url('img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+        </div>
+        <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 870px; height: 400px; overflow: hidden;">
+            <div data-p="141.75" style="display: none;">
+                <img data-u="image" src="img/2-bg1.jpg" />
+                <div style="position: absolute; top: 54px; left: 1px; width: 778px; height: 400px;">
+                    <img data-u="caption" data-t="0" style="position: absolute; top: 0px; left: -783px; width: 778px; height: 131px;" src="img/1-021.png" />
+                    <img data-u="caption" data-t="1" style="position: absolute; top: 132px; left: 868px; width: 392px; height: 74px;" src="img/1-032.png" />
+                    <img data-u="caption" data-t="2" style="position: absolute; top: 24px; left: -285px; width: 270px; height: 70px;" src="img/1-031.png" />
+                </div>
+                <div style="position: absolute; top: -50px; left: 2px; width: 350px; height: 400px;">
+                    <img data-u="caption" data-t="3" style="position: absolute; top: 450px; left: 12px; width: 350px; height: 380px;" src="img/1.png" />
+                    <img data-u="caption" data-t="4" style="position: absolute; top: 185px; left: 868px; width: 175px; height: 165px;" src="img/1-051.png" />
+                    <img data-u="caption" data-t="5" style="position: absolute; top: 450px; left: 393px; width: 151px; height: 41px;" src="img/1-06.png" />
+                </div>
+            </div>
+             <div data-p="141.75" style="display: none;">
+                <img data-u="image" src="img/2-bg1.jpg" />
+                <div style="position: absolute; top: 54px; left: 1px; width: 778px; height: 400px;">
+                    <img data-u="caption" data-t="0" style="position: absolute; top: 0px; left: -783px; width: 778px; height: 131px;" src="img/3-5.png" />
+                    <img data-u="caption" data-t="1" style="position: absolute; top: 132px; left: 868px; width: 392px; height: 74px;" src="img/1-032.png" />
+                    <img data-u="caption" data-t="2" style="position: absolute; top: 24px; left: -285px; width: 270px; height: 70px;" src="img/1-031.png" />
+                </div>
+                <div style="position: absolute; top: -50px; left: 2px; width: 350px; height: 400px;">
+                    <img data-u="caption" data-t="3" style="position: absolute; top: 450px; left: 12px; width: 350px; height: 380px;" src="img/2-2.png" />
+                    <img data-u="caption" data-t="4" style="position: absolute; top: 185px; left: 868px; width: 175px; height: 165px;" src="img/1-051.png" />
+                    <img data-u="caption" data-t="5" style="position: absolute; top: 450px; left: 393px; width: 151px; height: 41px;" src="img/1-06.png" />
+                </div>
+            </div>
+           
+            <a data-u="any" href="http://www.jssor.com/demos/simple-fade-slideshow.slider" style="display:none">Simple Fade Slideshow</a>
+        
+        </div>
+        <!-- Bullet Navigator -->
+      
+        <!-- Arrow Navigator -->
+        <span data-u="arrowleft" class="jssora12l" style="top:0px;left:0px;width:30px;height:46px;" data-autocenter="2"></span>
+        <span data-u="arrowright" class="jssora12r" style="top:0px;right:0px;width:30px;height:46px;" data-autocenter="2"></span>
+    </div>
+	</div>
+	@*<div class="col-sm-3">
+	<div style=" max-height: 268px;" id="cool-middle">
+			<i class="circle"></i>
+			<!-- <i class="circle" style="top:52px; left:52px;"></i> -->
+			<a href="/mobiles/3g_mobiles" class="circle-link" style="top:-33px; left:101px;">3G</a>
+			<a href="/mobiles/wifi_mobiles" class="circle-link" style="top:6px; left:196px;">wifi</a>
+			<a href="/mobiles/dual_sim_mobiles" class="circle-link two-line" style="top:101px; left:235px;">dual sim</a>
+			<a href="/mobiles/qwerty_phones" class="circle-link" style="top:196px; left:196px;">qwerty</a>
+			<a href="/mobiles/touch_phones" class="circle-link" style="top:235px; left:101px;">touch</a>
+			<a href="/mobiles/slim_phones" class="circle-link" style="top:196px; left:6px;">slim</a>
+			<a href="/mobiles/windows_phones" class="circle-link two-line small" style="top:101px; left:-33px;">windows phone</a>
+			<a href="/mobiles/android_phones" class="circle-link small" style="top:6px; left:6px;">android</a>
+		</div>
+		</div>*@
+		
+	</div>
+</div>
+
+
+<!--/.content-->
+
+ 
+<!--/.content-->
+
+<!-------------------- JS -------------------->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
+</body>
+</html>

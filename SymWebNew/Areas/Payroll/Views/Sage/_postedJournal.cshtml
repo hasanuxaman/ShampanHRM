@@ -1,0 +1,174 @@
+﻿@model IEnumerable<SymViewModel.Payroll.JournalLedgerDetailVM>
+@{
+    ViewBag.Title = "PostedJournal";
+}
+
+<style>
+    
+</style>
+<div class="thinbox">
+    <div class="th_thinbox">
+    </div>
+    <p>
+    </p>
+    <div id="container">
+        <table class="display">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PostDate)
+                    </th>
+                    <th>
+                        @Html.DisplayName("Posted/Reversed")
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.FirstOrDefault().Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.FirstOrDefault().Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.FirstOrDefault().PostDate)
+                    </td>
+                    <td>
+                        @if (Model.FirstOrDefault().IsReverse)
+                        {
+                            @Html.DisplayName("Reversed")
+                        }
+                        else
+                        {
+                            @Html.DisplayName("Posted")
+                        }
+                    </td>
+                </tr>
+            </thead>
+
+
+        </table>
+        <table class="display">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PeriodName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GLCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayName("Debit")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Credit")
+                    </th>
+                </tr>
+                 
+                @*  
+                        PeriodName       
+                        GLCode           
+                        AccDescription   
+                        TransactionAmount
+                        TransactionAmount
+                                              *@
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PeriodName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GLCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccDescription)
+                        </td>
+                        <td class="DrAmount" style="text-align:right!important">
+                            @if(item.IsDebit){
+                            @Html.DisplayFor(modelItem => item.TransactionAmount)
+                            }
+                            else
+                            {
+                                <span>0</span>
+                            }
+                        </td>
+                        <td class="CrAmount" style="text-align:right!important">
+                             @if(item.IsDebit){
+                                   <span>0</span>
+                             }
+                            else
+                            {
+                                  @Html.DisplayFor(modelItem => item.TransactionAmount)
+                             }
+                        </td>
+                    </tr>
+                }
+
+
+            </thead>
+            <hr />
+            <tfoot style="font-size: 1.2em;">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td style="font-weight: bold!important;">Total </td>
+                    <td>&nbsp;</td>
+                    <td style="font-weight: bold!important;" id="Drresult" class="right"></td>
+                    <td style="font-weight: bold!important;" id="Crresult" class="right"></td>
+                    @*<td style="font-weight:bold!important;" id="result" class="right">@ViewBag.EarningAmnt</td>*@
+                </tr>
+
+            </tfoot>
+           @* <tbody>
+            </tbody>*@
+        </table>
+    </div>
+<div class="row">
+    <label class="col-sm-4">
+        <button type="button" title="Click to Close" class=" btncancel sym-btn-cancel">&nbsp;Close</button>
+    </label>
+</div>
+</div>
+
+
+<script>
+
+    $(calculateSum());
+    function calculateSum() {
+        
+        var sum = 0;
+        // iterate through each td based on class and add the values
+
+        setTimeout(function () {
+            $(".DrAmount").each(function () {
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+            });
+            $('#Drresult').text(sum);
+            sum = 0;
+            $(".CrAmount").each(function () {
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+            });
+            $('#Crresult').text(sum);
+        }, 500);
+    }
+
+</script>
+
+
+

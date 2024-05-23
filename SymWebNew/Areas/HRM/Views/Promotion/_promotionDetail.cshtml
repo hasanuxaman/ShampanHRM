@@ -1,0 +1,77 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+<div class="EditPlace">
+ <div class="row">
+     <div class="col-md-6">
+          <div id="PromotionOLD">
+    </div>
+     </div>
+    <div class="col-md-6">
+    <div id="PromotionNEW">
+    </div>
+        </div>
+     </div>
+</div>
+
+<script>
+
+
+    $(function () {
+        var url = '@Url.Action("PromotionOLD","Promotion", new { EmployeeId = Model.Id } )';
+        loaded(url, 'PromotionOLD');
+        url = '@Url.Action("PromotionNEW","Promotion", new { EmployeeId = Model.Id } )';
+        loaded(url, 'PromotionNEW');
+      @*  $.get('@Url.Action("PromotionOLD","Promotion", new { EmployeeId = Model.Id } )', function (data) {
+            $('#PromotionOLD').html(data);
+        });
+
+        $.get('@Url.Action("PromotionNEW","Promotion", new { EmployeeId = Model.Id } )', function (data) {
+            $('#PromotionNEW').html(data);
+        });*@
+
+        $(".EditPlace").show();
+    });
+
+    function jobjoin() {
+        if ($("#joinDate").val() == "") {
+            $("#PromotionNEW").html('');
+        }
+    }
+
+    function CheckPromotionDate(sender) {
+        var url = "/HRM/Home/CheckPromotionDate?employeeId=" + $("#promotionVM_EmployeeId").val() + "&date=" + $(sender).val();
+        $.ajax({
+            type: "GET",
+            url: url,
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            error: function (xhr, status, error) {
+            },
+            success: function (response) {
+                if (!response) {
+                    $(sender).val('');
+                    ShowResult("Fail", "Promotion date can't be prior to join date/  last Promotion date!");
+                }
+            }
+        });
+    }
+    function loaded(url, id) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $('#' + id + '').html(data);
+            },
+        });
+    }
+    //function FromToDate(sender) {
+    //    var pastdate = ParseDate($(".pastdate").val());
+    //    var currentdate = ParseDate($(".currentdate").val());
+    //    if (pastdate > currentdate) {
+    //        ShowResult("Fail", "Date can't be prior to Previous Promotion Date!");
+    //        $(sender).val("");
+    //    }
+    //}
+    var topMenuActive = "Promotion";
+</script>

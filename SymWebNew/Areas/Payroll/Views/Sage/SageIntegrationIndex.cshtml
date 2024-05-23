@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Sage Integration Index";
+}
+
+<div class="headrow">
+    <button type="button" title="Add New Journal Ledger" data-url="/Payroll/Sage/SageIntegration" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    @*<button type="button" title="Delete Salary Other  Earning" data-url="/Payroll/SalaryOtherEarning/SalaryOtherEarningDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>*@
+    <label class="pull-right">Journal Ledger</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Journal Ledger List</p>
+    </div>
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTable" class="display">
+                <thead>
+                    <tr>
+                        <th class="center">
+                        &nbsp;
+                            <th>Code</th>
+                        <th>Period Name</th>
+                        <th>Description</th>
+                        <th>Post Date</th>
+                        <th>Posted/Reversed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/Sage/_sageIntegrationIndex",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <a title="Click on for Details"  href=\"/Payroll/Sage/PostedJournal?Id=' + oObj.aData[0] + '\"  class="lnkDetail sym-btn-detail-row"></a>'
+                                    + '<a title="Click on for Report" target="_blank"  href=\"/Payroll/Sage/ReportPostedJournal?Id=' + oObj.aData[0] + '\"  class="sym-btn-report-row"></a>'
+                                    ;
+                                }
+                            }
+                           , { "sName": "Code", "sWidth": "15%" }
+                           , { "sName": "PeriodName", "sWidth": "10%" }
+                           , { "sName": "Description", "sWidth": "25%" }
+                           , { "sName": "PostDate", "sWidth": "20%" }
+                           , { "sName": "isReverse", "sWidth": "15%" }
+            ]
+        });
+    });
+</script>
+
+
+

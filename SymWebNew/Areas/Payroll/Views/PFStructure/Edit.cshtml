@@ -1,0 +1,127 @@
+﻿@model SymViewModel.PF.PFStructureVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("Edit", "PFStructure", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmPFStructure" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+         <div class="th_thinbox">
+            <p>PF Structure</p>   
+            </div>
+        <div class="PFStructure">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.BranchId)
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Code)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Code, new {@placeholder = "PF Code", @class ="required form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Name)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Name, new {@placeholder = "PF Name", @class =" required form-control" })
+                </div>
+            </div>
+
+                 <div class="row">
+                <label class="col-sm-4">
+                    @Html.Label("Fixed/Rate")
+                </label>
+                <div class="col-sm-2">
+                    @Html.CheckBoxFor(model => model.IsFixed, new {@placeholder = "Is it Fixed?", @class ="required form-control" })
+                </div>
+                     <label class="col-sm-6">
+                    @Html.Label("Rate (%of Basic)",new {@class ="pCheck"})
+                </label>
+            </div>
+                          <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.PFValue)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.PFValue, new {@placeholder = "PF Value", @class =" right required form-control NumberCheck" })
+                </div>
+            </div>   
+             <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.PortionSalaryType)
+                </label>
+                <div class="col-sm-9">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryHeadType", new { @class = "form-control" })
+                </div>
+            </div> 
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Remarks)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class =" form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+           <div class="row">
+               <label class="col-sm-3">
+                    <button type="button" title="Edit Data"  onclick="Edit();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                     <button type="button"  title="Save Data" class="Save sym-btn-update" onclick="pageSubmit('frmPFStructure');" >&nbsp;Update</button>
+
+                </label>
+                <label class="col-sm-4">
+                     <button type="button" title="Cancel Data" class="btncancel  sym-btn-cancel">&nbsp;Cancel</button>
+                </label>
+
+            @*<div class="col-sm-3">
+			<button type="button" title="Edit Data" onclick="Edit();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+              <button type="submit" title="Save Data" onclick="pageSubmit('frmPFStructure');" class="Save sym-btn-save">&nbsp;Save</button>
+            </div>
+            <div class="col-sm-4">
+				 <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+            </div>*@
+        </div>
+        </div>
+    </div>
+}
+    <script>
+        $(function () {
+            Edit();
+            valiDation("frmPFStructure");
+
+            InitDropDowns();
+            InitDropDowns();
+            checkIsfixed();
+            function checkIsfixed() {
+                if ($("#IsFixed").prop("checked") == true) {
+                    $(".pCheck").hide();
+                }
+                else if ($("#IsFixed").prop("checked") == false) {
+                    $(".pCheck").show();
+                }
+
+            }
+            $("#IsFixed").click(function () {
+                checkIsfixed();
+            });
+        });
+  
+        function Edit() {
+            fnReadOnly("PFStructure");
+            if ($(".PFStructure").hasClass("readOnly")) {
+                $(".Save").hide();
+                $(".Edit").show();
+            }
+            else {
+                $(".Save").show();
+                $(".Edit").hide();
+            }
+        }
+
+    </script>

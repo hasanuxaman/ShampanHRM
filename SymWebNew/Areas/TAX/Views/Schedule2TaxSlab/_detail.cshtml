@@ -1,0 +1,33 @@
+﻿@model SymViewModel.Tax.Schedule2TaxSlabDetailVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<tr class="schedule2TaxSlabDetail">
+    @using (Html.BeginCollectionItem("schedule2TaxSlabDetailVMs"))
+    { 
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Schedule2TaxSlabId)
+
+        //SlabName
+        //Ceiling
+        //Ratio        
+        <td>
+            @Html.TextBoxFor(model => model.SlabName, new { @placeholder = "Slab Name", @class = " form-control required" })
+            @Html.ValidationMessageFor(model => model.SlabName)
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.Ceiling, new { @placeholder = "Ceiling", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.Ceiling)
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.Ratio, new { @placeholder = "Ratio", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.Ratio)
+        </td>
+        <td>
+            @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = " form-control " })
+            @Html.ValidationMessageFor(model => model.Remarks)
+        </td>  
+      
+    }
+</tr>

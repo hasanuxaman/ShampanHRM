@@ -1,0 +1,145 @@
+﻿@using UIHelper.MVC
+<div class="headrow">
+    @*<button type="button" title="Delete Bank Branch" data-url="/TAX/EmloyeeTAXSlab/Delete" onclick="operationMultiData(this, 'myDataTable', 'Assign TAX Slab');" id="" class="sym-btn-remove">&nbsp;Delete</button>*@
+    <label class="pull-right">Emloyee TAX Slab </label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee List</p>
+    </div>
+        <div class="row">
+
+        <div class="col-sm-2">
+            <div class="editor-label">
+                <label>Tax Slab Name</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("TaxSlab", "/Config/DropDown/TAX_TaxSlab", new { @class = "required form-control" })
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="editor-label">
+                <label>&nbsp;</label>
+            </div>
+            <div class="editor-field">
+                <button type="button" title="Assign Tax Slab" class="sym-btn-save" data-url="/TAX/EmloyeeTAXSlab/AssignTAXSlab" onclick="Assign(this, 'myDataTable');" id="">Assign </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>Employee Code</th>
+                <th>Employee Name</th>
+                <th>Designation</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+                <th>Gender</th>
+                <th>Tax Slab Name </th>
+                
+
+
+@*  
+EmployeeCode
+EmployeeName
+Designation
+Department
+Section
+Project
+Gender
+TaxSlabName 
+*@
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<div class="headrow">
+       @* <button type="button" title="Add New Bank Branch" data-url="/TAX/EmloyeeTAXSlab/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Bank Branch" data-url="/TAX/EmloyeeTAXSlab/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+*@
+
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/TAX/EmloyeeTAXSlab/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "EmployeeId",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                    ;
+                                }
+                            }
+                            , { "sName": "EmployeeCode", "sWidth": "10%" }
+                            , { "sName": "EmployeeName", "sWidth": "10%" }
+                            , { "sName": "Designation", "sWidth": "10%" }
+                            , { "sName": "Department", "sWidth": "10%" }
+                            , { "sName": "Section", "sWidth": "10%" }
+                            , { "sName": "Project", "sWidth": "10%" }
+                            , { "sName": "Gender", "sWidth": "10%" }
+                            , { "sName": "TaxSlabName ", "sWidth": "10%" }
+
+
+
+            ]
+        });
+    });
+</script>
+
+<script>
+
+
+    function Assign(sender, checkboxId, id) {
+        var ids = "";
+        if (typeof id === 'undefined') {
+            var length = $("#" + checkboxId + " tbody input:checkbox").length;
+            for (var i = 0; i < length; i++) {
+                if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                    ids += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                }
+            }
+        }
+        else {
+            ids = id + "~";
+        }
+        
+
+
+        var taxSlabId = $('#TaxSlab').val();
+
+        var url = $(sender).attr("data-url") + "?ids=" + ids + "&taxSlabId=" + taxSlabId;
+        if (ids == "") {
+            ShowResult("Fail", "Select First to Assign!");
+            return;
+        }
+        Ask("Are you sure to Assign!", function () {
+            $.getJSON(url, function (result, textStatus, jqXHR) {
+                ShowResult("Success", result);
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });
+        }, function () { })
+    }
+
+</script>

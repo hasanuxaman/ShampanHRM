@@ -1,0 +1,59 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+ <div class="thinbox panel">
+    <div class="th_thinbox panel-actions">
+       <p class="row"><span style="float:left;padding-left:13px;" > Employee Loan Details</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo4"></span> </p>
+    </div>
+<div class="row">
+            <div id="demo2">
+                <table id="myDataTable" class="table table-responsive display">
+                    <thead>
+                         <tr>
+                            <th>Loan Type</th>
+                            <th style="text-align:left!important">Principal Amount</th>
+                            <th>Fixed/Rate</th>
+                            <th style="text-align:left!important">Interest Rate</th>
+                            <th style="text-align:left!important">Interest Amount</th>
+                            <th style="text-align:left!important">Total Amount</th>
+                            <th style="text-align:left!important">Number Of Installment</th>
+                            <th>Approved Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Hold/Not Hold</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+     </div>
+@Html.HiddenFor(model => model.Id)
+<script>
+    $(function () {
+        var id = $('#Id').val();
+        InitDateTimePickers();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/Structure/_employeeLoanStructuredetail?Id=" + id,
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                { "sName": "LoanType", "sWidth": "10%" }
+                                 , { "sName": "PrincipalAmount", "sClass": "right", "sWidth": "12%" }
+                                    , { "sName": "Fixed", "sWidth": "6%" }
+                                , { "sName": "InterestRate", "sClass": "right", "sWidth": "8%" }
+                                , { "sName": "InterestAmount", "sClass": "right", "sWidth": "10%" }
+                                , { "sName": "TotalAmount", "sClass": "right", "sWidth": "10%" }
+                                , { "sName": "NumberOfInstallment", "sClass": "right", "sWidth": "10%" }
+                                , { "sName": "ApprovedDate", "sWidth": "10%" }
+                                , { "sName": "StartDate", "sWidth": "10%" }
+                                , { "sName": "EndDate", "sWidth": "10%" }
+                                 , { "sName": "Hold", "sWidth": "6%" }
+                ]
+        });
+    });
+</script>

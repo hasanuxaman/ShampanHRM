@@ -1,0 +1,303 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("Edit", "EmergencyContact", FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmergency" }))
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.emergencyContactVM.EmployeeId)
+   @Html.HiddenFor(model => model.emergencyContactVM.Id)
+    @Html.HiddenFor(model => model.Id)
+    <div class="thinbox">
+                <div class="th_thinbox">
+         <p>Emergency Contact</p>   
+        </div>
+        <div class="emergencyContact">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Name)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.Name, new { @placeholder = "Emergency Contact Name", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Relation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.Relation, new { @placeholder = "Relation", @class = "required form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Address)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.emergencyContactVM.Address, new { @placeholder = "Village/House & Road",@rows="1", @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.PostalCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.PostalCode, new { @placeholder = "Postal Code", @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.PostOffice)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.PostOffice, new { @placeholder = "Post Office", @class = " form-control" })
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.City)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.City, new { @placeholder = "Police Station", @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Country)
+                    </div>
+                    <div class="editor-field">
+                   <select id="emergencyContactVM.Country" name="emergencyContactVM.Country" data-val="@Model.emergencyContactVM.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Division)
+                    </div>
+                    <div class="editor-field">
+                   <select id="emergencyContactVM.Division" name="emergencyContactVM.Division" data-val="@Model.emergencyContactVM.Division"  data-url="/Config/DropDown/Division/"  class = " division form-control" ></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.District)
+                    </div>
+                    <div class="editor-field">
+                   <select id="emergencyContactVM.District" name="emergencyContactVM.District" data-val="@Model.emergencyContactVM.District"  data-url="/Config/DropDown/District/"  class = " district form-control" ></select>
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <div class="row">
+
+                
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Phone)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.Phone, new { @placeholder = "Phone", @class = " form-control"})
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Mobile)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.Mobile, new { @placeholder = " Mobile" , @class = " form-control"})
+                    </div>
+                </div>
+                 <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.Email, new { @placeholder = "Email", @class = " form-control"})
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Fax)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.emergencyContactVM.Fax, new { @placeholder = "Fax", @class = " form-control"})
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.emergencyContactVM.Remarks, new { @placeholder = "Remarks",@rows="1", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Image Attachment</label>
+                    <input type="file" onchange="CheckImageSize(this);" name="EmergencyContactF" id="EmergencyContactF" style="width: 200px;" />
+                </div>
+                @if (Model.emergencyContactVM.FileName != null && Model.emergencyContactVM.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/EmergencyContact/@Model.emergencyContactVM.Id@Model.emergencyContactVM.FileName">
+                                <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)"; data-id="@Model.emergencyContactVM.Id" data-table="2"  data-field="FileName" data-url="~/Files/EmergencyContact/@Model.emergencyContactVM.Id@Model.emergencyContactVM.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                        </div></div>
+                }
+            </div>
+            @*(identity.IsAdmin || identity.IsHRM)*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+{            <p class="actionButton_EC">        
+            </p>
+                 if (@Model.IsActive) {
+                     
+           <button type="button" title="Save Data" onclick="pageSubmit('frmEmergency');"  class="Save sym-btn-save" >&nbsp;Save</button>
+                
+                @*<button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>*@
+                <button type="button" title="Edit Data"   onclick="EditEmergencyContact();" class="Edit sym-btn-edit" >&nbsp;Edit</button>
+                <button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+        }
+        else {
+
+          <button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel"  >&nbsp;Cancel</button>
+        }}  
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+      
+    });
+   
+    var url = "";
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        valiDation("frmEmergency");
+        Country();
+        Division();
+        District();
+       
+        EditEmergencyContact();
+        
+
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+                     msg = msg.split("~");
+                     ShowResult(msg[0], msg[1]);
+                 }
+    });
+    function EditEmergencyContact() {
+        fnReadOnly("emergencyContact");
+        if ($(".emergencyContact").hasClass("readOnly")) {
+            $(".emergencyContact .Save").hide();
+            $(".emergencyContact .Cancle").hide();
+            $(".emergencyContact .Edit").show();
+        }
+        else {
+            $(".emergencyContact .Cancle").show();
+            $(".emergencyContact .Save").show();
+            $(".emergencyContact .Edit").hide();
+        }
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    function Cancle() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                window.location.reload();
+            })
+        }
+        else {
+            isChange = false;
+            window.location.reload();
+        }
+    }
+    var leftMenuActive = "EmergencyContact";
+
+
+    $('#editJSONEmergency').click(function () {
+        var a = pageSubmitJSON('frmEmergency');
+        if (a != 0) {
+            return;
+        }
+        if (isChange == false) {
+            ShowResult("Success", "You have no changes for save");
+            return;
+        }
+        if (pageSubmitJSON('frmEmergency') == 0) {
+            var myData = $('#frmEmergency').serialize();
+            var url = "/HRM/EmergencyContact/Edit";
+            submit(url, myData);
+        }
+    })
+
+    $('#saveJSOND').click(function () {
+        var url = "/HRM//EmergencyContact/Edit";
+
+        $form = $('#frmEmergency');
+
+        $form.attr("action", url);
+        $form.submit();
+
+    });
+
+    //var submit = function (url, mydata) {
+    //    $.ajax({
+    //        type: 'POST',
+    //        data: mydata, // #2
+    //        url: url,
+    //        success: function (result) {
+    //            var msg1 = result.split('~')[0];
+    //            var msg2 = result.split('~')[1];
+    //            if (msg1 != "Fail") {
+    //                ShowResult("Success", msg2);
+    //                EditEmergencyContact()
+    //                location.reload();
+    //            }
+    //            else {
+    //                ShowResult("Fail", msg2);
+    //            }
+    //        }
+    //    });
+
+</script>
+<style>
+
+
+</style>

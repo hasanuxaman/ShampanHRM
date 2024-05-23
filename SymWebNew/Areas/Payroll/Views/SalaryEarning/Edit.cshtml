@@ -1,0 +1,79 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Salary Earning Single" data-url="/Payroll/SalaryEarning/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;View</button>
+    @*<button type="button" title="Delete Checked" data-url="/Payroll/SalaryEarning/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>*@
+ <label class="pull-right">Salary Earning > View</label>
+</div>
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+    <p>
+    </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"> Select All </th>
+                            <th>Code</th>
+                            <th>Name</th>
+                           
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                             <th>Name</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+<div class="headrow">
+   <button type="button" title="Add New Salary PF Single" data-url="/Payroll/SalaryEarning/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;View</button>
+    @*<button type="button" title="Delete Checked" data-url="/Payroll/SalaryEarning/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>*@
+</div>
+<script>
+        $(function () {
+            SelectAllForDelete();
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryEarning/_EarningDetails?FID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                     {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         "sClass": "center",
+                         "fnRender": function (oObj) {
+                             return ' <a title="Click on for Details" id="lnkEdit1" style="text-decoration:none;" Onclick="Edit(this);"  class=" sym-btn-detail-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                             //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Details" id="lnkEdit1" style="text-decoration:none;" Onclick="Edit(this);"  class=" sym-btn-detail-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                                 //+'&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryEarning/Delete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>'
+                             ;
+                         }
+                     }
+                                , { "sName": "Code", "sWidth": "8%" }
+                                , { "sName": "Name", "sWidth": "13%" }
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [ null
+                           , { type: "text" }
+                           , { type: "text" }
+                ]
+
+            });
+        });
+  
+    function Edit(sender) {
+        window.location = "/Payroll/SalaryEarning/SingleEarningEdit?empId=" + $(sender).attr('data-Id')+ "&fid="+'@ViewBag.Id';
+    }
+</script>

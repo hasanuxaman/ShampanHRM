@@ -1,0 +1,96 @@
+﻿
+@{
+    Layout = null;
+    }
+<div class="thinbox">
+    <div class=" row th_thinbox">
+        <p>Employee List for Attendance Entry</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">Show Detail</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>Designation</th>
+                <th>Join Date</th>
+            </tr>
+            <tr>
+                <th class="center">Action</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>Designation</th>
+                <th>Join Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+
+<script>
+ 
+    $(function () {
+      
+        fromWriteColor("leave");
+        valiDation('frmLeave');
+
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+               
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/EmployeeAttendance/_index",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns":
+                    [
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "sWidth": "12%",
+                            "sClass": "center",
+                            "fnRender": function (oObj) {
+                                return ' <a title="Click for Detail" style="text-decoration:none;"   onclick="SelectEmployee(this)" data-id="' + oObj.aData[0] + '"  class="sym-btn-detail-row sym-sx"></a>';
+                            }
+                        }
+                        , { "sName": "Code", "sWidth": "12%" }
+                        , { "sName": "EmpName", "sWidth": "20%" }
+                        , { "sName": "Department", "sWidth": "15%" }
+                        , { "sName": "Designation", "sWidth": "15%" }
+                        , { "sName": "JoinDate", "sWidth": "20%" }
+                    ]
+            });
+
+        oTable.columnFilter
+            ({
+                sPlaceHolder: "head:after",
+                aoColumns:
+                    [
+                        { type: "checkbox", "sClass": "chkAll" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "date-range" }
+                    ]
+            });
+
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            $("body").removeClass("loading");
+          
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    
+   
+</script>

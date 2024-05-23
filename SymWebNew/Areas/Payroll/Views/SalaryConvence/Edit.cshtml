@@ -1,0 +1,120 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Salary Conveyance" data-url="/Payroll/SalaryConvence/SalaryConvenceSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    @*<button type="button" title="Delete Checked" data-url="/Payroll/SalaryConvence/SalaryConvenceDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>*@
+    <button type="button" title="Back to Previous Page" data-url="/Payroll/SalaryConvence" onclick="BackToList(this)" class="sym-btn-back">&nbsp;Back</button>
+<label class="pull-right">Salary Conveyance > Edit</label>
+</div>
+
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+@*    <p>
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryConvence/SalaryConvenceSingle" onclick="GoTo(this)" id="" class=" btn btn-info  " value="Add" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryConvence/SalaryConvenceDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryConvence" class="btn btn-info" onclick="BackToList(this)" value="Back" />
+ </p>*@
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead ">
+                        
+
+                         <tr>
+                            <th>Select</th>
+                           <th>Name</th>
+                            <th>Conveyance Value</th>
+                        </tr>
+
+                        <tr>
+                            <th >Actions</th>
+                           <th>Name</th>
+                            <th style="text-align:left!important">Conveyance Value</th>
+                        </tr>
+
+
+
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+
+<div class="headrow">
+    <button type="button" title="Add New Salary Conveyance" data-url="/Payroll/SalaryConvence/SalaryConvenceSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    @*<button type="button" title="Delete Checked" data-url="/Payroll/SalaryConvence/SalaryConvenceDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>*@
+    <button type="button" title="Back to Previous Page" data-url="/Payroll/SalaryConvence" onclick="BackToList(this)" class="sym-btn-back">&nbsp;Back</button>
+</div>
+
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        $(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryConvence/_salaryConvenceDetails?salaryConvenceID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+
+                                  {
+                                      "sName": "ID",
+                                      "bSearchable": false,
+                                      "bSortable": false,
+                                      "sWidth": "12%",
+                                      //"sClass":"actionColumn",
+                                      "fnRender": function (oObj) {
+                                          return '<a title="Click to Edit" style="text-decoration:none" Onclick="ConvenceEdit(this);"  data-Id="' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>'
+                                          //innerListLink
+                                          //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0].split('~')[1] + '">'//lnkEdit
+                                          ;
+                                      }
+                                  }
+
+
+                                  //{
+                                  //    "sName": "Name",
+                                  //    "bSearchable": false,
+                                  //    "bSortable": false,
+                                  //    "fnRender": function (oObj) {
+
+                                  //        //return '<input Onclick="ConvenceEdit(this);" class="innerListLink "  data-Id="' + oObj.aData[1].split('~')[1] + '"' + oObj.aData[1].split('~')[0] + ' >'
+                                  //        //return '<Label Onclick="ConvenceEdit(this);" class="innerListLink "  data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Label>'
+                                  //    }
+                                  //}
+
+                                //,{ "sName": "Name" }
+                                //, { "sName": "Convence" }
+                                , { "sName": "Name", "sWidth": "50%" }
+                                , { "sName": "Convence", "sClass": "right", "sWidth": "35%" }
+                                //,{ "sName": "Remarks" }
+
+                ]
+            });
+
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [
+                    { type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "date-range" }
+
+                ]
+
+            });
+
+        });
+    });
+    function ConvenceEdit(sender) {
+        window.location = "/Payroll/SalaryConvence/SingleConvenceEdit?ConvenceDetailsId=" + $(sender).attr('data-Id');
+    }
+</script>

@@ -1,0 +1,263 @@
+﻿
+@model SymViewModel.Payroll.ProjectAllocationVM
+@using UIHelper.MVC
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data",@Id = "frmPAL" }))
+{
+  
+
+  if (Model.Id != null)
+    {
+        ViewBag.Title = "Edit";
+    }
+    else
+    {
+        ViewBag.Title = "Create";
+    }
+      <p class="headrow">
+          @if (Model.Id != null)
+          {
+                <button type="button" title="Update Data" onclick="pageSubmit1('frmPAL');"  class="sym-btn-update">&nbsp;Update</button>
+          }
+          else
+          {
+                <button type="button" title="Save Data" onclick="pageSubmit1('frmPAL');"  class="sym-btn-save">&nbsp;Save</button>
+          }
+  
+        </p>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>LC</legend>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.BranchId)
+
+        <div class="thinbox">
+            <div class="th_thinbox">
+                <p>Project Expense Allocation </p>
+            </div>
+            <div class="LC">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Code)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Code, new { @placeholder = "Code", @class = "required form-control" })
+                            @Html.ValidationMessageFor(model => model.Code)
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Name)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name", @class = " required form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+            </div>
+        </div>
+            </div>
+       
+    
+          <div class="thinbox">
+            <div class="th_thinbox">
+                <p>Project Allocation Detail</p>
+            </div>
+        <div id="editorItemRows5">
+
+            @if (Model.ProjectAllocationDetailVM != null)
+            {
+                <table class=" table-responsive ">
+                    <thead>
+                        <tr>
+                             <th style="width:10%;">&nbsp;</th>
+                            <th style="width:13%;">GLCode1</th>
+                            <th style="width:4%;">Por.1(%)</th>
+                            <th style="width:13%;">GLCode2</th>
+                            <th style="width:5%;">Por.2(%)</th>
+                            <th style="width:13%;">GLCode3</th>
+                            <th style="width:5%;">Por.3(%)</th>
+                            <th style="width:13%;">GLCode4</th>
+                            <th style="width:5%;">Por.4(%)</th>
+                            <th  style="width:10%;">Total Porion</th>
+                        </tr>
+                    </thead>
+              <tbody>
+                @foreach (var item in Model.ProjectAllocationDetailVM)
+                {
+                    Html.RenderPartial("_projectAllocation", item);
+                }
+                  </tbody>
+                </table>
+            }
+        </div>
+</div>
+          <p class="headrow">
+          @if (Model.Id != null)
+          {
+                <button type="button" title="Update Data" onclick="pageSubmit1('frmPAL');"  class="sym-btn-update">&nbsp;Update</button>
+          }
+          else
+          {
+                <button type="button" title="Save Data" onclick="pageSubmit1('frmPAL');"  class="sym-btn-save">&nbsp;Save</button>
+          }
+  
+        </p>
+    </fieldset>
+}
+
+
+<div>
+    @*<a href="@Url.Action("Index")"><i class="fa fa-arrow-left fa-3x"></i></a>*@
+    @*@Html.Action(" ", "Index", new { @clas="fa fa-arrow-left"})*@
+</div>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function ()
+        {
+            valiDation("frmPAL");
+            clc();
+        })
+        validprotion();
+        function validprotion() {
+            var qtty = $(".totalprotion").val();
+
+            if (parseInt(qtty) < 0 || isNaN(parseInt(qtty)) && parseInt(qtty) > 100) {
+                $(this).val('');
+                ShowResult("Fail", "Please Enter more than");
+                return;
+            }
+        }
+        function pageSubmit1(sender) {
+            $('.pa').each(function () {
+                var portion1 = 0;
+                var portion2 = 0;
+                var portion3 = 0;
+                var portion4 = 0;
+                var qtty = 0;
+                var el = $(this);
+                portion1 = el.closest("tr").find(".portion1").val();
+                portion2 = el.closest("tr").find(".portion2").val();
+                portion3 = el.closest("tr").find(".portion3").val();
+                portion4 = el.closest("tr").find(".portion4").val();
+                qtty = parseFloat(portion1) + parseFloat(portion2) + parseFloat(portion3) + parseFloat(portion4);
+                var min = 0;
+                var max = 100;
+           
+                //if (parseInt(qtty) < min || isNaN(parseInt(qtty)) || parseInt(qtty) > max) {
+                //        ShowResult("Fail", "Please Enter more then")
+                //        return;
+                //}
+                if (parseInt(qtty) > max) {
+                    $(this).val('');
+                    ShowResult("Fail", "Total Portion cannot be Greater then ++ 100%")
+                    return false;
+                }
+                else {
+                    pageSubmit(sender);
+                }
+                return 0;
+            });
+           
+            }
+        $(".calc").change(function () {
+            clc();
+        })
+        var clc = function () {
+            $('.pa').each(function (i, item) {
+              
+                var portion1 = 0;
+                var portion2 = 0;
+                var portion3 = 0;
+                var portion4 = 0;
+                var qtty = 0;
+                var el = $(this);
+                 portion1 = el.closest("tr").find(".portion1").val();
+                 portion2 = el.closest("tr").find(".portion2").val();
+                 portion3 = el.closest("tr").find(".portion3").val();
+                 portion4 = el.closest("tr").find(".portion4").val();
+                 qtty = parseFloat(portion1) + parseFloat(portion2) + parseFloat(portion3) + parseFloat(portion4);
+                 if (qtty > 100) {
+                     ShowResult("Fail", "Total Portion Cannot be Greater than 100% ")
+                     return;
+                    
+                 }
+                 else {
+                     el.closest("tr").find(".totalprotion").val(qtty);
+                 }
+                 
+
+            });
+        };
+        
+        function RemoveProduct(sender) {
+
+
+            Ask("Are you sure to delete the item!", function () {
+                $(sender).parents("div.row:first").remove();
+            });
+            var a = $(sender);
+
+
+           
+        };
+
+        $('.AddRowEnclose').on("click", function () {
+
+           
+
+            var oParam = { "EnclosedName": "", "Remarks": "" };
+            oParam.file = $(".EnclosedName").val();
+            oParam.Remarks = $(".Remarks").val();
+
+            //else if (oParam.EnclosedComment == "") {
+            //    ShowResult("Fail", "Please Enter EnclosedComment");
+            //    return;
+            //}
+            var container = $(this).attr('data-container');
+            $.ajax({
+                url: url,
+                //type: 'POST',
+                cache: false,
+                data: oParam,
+                success: function (html) {
+                    $("#" + container).append(html);
+                    //$("#" + container + " div:first").after(html);
+                }
+            });
+            return false;
+
+        }).addClass("AddRowEnclose");
+
+        function CheckFileSizes(sender) {
+            if (sender.files[0].size > (1024 * 512)) {
+                ShowResult('Fail', 'File size can be maximum 512kb' + sender.files[0].name);
+
+            }
+
+            $(sender).parent().parent().find(".upload-file-info").val(sender.files[0].name);
+            //alert(($(sender).parent().parent().find(".upload-file-info").val(sender.files[0].name))
+        }
+        function fileupload(file) {
+            $(file).html($(this).val());
+            $(file).appendTo("<p>" + file.files[0].name + "</p>")
+            //alert((sender.files[0].name)
+        }
+        //$(".numeric").change(function () {
+        //    //$(this).insertAfter("9?9%");
+
+        //    $(this).on("blur", function () {
+        //        var value = ($(this).val().length == 1) ? $(this).val() + '%' : $(this).val();
+        //        $(this).val(value);
+        //    })
+
+        //})
+       
+    </script>
+}
+
+
+

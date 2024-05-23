@@ -1,0 +1,150 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Leave", "EmployeeLeave", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmLeave" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.empCompensatoryleavevm.EmployeeId)
+    @Html.HiddenFor(model => model.empCompensatoryleavevm.IsApprove)
+    @Html.HiddenFor(model => model.empCompensatoryleavevm.Id)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Leave Approval</p>
+        </div>
+        <div class="leave">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Code)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Code, null, new { @readonly = "readonly", @placeholder = "Employee Code", @class = "code  form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmpName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EmpName, null, new { @readonly = "readonly", @placeholder = "Employee Name", @class = "  form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.Approval)
+                    </div>
+                    <div class="display-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.Approval, null, new { @readonly = "readonly", @placeholder = "Approval", @class = "  form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.LeaveType_E)
+                    </div>
+                    <div class="display-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.LeaveType_E, null, new { @readonly = "readonly", @placeholder = "Leave Type", @class = "  form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.DayType)
+                    </div>
+                    <div class="display-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.DayType, null, new { @readonly = "readonly", @placeholder = "Day Type", @class = "  form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.FromDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.FromDate, null, new { @readonly = "readonly", @placeholder = "From Date", @class = "customDatePicker  form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.ToDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.ToDate, null, new { @readonly = "readonly", @placeholder = "To Date", @class = " customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.TotalLeave)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.TotalLeave, null, new { @readonly = "readonly", @placeholder = "Total Leave", @class = "  form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.IsHalfDay)
+                    </div>
+                    <div class="editor-field center">
+                        @Html.CheckBoxFor(model => model.empCompensatoryleavevm.IsHalfDay, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.empCompensatoryleavevm.IsHalfDay)
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.empCompensatoryleavevm.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.empCompensatoryleavevm.Remarks, null, new { @readonly = "readonly", @placeholder = "Remarks", @class = "  form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        if (identity.IsAdmin || identity.IsHRM)
+        {
+            if (!Model.empCompensatoryleavevm.IsApprove)
+            {
+    @Html.ActionLink(" Approved", "LeaveApprove", new { parm = Model.empCompensatoryleavevm.Id.ToString() + '~' + Model.empCompensatoryleavevm.IsApprove.ToString() }, new { @class = "Save btn sym-btn-save" })
+@*@Html.ActionLink("Update", "LeaveApprove", new { parm = Model.Id.ToString() + '~' + "false" + '~'+"U" }, new { @class="Save btn btn-primary"})*@
+        }
+    <button type="button" title="Cancel" onclick="CancleToIndex();" class="sym-btn-cancel">&nbsp;Cancel</button>
+        }
+    }
+@Html.Partial("_indexSingle", Model);
+<script>
+    $(function () {
+        $(".btnNew").hide(); ///////Index page new btn
+        valiDation("frmLeave");
+        //$('#empId').val('@Model.Code~@Model.EmpName');
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            $('.empId').val('@Model.Code').trigger('change');
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 300);
+           @* $('#empId').val('@Model.Code');*@
+        }
+    });
+    function CancleToIndex() {
+        window.location.href = '@Url.Action("Index", "EmployeeLeave")'
+    }
+</script>

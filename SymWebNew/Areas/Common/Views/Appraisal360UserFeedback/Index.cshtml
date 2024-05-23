@@ -1,0 +1,244 @@
+﻿@using UIHelper.MVC
+@model SymViewModel.Common.Appraisal360FeedBackVM
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="headrow">
+    <label class="pull-right">Appraisal360 User FeedBack </label>
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Appraisal360 User FeedBack List</p>
+    </div>
+    <br />
+
+    <div class="thinbox dtSearch">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DepartmentId)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                </div>
+            </div>
+            <div class="col-md-3" style="display:none">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.DepartmentName)
+                </div>
+                <div class="editor-field">
+                    @Html.HiddenFor(model => model.DepartmentName, new { @class = "  dDepartmentName  form-control", @readonly = "readonly" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserId)
+                </div>
+                <div class="editor-field">
+
+                    @Html.SimpleDropDownFor(m => m.UserId, "/Config/DropDown/GetUser?deptId=", new { @class = " cUserId required form-control " })
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                <div class="editor-label">
+                    <label>&nbsp;</label>
+                </div>
+                <div class="editor-field">
+                    <button type="button" title="Click to Search" id="btnDialog" class="sym-btn-search">&nbsp;Search</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    Action
+                </th>
+                <th>Feed Back Year</th>
+                <th>Period Name</th>
+                <th>Department Name</th>
+                <th>User Code</th>
+                <th>User Name</th>
+                <th>Feedback Code   </th>
+                <th>Feedback Name </th>
+                <th>Feedback By</th>
+                
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        debugger;
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/Appraisal360UserFeedback/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $('.dtSearch :input').each(function () {
+                    debugger;
+                    var Name = $(this).attr("Id")
+                    var Value = $(this).val()
+                    aoData.push({ "name": Name, "value": Value });
+                });
+
+                $.getJSON(sSource, aoData, function (json) {                   
+                    fnCallback(json);
+                });
+            },
+
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <a title="Click for Details" style="text-decoration:none" href=\"/Common/Appraisal360UserFeedback/Create/' + oObj.aData[0] + '\"  value="' + oObj.aData[0] + '" Onclick="SelectDataDetails(\'' + oObj.aData[0] + '\')"      class="sym-btn-detail-row"></a>';
+                                    ;
+                                }
+                            }
+                            , { "sName": "FeedBackYear", "sWidth": "10%" }
+                            , { "sName": "PeriodName", "sWidth": "10%" }
+                            , { "sName": "DepartmentName", "sWidth": "10%" }
+                            , { "sName": "UserCode", "sWidth": "10%" }
+                            , { "sName": "UserName", "sWidth": "10%" }
+                            , { "sName": "FeedbackCode", "sWidth": "10%" }
+                            , { "sName": "FeedbackName", "sWidth": "10%" }
+                            , { "sName": "FeedbackBy", "sWidth": "10%" }
+
+            ]
+        });
+        
+        $('#btnDialog').click(function () {
+            debugger
+            var model = $('.dtSearch :input').serialize(); 
+            $.ajax({
+                url: "/Common/Appraisal360UserFeedback/Index",
+                cache: false,
+                data : model,
+                success: function (html) {
+                    oTable.fnDraw();
+                }
+            });
+        });
+
+    });
+</script>
+
+<script>
+    function ReportData(sender, checkboxId, id) {
+        debugger;
+        var ids = "";
+        if (typeof id === 'undefined') {
+            var length = $("#" + checkboxId + " tbody input:checkbox").length;
+            for (var i = 0; i < length; i++) {
+                if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                    ids += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                }
+            }
+        }
+        else {
+            ids = id + "~";
+        }
+        var letterName = $("#LetterName").val();
+        if (letterName == "") {
+            ShowResult("Fail", "Select First to Letter Name!");
+            return;
+        }
+
+        var url = $(sender).attr("data-url") + "?ids=" + ids + "&letterName=" + letterName;
+        if (ids == "") {
+            ShowResult("Fail", "Select First to Report!");
+            return;
+        }
+        var win = window.open(url, '_blank');
+    }
+
+    function deletedData(sender, checkboxId, id) {
+        debugger;
+        var ids = "";
+        if (typeof id === 'undefined') {
+            var length = $("#" + checkboxId + " tbody input:checkbox").length;
+            for (var i = 0; i < length; i++) {
+                if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                    ids += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                }
+            }
+        }
+        else {
+            ids = id + "~";
+        }
+        var letterName = $("#LetterName").val();
+        if (letterName == "") {
+            ShowResult("Fail", "Select First to Letter Name!");
+            return;
+        }
+
+        var url = $(sender).attr("data-url") + "?ids=" + ids + "&letterName=" + letterName;
+        if (ids == "") {
+            ShowResult("Fail", "Select First to Report!");
+            return;
+        }
+        var win = window.open(url, '_blank');
+    }
+
+    $("#DepartmentId").on("change", function (e) {
+        debugger;
+        var id = $("#DepartmentId").val();
+        $("#DepartmentName").val($('#DepartmentId option:selected').text());
+        GetUsersInfo(id);
+    });
+
+    function GetUsersInfo(deptId) {
+        debugger;
+        $DropDownProduct = $(".cUserId");
+        $('select.cUserId').html("");
+
+        if (deptId == null || deptId == "" || deptId == "null" || deptId == undefined) {
+            return;
+        }
+        var url = "/Config/DropDown/GetUser?deptId=" + deptId + "";
+
+        $DropDownProduct.append($("<option />").val("").text("Select"));
+        $DropDownProduct.select2("val", '');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                debugger;
+                $.each(data, function (i, state) {
+                    $DropDownProduct.append($("<option />").val(state.Value).text(state.Text));
+                });
+                if (deptId != null || deptId != "" || deptId != "0") {
+                    $(".cUserId").select2("val", deptId);
+                }
+            },
+        });
+    };
+
+
+</script>

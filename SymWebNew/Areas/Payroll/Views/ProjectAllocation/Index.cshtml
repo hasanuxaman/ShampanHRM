@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+ <div class="headrow">
+    <div class="pull-left">
+        <button type="button" title="Add New Project Allocation" data-url="/Payroll/ProjectAllocation/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Project Allocation" data-url="/Payroll/ProjectAllocation/Delete"  onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+    <div class=" pull-right">
+        <div class="btn-group btn-breadcrumb">
+            @*<a href="@Url.Action("Create")"class="btn btn-default">Indent Create</a>*@
+            @*<a href="@Url.Action("Index", "Home")" class="btn btn-default"><i class="glyphicon glyphicon-home"></i></a>*@
+             <label class="pull-right">Project Expense Allocation</label>
+        </div>
+    </div>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Project Expense Allocation</p>
+    </div>
+   @* <p>
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryPF/Create" onclick="GoTo(this)" id="" class=" btn btn-info  " value="Add" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryPF/SalaryPFDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />
+    </p>*@
+    <div>
+                <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" /> Select All</th>
+                            <th>Code</th>
+                            <th >Name</th>
+                          
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+<div class="headrow">
+        <button type="button" title="Add New Project Allocation" data-url="/Payroll/ProjectAllocation/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Project Allocation" data-url="/Payroll/ProjectAllocation/Delete"  onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/ProjectAllocation/_Index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "columnDefs": [
+            {
+                // The `data` parameter refers to the data for the cell (defined by the
+                // `data` option, which defaults to the column being worked with, in
+                // this case `data: 0`.
+                targets : [1],
+                    render : function (data, type, row) {
+                        return data == 'eeeeee' ? '1111' : '2222'
+                    }
+                },
+            { "visible": false,  "targets": [ 1 ] }
+            ],
+            "aoColumns": [
+                              {
+                                  "sName": "ID",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "sWidth": "12%",
+                                  "sClass": "center",
+                                  "fnRender": function (oObj) {
+                                      return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit"  id="" class="innerListLink sym-btn-edit-row" style="text-decoration:none;" href=\"/Payroll/ProjectAllocation/Edit?Id=' + oObj.aData[0] + '\"></a>' +
+                                   '&nbsp; <a title="Click on for Delete"  data-url="/Payroll/ProjectAllocation/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>';
+                                  }
+                              }
+                              , { "sName": "Code" }
+                              , { "sName": "Name" }
+                             
+            ]
+        });
+    });
+    </script>

@@ -1,0 +1,156 @@
+﻿
+@model SymViewModel.Payroll.EmployeeBonusVM
+@using UIHelper.MVC
+     <div class="headrow">
+
+        <button type="button" title="Add New Employee Bonus"  onclick="SetEmployeeBonus()" id="" class="sym-btn-add ">&nbsp;New</button>
+         <label class="pull-right">EmployeeBonus > BonusNew</label>
+    </div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Bonus</p>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.BranchId)
+                @Html.LabelFor(model => model.Code)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Code, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Name, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.BonusValue)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.BonusValue, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.IsFixed)
+            </div>
+            <div class="editor-field center">
+                @Html.CheckBoxFor(model => model.IsFixed, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PortionSalaryType)
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryPortion", new { @class = "PortionSalaryTypeId form-control", disabled = "disabled" })
+            </div>
+        </div>
+         
+          
+    </div>
+    <div class="row">
+
+        <div class="col-md-5">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Remarks)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "  form-control",@rows="1", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-sm-2">
+                    <div class="editor-label">
+                        <label>Employee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("employeeCode", null, new { @onfocusout="Employee();",  @class = "employeeCode form-control" })
+                    <label id="errorEmpCoed" style="color:red;display:none;">Please select employee code</label>
+                    </div>
+            </div>
+                    <div class="col-sm-4">
+                    <div class="editor-label">
+                        <label>Employee </label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("employee", null, new {  @class = "employee form-control", disabled = "disabled" })
+                        @Html.Hidden("employeeId", null, new {  @class = "employeeId form-control" })
+                    </div>
+            </div>
+    </div>
+   @* <p>
+        <input type="button" style="width: 65px;"  onclick="SetEmployeeBonus()" id="" class=" btn btn-info  " value="Add" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/EmployeeBonus" class="btn btn-info" onclick="BackToList(this)" value="Back" />
+
+ </p>*@
+    </div>
+     <div class="headrow">
+
+        <button type="button" title="Add New Employee Bonus"  onclick="SetEmployeeBonus()" id="" class="sym-btn-add ">&nbsp;New</button>
+    </div>
+
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+    var urlDistrict = "";
+    $(function () {
+        $('.employeeCode').autocomplete({ source: '@Url.Action("Employee", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $(".employeeCode").change(function () {
+            var Hurl = '/HRM/EmployeeInfo/EmployeeExist';
+            $.get(Hurl, { term: $('.employeeCode').val() }, function (data) {
+                if (data.toString() == "0") {
+                    $(".employeeCode").val("");
+                    $(".employee").val("");
+                    $(".employeeId").val("");
+                }
+                else {
+                    $(".employee").val(data.split('>')[1]);
+                    $(".employeeId").val(data.split('>')[2]);
+
+                }
+            }, 'JSON');
+        });
+
+    });
+    function Employee() {
+        var url = "/EmployeeBonus/EmployeeNameByCode?empCode=" + $(".employeeCode").val();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (response) {
+                if (response[0] != null) {
+                    $("#employeeId").val(response[0]);
+                    $("#employee").val(response[1]);
+                }
+            }
+        });
+    }
+    function SetEmployeeBonus() {
+        $("#errorEmpCoed").hide();
+        if ($("#employeeId").val() == "" || $("#employeeId").val() == "") {
+            $("#errorEmpCoed").show();
+            return;
+        }
+        var url = "/EmployeeBonus/BonusNew?empBonusID=" + $("#Id").val() + "&empID=" + $("#employeeId").val();
+        $.ajax({
+            type: "Post",
+            url: url,
+            success: function (response) {
+                var dataAction = "";
+                if (response[0] != "Fail") {
+                    dataAction = "redirect";
+                }
+                ShowResult(response[0], response[1], dataAction, "/Payroll/EmployeeBonus");
+            }
+        });
+    }
+</script>

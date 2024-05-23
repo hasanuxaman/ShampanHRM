@@ -1,0 +1,372 @@
+﻿@model SymViewModel.Tax.TaxScheduleVM
+@using UIHelper.MVC
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.EmployeeId)
+@Html.HiddenFor(model => model.ProjectId)
+@Html.HiddenFor(model => model.DepartmentId)
+@Html.HiddenFor(model => model.SectionId)
+@Html.HiddenFor(model => model.DesignationId)
+@Html.HiddenFor(model => model.Operation)
+@Html.HiddenFor(model => model.TransactionType)
+
+
+<div class="headrow">
+    <button type="button" title="Add New Employee Tax Shchedule" data-url="/Tax/TaxSchedule/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <label class="pull-right">Tax Schedule Monthly</label>
+</div>
+
+
+
+<div class="thinbox ">
+    <div class="th_thinbox">
+        <p class="thinHead">Employee Info</p>
+    </div>
+    <div class="EmployeeInfo">
+        <div class="row">
+            @if (string.IsNullOrWhiteSpace(Model.EmployeeCode) && string.IsNullOrWhiteSpace(Model.EmployeeId))
+            {
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Employee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " form-control selectDropdown" })
+                    </div>
+                </div>
+            }
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EmployeeCode)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeCode, new { @placeholder = "Employee Code", @class = " empCode form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.EmployeeCode)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @placeholder = "Employee Name", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.EmployeeName)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Designation)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Designation", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Designation)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Department, new { @placeholder = "Department", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Department)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Section, new { @placeholder = "Section", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Section)
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Project, new { @placeholder = "Project", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Project)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBoxFor(model => model.Year, @Session["SessionYear"].ToString(), new { @Id = "fYear", @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Fiscal Period</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @Id = "FiscalPeriodDetailId", @class = " fpDetailsCom required form-control" })
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.FinalTaxAmount)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.FinalTaxAmount, new { @placeholder = "Final Tax Amount", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FinalTaxAmount)
+                </div>
+            </div>            
+
+
+            @if (Model.TransactionType == "Bonus")
+            {
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FinalBonusTaxAmount)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FinalBonusTaxAmount, new { @placeholder = "Final Bonus Tax Amount", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.FinalBonusTaxAmount)
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        <br />
+
+        @*        <button type="button" title="Load Data" id="" class="loadSchedule1SalaryMonthly sym-btn-detail">&nbsp;Load From Salary</button>
+            <button type="button" title="Process Data" id="" class="processSchedule1SalaryMonthly sym-btn-detail">&nbsp;Process Data</button>*@
+
+    </div>
+</div>
+
+
+<div class="thinbox ">
+    <ul style="font-size: 1.4em;" class="nav nav-tabs">
+        <li class="tabDefault active "><a data-toggle="tab" href="#Schedule1Salary">Schedule1 Salary Monthly</a></li>
+        <li class="tabDefault"><a data-toggle="tab" href="#Schedule2HouseProperty">Schedule2 House Property Monthly</a></li>
+        <li class="tabDefault"><a data-toggle="tab" href="#Schedule3Investment">Schedule3 Investment Monthly</a></li>
+    </ul>
+    <div class="tab-content">
+
+        <div id="Schedule1Salary" class="  tab-pane fade in active">
+            @if (Model.EmployeeTaxSlabCount > 0)
+            {
+                @Html.Partial("_schedule1Salary", Model)
+            }
+            else
+            {
+                @Html.Partial("_schedule1Salary")
+            }
+        </div>
+        <div id="Schedule2HouseProperty" class=" tab-pane fade ">
+            @* @if (Model.EmployeeTaxSlabCount > 0)
+                {
+                    @Html.Partial("_schedule1Salary", Model)
+                }
+                else
+                {
+                    @Html.Partial("_schedule1Salary")
+                }*@
+            @Html.Partial("_schedule2HouseProperty")
+        </div>
+
+        <div id="Schedule3Investment" class=" tab-pane fade  ">
+            @* @if (Model.EmployeeTaxSlabCount > 0)
+                {
+                    @Html.Partial("_schedule1Salary", Model)
+                }
+                else
+                {
+                    @Html.Partial("_schedule1Salary")
+                }*@
+            @Html.Partial("_schedule3Investment")
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .header {
+        position: fixed;
+        top: 0px;
+        height: 20px;
+        width: 100%;
+    }
+
+    .body {
+        margin-top: 40px;
+        height: 3000px;
+        overflow: auto;
+    }
+</style>
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+</script>
+
+<script>
+    $(function () {
+        @*if ('@Model.Operation' == "update") {
+            processSchedule1SalaryMonthly();
+        }*@
+        $('#EmployeeCode').change(function () {
+            LoadEmployeeDetails();
+        });
+
+        var LoadEmployeeDetails = function () {
+            $('.empCode, #EmployeeName, #Designation, #Department, #Section, #Project').removeAttr("readonly");
+
+            var EmployeeCode = $('#EmployeeCode :selected').val();
+            var url = "/Tax/TaxSchedule/SelectEmployeeDetails/?EmployeeCode=" + EmployeeCode;
+
+            $.getJSON(url, function (data) {
+                var EmployeeName = data.split('~')[0];
+                var Designation = data.split('~')[1];
+
+                var Department = data.split('~')[2];
+                var Section = data.split('~')[3];
+                var Project = data.split('~')[4];
+
+                $('.empCode').val(EmployeeCode);
+                $('#EmployeeName').val(EmployeeName);
+                $('#Designation').val(Designation);
+                $('#Department').val(Department);
+                $('#Section').val(Section);
+                $('#Project').val(Project);
+            });
+
+            $('.empCode, #EmployeeName, #Designation, #Department, #Section, #Project').prop("readonly", true);
+        }
+
+
+
+        $('.loadSchedule1SalaryMonthly').click(function () {
+            loadSchedule1SalaryMonthly();
+        });
+
+        $('.processSchedule1SalaryMonthly').click(function () {
+            processSchedule1SalaryMonthly();
+        });
+
+
+        function loadSchedule1SalaryMonthly() {
+
+            var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+            var fYear = $("#fYear").val();
+
+            if ('@Model.EmployeeId' != "") {
+                var EmployeeId = '@Model.EmployeeId';
+            }
+            else {
+                var EmployeeId = $("#EmployeeId").val();
+            }
+
+            if ('@Model.EmployeeCode' != "") {
+                var EmployeeCode = '@Model.EmployeeCode';
+            }
+            else {
+                var EmployeeCode = $("#EmployeeCode").val();
+            }
+
+
+            if (FiscalPeriodDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period");
+                return;
+            }
+            var url = "/Tax/TaxSchedule/LoadSASalaryM?fydid=" + FiscalPeriodDetailId + "&fYear=" + fYear
+                + "&EmployeeId=" + EmployeeId + "&EmployeeCode=" + EmployeeCode;
+
+            $('#Schedule1SalaryMonthly').load(url)
+
+        }
+        //function processSchedule1SalaryMonthly() {
+        //    var dataA = "0";
+        //    var dataB = "0";
+        //    var dataC = "0";
+        //    $(".valA").each(function () {
+        //        dataA = dataA + $(this).val();
+        //        dataB = dataB + $(this).val();
+        //        dataC = dataC + $(this).val();
+        //    });
+
+        //    //$(".valA").each(function () {
+        //    //    dataA = dataA + $(this).val();
+        //    //    dataB = dataB + $(this).val();
+        //    //    dataC = dataC + $(this).val();
+        //    //});
+        //    //$(".valA").each(function () {
+        //    //    dataA = dataA + $(this).val();
+        //    //    dataB = dataB + $(this).val();
+        //    //    dataC = dataC + $(this).val();
+        //    //});
+        //};
+
+
+
+        function processSchedule1SalaryMonthly() {
+            var data = "";
+            $(".valA").each(function () {
+                data = data + "~" + $(this).val();
+            });
+
+            var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+            var fYear = $("#fYear").val();
+
+            if ('@Model.EmployeeId' != "") {
+                var EmployeeId = '@Model.EmployeeId';
+            }
+            else {
+                var EmployeeId = $("#EmployeeId").val();
+            }
+
+            if ('@Model.EmployeeCode' != "") {
+                var EmployeeCode = '@Model.EmployeeCode';
+            }
+            else {
+                var EmployeeCode = $("#EmployeeCode").val();
+            }
+
+            if (FiscalPeriodDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period");
+                return;
+            }
+            var url = "/Tax/TaxSchedule/ProcessSASalaryM?fydid=" + FiscalPeriodDetailId + "&fYear=" + fYear
+                + "&EmployeeId=" + EmployeeId + "&EmployeeCode=" + EmployeeCode + "&LineA=" + data;
+
+            $('#Schedule1SalaryMonthly').load(url)
+        }
+
+
+    });
+</script>

@@ -1,0 +1,91 @@
+﻿ <div class="headrow">
+<button type="button" title="Add New " data-url="/Payroll/SalaryAreer/SalaryAreerSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+<button type="button" title="Delete Checked"  data-url="/Payroll/SalaryAreer/SalaryAreerDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+<button type="button"   title="Back to Previous Page"   data-url="/Payroll/SalaryAreer" onclick="BackToList(this)" class="sym-btn-back" >&nbsp;Back</button>
+  <label class="pull-right">Salary Arrear > Edit</label>   
+ </div>  
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+    <p>
+       @* <input type="button" style="width: 65px;" data-url="/Payroll/SalaryAreer/SalaryAreerSingle" onclick="GoTo(this)" id="" class=" btn btn-info  " value="Add" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryAreer/SalaryAreerDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/SalaryAreer" class="btn btn-info" onclick="BackToList(this)" value="Back" />*@
+ </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead ">
+                        <tr>
+                            <th><input type="checkbox" class="chkAll" /> Select All </th>
+                             <th>Name</th>
+                            <th>Arrear Value</th>
+                            <th >Remarks</th>
+                          
+                        </tr>
+                        <tr>
+                            <th style="padding-left: 2.5%">Actions</th>
+                              <th>Name</th>
+                            <th style="text-align:left!important">Arrear Value</th>
+                            <th >Remarks</th>
+                      
+                        </tr>
+                    </thead>
+
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+ <div class="headrow">
+<button type="button" title="Add New " data-url="/Payroll/SalaryAreer/SalaryAreerSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+<button type="button" title="Delete Checked"  data-url="/Payroll/SalaryAreer/SalaryAreerDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+<button type="button"   title="Back to Previous Page"   data-url="/Payroll/SalaryAreer" onclick="BackToList(this)" class="sym-btn-back" >&nbsp;Back</button>
+    </div>  
+<script>
+    $(function () {
+        SelectAllForDelete();
+        $(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryAreer/_salaryAreerDetails?salaryAreerID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                     {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         //"sClass":"actionColumn",
+                         "fnRender": function (oObj) {
+                             return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="AreerEdit(this);" id="lnkEdit1" class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' +
+                             '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryAreer/SalaryAreerDetailsDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+
+                                 //'&nbsp; <a title="Click on for Edit" style="text-decoration:none;" data-url="/Payroll/Loan/LoanDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                         }
+                     }
+                               , { "sName": "Name", "sWidth": "35%" }
+                               , { "sName": "Areer", "sClass": "right", "sWidth": "30%" }
+                               , { "sName": "Remarks", "sWidth": "20%" }
+
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           , { type: "text" }
+
+                ]
+            });
+        });
+    });
+    function AreerEdit(sender) {
+        window.location = "/Payroll/SalaryAreer/SingleAreerEdit?AreerDetailsId=" + $(sender).attr('data-Id');
+    }
+</script>

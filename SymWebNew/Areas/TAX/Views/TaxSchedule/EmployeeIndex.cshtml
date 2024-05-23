@@ -1,0 +1,250 @@
+﻿@model SymViewModel.Tax.EmloyeeTAXSlabVM
+@{
+    ViewBag.Title = "Index";
+}
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Yearly Average Tax Process</p>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+            <div class="editor-field">
+                <div>@Html.TextBox("Year", @Session["SessionYear"].ToString(), new { @Id = "fYear", @class = " fiscalyearCom1 form-control" }) </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Emp Code(From)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeFrom", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Emp Code(To)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeTo", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+            </div>
+        </div>
+        @*<div class="col-md-3">
+            <div class="editor-label">
+                <label>Designation</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control selectDropdown" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control selectDropdown" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Gender</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("Gender", "/Config/DropDown/Gender", new { @class = " gender form-control" })
+            </div>
+        </div>*@
+
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Effect From</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("fiscalYearFromId", "/Config/DropDown/DropDownPeriodByFYear?year=2024", new { @Id = "FiscalYearDetailFromId", @class = " fpDetailsCom required form-control" })
+
+            </div>
+        </div>
+
+
+        @*<div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Year To</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("fiscalYearToId", "/Config/DropDown/DropDownPeriodByFYear?year=" + Session["SessionYear"], new { @Id = "FiscalYearDetailToId", @class = " fpDetailsCom required form-control" })
+
+            </div>
+        </div>*@
+
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Date Of Join From</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DojFrom, new { @placeholder = "Date Of Join", @class = " DojFrom customDatePicker  form-control" })
+
+            </div>
+        </div>        
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Date Of Join To</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DojTo, new { @placeholder = "Date Of Join", @class = " DojTo customDatePicker  form-control" })
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="headrow">
+
+    <button title="Click to Show Employee List" id="Searchbtn" class="btn sym-btn-search">&nbsp;Search</button>
+    &nbsp;
+    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save" hidden="hidden">&nbsp;Save</button>
+    <button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+</div>
+
+<div id="detailsDiv">
+</div>
+<div class="headrow" hidden="hidden">
+    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save">&nbsp;Save</button>
+</div>
+
+<script>
+    $('#Clear').click(function () {
+        location.reload();
+    });
+
+    $('.saveJSON').click(function () {
+        if (pageSubmitJSON('frmEmloyeeList') == 0) {
+
+            var obj = new Object();
+
+            obj.fydid = $("#FiscalYearDetailFromId").val();
+            obj.fydidTo = $("#FiscalYearDetailFromId").val();
+            obj.effectForm = $("#FiscalYearDetailFromId").val();
+            obj.fYear = $("#fYear").val();
+            obj.sType = "YearlyTax";
+            obj.tType = "YearlyTax";
+            obj.advanceTax = "Y";
+
+            if (!obj.fydid || !obj.fydidTo) {
+                ShowResult("Fail", "Please select the Fiscal Years");
+                return;
+
+            }
+
+            var myData = $('#frmEmloyeeList').serialize();
+            var url = "/TAX/TaxSchedule/SASalaryFullProcess";
+
+            var param = $.param(obj);
+            url = url + "?" + param;
+
+            $(".saveJSON").hide();
+
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: myData,
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+                    ShowResult(data.split("~")[0], data.split("~")[1]);
+
+                    Searching();
+                },
+            });
+
+            //submit(url, myData);
+           
+        }
+    });
+
+    $("#Searchbtn").click(function () {
+        Searching();
+    });
+
+    function Searching() {
+        var url = '/TAX/TaxSchedule/_index';
+
+        var codeFrom = $("#CodeFrom").val();
+        var codeTo = $("#CodeTo").val();
+
+        var departmentId = $("#DepartmentId :selected").val();
+        var sectionId = $("#SectionId :selected").val();
+        var projectId = $("#ProjectId :selected").val();
+        var designationId = $("#DesignationId :selected").val();
+        var gender = $(".gender :selected").val();
+
+        var taxSlabId = "";
+
+        var dojFrom = $(".DojFrom").val();
+        var dojTo = $(".DojTo").val();
+
+
+        var obj = new Object();
+
+        obj.codeFrom = codeFrom;
+        obj.codeTo = codeTo;
+
+        obj.departmentId = departmentId;
+        obj.sectionId = sectionId;
+        obj.projectId = projectId;
+        obj.designationId = designationId;
+        obj.gender = gender;
+        obj.taxSlabId = taxSlabId;
+        obj.dojFrom = dojFrom;
+        obj.dojTo = dojTo;
+
+
+        var param = $.param(obj);
+        url = url + "?" + param;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $(' #detailsDiv').html(data);
+
+                $(".saveJSON").show();
+                $(".headrow").show();
+                //ShowResult("Info", " Data load Complete");
+            },
+        });
+    }
+</script>

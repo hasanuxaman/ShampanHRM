@@ -1,0 +1,111 @@
+﻿ <div class="headrow">
+<button type="button" title="Add New Salary Overtime" data-url="/Payroll/SalaryOverTime/SalaryOverTimeSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+@*<button type="button" title="Delete Checked"  data-url="/Payroll/SalaryOverTime/SalaryOverTimeDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>*@
+<button type="button"   title="Back to Previous Page"    data-url="/Payroll/SalaryOverTime" onclick="BackToList(this)" class="sym-btn-back" >&nbsp;Back</button>
+     <label class="pull-right">Salary Overtime > Edit</label>
+</div>   
+ 
+
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead ">
+                        <tr>
+                            <th>Select</th>
+                           <th>Name</th>
+                            <th>Overtime Value</th>
+                        </tr>
+
+                        <tr>
+                            <th >Actions</th>
+                           <th>Name</th>
+                            <th style="text-align:left!important">Overtime Value</th>
+                        </tr>
+
+
+
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+
+ <div class="headrow">
+<button type="button" title="Add New Salary Overtime" data-url="/Payroll/SalaryOverTime/SalaryOverTimeSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+<button type="button"   title="Back to Previous Page"    data-url="/Payroll/SalaryOverTime" onclick="BackToList(this)" class="sym-btn-back" >&nbsp;Back</button>
+    </div>   
+
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        $(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryOverTime/_salaryOverTimeDetails?salaryOverTimeID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+
+                                  {
+                                      "sName": "ID",
+                                      "bSearchable": false,
+                                      "bSortable": false,
+                                      "sWidth": "12%",
+                                      //"sClass":"actionColumn",
+                                      "fnRender": function (oObj) {
+
+                                         
+                                          //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0].split('~')[1] + '">'; //lnkEdit
+                                          return '<a title="Click to Edit" style="text-decoration:none" Onclick="OverTimeEdit(this);"  data-Id="' + oObj.aData[0] + '\" class="sym-btn-edit-row "></a>'
+
+                                      }
+                                  }
+
+                                  //,{
+                                  //    "sName": "Name",
+                                  //    "bSearchable": false,
+                                  //    "bSortable": false,
+                                  //    "fnRender": function (oObj) {
+
+                                  //        return '<Lable Onclick="OverTimeEdit(this);" class="innerListLink "  data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                  //    }
+                                  //}
+
+
+                                //{ "sName": "OverTime" },
+                                //{ "sName": "Remarks" }
+                                 ,{ "sName": "Name", "sWidth": "50%" }
+                                 , { "sName": "OverTime", "sClass": "right", "sWidth": "30%" }
+                ]
+            });
+
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [
+                    { type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "date-range" }
+
+                ]
+
+            });
+
+        });
+    });
+    function OverTimeEdit(sender) {
+        window.location = "/Payroll/SalaryOverTime/SingleOverTimeEdit?OverTimeDetailsId=" + $(sender).attr('data-Id');
+    }
+</script>

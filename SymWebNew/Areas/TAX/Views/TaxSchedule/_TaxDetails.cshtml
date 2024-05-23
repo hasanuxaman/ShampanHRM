@@ -1,0 +1,32 @@
+﻿@using NPOI.SS.Formula.Functions
+@model SymViewModel.Tax.YearlyTAXVM
+@using (Html.BeginForm("EditAdvanceTax", "TaxSchedule", FormMethod.Post, new { @Id = "frmAdvanceTax" }))
+{
+    <div class="row">
+        <div class="col-md-2">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.HiddenFor(model => model.FiscalYearDetailId)
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.FiscalPeriodName, new { @class = " required form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.FiscalPeriodName)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Value, new { @class = " required form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.Value)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.AdvanceTax, new { @class = " required form-control" })
+                @Html.ValidationMessageFor(model => model.AdvanceTax)
+            </div>
+        </div>
+       
+        <div class="col-md-1">
+            <button type="submit" onclick="pageSubmit('frmAdvanceTax');" value="Update" class="sym-btn-update">&nbsp;Update</button>
+        </div>
+    </div>
+}

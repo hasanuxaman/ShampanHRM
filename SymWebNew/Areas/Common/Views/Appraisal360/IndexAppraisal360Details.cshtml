@@ -1,0 +1,105 @@
+﻿
+<div class="headrow">
+    <button type="button" title="Add New Appraisal360" data-url="/Common/Appraisal360/CreateApp360Detail" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete Appraisal360" data-url="/Common/Appraisal360Details/Appraisal360DetailsDelete" onclick="deletedData(this, 'myDataTable1');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <button type="button" title="Index Appraisal Questions" data-url="/Common/Appraisal360/Index" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp;Index</button>
+    <label class="pull-right"> Appraisal360 Details</label>
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Appraisal360 Details List</p>
+    </div>
+    <table id="myDataTable1" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    @*<input type="checkbox" class="chkAll" />Select All*@
+                </th>
+                @*<th> Appraisal360Id</th>*@
+                <th> Department</th>
+                <th> FeedBack Year</th>
+                <th> Period Name</th>
+                @*<th> Question Id</th>*@
+                <th> Question</th>
+                <th> Feedback Value</th>
+                <th> Feedback User Type</th>
+            </tr>
+            <tr>
+                <th class="center">Action</th>
+                @*<th> Appraisal360Id</th>*@
+                <th> Department</th>
+                <th> FeedBack Year</th>
+                <th>Period Name</th>
+                @*<th> Question Id</th>*@
+                <th> Question</th>
+                <th> Feedback Value</th>
+                <th> Feedback User Type</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+
+<div class="headrow">
+    <div class="pull-left">
+        <button type="button" title="Add New Appraisal360Details" data-url="/Common/Appraisal360/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Appraisal360Details" data-url="/Common/Appraisal360/Appraisal360Delete" onclick="deletedData(this, 'myDataTable1');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable1').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/Appraisal360/_IndexAppraisal360Details",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "6%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return '<a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/Appraisal360/EditApp360Detail/' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>';
+                                }
+                            }
+                            //, { "sName": "Appraisal360Id", "sWidth": "10%" }
+                            , { "sName": "DepartmentId", "sWidth": "10%" }
+                            , { "sName": "FeedBackYear", "sWidth": "10%" }
+                            , { "sName": "PeriodName", "sWidth": "10%" }
+                            //, { "sName": "QuestionId", "sWidth": "10%" }
+                            , { "sName": "Question", "sWidth": "10%" }
+                            , { "sName": "FeedbackValue", "sWidth": "10%" }
+                            , { "sName": "FeedbackUserType", "sWidth": "10%" }
+
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       //, { type: "text" }
+                       //, { type: "text" }
+                       //, { type: "text" }
+                       //, { type: "date-range" }
+            ]
+
+        });
+
+    });
+</script>

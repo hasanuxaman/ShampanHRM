@@ -1,0 +1,107 @@
+﻿@model SymViewModel.Tax.SalaryTaxDetailVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("SingleTaxEdit", "SalaryTax", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmGrade" }))
+{
+          <div class="headrow">
+   @if (Model.Id > 0)
+   {
+        <button type="submit" title="Update Data" class="sym-btn-update">&nbsp;Update</button>
+   }
+   else
+   {
+       <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+   }
+     <label class="pull-right">Salary Tax > Edit > Signle Edit</label>
+</div>
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+            <div class="th_thinbox">
+        <p>Employee Salary Tax Edit </p>
+    </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, null, new {@placeholder = "Employee Name", @class =" form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>Gross Salary </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.GrossSalary, null, new {@placeholder = "Gross Salary", @class =" right form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>BasicSalary </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.BasicSalary, null, new {@placeholder = "Basic Salary", @class =" right  form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>Tax Value </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.TaxValue, null, new {@placeholder = "Tax Value", @class =" right  form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class =" form-control" })
+                </div>
+            </div>
+        </div>
+            <div class="col-md-2">
+       @* <input style="margin-top: 19px;" class="btn btn-info" type="submit" value="Save" />
+        &nbsp;
+            <input style="margin-top: 19px;" type="button" class="btn btn-info" data-url="/Payroll/SalaryTax" onclick="BackToList(this)" value="Back to list" />*@
+    </div>
+    </div>
+     @*<div class="headrow">
+   @if (Model.Id > 0)
+   {
+     <button type="submit" title="Update Data" class="sym-btn-update">&nbsp;Update</button>
+   }
+   else
+   {
+      <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+   }
+    </div>*@
+}
+<script>
+    $(function () {
+        if ('@Session["result"]' != '') {
+            var dataAction = "";
+            if ('@Session["result"]' == 'Success') {
+                dataAction = "redirect";
+            }
+            ShowResult('@Session["result"]', '@ViewBag.msg', dataAction, '/Payroll/SalaryTax');
+        }
+    });
+</script>

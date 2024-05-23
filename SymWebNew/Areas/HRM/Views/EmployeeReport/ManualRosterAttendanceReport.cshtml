@@ -1,0 +1,219 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "ManualRosterAttendanceReport";
+}
+@using UIHelper.MVC
+
+@using (Html.BeginForm("ManualRosterAttendanceReportView", "EmployeeReport", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAttendance", @target = "_blank" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Daily Attendance</p>
+        </div>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Emp Code(From)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeF, "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Emp Code(To)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeT, "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = "departmentsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.SectionId, "/Config/DropDown/Section", new { @class = "sectionsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.ProjectId, "/Config/DropDown/Project", new { @class = "projectsCom form-control selectDropdown" })
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Date From</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.DateFrom, "", new { @placeholder = "Date From", @class = " dtFrom customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Date To</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.DateTo, "", new { @placeholder = "Date To", @class = " dtTo customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Attendance Status</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.AttnStatus, "/Config/DropDown/AttnStatusName", new { @class = "attnStatus form-control " })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Full OT</label>
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.FullOT, new { @class = "fullOT form-control " })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Category</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("EmpCategory", "/Config/DropDown/EmpCategory", new { @placeholder = "Emp Category", @class = "EmpCategory form-control " })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp JobType</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("EmpJobType", "/Config/DropDown/EMPType", new { @placeholder = "Emp Job Type", @class = "EmpJobType form-control " })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="headrow">
+        <button type="button" title="Click for Report" id="sendRpt" class="sym-btn-report">&nbsp;Report</button>
+        @if (Model.CompanyName == "G4S")
+{
+    <button type="button" data-url="/HRM/EmployeeReport/MonthlyAttendanceDownload" id="Export" title="Click to Download the Report" class=" Export sym-btn-Excel-Export">&nbsp;Download</button>
+}
+        &nbsp;
+        <button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+    </div>
+}
+<script>
+    $(function () {
+        InitDropdownsCommon();
+
+        valiDation("frmTravel");
+
+        $('#sendRpt').click(function () {
+
+
+            pageSubmit('frmAttendance')
+        });
+
+        $('#Export').click(function () {
+
+            var EmpCategory = $("#EmpCategory").val();
+            var EmpJobType = $("#EmpJobType").val();
+
+            var dtFrom = $(".dtFrom").val();
+            var dtTo = $(".dtTo").val();
+            if (dtFrom == "") {
+                ShowResult('Fail', "Please Select Date From First!");
+                return false;
+            }
+
+            if (dtTo == "") {
+                ShowResult('Fail', "Please Select Date To First!");
+                return false;
+            }
+
+
+            const date1 = new Date(dtFrom);
+            const date2 = new Date(dtTo);
+
+            if (date1.getMonth() !== date2.getMonth()) {
+                ShowResult('Fail', "Please Select Both Date In Same Month !");
+                return false;
+            }
+            var url = $(this).attr("data-url");
+
+            $form = $('#frmAttendance');
+
+            $form.attr("action", url);
+            $form.attr("target", "_blank");
+            $form.submit();
+        });
+
+        $("#Clear").on('click', function () {
+            $(".thinbox :input").val("");
+            $(".Dropdown").select2("val", "");
+        });
+    });
+
+
+    function reportData(sender) {
+        var url = $(sender).attr("data-url");
+
+        var codeFrom = $("#CodeFrom").val();
+        var codeTo = $("#CodeTo").val();
+        var departmentId = $("#DepartmentId :selected").val();
+        var sectionId = $("#SectionId :selected").val();
+        var projectId = $("#ProjectId :selected").val();
+        var dtFrom = $(".dtFrom").val();
+        var dtTo = $(".dtTo").val();
+        var attnStatus = $(".attnStatus :selected").val();
+        var fullOT = $(".fullOT").is(":checked") ? true : false;
+
+        rptObj = new Object();
+        rptObj.codeFrom = codeFrom;
+        rptObj.codeTo = codeTo;
+        rptObj.departmentId = departmentId;
+        rptObj.sectionId = sectionId;
+        rptObj.projectId = projectId;
+        rptObj.dtFrom = dtFrom;
+        rptObj.dtTo = dtTo;
+        rptObj.attnStatus = attnStatus;
+        rptObj.fullOT = fullOT;
+
+
+        var rptParam = $.param(rptObj);
+        url = url + "?" + rptParam;
+        var win = window.open(url, '_blank');
+    }
+</script>

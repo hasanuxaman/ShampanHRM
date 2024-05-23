@@ -1,0 +1,119 @@
+﻿@model SymViewModel.Payroll.EmployeeStructureGroupVM
+
+@{
+    ViewBag.Title = "MultiStructure";
+}
+
+@using UIHelper.MVC
+
+@using (Html.BeginForm("DownloadExcel", "Structure", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "FormBonusProcess" }))
+{
+    <div class="headrow">
+        <button type="button" title="Go To Index" data-url="/Payroll/Structure/MultiStructure" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <label class="pull-right">Salary Structure</label>
+    </div>
+    <div class="thinbox" id="">
+        <div class="th_thinbox">
+            <p>Salary Structure</p>
+        </div>
+        <div class="row">
+            
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Salary Type</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/ReportTypesList", new { @class = "required form-control" })
+                </div>
+            </div>
+
+        </div>
+       
+    </div>
+
+    <div class="headrow">
+        <button type="button" title="Click to Download" id="btnDownload" class=" sym-btn-Excel-Export">&nbsp;Download</button>
+    </div>
+}
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Structure Import </p>
+    </div>
+    <div class="row">
+        @using (Ajax.BeginForm("UploadExcel", "Structure", null, new AjaxOptions { }, new { enctype = "multipart/form-data", id = "frmUploadExcel" }))
+        {
+            <div class="col-md-3 col-md-offset-4 ">
+                <label>File</label>
+                <input type="File" accept=".xlsx" name="file" id="FileUpload" style="width: 200px;" class="required" />
+            </div>
+            <div class="col-md-3">
+                <label>&nbsp;</label>
+                <button type="button" onclick="pageSubmit('frmUploadExcel');" title="Structure Import" class="sym-btn-file-upload" value="Upload" style="width: 50%; text-align: center;">&nbsp;Upload</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+
+
+    $('#saveJSON').click(function () {
+
+        var EffectDate = $("#EffectDate").val();
+
+        if (EffectDate == null || EffectDate == "") {
+            ShowResult("Fail", "Please Select EffectDate First!");
+            return;
+        }
+
+        var bNameId = $("#BonusNameId").val();
+        var bStructureId = $("#BonusStructureId").val();
+
+
+        if (bNameId == 0) {
+            ShowResult("Fail", "Please Select the Bonus Name!");
+            return;
+        }
+        if (bStructureId == 0) {
+            ShowResult("Fail", "Please Select the Bonus Structure!");
+            return;
+        }
+
+        var url = "/Payroll/BonusProcess/BonusProcessCreate";
+
+        var model = $("#FormBonusProcess :input").serialize();
+
+        submit(url, model);
+
+    });
+
+
+    $('#btnDownload').click(function () {
+
+        var bNameId = $("#SalaryTypeId").val();
+        var bStructureId = $("#BonusStructureId").val();
+
+
+        if (bNameId == 0) {
+            ShowResult("Fail", "Please Select the Salary Type!");
+            return;
+        }
+
+        var $FormBonusProcess = $("#FormBonusProcess");
+        $FormBonusProcess.attr("target", "_blank");
+        $FormBonusProcess.attr("action", "/Payroll/Structure/DownloadExcel").submit();
+
+
+    });
+
+
+
+</script>
+
+

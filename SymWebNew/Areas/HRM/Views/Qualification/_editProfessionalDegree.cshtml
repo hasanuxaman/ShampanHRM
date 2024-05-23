@@ -1,0 +1,165 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("ProfessionalDegree", "Qualification", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmProfessionalDegree" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="professionalDegree">
+        @Html.HiddenFor(model => model.professionalDegreeVM.EmployeeId)
+        @Html.HiddenFor(model => model.professionalDegreeVM.Id)
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.professionalDegreeVM.Degree_E)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.professionalDegreeVM.Degree_E, "/Config/DropDown/ProfessionalDegrees", new { @placeholder = "", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.professionalDegreeVM.Institute)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.professionalDegreeVM.Institute, new { @placeholder = "Institute", @class = "form-control" })
+                </div>
+            </div>
+            @*<div class="col-sm-2 marks">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ProfessionalDegreeVM.Marks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ProfessionalDegreeVM.Marks, new { @onchange = "NumberCheck(this);", @placeholder = "Marks", @class = "form-control" })
+                    </div>
+                </div>*@
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.professionalDegreeVM.YearOfPassing)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.professionalDegreeVM.YearOfPassing, new { @onchange = "NumberCheck(this);PassingYearLength(this);", @maxlength = "4", @placeholder = "Year Of Passing", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.professionalDegreeVM.TotalYear)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.professionalDegreeVM.TotalYear, new { @onchange = "NumberCheck(this);", @placeholder = "Total Year", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.professionalDegreeVM.Level)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.professionalDegreeVM.Level, new { @placeholder = "Level", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.professionalDegreeVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.professionalDegreeVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+            @*<div class="col-md-3">
+                    @Html.LabelFor(model => model.professionalDegreeVM.FileName)
+                    <input type="file" onchange="CheckFileSize(this);" name="professionalDegreeF" id="professionalDegreeF" style="width: 200px;" />
+                </div>
+                @if (Model.professionalDegreeVM.FileName != null && Model.professionalDegreeVM.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/ProfessionalDegree/@Model.professionalDegreeVM.Id@Model.professionalDegreeVM.FileName">
+                                <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.professionalDegreeVM.Id" data-table="9" data-field="FileName" data-url="~/Files/ProfessionalDegree/@Model.professionalDegreeVM.Id@Model.professionalDegreeVM.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }*@
+        </div>
+
+        <p>
+            @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                
+                <button type="button" title="Click on for Save" onclick="pageSubmit('frmProfessionalDegree');" class="Save sym-btn-save">&nbsp;Save</button>
+                <button type="button" title="Click on for Edit" onclick="EditProfessionalDegree();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+            }
+            <button type="button" title="Click on for Cancel" id="cancelJSON" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </p>
+    </div>
+}
+<script>
+    $(function () {
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+
+        EditProfessionalDegree();
+        $(".showHidePD").hide();///////Index page new btn
+        valiDation('frmProfessionalDegree');
+        InitDropDowns();
+        $('#saveJSON').click(function () {
+            if (isChange == true) {
+                if (pageSubmitJSON('frmProfessionalDegree') == 0) {
+                    var myData = $('#frmProfessionalDegree').serialize();
+                    var url = "/HRM/Qualification/ProfessionalDegree";
+                    var res = submit(url, myData);
+                    if (res == true) {
+                        location.reload();
+                    }
+                    isChange = false;
+                }
+            }
+            else {
+                ShowResult("Success", "You have no changes for save");
+
+            }
+        });
+        $('#cancelJSON').click(function () {
+            if (isChange == true) {
+                Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                    isChange = false;
+                    $("#professionalDegree").html('');
+                    $(".showHidePD").show();
+                })
+            }
+            else {
+                //isChange = false;
+                $("#professionalDegree").html('');
+                $(".showHidePD").show();
+            }
+        });
+    });
+
+
+</script>

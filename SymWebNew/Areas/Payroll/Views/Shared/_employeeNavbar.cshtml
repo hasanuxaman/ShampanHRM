@@ -1,0 +1,41 @@
+@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+ 
+@*@RenderSection("head", false)*@
+
+<ul class="">
+   <li class="PersonalDetails"><a href='/HRM/EmployeeInfo/Edit/@Model.Id'><span>Personal Details</span></a></li>
+   <li class="ContactDetails"><a href='/HRM/ContactDetail/Index/@Model.Id'><span>Contact Details</span></a></li>
+   <li class="EmergencyContact"><a href='/HRM/EmergencyContact/Edit/@Model.Id'><span>Emergency Contact</span></a></li>
+   <li class="Job"><a href='/HRM/Job/Index/@Model.Id'><span>Job</span></a></li>
+   @*<li><a href='/HRM/Salary/Index/@Model.Id'><span>Salary</span></a></li>*@
+   <li class="Qualification"><a href='/HRM/Qualification/Index/@Model.Id'><span>Qualification</span></a></li>
+   <li class="Immigration"><a href='/HRM/Immigration/Index/@Model.Id'><span>Immigration</span></a></li>
+   <li class="Training"><a href='/HRM/Training/Index/@Model.Id'><span>Training</span></a></li>
+   <li class="Travel"><a href='/HRM/Travel/Index/@Model.Id'><span>Travel</span></a></li>
+   <li class="DependentNominee"><a href='/HRM/DependentNominee/Index/@Model.Id'><span>Dependent & Nominee</span></a></li>
+     @if (identity.IsAdmin || identity.IsPayroll)
+{
+     <li class="Left"><a href='/HRM/Job/Left/@Model.Id'><span>Left</span></a></li>
+     }
+    <li class="Loan"><a href='/HRM/Loan/Index/@Model.Id'><span>Loan</span></a></li>
+    <li class="Structure"><a href='/HRM/Structure/Index/@Model.Id'><span>Structure</span></a></li>
+    <li class="ChangePassword"><a href='/HRM/EmployeeInfo/ChangePassword/@Model.Id'><span>Change Password</span></a></li>
+</ul>
+ 
+
+  

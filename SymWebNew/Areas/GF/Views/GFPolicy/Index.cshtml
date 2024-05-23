@@ -1,0 +1,79 @@
+﻿<div class="headrow">
+        <button type="button" title="Add New GF Policy" data-url="/GF/GFPolicy/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete GF Policy" data-url="/GF/GFPolicy/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <label class="pull-right">GF Policy </label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>GF Policy List</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>Policy Name</th>
+                <th>Job Duration (Year) From</th>
+                <th>Job Duration (Year) To</th>
+                <th>Multipication Factor</th>
+                <th>Last Basic Multipication</th>
+                <th>Remarks</th>
+
+@*
+PolicyName
+JobDurationYearFrom
+JobDurationYearTo
+Multipication Factor
+LastBasicMultipication
+Remarks
+                *@
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<div class="headrow">
+        <button type="button" title="Add New GF Policy" data-url="/GF/GFPolicy/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete GF Policy" data-url="/GF/GFPolicy/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/GF/GFPolicy/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        + '&nbsp; <a id=""  title="Click on for Edit" style="text-decoration:none;"    href=\"/GF/GFPolicy/Edit/' + oObj.aData[0] + '\" class=" innerListLink sym-btn-edit-row"></a>'
+                                        + '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/GF/GFPolicy/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "PolicyName", "sWidth": "15%" }
+                            , { "sName": "JobDurationYearFrom", "sWidth": "15%" }
+                            , { "sName": "JobDurationYearTo", "sWidth": "15%" }
+                            , { "sName": "MultipicationFactor", "sWidth": "10%" }
+                            , { "sName": "LastBasicMultipication", "sWidth": "15%" }
+                            , { "sName": "Remarks", "sWidth": "15%" }
+                            
+                           
+
+            ]
+        });
+    });
+</script>

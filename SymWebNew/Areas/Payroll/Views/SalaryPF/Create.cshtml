@@ -1,0 +1,195 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+<div class="headrow">
+    <button type="button" title="Save Data" class="sym-btn-save" onclick="EmployeeSalaryPF();">&nbsp;Save</button>
+ <label class="pull-right">Salary Provident Fund > Create</label>
+</div>
+@using (Html.BeginForm("SalaryPFProces", "SalaryPF", FormMethod.Post, new { @Id = "salaryPFProces" }))
+{
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary PF</p>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model=>model.FiscalYearDetailId, "/Config/DropDown/FiscalPeriod", new {  @class = "FiscalYearDetailId required form-control" })
+            </div>
+        </div>
+       
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model=>model.DepartmentId, "/Config/DropDown/Department", new { @class = " DepartmentId  form-control" })
+            </div>
+
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model=>model.SectionId, "//", new {  @class = "SectionId  form-control" })
+            </div>
+        </div>
+         <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+               @Html.SimpleDropDownFor(model=>model.ProjectId, "//", new {   @class = "ProjectId  form-control" })
+            </div>
+        </div>
+
+          <div class="col-md-2">
+            <div class="editor-label">
+                <label>Emp Code</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model=>model.Code,null , new {   @class = "Code  form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Save Data" id="saveJSON"  class=" sym-btn-save" > Save J </button>
+    <button type="button" title="Save Data" class="sym-btn-save" onclick="EmployeeSalaryPF();">&nbsp;Save</button>
+</div>
+}
+<script>
+
+    $('#saveJSON').click(function () {
+        var FiscalYearDetailId = $('.FiscalYearDetailId').val();
+        if (FiscalYearDetailId == "") {
+            ShowResult("Fail", "Please Select the Fiscal Month");
+            return;
+        }
+        if (pageSubmitJSON('salaryPFProces') == 0) {
+            var myData = $('#salaryPFProces').serialize();
+            var url = "/Payroll/SalaryPF/SalaryPFProces";
+            submit(url, myData);
+        }
+    });
+    var submit = function (url, mydata) {
+        $.ajax({
+            type: 'GET',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+    $(function () {
+        $('.DepartmentId').click(function () {
+            $('.ProjectId').html("");
+            $('.SectionId').html("");
+            var sections = "";
+            var did = $('.DepartmentId').val();
+            var url1 = "/Config/DropDown/SectionByDepartment/?departmentId=" + did;
+            sections += "<option value=0>Select</option>";
+            sections += "<option value=0_0>=ALL=</option>";
+
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    sections += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('.SectionId').html(sections);
+            });
+        });
+        $('.SectionId').click(function () {
+            $('.ProjectId').html("");
+            var projects = "";
+            var sid = $('.SectionId').val();
+            var did = $('.DepartmentId').val();
+            var url1 = "/Config/DropDown/ProjectByDepartment/?departmentId=" + did + "&sectionId=" + sid;
+            projects += "<option value=0>Select</option>";
+            projects += "<option value=0_0>=ALL=</option>";
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    projects += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('.ProjectId').html(projects);
+            });
+        });
+    })
+
+
+    function DDLChech(val) {
+        $("#er" + val).hide();
+        if ($("#" + val).val() == "") {
+            $("#er" + val).show();
+        }
+    }
+
+    function EmployeeSalaryPF() {
+
+        if ($('#DepartmentId').val() == "0") {
+            ShowResult("Fail", "Please Select Department.");
+            return;
+        }
+        if ($('#SectionId').val() == "0") {
+            ShowResult("Fail", "Please Select Section.");
+            return;
+        }
+
+        var error = 0;
+        $("#erFiscalPeriodDetailsId").hide();
+        $("#erProjectId").hide();
+        $("#erDepartmentId").hide();
+        $("#erSectionId").hide();
+
+        if ($("#FiscalPeriodDetailsId").val() == "") {
+            $("#erFiscalPeriodDetailsId").show();
+            error++;
+        }
+        if ($("#ProjectId").val() == "") {
+            $("#erProjectId").show();
+            error++;
+        }
+        if ($("#DepartmentId").val() == "") {
+            $("#erDepartmentId").show();
+            error++;
+        }
+        if ($("#SectionId").val() == "") {
+            $("#erSectionId").show();
+            error++;
+        }
+
+        if (error > 0) {
+            return;
+        }
+        Ask("Are you sure to process Salary PF!", function () {
+
+
+            var Id = $("#Id").val();
+            var url = "/Payroll/SalaryPF/SalaryPFProces?FiscalPeriodDetailsId=" + $("#FiscalPeriodDetailsId").val() + "&ProjectId=" + $("#ProjectId").val() + "&DepartmentId=" + $("#DepartmentId").val() + "&SectionId=" + $("#SectionId").val();
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    var dataAction = "";
+                    if (response[0] != 'Fail') {
+                        dataAction = "redirect";
+                    }
+                    ShowResult(response[0], response[1], dataAction, './')
+                }
+            });
+        }, function () { })
+    }
+</script>

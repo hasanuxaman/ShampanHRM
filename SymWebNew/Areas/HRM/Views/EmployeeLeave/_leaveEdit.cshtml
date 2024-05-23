@@ -1,0 +1,102 @@
+﻿@model SymViewModel.Leave.EmployeeLeaveVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("LeaveEdit", "EmployeeLeave", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmLeaveUpd" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.EmployeeId)
+    @Html.HiddenFor(model => model.EmployeeLeaveStructureId)
+    @Html.HiddenFor(model => model.IsApprove)
+    @Html.HiddenFor(model => model.IsArchive)
+    @Html.HiddenFor(model => model.SaveType)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Update Leave</p>
+        </div>
+        <div class="leave">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LeaveType_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.LeaveType_E, "/Config/DropDown/LeaveType", new { @placeholder = "Leave Type", @class = "required form-control" })
+                        @*@Html.SimpleDropDownFor(model => model.LeaveType_E,"/Config/DropDown/EmpLeaveType?employeeId=1&year=2016", new { @placeholder = "Code", @class = "required form-control"})*@
+                        @Html.ValidationMessageFor(model => model.LeaveType_E)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FromDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FromDate, new { @onchange = "totalDay();", @placeholder = "From Date", @class = "required customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.FromDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ToDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ToDate, new { @onchange = "totalDay();", @placeholder = "To Date", @class = "required customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.ToDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TotalLeave)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.TotalLeave, new { @onchange = "totalDay();", @readonly = "readonly", @placeholder = "Total Leave", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TotalLeave)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsHalfDay)
+                    </div>
+                    <div class="editor-field center">
+                        @Html.CheckBoxFor(model => model.IsHalfDay, new { @placeholder = "Is it Half Day?", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsHalfDay)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+        @*org  <button type="submit" title="Update Data"  onclick="Leave(this);" class="sym-btn-update">&nbsp;Update</button>*@
+        @*<input type="button" onclick="Leave(this);" value="Update" class="Save btn btn-primary" />*@
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" onclick="Leave(this);" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        }
+
+        <button type="button" title="Cancel" onclick="CancleToIndex();" class="sym-btn-cancel">&nbsp;Cancel</button>
+    </p>
+}

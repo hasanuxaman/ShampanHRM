@@ -1,0 +1,210 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("PresentAddress", "ContactDetail", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "afrmPresentaddEdit" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.presentAddress.Id)
+    @Html.HiddenFor(model => model.presentAddress.EmployeeId)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Present Address</p>
+        </div>
+        <div class="presentAddress">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Address)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.presentAddress.Address, new { @placeholder = "Village/House & Road", @rows = "1", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.presentAddress.Address)
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.PostalCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.presentAddress.PostalCode, null, new { @placeholder = "Postal Code", @class = " form-control " })
+                        @Html.ValidationMessageFor(model => model.presentAddress.PostalCode)
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.PostOffice)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.presentAddress.PostOffice, null, new { @placeholder = "Post Office", @class = " form-control " })
+                        @Html.ValidationMessageFor(model => model.presentAddress.PostOffice)
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.City)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.presentAddress.City, null, new { @placeholder = "Police Station", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.presentAddress.City)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Country)
+                    </div>
+                    <div class="editor-field">
+                        <select id="presentAddress.Country" name="presentAddress.Country" data-val="@Model.presentAddress.Country" data-url="/Config/DropDown/CountryEN/" class=" country form-control"></select>
+                        @*<select id="presentAddress.Country" name="presentAddress.Country" data-val="@Model.presentAddress.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>*@
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Division)
+                    </div>
+                    <div class="editor-field">
+                        <select id="presentAddress.Division" name="presentAddress.Division" data-val="@Model.presentAddress.Division" data-url="/Config/DropDown/Division/" class=" division form-control"></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.District)
+                    </div>
+                    <div class="editor-field">
+                        <select id="presentAddress.District" name="presentAddress.District" data-val="@Model.presentAddress.District" data-url="/Config/DropDown/District/" class=" district form-control"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Phone)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.presentAddress.Phone, null, new { @placeholder = "Phone", @class = " form-control " })
+                        @Html.ValidationMessageFor(model => model.presentAddress.Phone)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Mobile)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.presentAddress.Mobile, null, new { @placeholder = "Mobile", @class = " form-control " })
+                        @Html.ValidationMessageFor(model => model.presentAddress.Mobile)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Fax)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.presentAddress.Fax, null, new { @placeholder = "Fax", @class = " form-control " })
+                        @Html.ValidationMessageFor(model => model.presentAddress.Fax)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.presentAddress.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.presentAddress.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.presentAddress.Remarks)
+                    </div>
+                </div>
+            </div>
+            <br />
+            @if (identity.IsAdmin || identity.IsHRM)
+            {
+                @*<p class="actionButton_PresentA"></p>*@
+                <button type="button" title="Edit Data" id="editJSONpreadd" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                <button type="button" title="Save Data" onclick="SaveAddress('present')" class=" Save sym-btn-save" hidden>&nbsp;Save</button>
+            }
+            <button type="button" title="Cancel Data" id="cancelJSONpreadd" class="Cancle sym-btn-cancel" hidden>&nbsp;Cancel</button>
+            <button type="button" title="Save Data" onclick="SaveAddress('permanent')" class=" sym-btn-save">&nbsp;Same Permanent</button>
+
+            @Html.HiddenFor(model => model.presentAddress.AddressType, new { @class = "addType" })
+
+        </div>
+    </div>
+}
+<script>
+    var isChange = false;
+    $(function () {
+        valiDation("afrmPresentaddEdit");
+
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#cancelJSONpreadd').click(function () {
+            if (isChange == true) {
+                Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                    isChange = false;
+                    location = "/HRM/ContactDetail/Index/" + $('#Id').val();
+                })
+            }
+            else {
+                isChange = false;
+                location = "/HRM/ContactDetail/Index/" + $('#Id').val();
+            }
+        });
+        $('#editJSONpreadd').click(function () {
+            EditPresentAddress();
+        });
+        var submit = function (url, mydata) {
+            $.ajax({
+                type: 'POST',
+                data: mydata, // #2
+                url: url,
+                success: function (result) {
+                    var msg1 = result.split('~')[0];
+                    var msg2 = result.split('~')[1];
+                    if (msg1 != "Fail") {
+                        ShowResult("Success", msg2);
+                    }
+                    else {
+                        ShowResult("Fail", msg2);
+                    }
+                }
+            });
+        }
+        EditPresentAddress();
+    });
+
+    function SaveAddress(sender) {
+        $('.addType').val(sender);
+        var a = pageSubmitJSON('afrmPresentaddEdit');
+        if (a != 0) {
+            return;
+        }
+        //if (isChange == false) {
+        //    ShowResult("Success", "You have no changes for save");
+        //    return;
+        //}
+        if (pageSubmitJSON('afrmPresentaddEdit') == 0) {
+            var myData = $('#afrmPresentaddEdit').serialize();
+            var url = "/HRM/ContactDetail/PresentAddress";
+            submit(url, myData);
+            location.reload();
+        }
+        EditPresentAddress();
+    }
+</script>

@@ -1,0 +1,120 @@
+﻿@using UIHelper.MVC
+@Html.ValidationSummary(true)
+
+<div class="headrow">
+    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save">&nbsp;Save</button>
+    <button type="button" title="Go To Index" data-url="/Payroll/SalaryStructureMatrix/IndexFiscalYears" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+
+    <label class="pull-right">PF Process</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Matrix Process</p>
+    </div>
+    <div class="PFProcess">
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("Year", @Session["SessionYear"].ToString(), new { @Id = "fYear",  @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year Part</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("YearPart", "", new { @Id = "fYearPart", @class = "YearPart form-control" }) </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save">&nbsp;Save</button>
+    <button type="button" data-url="/Payroll/SalaryStructureMatrix/DownloadMatrix" title="Click to Download the Report" class=" sendRpt sym-btn-Excel-Export">&nbsp;Download For Checking</button>
+
+</div>
+
+<form id="matrix" style="display: none"></form>
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+    $('.saveJSON').click(function () {
+
+        var fYear = $("#fYear").val();
+
+        if (!fYear) {
+            ShowResult("Fail", "Please Select the Fiscal Year");
+            return false;
+        }
+        var fYearPart = $("#fYearPart").val();
+
+        if (!fYearPart) {
+            ShowResult("Fail", "Please Select the  Year Part");
+            return false;
+        }
+
+        var url = "/SalaryStructureMatrix/MatrixCreate?fYear=" + fYear + "&fYearpart=" + fYearPart;
+
+        submit(url);
+    });
+
+
+    $('.sendRpt').click(function () {
+
+
+
+        //var fYear = $("#fYear").val();
+        //alert(fYear);
+        //if (!fYear) {
+        //    ShowResult("Fail", "Please Select the Fiscal Year");
+
+        //}
+
+        //var url = $(this).attr("data-url");
+
+
+        //url += "?fYear=" + fYear;
+
+        //alert(url);
+
+
+        //var input = $('<input name="myname">');
+
+        //$form = $('#matrix');
+
+        
+
+        //$form.attr("action", url);
+        //$form.submit();
+
+        var fYear = $("#fYear").val();
+
+        if (!fYear) {
+            ShowResult("Fail", "Please Select the Fiscal Year");
+            return false;
+        }
+        //var fYearPart = $("#fYearPart").val();
+
+        //if (!fYearPart) {
+        //    ShowResult("Fail", "Please Select the  Year Part");
+        //    return false;
+        //}
+
+        console.log(fYear)
+        var url = "/Payroll/SalaryStructureMatrix/DownloadMatrix?fYear=" + fYear ;
+        var win = window.open(url, '_blank');
+        //submit(url);
+
+    });
+
+
+</script>

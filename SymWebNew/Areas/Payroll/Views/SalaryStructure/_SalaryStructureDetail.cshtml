@@ -1,0 +1,62 @@
+﻿@model SymViewModel.Payroll.SalaryStructureDetailVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<div class="row">
+    @using (Html.BeginCollectionItem("salaryStructureDetailVMs"))
+    {
+        @Html.HiddenFor(model => model.Id)
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=E", new { @class = " form-control" })
+            </div>
+        </div>
+        <div class="col-md-2">
+           <div class="editor-field">
+        <div class="col-md-1">
+                @Html.CheckBoxFor(model => model.IsFixed, new {@onchange="FixedCheck(this);", @class = "IsFixed required form-control" })
+
+            </div> 
+        <div class="col-md-9">
+            <label  class="fr">Rate(% of Basic)</label>
+            </div> 
+
+            </div> 
+        </div> <div class="col-md-2">
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Portion, new { @onchange="SalaryTypePortion(this);",@placeholder = "Portion", @class =" right Portion required form-control" })
+            </div>
+            </div>
+        <div class="col-md-3">
+            <div class="editor-field">
+               @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",  @class ="form-control " })
+
+            </div>
+        </div>
+        if (!Model.IsGross)
+        {
+            <div class="col-md-1" style="margin-top:7px">
+            <button type="button" title="Delete" class="RemoveRow sym-btn-remove-row"></button>
+        </div>
+        }
+         
+    }
+    <script>
+        $(function () {
+           
+            InitButtons();
+            InitDropDowns();
+           
+        });
+
+ 
+ 
+    </script>
+</div>
+<style>
+ 
+
+</style>
+
+ 

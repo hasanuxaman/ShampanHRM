@@ -1,0 +1,52 @@
+﻿@model SymViewModel.Enum.EnumSkillQualityVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("Create", "EnumSkillQuality", FormMethod.Post, new { @Id = "frmQuality" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="EnumSkillQuality">
+                @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.Name)
+            </label>
+            <div class="col-sm-9">
+                @Html.TextBoxFor(model => model.Name, new { @placeholder = "Skill Quality Name", @class ="required form-control" })
+              
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-9">
+                @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks",@rows="1", @class =" form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                <input type="button" onclick="pageSubmit('frmQuality');" value="Add"  class=" Save btn btn-primary" />
+            </label>
+             
+            <label class="col-sm-4">
+                <input type="button" value="Cancel" class="btncancel btn btn-primary" />
+            </label>
+        </div>
+        </div>
+    </div>
+}
+ 
+<script>
+    $(function () {
+        valiDation("frmQuality");
+    });
+
+
+</script>

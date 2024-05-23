@@ -1,0 +1,99 @@
+﻿@model IEnumerable<SymViewModel.Tax.SchedulePolicyVM>
+@{
+    ViewBag.Title = "Index";
+}
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/TAX/SchedulePolicy/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit"  style="text-decoration:none;" id="lnkEdit1"class=" lnkEdit sym-btn-edit-row"  href=\"/TAX/SchedulePolicy/Edit/' + oObj.aData[0] + '\"></a>';
+                                }
+                            }
+                            , { "sName": "LineNumber", "sWidth": "10%" }
+                            , { "sName": "ScheduleNo", "sWidth": "10%" }
+                            , { "sName": "SalaryHead", "sWidth": "15%" }
+                            , { "sName": "FromBasic", "sWidth": "10%" }
+                            , { "sName": "IsFixed", "sWidth": "08%" }
+                            , { "sName": "BasicPortion", "sWidth": "08%" }
+                            , { "sName": "EqualMaxMinAmount", "sWidth": "15%" }
+                            , { "sName": "Remarks", "sWidth": "20%" }
+                            
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "select", values: ["Yes", "No"] }
+                       , { type: "select", values: ["Yes", "No"] }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+            ]
+        });
+    });
+</script>
+<div class="headrow">
+   @* <button type="button" title="Add New Shedule Policy" data-url="/TAX/SchedulePolicy/Create" id="" class="btnCreate sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete Schedule Policy" data-url="/TAX/SchedulePolicy/SchedulePolicy Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>*@
+    <label class="pull-right">Schedule Policy</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Schedule Policy List</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>LineNumber</th>
+                <th>ScheduleNo</th>
+                <th>SalaryHead</th>
+                <th>FromBasic</th>
+                <th>IsFixed</th>
+                <th>BasicPortion</th>
+                <th>EqualMaxMinAmount</th>              
+                <th>Remarks</th>
+            </tr>
+            <tr>
+                <th class="center">Actions</th>
+                <th>LineNumber</th>
+                <th>ScheduleNo</th>
+                <th>SalaryHead</th>
+                <th>FromBasic</th>
+                <th>IsFixed</th>
+                <th>BasicPortion</th>
+                <th>EqualMaxMinAmount</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<div class="headrow">
+    <div class="pull-left">
+       @* <button type="button" title="Add New Shedule Policy" data-url="/TAX/SchedulePolicy/Create" id="" class="btnCreate sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete SchedulePolicy" data-url="/TAX/SchedulePolicy/SchedulePolicy Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>*@
+    </div>
+</div>

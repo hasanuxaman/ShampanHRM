@@ -1,0 +1,68 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using (Html.BeginForm("Left", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmLeft" }))
+{
+@*<div class="headrow">
+ <button type="submit" title="Save Data"  onclick="Left();" class="sym-btn-save">&nbsp;Save</button>
+ <button type="button" title="Cancel Data" onclick="CancleLeft();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+</div>*@
+    @Html.ValidationSummary(true)
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Left Info</p>   
+        </div>
+        <div class="left">
+            @Html.HiddenFor(model => model.leftInformation.EmployeeId)
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.LeftType_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.leftInformation.LeftType_E, "/Config/DropDown/LeftType", new { @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.leftInformation.LeftType_E)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.LeftDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.leftInformation.LeftDate, new { @class = "required customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.leftInformation.LeftDate)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.leftInformation.Remarks, new { @class = " form-control",@rows="1" })
+                        @Html.ValidationMessageFor(model => model.leftInformation.Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="file" name="LeftInformationF" id="LeftInformationF" style="width: 200px;"  />
+                </div>
+            </div>
+             <p>
+            @*    <input type="button" onclick="Left();" value="Save" class="Save btn btn-primary" />
+                <input type="button" value="Cancel" onclick="CancleLeft();" class="Cancle btn btn-primary" />
+            </p>*@
+        </div>
+          <div>
+ <button type="button" title="Save Data"  onclick="Left();" class="sym-btn-save">&nbsp;Save</button>
+ <button type="button" title="Cancel Data" onclick="CancleLeft();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+</div>
+    </div>
+  
+}
+<script>
+    InitDropDowns();
+    InitDateTimePickers();
+    fromWriteColor("left");
+    valiDation('frmLeft');
+</script>

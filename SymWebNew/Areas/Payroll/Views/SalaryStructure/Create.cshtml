@@ -1,0 +1,186 @@
+﻿@model SymViewModel.Payroll.SalaryStructureVM
+
+@using (Html.BeginForm("Create", "SalaryStructure", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSalaryStr" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="headrow">
+    <button type="button" title="Save Data" onclick="pageSubmit('frmSalaryStr')" class="sym-btn-save" >&nbsp;Save</button>
+         <label class="pull-right">Salary Structure > Create</label>
+</div>    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Salary Structure</p>
+        </div>
+        @Html.HiddenFor(model => model.BranchId)
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Code)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Code, new {@placeholder = "Salary Code", @class ="required form-control" })
+                    @Html.ValidationMessageFor(model => model.Code)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name, new {@placeholder = "Salary Name", @class =" required form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class ="form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+        </div>
+        </div>
+            <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Salary Earning</p>
+        </div>
+
+        <div id="salarySDRows">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDetailVMs.FirstOrDefault().SalaryTypeId)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDetailVMs.FirstOrDefault().IsFixed)
+                    </div>
+                </div>
+                 @*<div class="col-md-2">
+                    <div class="editor-label">
+                     Salary Type Name 
+                    </div>
+                </div>*@
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDetailVMs.FirstOrDefault().Portion)
+                    </div>
+                </div>
+               @* <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDetailVMs.FirstOrDefault().PortionSalaryType)
+                    </div>
+                </div>*@
+                
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDetailVMs.FirstOrDefault().Remarks)
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <a href="#" class="RemoveRow Button Delete IconOnly"></a>
+                </div>
+            </div>
+            @if ( Model.salaryStructureDetailVMs!=null )
+            {
+                foreach (var item in Model.salaryStructureDetailVMs)
+                {
+                    Html.RenderPartial("_SalaryStructureDetail", item);
+                }
+            }
+        </div>
+        <p>
+            <button type="button" title="Add New Row" class="AddRow  sym-btn-add" data-url="/Payroll/SalaryStructure/SalaryStructureDetails" data-container="salarySDRows"> Add Row</button>
+        </p>
+ </div>
+       <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Salary Deduction</p>
+        </div>
+
+        <div id="salaryDeductionRows">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDeductionDetailVMs.FirstOrDefault().SalaryTypeId)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDeductionDetailVMs.FirstOrDefault().IsFixed)
+                    </div>
+                </div>
+               @*  <div class="col-md-2">
+                    <div class="editor-label">
+                     Salary Type Name 
+                    </div>
+                </div>*@
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDeductionDetailVMs.FirstOrDefault().Portion)
+                    </div>
+                </div>
+               @* <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDeductionDetailVMs.FirstOrDefault().PortionSalaryType)
+                    </div>
+                </div>*@
+                
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.salaryStructureDeductionDetailVMs.FirstOrDefault().Remarks)
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <a href="#" class="RemoveRow Button Delete IconOnly"></a>
+                </div>
+            </div>
+
+            @if ( Model.salaryStructureDeductionDetailVMs != null)
+            {
+                foreach (var item in Model.salaryStructureDeductionDetailVMs)
+                {
+                    Html.RenderPartial("_SalaryStructureDeductionDetail", item);
+                }
+            }
+        </div>
+        <p>
+            <button type="button" title="Add New Row" class="AddRow  sym-btn-add" data-url="/Payroll/SalaryStructure/SalaryStructureDeductionDetails" data-container="salaryDeductionRows"> Add Row</button>
+        </p>
+
+ </div>
+    
+    <div class="headrow">
+    <button type="button" title="Save Data" onclick="pageSubmit('frmSalaryStr')" class="sym-btn-save" >&nbsp;Save</button>
+</div>
+}
+<script>
+    $(function () {
+        fixedrate();
+        valiDation("frmSalaryStr");
+
+        if ('@ViewBag.Success' !="") {
+            ShowResult('Success', '@ViewBag.Success');
+        }
+        if ('@ViewBag.Fail' !="") {
+            ShowResult('Fail','@ViewBag.Fail');
+        }
+    });
+ 
+    var fixedrate = function () {
+        $.each($("input.IsFixed"), function (i, item) {
+            if ($(item).is(":checked") == false) {
+
+                $(item).parents("div.row:first").find("label.fr").text("Rate(% of Basic)");
+            }
+            else {
+                $(item).parents("div.row:first").find("label.fr").text("Fixed");
+
+            }
+        });
+    }
+</script>

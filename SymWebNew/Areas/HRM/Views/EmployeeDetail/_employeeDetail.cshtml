@@ -1,0 +1,51 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+<div class="row">
+    <div id="cssmenu" class="col-sm-12 col-md-2">
+        @Html.Partial("_employeeImage")
+        <div class="row">
+            <ul class="nav nav-pills nav-stacked" id="myTab">
+                <li class="PersonalDetails"><a href='#personaldetail'><span>Personal Details</span></a></li>
+                <li class="ContactDetails"><a href='#ContactDetail'><span>Contact Details</span></a></li>
+                <li class="EmergencyContact"><a href='/HRM/EmergencyContact/Edit/@Model.Id'><span>Emergency Contact</span></a></li>
+                <li class="Job"><a href='/HRM/Job/Index/@Model.Id'><span>Job</span></a></li>
+                @*<li><a href='/HRM/Salary/Index/@Model.Id'><span>Salary</span></a></li>*@
+                <li class="Qualification"><a href='/HRM/Qualification/Index/@Model.Id'><span>Qualification</span></a></li>
+                <li class="Immigration"><a href='/HRM/Immigration/Index/@Model.Id'><span>Immigration</span></a></li>
+                <li class="Training"><a href='/HRM/Training/Index/@Model.Id'><span>Training</span></a></li>
+                <li class="Travel"><a href='/HRM/Travel/Index/@Model.Id'><span>Travel</span></a></li>
+                <li class="DependentNominee"><a href='/HRM/DependentNominee/Index/@Model.Id'><span>Dependent & Nominee</span></a></li>
+                @if (identity.IsAdmin || identity.IsHRM)
+                {<li class="Left"><a href='/HRM/Job/Left/@Model.Id'><span>Left</span></a></li>}
+@*<li class="Loan"><a href='/HRM/Loan/Index/@Model.Id'><span>Loan</span></a></li>*@
+                <li class="Loan"><a href='/HRM/Loan/Index/@Model.Id'><span>Loan</span></a></li>
+                <li class="Structure"><a href='/HRM/Structure/Index/@Model.Id'><span>Structure</span></a></li>
+                <li class="ChangePassword"><a href='/HRM/EmployeeInfo/ChangePassword/@Model.Id'><span>Change Password</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="tab-content">
+            <div id="personaldetail" class="tab-pane fade in active">
+                @Html.Partial("_personalDetail", Model);
+            </div>
+            <div id="ContactDetail" class="tab-pane fade">
+                @Html.Partial("ContactDetail/Index.cshtml", Model);
+            </div>
+        </div>
+    </div>
+</div>

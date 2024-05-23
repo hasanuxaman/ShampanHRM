@@ -1,0 +1,120 @@
+﻿@using UIHelper.MVC
+ 
+                <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                      
+                             <th>Code</th>
+                            <th >Employee Name</th>
+                           
+                            <th>Join Date</th>
+                            <th >Designation</th>
+                            
+                            <th >Department</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th >Section</th>
+                            <th>Period Name</th>
+                           
+                            <th >Salary Type</th>
+                             <th>Type</th>
+                            <th >Amount</th>
+
+                        </tr>
+                          <tr>
+                      
+                             <th>Code</th>
+                            <th >Employee Name</th>
+                           
+                            <th>Join Date</th>
+                            <th >Designation</th>
+                            
+                            <th >Department</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th >Section</th>
+                            <th>Period Name</th>
+                           
+                            <th >Salary Type</th>
+                             <th>Type</th>
+                            <th >Amount</th>
+
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+<script>
+    $(function () {
+        var fid = $('#FiscalPeriodDetailsId').val();
+        var did = $('#DepartmentId').val();
+
+        var pid = $('#ProjectId').val();
+        var sid = $('#SectionId').val();
+
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/SalaryProcess/_salaryInfomation/?FiscalPeriodId=" + fid + "&DepartmentId=" + did + "&SectionId=" + sid + "&ProjectId=" + pid,
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+
+            "sScrollX": "150%",
+            "sScrollXInner": "150%",
+            "bScrollCollapse": true,
+            "bDestroy": true,
+            "bRetrieve": true,
+            "oLanguage": { "sLengthMenu": "_MENU_ records per page" },
+            "aoColumns": [
+                             
+                               { "sName": "Code" }
+                              , { "sName": "EmpName", "sWidth": "12%" }
+
+
+                             , { "sName": "JoinDate", "sWidth": "13%" }
+                              , { "sName": "Designation", "sWidth": "10%" }
+
+
+                              , { "sName": "Department", "sWidth": "12%" }
+                               , { "sName": "Section" }
+                              , { "sName": "Project" }
+                              , { "sName": "PeriodName" }
+
+
+                              , { "sName": "SalaryType" }
+                               , { "sName": "Type" }
+                              , { "sName": "Amount" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                        //{ type: "number-range" }
+                   
+                        { type: "number" }
+                       , { type: "text" }
+                       //, { type: "text" }
+                       , { type: "date-range" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       //, { type: "text" }
+
+                       , { type: "number-range" }
+            ]
+        });
+    })
+</script>

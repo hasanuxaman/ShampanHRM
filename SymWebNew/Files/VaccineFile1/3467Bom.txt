@@ -1,0 +1,17 @@
+
+
+select 
+mst.BOMMasterId,
+mst.Length,
+mst.Weight,
+mst.GSM,
+mst.BOMEffectFrom,
+mst.ProductId,
+mst.UomId,
+CSProducts.ProductName,
+CSUoms.UomName
+
+
+from BomMasters mst
+left outer join CSProducts on mst.ProductId=CSProducts.ProductId
+left outer join CSUoms on mst.UomId=CSUoms.UomId

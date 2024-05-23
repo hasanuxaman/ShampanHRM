@@ -1,0 +1,379 @@
+﻿@model SymViewModel.Payroll.SalarySheetVM
+
+
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("SalaryCertificate", "EmployeeReport", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSalary", @target = "_blank" }))
+{
+    @*@Html.HiddenFor(model => model.SheetName)*@
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Salary Certificate</p>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBoxFor(model => model.FiscalYear, @Session["SessionYear"] as string, new { @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Fiscal Period(From)</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Fiscal Period(To)</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailIdTo, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsComTo required form-control selectDropdown" })
+                    </div>
+                </div>
+            </div>
+            @if (identity.IsAdmin || identity.IsHRM)
+            {
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code(From)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeFrom, "/Config/DropDown/EmployeeCodeName", new { @class = " codeFCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code(To)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeTo, "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.HiddenFor(model => model.CodeFrom)
+                        @Html.SimpleDropDownFor(model => model.CodeFrom, "/Config/DropDown/EmployeeCodeName", new { @class = " codeFCom form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+            }
+
+            @*@if (identity.IsAdmin || identity.IsHRM)
+            {
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DesignationId, "/Config/DropDown/Designation", new { @class = "form-control Dropdown " })
+                    </div>
+                </div>
+            }*@
+        </div>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <div class="row">
+
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DesignationId, "/Config/DropDown/Designation", new { @class = "form-control Dropdown " })
+                    </div>
+                </div>
+
+
+
+                @if (Session["LabelOther1"].ToString() != "")
+                {
+
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Other1, "/Config/DropDown/OtherInfo?infoType=Other1", new { @class = " other1 form-control" })
+                        </div>
+                    </div>
+                }
+
+                @if (Session["LabelOther2"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Other2, "/Config/DropDown/OtherInfo?infoType=Other2", new { @class = " other2 form-control" })
+                        </div>
+                    </div>
+                }
+
+                @if (Session["LabelOther3"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Other3, "/Config/DropDown/OtherInfo?infoType=Other3", new { @class = " other3 form-control" })
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = "form-control  departmentsCom " })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.SectionId, "/Config/DropDown/Section", new { @class = "sectionsCom form-control " })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @*@Html.SimpleDropDownFor(model => model.MultipleProjectId, "/Config/DropDown/Project", new { @placeholder = "Multiple Projects", @class = "mulitpleProjectId form-control selectDropdown", @multiple = "multiple" })*@
+                        @Html.SimpleDropDownFor(model => model.MultiProjectId, "/Config/DropDown/Project", new { @placeholder = "Multiple Projects", @class = "mulitpleProjectId form-control selectDropdown", @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.MultipleProjectId)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("", "Bank Name")
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.BankId, "/Config/DropDown/Bank", new { @class = " bankId form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Letter Date</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.PaymentDate, new { @placeholder = "Letter Date", @class = " PaymentDate customDatePicker  form-control" })
+                        @Html.ValidationMessageFor(model => model.PaymentDate)
+                    </div>
+                </div>
+
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Report Name</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.SheetName, "/Config/DropDown/DropDownReport?ReportType=SalaryCertificate", new { @class = "required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Report Type</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.ReportType, "/Config/DropDown/ReportTypeList", new { @class = "required form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Order By</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Orderby, "/Config/DropDown/EnumOrderBy?Module=Salary", new { @class = "required form-control" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @Html.HiddenFor(model => model.View)
+
+    <div class="headrow">
+        @*<button type="button" title="Click to see the Report" name="Pay Slip" id="" class=" sendRpt sym-btn-report">&nbsp;Pay Slip</button>
+    <button type="button" title="Click to see the Report" name="Salary Certificate"  id="" class=" sendRpt sym-btn-report">&nbsp;Salary Certificate</button>*@
+        <button type="button" title="Click to see the Report" name=""  id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            InitDropdownsCommon();
+            ////InitDropDowns();
+            valiDation("frmSalary");
+
+            $('.sendRpt').click(function () {
+                var SheetName = $("#SheetName").val();
+                var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+                var ReportType = $("#ReportType").val();
+                
+                if (FiscalYearDetailId == "") {
+                    ShowResult("Fail", "Please Select the Fiscal Period First!");
+                    return;
+                }
+
+                if (SheetName == "") {
+                    ShowResult('Fail', "Please Select Report ");
+                    return false;
+                }
+
+                if (ReportType == "") {
+                    ShowResult('Fail', "Please Select Report Type ");
+                    return false;
+                }
+                console.log();
+                var MultipleProjectId = $('#MultiProjectId').val();
+                $('#MultipleProjectId').val(MultipleProjectId);
+                $('#View').val("N");
+
+                //var SheetName = $(this).attr("name");
+                //$("#SheetName").val(SheetName);
+
+
+                pageSubmit('frmSalary')
+            });
+
+        });
+
+        ////    var dojTo = $("#dojTo").is(":checked");
+        ////    var fid = $("#FiscalPeriodDetailId").val();
+        ////    var DepartmentId = $("#DepartmentId").val();
+        ////    var SectionId = $("#SectionId").val();
+        ////    var DesignationId = $("#DesignationId").val();
+        ////    var CodeF = $("#CodeF").val();
+        ////    var CodeT = $("#CodeT").val();
+        ////    var Orderby = $("#Orderby").val();
+        ////    var MulitpleProjectId = $("#MulitpleProjectId").val();
+
+        ////    var other1 = $(".other1").val();
+        ////    var other2 = $(".other2").val();
+        ////    var other3 = $(".other3").val();
+        ////    var bankId = $(".bankId").val();
+
+
+        ////    if (fid == "") {
+        ////        ShowResult('Fail', "Please Select  Fiscal Year");
+        ////        return false;
+        ////    }
+
+        ////    if (Orderby == "") {
+        ////        ShowResult('Fail', "Please Select Order By ");
+        ////        return false;
+        ////    }
+
+
+        ////    this.href = this.href.split('?')[0] + '?fid=' + fid
+        ////+ '&DepartmentId=' + DepartmentId
+        ////+ '&SectionId=' + SectionId
+        ////+ '&DesignationId=' + DesignationId
+        ////+ '&CodeF=' + CodeF
+        ////+ '&CodeT=' + CodeT
+        ////+ '&Orderby=' + Orderby
+        ////+ '&MulitpleProjectId=' + MulitpleProjectId
+        ////+ '&other1=' + other1
+        ////+ '&other2=' + other2
+        ////+ '&other3=' + other3
+        ////+ '&bankId=' + bankId
+
+
+        ////+ '&view=N'
+
+
+
+
+        //$('#sendRptBackup').click(function () {
+
+        //    pageSubmit('frmSalary')
+
+
+        //    var dojTo = $("#dojTo").is(":checked");
+        //    var fid = $("#FiscalPeriodDetailId").val();
+        //    var DepartmentId = $("#DepartmentId").val();
+        //    var SectionId = $("#SectionId").val();
+        //    var DesignationId = $("#DesignationId").val();
+        //    var CodeF = $("#CodeF").val();
+        //    var CodeT = $("#CodeT").val();
+        //    var Orderby = $("#Orderby").val();
+        //    var MulitpleProjectId = $("#MulitpleProjectId").val();
+
+        //    var other1 = $(".other1").val();
+        //    var other2 = $(".other2").val();
+        //    var other3 = $(".other3").val();
+        //    var bankId = $(".bankId").val();
+
+
+        //    if (fid == "") {
+        //        ShowResult('Fail', "Please Select  Fiscal Year");
+        //        return false;
+        //    }
+
+        //    if (Orderby == "") {
+        //        ShowResult('Fail', "Please Select Order By ");
+        //        return false;
+        //    }
+
+
+        //    this.href = this.href.split('?')[0] + '?fid=' + fid
+        //+ '&DepartmentId=' + DepartmentId
+        //+ '&SectionId=' + SectionId
+        //+ '&DesignationId=' + DesignationId
+        //+ '&CodeF=' + CodeF
+        //+ '&CodeT=' + CodeT
+        //+ '&Orderby=' + Orderby
+        //+ '&MulitpleProjectId=' + MulitpleProjectId
+        //+ '&other1=' + other1
+        //+ '&other2=' + other2
+        //+ '&other3=' + other3
+        //+ '&bankId=' + bankId
+
+
+        //+ '&view=N'
+
+        //});
+
+    </script>
+}

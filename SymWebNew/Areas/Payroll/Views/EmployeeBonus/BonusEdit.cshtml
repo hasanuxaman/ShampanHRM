@@ -1,0 +1,83 @@
+﻿@model SymViewModel.Payroll.EmployeeBonusDetailVM
+@using UIHelper.MVC
+
+@using (Html.BeginForm("BonusEdit", "EmployeeBonus", FormMethod.Post, new {  @Id = "frmGroup" }))
+{
+    <div class="headrow">
+  <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+<label class="pull-right">EmployeeBonus > BonusEdit</label>
+</div>
+    @*
+@using (Ajax.BeginForm("BonusEdit", "EmployeeBonus",null,new AjaxOptions { HttpMethod = "POST" }, new { @id = "" }))
+    *@<div class="thinbox">
+        <div class="th_thinbox">
+            <p>Bonus</p>
+        </div>
+        @Html.ValidationSummary(true)
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Employee</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "  form-control", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.EmployeeBonusId)
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.GrossSalary)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.GrossSalary, new { @class = "  form-control", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.BasicSalary)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.BasicSalary, new { @class = "  form-control", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.BonusValue)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.BonusValue, new { @class = "  form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { @class = "  form-control",@rows="1" })
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="headrow">
+  <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+</div>
+}
+<script>
+    $(function () {
+        valiDation("frmBonusStructure");
+        InitDropDowns();
+        InitDatePickers();
+        if ('@ViewBag.mgs'!='') {
+            
+            var dataAction = "";
+            var mgs = "Data Update Faild";
+            if ('@ViewBag.mgs' != 'Fail') {
+                dataAction = "redirect";
+                mgs = "Data Update Success";
+            }
+            ShowResult('@ViewBag.mgs', mgs, dataAction, '/Payroll/EmployeeBonus')
+        }
+    });
+</script>

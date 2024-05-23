@@ -1,0 +1,66 @@
+﻿@model SymViewModel.HRM.EmployeeVM
+<div class="thinbox">
+    <div class="empInfo">
+        <div class="th_thinbox">
+        <p>Employee Info</p>   
+        </div>
+    <div class="row">
+        <div class="col-sm-2">
+             <label>
+                @Html.HiddenFor(model => model.jobjoinDate)
+                @Html.LabelFor(model => model.Code)
+            </label>
+            <div>
+                @Html.TextBoxFor(model => model.Code, null, new {readOnly="readOnly", @class = "  form-control" })
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>
+                @Html.LabelFor(model => model.FullName)
+            </label>
+            <div>
+                @Html.TextBoxFor(model => model.FullName, null, new {readOnly="readOnly", @class = "  form-control" })
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>
+                <label>@Session["DepartmentLabel"]</label>
+            </label>
+            <div>
+                @Html.TextBoxFor(model => model.Department, null, new { readOnly="readOnly",@class = "  form-control" })
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>
+                @Html.LabelFor(model => model.Designation)
+            </label>
+            <div>
+                @Html.TextBoxFor(model => model.Designation, null, new { readOnly="readOnly",@class = "   form-control" })
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>
+                <label>@Session["ProjectLabel"]</label>
+            </label>
+            <div>
+                @Html.TextBoxFor(model => model.Project, null, new {readOnly="readOnly", @class = "   form-control" })
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label>
+                <label>@Session["SectionLabel"]</label>
+            </label>
+            <div>
+                @Html.TextBoxFor(model => model.Section, null, new {readOnly="readOnly", @class = "   form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    fromReadColor("empInfo");
+    // for Transfer
+    $('#empId').val($('#Code').val());
+</script>
+
+ 

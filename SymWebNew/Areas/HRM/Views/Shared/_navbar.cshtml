@@ -1,0 +1,282 @@
+﻿@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+}
+<div class="content white menuheight">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <ul class="nav col-xs-4 visible-xs">
+                <li class="dropdown1" style="padding-top: 4px">
+                    <a href="#" class=" btn btn-warning ">HRM </a>
+                </li>
+            </ul>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!--/.navbar-header-->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
+
+                    <ul class="dropdown-menu">
+                        @if (identity.IsAdmin)
+                        {
+                            <li><a class="btn btn-info" href="/Common/Home/">Admin</a></li>
+                        }
+                        @if (identity.IsESS)
+                        {
+                            <li><a class="btn btn-info" href="/hrm/employeeinfo/Edit/@identity.EmployeeId">ESS </a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsHRM)
+                        {
+                            <li><a class="btn btn-info" href="/HRM/Home/">HRM</a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsPayroll)
+                        {
+                            <li><a class="btn btn-info" href="/Payroll/Home/">Payroll </a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsTAX)
+                        {
+                            if (CompanyName != "EGCB")
+                            {
+                                <li><a class="btn btn-info" href="/TAX/Home/">TAX</a></li>
+                            }
+                        }
+                        @if (identity.IsAdmin || identity.IsPF)
+                        {
+                            <li><a class="btn btn-info" href="/PF/Home/">PF</a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsGF)
+                        {
+                            if (CompanyName != "EGCB")
+                            {
+                                <li><a class="btn btn-info" href="/GF/Home/">GF</a></li>
+                            }
+                        }
+                    </ul>
+
+
+
+                </li>
+                @*<li class="dropdown Employee">
+                        <a href="/HRM/EmployeeInfo">Employee</a>
+                    </li>*@
+                <li class="dropdown Attendance">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Employee <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeInfo"> Entry</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info ExportImport" href="/HRM/ExportImport">Export Import</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+
+
+                @if (identity.IsAdmin || identity.IsHRM)
+                {
+                    @*<li class="Payroll"><a href="/HRM/Home/Payroll">Payroll </a></li>*@
+                    <li class="Transfer"><a href="/HRM/Transfer/Transfer">Transfer </a></li>
+                    <li class="Promotion"><a href="/HRM/Promotion/Index">Promotion </a></li>
+                    <li class="Left"><a href="/HRM/Left/Index">Left </a></li>
+                }
+              @if (CompanyName != "EGCB")
+               {
+                <li class="dropdown Leave">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Leave <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeave/Leave">Leave Entry</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeave">Leave List</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeave/LeaveSupervisor">Leave List for Supervisor</a></li>
+                                    <li class="dropdown dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Compensatory Leave </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeCompensatoryLeave/Leave">Compensatory Leave Entry</a></li>
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeCompensatoryLeave">Compensatory Leave List</a></li>
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeCompensatoryLeave/LeaveSupervisor">Compensatory Leave List for Supervisor</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeEarnLeaveEncashment/_LeaveIndex">Leave Encashment</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeaveSchedule/Leave">Leave Schedule</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+            
+                <li class="dropdown Attendance">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Attendance <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeAttendance/AttendanceLog">Attendance Entry</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeAttendance/AttendanceLogList">Attendance List</a></li>
+                                    <li><a class="btn btn-info" href="/HRM/AttendanceMigration/SelectFromDownloadData">Attendance Migration (From M/C)</a></li>
+                                    <li><a class="btn btn-info" href="/HRM/DailyAttendanceProcess">Update Daily Attendance</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown">Reports<b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-3">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4">
+                                    <ul class="multi-column-dropdown">
+                                        @if (identity.IsAdmin || identity.IsHRM)
+                                        {
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeNewReport">New Reports</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeInformationAll">Employee Information All</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeList?RT=EmpList">Employee List</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeImage">Employee Image</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/ExEmployeeList">Ex Employee List</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/UnConfirmedList">Un Confirmed List</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeProximityInfo">Employee Proximity Info</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeProfiles">Employee Profiles</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeList?RT=EmpIDCard">Employee ID Card</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpServiceLength">Service Length</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpTransfer">Employee Transfer</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpPromotion">Employee Promotion</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpTraining">Employee Training</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmployeeBloodGroup">Employee Wise Blood Group</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpNominee?RT=Nominee">Employee Nominee</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpNominee?RT=Dependent">Employee Dependent</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpServiceLength">Service Length</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpTransfer">Employee Transfer</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpPromotion">Employee Promotion</a></li>
+                                            <li><a class="btn " href="/HRM/EmployeeReport/EmpTraining">Employee Training</a></li>
+                                        }
+
+
+                                    </ul>
+
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <ul class="multi-column-dropdown">
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LBEW">Leave Balance (Employee Wise)</a></li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LBTW">Leave Balance (Type Wise)</a></li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LSEW">Leave Status (Employee Wise)</a></li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=SLSEW">Summary Leave Status (Employee Wise)</a></li>
+
+                                        @*<li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBTW">Leave Balance (Type Wise) (Past)</a></li>*@
+                                        @*<li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LSEW">Leave Status (Employee Wise) (Past)</a></li>*@
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LR">Leave Register</a></li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=EnCash">Leave Encashment</a></li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LAF">Application Form</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-4">
+                                    @if (Session["AttendanceSystem"].ToString() == "ManualRoster")
+                                    {
+                                        <ul class="multi-column-dropdown">
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/ManualRosterAttendanceReport">Attendance</a></li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <ul class="multi-column-dropdown">
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/EA?ReportNo=1&view=Y">Attendance Report(Monthly)</a></li>
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/EA?ReportNo=2&view=Y">Attendance Report(Daily)</a></li>
+                                        </ul>
+                                    }
+                                    <ul class="multi-column-dropdown">
+                                        <li>
+                                            <a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/EA?ReportNo=1&view=Y">
+                                                0
+
+                                                Attendance Report(Monthly)
+                                            </a>
+                                        </li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/EA?ReportNo=2&view=Y">Attendance Report(Daily)</a></li>
+                                        <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/AttendanceSummeryReport">Attendance Summery</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="dropdown Letters">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Letters <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/Letters">Letters</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/TravelLetter">Travel Letter</a></li>
+                                    <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/SalaryCertificate">Salary</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                }
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="border-left: 5px solid #fff">
+                <li class="dropdown1">
+                    <a href="#" class="dropdown-toggle sym-btn-back" title="Go Back" onclick="goBack()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">&nbsp;Back</a>
+                </li>
+                <li class="dropdown1">
+                    <a href="#" class="dropdown-toggle btn btn-warning" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HRM </a>
+                </li>
+            </ul>
+        </div>
+        <!--/.navbar-collapse-->
+    </nav>
+    <!--/.navbar-->
+
+</div>
+<style>
+    .navbar-default .navbar-nav > li.dropdown:hover > a,
+    .navbar-default .navbar-nav > li.dropdown:hover > a:hover,
+    .navbar-default .navbar-nav > li.dropdown:hover > a:focus {
+        /*background-color: rgb(231, 231, 231);*/
+        color: rgb(85, 85, 85);
+    }
+
+    li .dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+
+    .navbar-nav [href^="contact"] {
+        color: #f00;
+    }
+</style>
+<script>
+    //$('.nav').on('click', function(e) {
+    //  e.preventDefault();
+    //});
+</script>

@@ -1,0 +1,257 @@
+﻿@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+}
+<div class="content white menuheight">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <ul class="nav col-xs-4 visible-xs">
+                <li class="dropdown1" style="padding-top:4px">
+                    <a href="#" class=" btn btn-warning">Payroll </a>
+                </li>
+            </ul>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!--/.navbar-header-->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+
+                <li class="Home dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        @if (identity.IsAdmin)
+                        {
+                            <li><a class="btn btn-info" href="/Common/Home/">Admin</a></li>
+                        }
+                        @if (identity.IsESS)
+                        {
+                            <li><a class="btn btn-info" href="/hrm/employeeinfo/Edit/@identity.EmployeeId">ESS </a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsHRM)
+                        {
+                            <li><a class="btn btn-info" href="/HRM/Home/">HRM</a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsPayroll)
+                        {
+                            <li><a class="btn btn-info" href="/Payroll/Home/">Payroll </a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsTAX)
+                        {
+                            if (CompanyName != "EGCB")
+                            {
+                                <li><a class="btn btn-info" href="/TAX/Home/">TAX</a></li>
+                            }
+                        }
+                        @if (identity.IsAdmin || identity.IsPF)
+                        {
+                            <li><a class="btn btn-info" href="/PF/Home/">PF</a></li>
+                        }
+                        @if (identity.IsAdmin || identity.IsGF)
+                        {
+                            if (CompanyName != "EGCB")
+                            {
+                                <li><a class="btn btn-info" href="/GF/Home/">GF</a></li>
+                            }
+                        }
+                    </ul>
+
+                </li>
+                <li class="dropdown Structure">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setup<b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li class="dropdown dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Structure</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryStructure">Salary</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/PFStructure">Provident Fund(PF)</a></li>
+                                            @if (CompanyName != "EGCB")
+                                            {
+                                            <li><a class="btn btn-info" href="/Payroll/TaxStructure">Tax </a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/ProjectAllocation">Project Expense Allocation</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown  "><a href="/Payroll/Structure/MultiStructure" class="btn btn-info">Multiple Structure Assign</a></li>
+                                    <li class="dropdown  "><a href="/Payroll/Structure" class="btn btn-info">Structure Assign</a></li>
+                                    @* <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Head</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="btn btn-info" href="/Payroll/EnumSalaryType">Salary Head</a></li>
+                                                <li><a class="btn btn-info" href="/Payroll/EnumLoanType">Loan Head</a></li>
+                                            </ul>
+                                        </li>*@
+                                    <li class="dropdown  "><a href="/Payroll/EnumSalaryType" class="btn btn-info">Heads</a></li>
+                                    <li class="dropdown  "><a href="/Payroll/GLAccount" class="btn btn-info">GL Account</a></li>
+                                    <li class="dropdown  "><a href="/Payroll/SalaryStructureMatrix/IndexFiscalYears" class="btn btn-info">Salary Structure Matrix</a></li>
+                                    <li class="dropdown  "><a href="/Payroll/ProcessControll" class="btn btn-info">Process Controll</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="dropdown Structure">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Payroll Entry <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li class="dropdown "><a href="/Payroll/EmployeeOtherEarning" class="btn btn-info">Other Earning</a>  </li>
+                                    <li class="dropdown "><a href="/Payroll/EmployeeOtherDeduction" class="btn btn-info">Other Deduction</a>  </li>
+                                    @*<li class="dropdown "><a href="/Payroll/EmployeeSalaryIncrement" class="btn btn-info">Employee Increment</a>  </li>*@
+                                    <li class="dropdown "><a href="/Payroll/EmployeeSalaryOtherIncreament" class="btn btn-info">Increment</a>  </li>
+                                    <li class="dropdown "><a href="/Payroll/EmployeeEarningLeave" class="btn btn-info">Employee Earning Leave</a>  </li>
+                                    <li class="dropdown "><a href="/Payroll/TAX108A" class="btn btn-info">TAX 108A</a>  </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="dropdown Structure">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Payroll Process <b class="caret"></b></a>
+                    <ul class="dropdown-menu columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    @if (CompanyName != "EGCB")
+                                    {
+                                    <li class="dropdown "><a href="/Payroll/SalaryProcess" class="btn btn-info">Full Salary Process</a>  </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="dropdown "><a href="/Payroll/SalaryProcess" class="btn btn-info">Full PF Process</a>  </li>
+                                    }
+                                    <li class="dropdown dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Earning Process</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown btn btn-info" href="/Payroll/SalaryEarning">Salary Earning </a></li>
+                                            <li><a class="dropdown btn btn-info" href="/Payroll/SalaryOtherEarning">Salary Other Earning </a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Deduction Process</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryPF">Provident Fund </a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryTax">Tax </a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryOtherDeduction">Other Deduction </a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryLoan">Loan</a></li>
+
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown "><a href="/Payroll/SalaryEmployee" class="btn btn-info">Salary Hold</a>  </li>
+
+                                    @*<li class="dropdown"><a href="/Payroll/SalaryProcess/EmployeeSalary" class="btn btn-info">Single Employee Process</a>  </li>
+                                        <li class="dropdown "><a href="/Payroll/Sage/SageIntegrationIndex" class="btn btn-info">Sage Intergration</a>  </li>*@
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="dropdown Structure"><a href="/Payroll/Loan/AllLoan" class="dropdown-toggle">Loan </a></li>
+                <li class="dropdown Structure">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bonus<b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li class="dropdown "><a href="/Payroll/BonusStructure" class="btn btn-info">Policy</a>  </li>
+                                    <li class="dropdown "><a href="/Payroll/BonusName" class="btn btn-info">Type</a>  </li>
+                                    <li class="dropdown "><a href="/Payroll/BonusProcess" class="btn btn-info">Process</a>  </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+
+
+                <li class="dropdown Report">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-column columns-1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ul class="multi-column-dropdown">
+                                    <li><a class="btn btn-info" href="/Payroll/SalaryProcess/SalarySheet/">Salary Sheet</a></li>
+                                    @*<li><a class="btn btn-info" href="/Payroll/SalaryProcess/PaySlip/">Pay Slip</a></li>*@
+                                    <li class="dropdown dropdown-submenu">
+                                        <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Payroll Process</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryPF/SalaryPFReport?view=Y">Provident Fund</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryTax/SalaryTaxReport?view=Y">Tax</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/BonusProcess/BonusReport?view=Y">Bonus</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/EmployeeEarningLeave/EarningLeaveReport?view=Y">Earning Leave</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryEarning/SalaryEarningReport?view=Y">Earning</a></li>
+
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryOtherEarning/SalaryOtherEarningReport?view=Y&RT=E">Other Earning</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryOtherDeduction/SalaryOtherDeductionReport?view=Y">Other Deduction</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryLoan/SalaryLoanReport?view=Y">Loan</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryProcess/MonthlyOTSheetReport">Monthly OT Sheet</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown dropdown-submenu">
+                                        <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Payroll Pre-Process</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="btn btn-info" href="/Payroll/EmployeeOtherEarning/EmployeeOtherEarningReport?view=Y">Other Earning</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/EmployeeBonus/EmployeeBonusListReport?view=Y">Employee Bonus</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/EmployeeSalaryIncrement/EmployeeIncrement?view=Y">Employee Increment</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/EmployeeOtherDeduction/EmployeeOtherDeductionReport?view=Y">Other Deduction</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/Loan/EmployeeLoanReport?view=Y">Loan</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/Loan/EmployeeLoanStatementReport?view=Y">Loan Statement</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/Loan/ScheduleofLoanMember?view=Y">Schedule of Loan Member</a></li>
+                                            <li><a class="btn btn-info" href="/Payroll/SalaryProcess/ChildAllowanceDetail?view=Y">Child Allowance Detail</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li><a class="btn btn-info" href="/Payroll/SalaryProcess/Tax108Sheet/">108 Sheet </a></li>
+                                    <li><a class="btn btn-info" href="/Payroll/SalaryProcess/ChildAllowance/">Child Allowance</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="border-left:5px solid #fff">
+                <li class="dropdown1">
+                    <a href="#" class="dropdown-toggle sym-btn-back" title="Go Back" onclick="goBack()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">&nbsp;Back</a>
+                </li>
+                <li class="dropdown1">
+                    <a href="#" class="dropdown-toggle btn btn-warning" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Payroll </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<style>
+    .navbar-default .navbar-nav > li.dropdown:hover > a,
+    .navbar-default .navbar-nav > li.dropdown:hover > a:hover,
+    .navbar-default .navbar-nav > li.dropdown:hover > a:focus {
+        /*background-color: rgb(231, 231, 231);*/
+        color: rgb(85, 85, 85);
+    }
+
+    li.dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+</style>

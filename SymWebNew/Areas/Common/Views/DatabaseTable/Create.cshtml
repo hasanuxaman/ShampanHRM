@@ -1,0 +1,114 @@
+﻿@model SymViewModel.Common.DatabaseTableVM
+@using UIHelper.MVC
+@using (Html.BeginForm("DownloadData", "DatabaseTable", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmDownloadTable" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Select </p>
+        </div>
+        <div class="UpdateTable">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.UserId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.UserId, new { @placeholder = "UserId", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.UserId)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Password)
+                    </div>
+                    <div class="editor-field">
+                        @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TableName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.TableName, "/Config/DropDown/DatabaseTable", new { @class = " required form-control " })
+                        @*@Html.SimpleDropDownFor(model => model.TableName, "/Config/DropDown/DatabaseTable", new { @class = " required form-control selectDropdown" })*@
+                        @Html.ValidationMessageFor(model => model.TableName)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        <label>Select SQL Query (Optional)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.SelectSQLQuery, new { @placeholder = "Select SQL Query", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.SelectSQLQuery)
+                    </div>
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                &nbsp;&nbsp;&nbsp;
+                <button type="button" name="btnName" value="Download" title="Download Data" onclick="pageSubmit('frmDownloadTable')" class="sym-btn-Excel-Export">&nbsp;Download</button>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("Update", "DatabaseTable", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmUpdateTable" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Update</p>
+        </div>
+        <div class="UpdateTable">
+            <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.UserId)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.UserId, new { @placeholder = "UserId", @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => model.UserId)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Password)
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(model => model.Password, new { @placeholder = "Password", @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        <label>Update SQL Query </label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.UpdateSQLQuery, new { @placeholder = "Update SQL Query", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.UpdateSQLQuery)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <label>(Careful on Where Condition)</label>
+            <br />
+            <div class="row">
+                &nbsp;&nbsp;&nbsp;
+                <button type="button" name="btnName" value="Update" title="Update Data" onclick="pageSubmit('frmUpdateTable')" class="sym-btn-update">&nbsp;Update</button>
+
+
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        valiDation("frmUpdateTable");
+    });
+</script>

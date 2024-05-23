@@ -1,0 +1,229 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@using UIHelper.MVC
+
+<div class="headrow">
+    <button type="button" title="Process Data" onclick="EmployeeSalaryProcess();" id="" class="sym-btn-save ">&nbsp;Process</button>
+    <button type="button" title="Index Appraisal360" data-url="/Common/Appraisal360/IndexAppraisal360" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp;Index Appraisal360</button>
+    <button type="button" title="Index IndexAppraisal360Details" data-url="/Common/Appraisal360/IndexAppraisal360Details" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp;Index Appraisal360 Details</button>
+    @*<button type="button" title="Index Appraisal360Combination" data-url="/Common/Appraisal360/_IndexAppraisal360Combination" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp; Appraisal360 Combination</button>*@
+
+    <label class="pull-right">Appraisal360</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Appraisal360</p>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+            <div class="editor-field">
+                <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })
+                    @*@Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+            </div>
+        </div>
+    </div>
+
+    @*    <div class="col-md-2">
+            <button type="submit" title="Save Data"  class="sym-btn-save">&nbsp;Save</button>
+            <input style="margin-top: 19px;" class="btn btn-info" onclick="EmployeeSalaryProcess();" type="button" value="Save" />
+        </div>*@
+</div>
+
+<div class="headrow">
+    @*<button type="button" title="Save Data"   onclick="EmployeeSalaryProcess();" id="" class="sym-btn-save ">&nbsp;Save</button>*@
+    <button type="button" title="Process Data" id="saveJSON" class=" sym-btn-save">&nbsp;Process</button>
+    <button type="button" title="Delete Process" id="DeletePro" class=" sym-btn-remove">&nbsp;Delete Process</button>
+</div>
+<script>
+    $('#saveJSON').click(function () {
+
+        var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+        var FYId = $("#fYear").val();
+        var DId = $("#DepartmentId").val();
+        //var SId = $("#SectionId").val();
+        //var DesId = $("#DesignationId").val();
+        //var CF = $("#CodeF").val();
+        //var CT = $("#CodeT").val();
+
+        //var SP = $("#SP").val();
+        if (FiscalPeriodDetailId == "") {
+            ShowResult("Fail", "Please Select the Fiscal Period");
+            return;
+        }
+        //if (SP == "") {
+        //    ShowResult("Fail", "Please Select the process");
+        //    return;
+        //}
+        var url = "/Appraisal360/AppraisalDataProcess/SalaryPreProces?FiscalPeriodDetailId=" + FiscalPeriodDetailId
+        + "&FYId=" + FYId
+        + "&DId=" + DId
+        ProcessData(url);
+        //submitNew(url, null);
+
+    });
+    $('#DeletePro').click(function () {
+
+        var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+        var PId = $("#ProjectId").val();
+        var DId = $("#DepartmentId").val();
+        var SId = $("#SectionId").val();
+        var DesId = $("#DesignationId").val();
+        var CF = $("#CodeF").val();
+        var CT = $("#CodeT").val();
+
+        var SP = $("#SP").val();
+        if (FiscalPeriodDetailId == "") {
+            ShowResult("Fail", "Please Select the Fiscal Period");
+            return;
+        }
+
+        var url = "/Payroll/SalaryProcess/ProcessDelete?fid=" + FiscalPeriodDetailId
+        + "&ProjectId=" + PId
+        + "&DepartmentId=" + DId
+        + "&SectionId=" + SId
+        + "&DesignationId=" + DesId
+        + "&CodeF=" + CF
+        + "&CodeT=" + CT
+
+        submitNew(url, null);
+
+    });
+    var submitNew = function (url, mydata) {
+        ////alert((url);
+        $.ajax({
+            //type: 'POST',
+            //data: mydata, // #2
+            url: url,
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+
+            success: function (result) {
+                ////alert((result);
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResultProcess("Success", msg2);
+                }
+                else {
+                    ShowResultProcess("Fail", msg2);
+                }
+            }
+        });
+    }
+
+
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+    function EmployeeSalaryProcess() {
+
+        if ($('#DepartmentId').val() == "0") {
+            ShowResult("Fail", "Please Select Department.");
+            return;
+        }
+        if ($('#SectionId').val() == "0") {
+            ShowResult("Fail", "Please Select Section.");
+            return;
+        }
+
+        var error = 0;
+        $("#erFiscalPeriodDetailsId").hide();
+        $("#erProjectId").hide();
+        $("#erDepartmentId").hide();
+        $("#erSectionId").hide();
+
+        if ($("#FiscalPeriodDetailsId").val() == "") {
+            $("#erFiscalPeriodDetailsId").show();
+            error++;
+        }
+        if ($("#ProjectId").val() == "") {
+            $("#erProjectId").show();
+            error++;
+        }
+        if ($("#DepartmentId").val() == "") {
+            $("#erDepartmentId").show();
+            error++;
+        }
+        if ($("#SectionId").val() == "") {
+            $("#erSectionId").show();
+            error++;
+        }
+
+        if (error > 0) {
+            return;
+        }
+        Ask("Are you sure to process salary!", function () {
+            var Id = $("#Id").val();
+            var url = "/Appraisal360/AppraisalDataProcess/SalaryPreProces?FiscalPeriodDetailsId=" + $("#FiscalPeriodDetailsId").val() + "&DepartmentId=" + $("#DepartmentId").val() + "&FYIDId=" + $("#fYear").val();
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    var dataAction = "";
+                    if (response[0] != 'Fail') {
+                        dataAction = "redirect";
+                    }
+                    ShowResult(response[0], response[1], dataAction, './')
+                }
+            });
+        }, function () { })
+    }
+
+    function ProcessData(url) {
+        debugger;
+
+        var questionMSG = "Are you sure to process this appraisal360!";
+
+        Ask(questionMSG, function () {
+            debugger;
+            $.ajax({
+                url: url
+                , type: 'Post'
+                , traditional: true
+                , beforeSend: function () { $(".loading").show(); }
+                , success: function (res) {
+                    debugger;
+                    ShowResult(res.Success, res.Message);
+                }
+                , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+
+            });
+        });
+    };
+
+
+</script>
+
+
+
+
+

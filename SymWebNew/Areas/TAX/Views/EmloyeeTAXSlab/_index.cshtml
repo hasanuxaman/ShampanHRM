@@ -1,0 +1,78 @@
+﻿@model IEnumerable<SymViewModel.Tax.EmloyeeTAXSlabVM>
+@using UIHelper.MVC
+@using (Html.BeginForm("Create", "EmployeeDailyAbsence", FormMethod.Post, new { @Id = "frmEmloyeeTAXSlab" }))
+{
+    
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>
+                Employee List
+            </p>
+        </div>
+
+        <div id="container">
+            <table id="myDataTable" class="display  table-responsive ">
+                <thead>
+                    <tr>
+                        <th style="  text-align: center; width: 8%;  ">Select All
+                        <input type="checkbox" class="chkAll" />
+                        </th>
+                        <th style="width: 10%;">Code</th>
+                        <th style="width: 10%;">Name</th>
+                        <th style="width: 10%;">Designation</th>
+                        <th style="width: 10%;">Department</th>
+                        <th style="width: 10%;">Section</th>
+                        <th style="width: 10%;">Project</th>
+                        <th style="width: 10%;">Gender</th>
+                        <th style="width: 20%;">Tax Slab Name</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        <tr>
+                            <th style="text-align: center">@Html.CheckBoxFor(model => Model.ToList()[i].IsEmployeeChecked, new { @class = " selectChk " })</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].EmployeeCode)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].EmployeeName)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].Designation)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].Department)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].Section)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].Project)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].Gender)</th>
+                            <th>@Html.DisplayFor(model => Model.ToList()[i].TaxSlabName)</th>
+
+                            @Html.HiddenFor(model => Model.ToList()[i].EmployeeId)
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="2">&nbsp;Total Records: @Model.Count()</td>
+                        <td colspan="9"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
+    </div>
+}
+
+<script>
+    $(function () {
+        SelectAllForDelete()
+    });
+
+</script>
+<style>
+@*    table, td, th, tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        background-color: white;
+
+    }*@
+
+@* td, th{
+        width: 10%;
+    }*@
+</style>

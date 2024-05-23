@@ -1,0 +1,190 @@
+﻿@model IEnumerable<SymViewModel.Sage.GLCeilingDetailVM>
+@using UIHelper.MVC
+@using (Html.BeginForm("CreateCeiling", "Ceiling", FormMethod.Post, new { @Id = "frmCeilingDetail" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Ceiling</p>
+        </div>
+        <div class="Ceiling">
+            @if (Model.ToList().FirstOrDefault().Operation == "update")
+            {
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => Model.ToList().FirstOrDefault().BranchId)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => Model.ToList().FirstOrDefault().BranchId, "/Config/DropDown/GL_GLBranch", new { @class = " form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => Model.ToList().FirstOrDefault().GLFiscalYearId)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => Model.ToList().FirstOrDefault().GLFiscalYearId, "/Config/DropDown/GL_FiscalYear", new { @class = " form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                //@Html.HiddenFor(model => Model.ToList().FirstOrDefault().BranchId)
+                //@Html.LabelFor(model => Model.ToList().FirstOrDefault().GLFiscalYearId)
+            }
+            <div class="row" hidden>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => Model.ToList().FirstOrDefault().Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => Model.ToList()[0].Remarks, new { @placeholder = " Remarks", @class = "  form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>
+                Ceiling Detail
+            </p>
+        </div>
+
+
+        <div id="container" class=" search-table-outter   table-responsive" style="height: 800px; width: 100%; overflow-x: scroll!important;">
+            <table id="myDataTable" class=" search-table display">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">Sl</th>
+                        <th style="width: 14%">Account Name</th>
+                        <th style="width: 7%">January</th>
+                        <th style="width: 7%">February</th>
+                        <th style="width: 7%">March</th>
+                        <th style="width: 7%">April</th>
+                        <th style="width: 7%">May</th>
+                        <th style="width: 7%">June</th>
+                        <th style="width: 7%">July</th>
+                        <th style="width: 7%">August</th>
+                        <th style="width: 7%">September</th>
+                        <th style="width: 7%">October</th>
+                        <th style="width: 7%">November</th>
+                        <th style="width: 7%">December</th>
+                        <th style="width: 10%">Line Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        <tr>
+                            <th>&nbsp;@Html.TextBox("Sl",i+1, new { @class = " col-md-12 tm form-control", @readonly = "readonly" })</th>
+                            <th>&nbsp;@Html.TextAreaFor(model => Model.ToList()[i].AccountName, new { @class = " col-md-12 tm form-control", @readonly = "readonly" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP1, new { @class = "amountP1 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP2, new { @class = "amountP2 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP3, new { @class = "amountP3 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP4, new { @class = "amountP4 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP5, new { @class = "amountP5 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP6, new { @class = "amountP6 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP7, new { @class = "amountP7 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP8, new { @class = "amountP8 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP9, new { @class = "amountP9 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP10, new { @class = "amountP10 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP11, new { @class = "amountP11 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].AmountP12, new { @class = "amountP12 right col-md-12 tm form-control" })</th>
+                            <th>&nbsp;@Html.TextBoxFor(model => Model.ToList()[i].LineTotal, new { @class = "lineTotal right col-md-12 tm form-control" })</th>
+
+                            @Html.HiddenFor(model => Model.ToList()[i].AccountId)
+                            @Html.HiddenFor(model => Model.ToList()[i].GLCeilingId)
+                            @Html.HiddenFor(model => Model.ToList()[i].GLFiscalYearDetailId)
+
+                            @Html.HiddenFor(model => Model.ToList()[i].BranchId)
+                            @Html.HiddenFor(model => Model.ToList()[i].GLFiscalYearId)
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="1">&nbsp;Total Records: @Model.Count()</td>
+                        <th colspan="1" style="font-weight: bold" class="amountP1Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP2Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP3Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP4Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP5Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP6Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP7Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP8Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP9Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP10Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP11Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountP12Total right NumberCheck"></th>
+                        <th colspan="1" style="font-weight: bold" class="amountLineTotal right NumberCheck"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<style>
+    .tm {
+        margin-top: -10px;
+        font-size: 1em!important;
+    }
+
+</style>
+<script>
+    $(function () {
+        InitDropDowns()
+    });
+</script>
+
+
+<script>
+    $(function () {
+        var senderClassList = [
+              "amountP1"
+            , "amountP2"
+            , "amountP3"
+            , "amountP4"
+            , "amountP5"
+            , "amountP6"
+            , "amountP7"
+            , "amountP8"
+            , "amountP9"
+            , "amountP10"
+            , "amountP11"
+            , "amountP12"
+            , "lineTotal"
+        ];
+        var targetClassList = [
+      "amountP1Total"
+    , "amountP2Total"
+    , "amountP3Total"
+    , "amountP4Total"
+    , "amountP5Total"
+    , "amountP6Total"
+    , "amountP7Total"
+    , "amountP8Total"
+    , "amountP9Total"
+    , "amountP10Total"
+    , "amountP11Total"
+    , "amountP12Total"
+    , "amountLineTotal"
+        ];
+        for (var i = 0; i < senderClassList.length; i++) {
+            SubTotal(senderClassList[i], targetClassList[i]);
+        }
+
+    });
+
+    function SubTotal(senderClass, targetClass) {
+        var amountTotal = 0;
+        var amount = 0;
+        $('.'+ senderClass).each(function () {
+            amount = parseFloat($(this).val());
+            amountTotal += amount;
+        });
+        $('.' + targetClass).text(amountTotal.toFixed(2));
+    }
+</script>

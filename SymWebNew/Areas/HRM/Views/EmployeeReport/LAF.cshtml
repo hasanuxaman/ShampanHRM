@@ -1,0 +1,196 @@
+﻿@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Application Form</p>
+    </div>
+    @if (identity.IsAdmin || identity.IsHRM)
+    {   
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Code(From)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Code(To)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Designation</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label>Join Date From</label>
+                @Html.TextBox("dtpFrom", null, new { @onchange = "DateCheck(this);", @placeholder = "Join Date From", @class = "customDatePicker form-control" })
+            </div>
+
+            <div class="col-md-2">
+                <label>Join Date To</label>
+                @Html.TextBox("dtpTo", null, new { @onchange = "DateCheck(this);", @placeholder = "Join Date To", @class = "customDatePicker form-control" })
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        @if (identity.IsAdmin || identity.IsHRM)
+        {   
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                </div>
+            </div>
+              
+          }
+        <div class="col-md-2">
+            <label>Year</label>
+            @Html.SimpleDropDown("leaveyear", "/Config/DropDown/Year", new { @class = " form-control" })
+        </div>
+    </div>
+</div>
+
+<div class="headrow">
+    @*     <div class="col-md-1">
+            <label>&nbsp;</label>
+            @Html.ActionLink(" Report", "LAF", null, new { target = "_blank", id = "sendRpt", @class = "sym-btn-report" })
+        </div>*@
+    <div class="col-md-1">
+        <button title="Click to Show Report" id="sendRpt" data-url="/HRM/EmployeeReport/LAF" class="btn sym-btn-report">&nbsp;Report</button>
+    </div>
+    <div class="col-md-2">
+        <button title="Click to Show Employee Statement" id="sendStatement" data-url="/HRM/EmployeeReport/LAF" class="btn sym-btn-report">&nbsp;Leave Statement</button>
+    </div>
+    <div class="col-md-1">
+        <button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(function () {
+           
+            $("#sendRpt, #sendStatement").click(function () {
+                    var url = $(this).attr("data-url");
+                    var Id = $(this).attr("Id");
+                    rpt (Id, url);
+                });
+                InitDropdownsCommon();
+
+                function rpt(Id, url) {
+                    var CodeF = $("#CodeF").val();
+                    var CodeT = $("#CodeT").val();
+                    var DepartmentId = $("#DepartmentId").val();
+                    var SectionId = $("#SectionId").val();
+                    var ProjectId = $("#ProjectId").val();
+                    var DesignationId = $("#DesignationId").val();
+                    var dtpFrom = $("#dtpFrom").val();
+                    var dtpTo = $("#dtpTo").val();
+                    var leaveyear = $("#leaveyear").val();
+                    var LeaveType = "";
+                    var Statement = "";
+
+                    //if (leaveyear == "") {
+                    //    ShowResult('Fail', "Please Select The Leave Year");
+                    //    return false;
+                    //}
+
+                    //if (ReportNo == "2") {
+                    //    ShowResult('Fail', "Please Select Leave Type");
+                    //    return false;
+                    //}
+                    if (Id == "sendStatement") {
+                        Statement = "y";
+                    }
+
+                    url = url + '?CodeF=' + CodeF
+                   + '&CodeT=' + CodeT
+                   + '&DepartmentId=' + DepartmentId
+                   + '&SectionId=' + SectionId
+                   + '&ProjectId=' + ProjectId
+                   + '&DesignationId=' + DesignationId
+                   + '&dtpFrom=' + dtpFrom
+                   + '&dtpTo=' + dtpTo
+                   + '&leaveyear=' + leaveyear
+                   + '&ReportNo=4'  
+                   + '&LeaveType=' + LeaveType
+                   + '&Statement=' + Statement
+
+                    var win = window.open(url, '_blank');
+                }
+            });
+
+        $("#Clear").on('click', function () {
+            $("#ProjectId").val("1");
+            $("#DepartmentId").val("1");
+            $("#SectionId").val("1");
+            $("#DesignationId").val("1");
+            $("#CodeF").val("1");
+            $("#CodeT").val("1");
+            $("#dtpFrom").val("");
+            $("#dtpTo").val("");
+            $("#leaveyear").val("");
+            $("#LeaveType").val("");
+        });
+
+        function DateCheck(sender) {
+            var joinDateFrom = ParseDate($("#dtpFrom").val());
+            var joinDateTo = ParseDate($("#dtpTo").val());
+
+            if (joinDateFrom > joinDateTo) {
+                ShowResult("Fail", "Join-Date From can't be prior to Join-Date To!");
+                $(sender).val("");
+            }
+        }
+    </script>
+}

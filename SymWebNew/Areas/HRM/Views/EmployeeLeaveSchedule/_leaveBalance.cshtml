@@ -1,0 +1,62 @@
+﻿@*@model IEnumerable<SymViewModel.Leave.EmployeeLeaveBalanceVM>*@
+@model SymViewModel.HRM.EmployeeInfoVM
+
+<div class="thinbox">
+        <div class="th_thinbox">
+        <p> Leave Balance</p>   
+        </div>
+   
+ <div id="container" class="tcnt">
+            <div id="demo">
+                <table id="myDataTableTR" class="display  ">
+    <tr class="tcnt" style="border-bottom:solid 2px" >
+        <th class="tcnt">
+            @Html.DisplayNameFor(model => model.employeeLeaveBalanceVMs.FirstOrDefault().LeaveType)
+        </th>
+        <th class="tcnt">
+            @Html.DisplayNameFor(model => model.employeeLeaveBalanceVMs.FirstOrDefault().OpeningBalance)
+        </th>
+         <th class="tcnt">
+            @Html.DisplayNameFor(model => model.employeeLeaveBalanceVMs.FirstOrDefault().Total)
+        </th>
+         <th class="tcnt">
+            @Html.DisplayNameFor(model => model.employeeLeaveBalanceVMs.FirstOrDefault().Used)
+        </th>
+        <th class="tcnt">
+            @Html.DisplayNameFor(model => model.employeeLeaveBalanceVMs.FirstOrDefault().Have)
+        </th>
+    </tr>
+@foreach (var item in Model.employeeLeaveBalanceVMs) {
+    <tr  style="border-bottom:solid 1px" >
+        <td>
+            @Html.DisplayFor(modelItem => item.LeaveType)
+        </td>
+        <td  class="tdl">
+            @Html.DisplayFor(modelItem => item.OpeningBalance)
+        </td>
+         <td class="tdl">
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td class="tdl">
+            @Html.DisplayFor(modelItem => item.Used)
+        </td>
+        <td class="tdl">
+            @Html.DisplayFor(modelItem => item.Have)
+        </td>
+    </tr>
+}
+</table>
+
+</div>
+</div>
+</div>
+<style>
+
+    .tdl {
+     border-left:solid 1px;
+    }
+    .tcnt {
+     text-align:center;
+    }
+
+</style>

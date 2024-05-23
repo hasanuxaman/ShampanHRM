@@ -1,0 +1,9 @@
+diff a/SymServices/Attendance/DailyAttendanceProcessDAL.cs b/SymServices/Attendance/DailyAttendanceProcessDAL.cs	(rejected hunks)
+@@ -1500,7 +1500,6 @@
+ ,case when attn.WorkingHrsBy = '0' then '0.00' else attn.WorkingHrsBy end as WorkingHrsBy
+ ,attn.TotalOT
+ ,attn.TotalOTBy
+-,case when attn.DayStatus='WH' then 'Friday' when attn.DayStatus='GH' then 'Holiday' else attn.AttnStatus end as AttnStatus
+ ,case when attn.DayStatus='WH' then 'Friday' when attn.DayStatus='GH' then 'Holiday' when attn.DayStatus='FH' then 'Festival' else attn.AttnStatus end as AttnStatus
+ ,attn.DayStatus
+ ,attn.EarlyDeduct

@@ -1,0 +1,215 @@
+﻿
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+  <div class="content white menuheight">
+        <nav  class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!--/.navbar-header-->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @if (identity.IsAdmin || identity.IsHRM)
+                    {    
+                        <li class="Home dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="btn btn-info" href="/Common/Home/">Admin</a></li>
+                                <li><a class="btn btn-info" href="/HRM/Home/">HRM</a></li>
+                                <li><a class="btn btn-info" href="/PharmaRaw/Home/">Pharma Raw</a></li>
+                                @*<li><a class="" href="/Config/Home/">Configuration</a></li>*@
+
+                            </ul>
+                        </li>
+
+
+                        <li class="dropdown Structure">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Structure <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Common/LeaveStructure">Leave </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryStructure">Salary </a></li>
+                                            <li><a class="btn btn-info" href="/Common/AttendanceStructure">Attendance Policy </a></li>
+                                            <li><a class="btn btn-info" href="/Common/PFStructure">Provident Fund(PF) </a></li>
+                                            <li><a class="btn btn-info" href="/Common/TaxStructure">Tax </a></li>
+                                            <li><a class="btn btn-info" href="/Common/Group">Employee Group </a></li>
+                                            <li><a class="btn btn-info" href="/Common/BonusStructure">Bonus </a></li>
+                                            <li><a class="btn btn-info" href="/Common/Roster">Roster</a></li>
+                                            <li><a class="btn btn-info" href="/Common/AttendanceRosterAll">Attendance Roster</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+
+                       <li class="dropdown Structure">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Payroll Entry <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Common/EmployeeAreer">Arrear </a></li>
+                                            <li><a class="btn btn-info" href="/Common/EmployeeDeduction">Deduction </a></li>
+                                            <li><a class="btn btn-info" href="/Common/EmployeeOverTime">Overtime </a></li>
+                                            <li><a class="btn btn-info" href="/Common/EmployeeConvence">Conveyance </a></li>
+                                            <li><a class="btn btn-info" href="/Common/EmployeeReimbursableExpense">Reimbursable Expense </a></li>
+                                            <li><a class="btn btn-info" href="/Common/Loan/AllLoan">Loan </a></li>
+                                            <li><a class="btn btn-info" href="/Common/EmployeeBonus">Employee Bonus </a></li>
+                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                         <li class="dropdown Structure">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Payroll <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            
+                                            <li><a class="btn btn-info" href="/Common/SalaryPF">Salary PF </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryTax">Salary Tax </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryEarning">Salary Earning </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryAreer">Salary Arrear </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryDeduction">Salary Deduction </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryOverTime">Salary Overtime </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryConvence">Salary Conveyance </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryReimbursableExpense">Salary Reimbursable Expense </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryLoan">Salary Loan </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryProcess">Salary Process </a></li>
+                                            <li><a class="btn btn-info" href="/Common/SalaryProcess/EmployeeSalary">Employee Salary </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                         <li class="dropdown Leave">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Common/SalaryProcess/SalarySheet/">SalarySheet</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                        <li class="dropdown Leave">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Leave <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Common/LeaveMigration">Leave Migration</a></li>
+                                            <li><a class="btn btn-info" href="/Common/LeaveMigration/OpeningBalance">Opening Balance (Multi)</a></li>
+                                            <li><a class="btn btn-info" href="/Common/LeaveMigration/OpeningBalanceSingle">Opening Balance (Single)</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                        <li class="User"><a href="/Common/User/">User </a></li>
+                        <li class="dropdown Setup">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setup <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Common/Department">Department</a></li>
+                                            <li><a class="btn btn-info" href="/HRM/Designation">Designation</a></li>
+                                            <li><a class="btn btn-info" href="/Common/Bank">Bank</a></li>
+                                            <li><a class="btn btn-info" href="/Common/Branch">Branch</a></li>
+                                            <li><a class="btn btn-info" href="/Common/Project">Project</a></li>
+                                            <li><a class="btn btn-info" href="/Common/Section">Section</a></li>
+                                            <li><a class="btn btn-info" href="/Common/Grade">Salary Grade</a></li>
+                                            <li><a class="btn btn-info" href="/Common/HoliDay">Holiday</a></li>
+                                            <li><a class="btn btn-info" href="/Common/FiscalYear">Fiscal Year</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration<b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-3">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Config/EnumBloodGroup">Blood Group</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumTravelType">Travel Type</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumDegree">Degree</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumCountry">Country</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumDivision">Division</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumDistrict">District</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumSalaryType">Salary Head</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumLoanType">LoanType</a></li>
+                                        </ul>
+
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Config/EnumEmploymentStatus">Employment Status</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumEmploymentType">Employment Type</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumGender">Gender</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumImmigrationType">Immigration Type</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumLanguage">Language</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumLanguageCompetency">Language Competency</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumYear">Year</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Config/EnumLanguageFluency">Skill Quality /Fluency</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumLeaveApproveStatus">Leave Approve Status</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumLeaveType">Leave Type</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumLeftType">Left Type</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumMeritalStatus">Marital Status</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumNationality">Nationality</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumTravelType">Travel Type</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a class="btn btn-info" href="/Config/EnumReligion">Religion</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumSalaryPayMode">Salary Pay Mode</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumSalutation">Salutation</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumTrainingCourse">Training Course</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumTrainingPlace">Training Place</a></li>
+                                            <li><a class="btn btn-info" href="/Config/EnumTrainingStatus">Training Status</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </ul>
+                        </li>
+                        <li class="DBUpdate"><a href="/Common/Company/DBUpdate">DB Update </a></li>
+                    }
+                </ul>
+            </div>
+            <!--/.navbar-collapse-->
+        </nav>
+        <!--/.navbar-->
+
+    </div>

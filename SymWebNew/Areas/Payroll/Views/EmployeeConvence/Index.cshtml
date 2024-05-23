@@ -1,0 +1,187 @@
+﻿
+<!-- #region Script -->
+@section head{
+    <script language="javascript" type="text/javascript">
+
+        //$.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        //$.datepicker.setDefaults($.datepicker.regional['']);
+
+        $(document).ready(function () {
+
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/EmployeeConvence/_index",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "12%",
+                                    "sClass": "center",
+                                    "fnRender": function (oObj) {
+                                        return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Payroll/EmployeeConvence/Edit/' + oObj.aData[0] + '\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' +
+                                       '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/EmployeeConvence/EmployeeConvenceDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+
+                                    //    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a id="lnkEdit1"  title="Click on for edit" style="text-decoration:none;"   href=\"/Payroll/EmployeeConvence/Edit/' + oObj.aData[0] + '\" class=" lnkEdit btn btn-warning btn-xs lnkEdit"><i class="glyphicon glyphicon-edit"></i></a>' //+
+                                    //    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/EmployeeConvence/EmployeeConvenceDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                                    }
+                                }
+                                , { "sName": "Code", "sWidth": "15%" }
+                                , { "sName": "EmpName", "sWidth": "15%" }
+                                , { "sName": "Department", "sWidth": "12%" }
+                                , { "sName": "Designation", "sWidth": "12%" }
+                                , { "sName": "ConvenceAmount", "sClass": "right", "sWidth": "18%" }
+                                //, { "sName": "ConvenceDate", "sWidth": "18%" }
+                               , { "sName": "PeriodName", "sWidth": "18%" }
+
+                                //Code
+                                //EmpName 
+                                //Department 
+                                //Designation
+                                //ConvenceAmount
+                                //ConvenceDate  
+
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           , { type: "text" }
+                           //, { type: "date-range" }
+
+                ]
+
+            });
+
+        });
+
+    </script>
+
+}
+<!-- #endregion Script -->
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Payroll=>EmployeeConveyance=>Index"; 
+}
+<div class="headrow">
+    <button type="button" title="Add New EmployeeConvence" data-url="/Payroll/EmployeeConvence/EmployeeInfoForConvence" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    <button type="button" title="Delete Checked EmployeeConvence" data-url="/Payroll/EmployeeConvence/EmployeeConvenceDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+    <label class="pull-right">Employee Conveyance</label>
+</div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Conveyance List</p>   
+        </div>
+       
+         @*@Html.ActionLink("New", "EmployeeInfoForConvence", null, new  {  @class=" btn btn-info"   })*@
+    @*<input type="button" style="width:65px;" data-url="/Payroll/EmployeeConvence/EmployeeInfoForConvence"  id="" class="btnCreate btn btn-info  " value="Add" />*@
+    @*<input type="button" style="width:65px;" data-url="/Payroll/EmployeeConvence/EmployeeConvenceDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />*@
+
+<p></p>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+
+                         <tr>
+                            <th style="text-align:center" >
+                                <input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th style="text-align:left!important">Conveyance Amount</th>
+                            <th>Conveyance Period</th>
+                            @*<th>Remarks</th>*@
+                        </tr>
+
+                        <tr>
+                            <th style="text-align:center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Conveyance Amount</th>
+                            <th>Conveyance Period</th>
+                            @*<th>Remarks</th>*@
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        </div>
+<div class="headrow">
+    <button type="button" title="Add New Employee Conveyance" data-url="/Payroll/EmployeeConvence/EmployeeInfoForConvence" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    <button type="button" title="Delete Checked Employee Conveyance" data-url="/Payroll/EmployeeConvence/EmployeeConvenceDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+</div>
+
+@*<script>
+ 
+    $(document).ready(function () {
+       
+
+        if ('@TempData["msg"]' != "") {
+            var tt = '@TempData["msg"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/EmployeeConvence/_index",
+            "bProcessing": true,
+            "aoColumns": [
+                            {
+                                "sName": "Code",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    ;
+                                }
+                            },
+                            {
+                                "sName": "Code",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+
+                                    ////return '<a  class=" btn btn-primary lnkEdit" href=\"/Payroll/EmployeeConvence/Edit/' + oObj.aData[3] + '\">Show</a>'
+                                    return '<a  class="lnkEdit innerListLink"  href=\"/Payroll/EmployeeConvence/Edit/' + oObj.aData[1].split('~')[1] + '\">' + oObj.aData[1].split('~')[0] + '</a>'
+                                    ;
+                                }
+                            },
+                            { "sName": "EmpName" },
+                            { "sName": "Department" },
+                            { "sName": "Designation" },
+                            { "sName": "ConvenceDate" },
+                            { "sName": "ConvenceAmount" },
+                            { "sName": "Remarks" }
+
+            ]
+        });
+        InitCustomDialog();
+        SelectAllForDelete();
+    });
+
+
+    </script>*@

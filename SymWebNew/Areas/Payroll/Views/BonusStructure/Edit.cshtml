@@ -1,0 +1,168 @@
+﻿@model SymViewModel.Payroll.BonusStructureVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+
+}
+
+@using (Html.BeginForm("Edit", "BonusStructure", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmBonusStructure" }))
+{
+    <div class="headrow">
+        <button type="button" title="Update Data" onclick="pageSubmit('frmBonusStructure');" class="sym-btn-update">&nbsp;Update</button>
+        <label class="pull-right">Bonus Structure > Edit</label>
+    </div>
+@*<div class=" row">
+                         <div style="float:left;" class="col-sm-4">
+            <p>Payroll> Bonus Structure> Edit</p>
+            </div>
+
+                <div style="float:right; text-align:right;" class="col-sm-4">
+                    <input type="button" onclick="pageSubmit('frmBonusStructure');" value="Update" class=" Save btn btn-info" />
+
+                    <input type="button" class="btn btn-info" data-url="/Payroll/BonusStructure" onclick="GoTo(this);" value="Back To List" />
+                </div>
+            </div>*@
+   
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Bonus Structure New</p>
+        </div>
+        <div class="EnumBonusStructure">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.BranchId)
+                        @Html.LabelFor(model => model.Code)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Bonus Code", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Name)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Name, new { @placeholder = "Bonus Name", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.BonusValue)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.BonusValue, new { @placeholder = "Bonus Value", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.BonusValue)
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsFixed)
+                    </div>
+                    <div class="editor-field center">
+                        @Html.CheckBoxFor(model => model.IsFixed, new { @placeholder = "Is it Fixed?", @class = "  form-control" })
+                        @Html.ValidationMessageFor(model => model.IsFixed)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PortionSalaryType)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryPortion", new { @class = "PortionSalaryTypeId form-control" })
+                        @Html.ValidationMessageFor(model => model.PortionSalaryType)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Gender)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("Gender", "//", new { @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.Gender)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Religion)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("Religion", "//", new { @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.Religion)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Job Age From (Days)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.JobAge, new { @placeholder = "Job Age From", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.JobAge)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Job Age To (Days)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.JobAgeTo, new { @placeholder = "Job Age To", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.JobAge)
+                    </div>
+                </div>
+
+
+                <div class="col-md-5">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "  form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="headrow">
+        <button type="button" title="Update Data" onclick="pageSubmit('frmBonusStructure');" class="sym-btn-update">&nbsp;Update</button>
+    </div>
+}
+<script>
+    $(function () {
+        valiDation("frmBonusStructure");
+        InitDropDowns();
+        InitDatePickers();
+        $("#Gender").append('<option value="@Model.Gender">@Model.Gender</option>')
+        $("#Gender").append('<option value="ALL">ALL</option>')
+        var url = "/Config/DropDown/Gender"
+        $.getJSON(url, function (data) {
+            $.each(data, function (val, state) {
+                $('#Gender').append('<option value=' + state.Value + '>' + state.Text + '</option>');
+            });
+        });
+        $("#Religion").append('<option value="@Model.Religion">@Model.Religion</option>')
+        $("#Religion").append('<option value="ALL">ALL</option>')
+        var url = "/Config/DropDown/Religion"
+        $.getJSON(url, function (data) {
+            $.each(data, function (val, state) {
+                $('#Religion').append('<option value=' + state.Value + '>' + state.Text + '</option>');
+            });
+        });
+    });
+    //////function DateCheck(sender) {
+    //////    var joinDateFrom = ParseDate($("#dtpFrom").val());
+    //////    var joinDateTo = ParseDate($("#dtpTo").val());
+    //////    if (joinDateFrom > joinDateTo) {
+    //////        ShowResult("Fail", "Join-Date From can't be prior to Join-Date To!");
+    //////        $(sender).val("");
+    //////    }
+    //////}
+</script>

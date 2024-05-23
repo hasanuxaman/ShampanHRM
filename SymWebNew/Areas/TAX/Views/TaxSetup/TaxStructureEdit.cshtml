@@ -1,0 +1,63 @@
+﻿@model SymViewModel.Tax.TaxStructureVM
+@using UIHelper.MVC
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+@using (Html.BeginForm("TaxStructureEdit", "TaxSetup", FormMethod.Post, new { @Id = "frmtxts" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+         @Html.HiddenFor(model => model.Id)
+         @Html.HiddenFor(model => model.TXSetupId)
+        <div class="row">
+            <label class="col-sm-5">
+                @Html.LabelFor(model => model.SalaryTypeId)
+            </label>
+            <div class="col-sm-7">
+                 @Html.TextBoxFor(model => model.SalaryTypeId, new { @placeholder = "Salary Type Name", @class ="ac required form-control",@readonly="disable" })
+                 @*@Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType", new { @class = " form-control" })*@
+            </div>
+        </div>
+         <div class="row">
+            <label class="col-sm-5">
+                @Html.LabelFor(model => model.PercentOfBasic)
+            </label>
+            <div class="col-sm-7">
+                @Html.TextBoxFor(model => model.PercentOfBasic, new { @placeholder = "Percent Of Basic", @class ="ac required form-control" })
+            </div>
+        </div>
+         <div class="row">
+            <label class="col-sm-5">
+                @Html.LabelFor(model => model.FixedExampted)
+            </label>
+            <div class="col-sm-7">
+                @Html.TextBoxFor(model => model.FixedExampted, new { @placeholder = "FixedExampted", @class ="form-control" })
+                @Html.ValidationMessageFor(model => model.FixedExampted)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-5">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-7">
+                @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class ="form-control" })
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-5">
+				  <button type="button" title="Save Data" onclick="pageSubmit('frmtxts');" class="sym-btn-save">&nbsp;Save</button>
+            </label>
+            <label class="col-sm-7">
+			 <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+            </label>
+        </div>
+        </div>
+}
+  <script>
+      $(function () {
+          InitDropDowns();
+          valiDation("frmtxts");
+      });
+  </script>

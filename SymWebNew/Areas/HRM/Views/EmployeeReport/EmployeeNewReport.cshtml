@@ -1,0 +1,497 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}@*@{
+    ViewBag.Title = "Letters";
+}*@
+@using (Html.BeginForm("EmployeeNewReportView", "EmployeeReport", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmployeeNewReport", @target = "_blank" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Reports</p>
+        </div>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {    
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code(From)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control  selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code(To)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        <label>Multiple Emplyee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MultiCode", "/Config/DropDown/EmployeeCodeName", new { @placeholder = "Multiple Code", @class = "  form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleCode")
+
+                    </div>
+                </div>
+            </div>
+        }
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Join Date From</label>
+                    @Html.TextBox("JoinDateFrom", null, new { @onchange = "DateCheck(this);", @placeholder = "Join Date From", @class = "customDatePicker form-control" })
+                </div>
+                <div class="col-md-2">
+                    <label>Join Date To</label>
+                    @Html.TextBox("JoinDateTo", null, new { @onchange = "DateCheck(this);", @placeholder = "Join Date To", @class = "customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MultiDesignation", "/Config/DropDown/Designation", new { @placeholder = "Multiple Designation", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleDesignation")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple @Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MultiDepartment", "/Config/DropDown/Department", new { @placeholder = "Multiple Department", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleDepartment")
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple @Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MultiSection", "/Config/DropDown/Section", new { @placeholder = "Multiple Section", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleSection")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple @Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MultiProject", "/Config/DropDown/Project", new { @placeholder = "Multiple Project", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleProject")
+                    </div>
+                </div>
+            </div>
+            
+           
+            <div class="row">
+                @if (Session["LabelOther1"] != "")
+                {
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("Other1", "/Config/DropDown/OtherInfo?infoType=Other1", new { @class = " other1 form-control selectDropdown" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Multiple @Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("MultiOther1", "/Config/DropDown/OtherInfo?infoType=Other1", new { @placeholder = "Multiple " + @Session["LabelOther1"], @class = " form-control selectDropdown selectDropdown", @multiple = "multiple" })
+                            @Html.Hidden("MultipleOther1")
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther2"].ToString() != "")
+                {
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("Other2", "/Config/DropDown/OtherInfo?infoType=Other2", new { @class = " other2 form-control selectDropdown" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Multiple @Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("MultiOther2", "/Config/DropDown/OtherInfo?infoType=Other2", new { @placeholder = "Multiple " + @Session["LabelOther2"], @class = " form-control selectDropdown", @multiple = "multiple" })
+                            @Html.Hidden("MultipleOther2")
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther3"].ToString() != "")
+                {
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("Other3", "/Config/DropDown/OtherInfo?infoType=Other3", new { @class = " other3 form-control selectDropdown" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Multiple @Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("MultiOther3", "/Config/DropDown/OtherInfo?infoType=Other3", new { @placeholder = "Multiple " + @Session["LabelOther3"], @class = " form-control selectDropdown", @multiple = "multiple" })
+                            @Html.Hidden("MultipleOther3")
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Gender</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("Gender", "/Config/DropDown/Gender", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Religion</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("Religion", "/Config/DropDown/Religion", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Grade</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("GradeId", "/Config/DropDown/Grade", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Order By Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBox("OrderByCode", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Tax Structure</label>
+                    </div>
+                    <div class="editor-field">@Html.SimpleDropDown("TaxStructureId", "/Config/DropDown/TaxStructureList", new { @class = " form-control selectDropdown" })</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>PF Structure</label>
+                    </div>
+                    <div class="editor-field">@Html.SimpleDropDown("PFStructureId", "/Config/DropDown/PFStructureList", new { @class = " form-control selectDropdown" })</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>ED Structure</label>
+                    </div>
+                    <div class="editor-field">@Html.SimpleDropDown("EDStructureId", "/Config/DropDown/EarningDeductionStructureList", new { @class = " form-control selectDropdown" })</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Leave Structure</label>
+                    </div>
+                    <div class="editor-field">@Html.SimpleDropDown("LeaveStructureId", "/Config/DropDown/LeaveStructure", new { @class = " form-control selectDropdown" })</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Attendance Group</label>
+                    </div>
+                    <div class="editor-field">@Html.SimpleDropDown("GroupId", "/Config/DropDown/GroupList", new { @class = " form-control selectDropdown" })</div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("Year", @Session["SessionYear"] as string, new { @class = " form-control" }) </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom form-control selectDropdown" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor-label">
+                    <label>Report Name</label>
+                </div>
+                <div class="editor-field">
+                 @Html.SimpleDropDown("ReportName", "/Config/DropDown/DropDownReport?ReportType=HRM", new { @class = "required form-control " })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <label>&nbsp;</label>
+                <button type="button" title="Click to see the Report" data-url="/HRM/EmployeeReport/EmployeeNewReportView" onclick="SendReport()" id="sendRpt" class="sym-btn-report">&nbsp;Report</button>
+            </div>
+            <div class="col-md-1">
+                <label>&nbsp;</label>
+                <button type="button" title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation("frmEmployeeNewReport");
+
+
+        //No Need
+        $('#sendRpt1').click(function () {
+           ////// var url = $(this).attr("data-url");
+           ////// var CodeF = $("#CodeF").val();
+           ////// var CodeT = $("#CodeT").val();
+           ////// var DepartmentId = $("#DepartmentId").val();
+           ////// var SectionId = $("#SectionId").val();
+           ////// var ProjectId = $("#ProjectId").val();
+           ////// var DesignationId = $("#DesignationId").val();
+           ////// var dtjFrom = $("#dtjFrom").val();
+           ////// var dtjTo = $("#dtjTo").val();
+           ////// var dtFrom = $("#dtFrom").val();
+           ////// var dtTo = $("#dtTo").val();
+
+
+           ////// var TaxStructureId = $("#TaxStructureId").val();
+           ////// var PFStructureId = $("#PFStructureId").val();
+           ////// var EDStructureId = $("#EDStructureId").val();
+           ////// var LeaveStructureId = $("#LeaveStructureId").val();
+           ////// var GroupId = $("#GroupId").val();
+
+           ////// var Gender_E = $("#Gender_E      :selected").val();
+           ////// var Religion = $("#Religion      :selected").val();
+           ////// var GradeId = $("#GradeId       :selected").val();
+           ////// var other1 = $(".other1          :selected").val();
+           ////// var other2 = $(".other2          :selected").val();
+           ////// var other3 = $(".other3      :selected").val();
+           ////// var OrderByCode = $("#OrderByCode").is(":checked") ? true : false;
+
+           ////// //TaxStructureId
+           ////// //PFStructureId
+           ////// //EDStructureId
+           ////// //LeaveStructureId
+           ////// //GroupId
+           ////// //MultipleCode
+           ////// //MultipleDesignation
+           ////// //MultipleDepartment 
+           ////// //MultipleSection
+           ////// //MultipleProject
+
+           ////// //Gender_E
+           ////// //Religion
+           ////// //GradeId
+           ////// //other1
+           ////// //other2
+           ////// //other3
+           ////// //OrderByCode
+
+
+           ////// var MultipleCode = $('#MultipleCode').val();
+           ////// var MultipleDesignation = $('#MultipleDesignation').val();
+           ////// var MultipleDepartment = $('#MultipleDepartment').val();
+           ////// var MultipleSection = $('#MultipleSection').val();
+           ////// var MultipleProject = $('#MultipleProject').val();
+
+           ////// var MultipleOther1 = $('#MultipleOther1').val();
+           ////// var MultipleOther2 = $('#MultipleOther2').val();
+           ////// var MultipleOther3 = $('#MultipleOther3').val();
+
+
+           ////// var ReportName = $("#ReportName").val();
+
+
+           ////// if (ReportName == "") {
+           //////     ShowResult('Fail', "Please Select The Report Name!");
+           //////     return false;
+           ////// }
+
+           ////// url = url
+           //////+ '?CodeF=' + CodeF
+           //////+ '&CodeT=' + CodeT
+           //////+ '&DepartmentId=' + DepartmentId
+           //////+ '&SectionId=' + SectionId
+           //////+ '&ProjectId=' + ProjectId
+           //////+ '&DesignationId=' + DesignationId
+           //////+ '&dtjFrom=' + dtjFrom
+           //////+ '&dtjTo=' + dtjTo
+
+           //////+ '&TaxStructureId=' + TaxStructureId
+           //////+ '&PFStructureId=' + PFStructureId
+           //////+ '&EDStructureId=' + EDStructureId
+           //////+ '&LeaveStructureId=' + LeaveStructureId
+           //////+ '&GroupId=' + GroupId
+           //////+ '&MultipleCode=' + MultipleCode
+           //////+ '&MultipleDesignation=' + MultipleDesignation
+           //////+ '&MultipleDepartment=' + MultipleDepartment
+           //////+ '&MultipleSection=' + MultipleSection
+           //////+ '&MultipleProject=' + MultipleProject
+           //////+ '&MultipleOther1=' + MultipleOther1
+           //////+ '&MultipleOther2=' + MultipleOther2
+           //////+ '&MultipleOther3=' + MultipleOther3
+
+
+
+           //////+ '&Gender_E=' + Gender_E
+           //////+ '&Religion=' + Religion
+           //////+ '&GradeId=' + GradeId
+           //////+ '&other1=' + other1
+           //////+ '&other2=' + other2
+           //////+ '&other3=' + other3
+           //////+ '&OrderByCode=' + OrderByCode
+
+
+           //////+ '&ReportName=' + ReportName
+
+
+           ////// var win = window.open(url, '_blank');
+        });
+
+
+
+    });
+
+    function SendReport() {
+
+        var ReportName = $("#ReportName").val();
+        if (ReportName == "HRM100") {
+
+            var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+
+            if (FiscalYearDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period First!");
+                return;
+            }
+
+        }
+
+
+        var MultipleCode = $('#MultiCode').val();
+        var MultipleDesignation = $('#MultiDesignation').val();
+        var MultipleDepartment = $('#MultiDepartment').val();
+        var MultipleSection = $('#MultiSection').val();
+        var MultipleProject = $('#MultiProject').val();
+        var MultipleOther1 = $('#MultiOther1').val();
+        var MultipleOther2 = $('#MultiOther2').val();
+        var MultipleOther3 = $('#MultiOther3').val();
+
+
+
+        $('#MultipleCode').val(MultipleCode);
+        $('#MultipleDesignation').val(MultipleDesignation);
+        $('#MultipleDepartment').val(MultipleDepartment);
+        $('#MultipleSection').val(MultipleSection);
+        $('#MultipleProject').val(MultipleProject);
+        $('#MultipleOther1').val(MultipleOther1);
+        $('#MultipleOther2').val(MultipleOther2);
+        $('#MultipleOther3').val(MultipleOther3);
+
+        pageSubmit('frmEmployeeNewReport')
+
+    }
+
+    function DateCheck(sender) {
+        var joinDateFrom = ParseDate($("#dtjFrom").val());
+        var joinDateTo = ParseDate($("#dtjTo").val());
+        var DateFrom = ParseDate($("#dtFrom").val());
+        var DateTo = ParseDate($("#dtTo").val());
+
+        if (joinDateFrom > joinDateTo) {
+            ShowResult("Fail", "Join-Date From can't be prior to Join-Date To!");
+            $(sender).val("");
+        }
+        if (DateFrom > DateTo) {
+            ShowResult("Fail", "Date From can't be prior to Date To!");
+            $(sender).val("");
+        }
+    }
+    $("#Clear").on('click', function () {
+        $(".Dropdown").select2("val", "");
+        $(".form-control:not(#Year)").val("");
+    });
+
+
+</script>
+

@@ -1,0 +1,184 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using (Html.BeginForm("Create", "EmployeeInfo", FormMethod.Post, new { @Id = "frmEmployeeCreate" }))
+{
+
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>New Employee</p>
+        </div>
+        @Html.HiddenFor(model => model.BranchId)
+        <div class="empInfo">
+            <div class="row">
+                @if (Model.AutoCode == "Y")
+                {
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Code)
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.TextBoxFor(model => model.Code, null, new { @placeholder = "Auto Code", @readonly="readonly", @class = "  form-control"  })*@
+                            @Html.TextBoxFor(model => model.Code, null, new { @placeholder = "Code", @class = "  form-control" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Code)
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.TextBoxFor(model => model.Code, null, new { @placeholder = "Auto Code", @readonly="readonly", @class = "  form-control"  })*@
+                            @Html.TextBoxFor(model => model.Code, null, new { @placeholder = "Code", @class = "  form-control" })
+                        </div>
+                    </div>
+
+                }
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.EmpCategory)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.EmpCategory, "/Config/DropDown/EmpCategory", new { @onchange = "EmpCategory(this);", @placeholder = "Emp Category", @class = "EmpCategory form-control " })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.EmpJobType)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.EmpJobType, "/Config/DropDown/EMPType", new { @onchange = "EmpJobType(this);", @placeholder = "Emp Job Type", @class = "EmpJobType form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        <label>Other ID</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.OtherId, new { @placeholder = "Personal Detail Id", @class = " OtherId form-control" })
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Salutation_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Salutation_E, "/Config/DropDown/Salutation", new { @placeholder = "Salutation", @class = "required form-control" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MiddleName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MiddleName, null, new { @placeholder = "Middle Name", @class = "required   form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastName, null, new { @placeholder = "Last Name", @class = "   form-control" })
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "   form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+                @* <div class="col-sm-2">
+                        <label>
+                            @Html.LabelFor(model => model.IsActive)
+                        </label>
+                        <div>
+                            @Html.CheckBoxFor(model => model.IsActive, new { @placeholder = "Code", @class = "   form-control" })
+                        </div>
+                    </div>*@
+            </div>
+            <br />
+            <p>
+                @*<button type="button"  title="Save"    onclick="pageSubmit('frmEmployeeCreate');" class="sym-btn-save">&nbsp;Save</button>*@
+                @*<button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel "  >&nbsp;Cancel</button>*@
+            </p>
+
+            <div>
+                <button type="button" title="Save Data" onclick="pageSubmit('frmEmployeeCreate');" class="sym-btn-save">&nbsp;Save</button>
+                <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+
+}
+<script>
+
+    $(function () {
+        $(".btnNew").hide(); ///////Index page new btn
+        valiDation("frmEmployeeCreate");
+        InitDropDowns();
+        fromWriteColor("empInfo");
+    });
+
+    function EmpCategory(sender) {
+
+        
+        var JobType = "";
+
+       
+        var Category = $(".EmpCategory :selected").val();
+
+        //$(".EmpJobType").load("/path/to/server?selectedValue=" + Category);
+
+        $.get('/Config/DropDown/EMPType', { Type: Category }, function (options) {
+            JobType += "<option value=0>Select</option>";
+            $.each(options, function (i, state) {
+                JobType += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+            });
+            $('.EmpJobType').html(JobType);
+        });
+
+        setTimeout(function () {
+            GetOtherId();
+        }, 500);
+        
+    }
+
+    function EmpJobType(sender) {
+
+        GetOtherId();
+
+    }
+
+
+    function GetOtherId() {
+        var Category = $(".EmpCategory :selected").val();
+
+        var JobType = $(".EmpJobType :selected").val();
+        console.log(Category)
+        console.log(JobType)
+
+        if (Category && JobType) {
+            $.ajax({
+                type: "POST",
+                url: "/HRM/EmployeeInfo/GetOtherId?EmpCategory=" + Category + "&EmpJobType=" + JobType,
+                success: function (res) {
+
+                    $('.OtherId').val(res);
+
+                },
+            });
+        }
+       
+    }
+</script>

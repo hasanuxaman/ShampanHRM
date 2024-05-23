@@ -1,0 +1,294 @@
+﻿@model SymViewModel.Attendance.MonthlyAttendanceVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}@*@{
+    ViewBag.Title = "Letters";
+}*@
+@using (Html.BeginForm("ReportView", "MonthlyAttendance", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmMonthlyAttendance", @target = "_blank" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Reports</p>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+
+                <div class="editor-field">
+                    <div>@Html.TextBoxFor(model => model.FiscalYear, @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Fiscal Period</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @Id = "FiscalPeriodDetailId", @class = " fpDetailsCom required form-control selectDropdown" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @if (identity.IsAdmin || identity.IsHRM)
+        {    
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code(From)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeF, "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control  selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code(To)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeT, "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        <label>Multiple Emplyee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("CodeMultiple", "/Config/DropDown/EmployeeCodeName", new { @placeholder = "Multiple Code", @class = "  form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleCode")
+
+                    </div>
+                </div>
+            </div>
+        }
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DesignationId, "/Config/DropDown/Designation", new { @class = " form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DesignationMultiple", "/Config/DropDown/Designation", new { @placeholder = "Multiple Designation", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleDesignation")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = "departmentsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple @Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DepartmentMultiple", "/Config/DropDown/Department", new { @placeholder = "Multiple Department", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleDepartment")
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.SectionId, "/Config/DropDown/Section", new { @class = "sectionsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple @Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("SectionMultiple", "/Config/DropDown/Section", new { @placeholder = "Multiple Section", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleSection")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.ProjectId, "/Config/DropDown/Project", new { @class = "projectsCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Multiple @Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("ProjectMultiple", "/Config/DropDown/Project", new { @placeholder = "Multiple Project", @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.Hidden("MultipleProject")
+                    </div>
+                </div>
+            </div>
+            
+           
+            <div class="row">
+                @if (Session["LabelOther1"].ToString() != "")
+                {
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Other1, "/Config/DropDown/OtherInfo?infoType=Other1", new { @class = " other1 form-control selectDropdown" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Multiple @Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("Other1Multiple", "/Config/DropDown/OtherInfo?infoType=Other1", new { @placeholder = "Multiple " + @Session["LabelOther1"], @class = " form-control selectDropdown selectDropdown", @multiple = "multiple" })
+                            @Html.Hidden("MultipleOther1")
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther2"].ToString() != "")
+                {
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Other2, "/Config/DropDown/OtherInfo?infoType=Other2", new { @class = " other2 form-control selectDropdown" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Multiple @Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("Other2Multiple", "/Config/DropDown/OtherInfo?infoType=Other2", new { @placeholder = "Multiple " + @Session["LabelOther2"], @class = " form-control selectDropdown", @multiple = "multiple" })
+                            @Html.Hidden("MultipleOther2")
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther3"].ToString() != "")
+                {
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.Other3, "/Config/DropDown/OtherInfo?infoType=Other3", new { @class = " other3 form-control selectDropdown" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Multiple @Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDown("Other3Multiple", "/Config/DropDown/OtherInfo?infoType=Other3", new { @placeholder = "Multiple " + @Session["LabelOther3"], @class = " form-control selectDropdown", @multiple = "multiple" })
+                            @Html.Hidden("MultipleOther3")
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Order By</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.OrderBy, "/Config/DropDown/EnumOrderBy?Module=Salary", new { @class = "required form-control" })
+                    </div>
+                </div>
+            </div>
+            
+        }
+
+        <div class="row">
+            <div class="col-md-1">
+                <label>&nbsp;</label>
+                <button type="button" title="Click to see the Report" id="btnReport" class="sym-btn-report">&nbsp;Report</button>
+            </div>
+            <div class="col-md-1">
+                <label>&nbsp;</label>
+                <button type="button" title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation("frmMonthlyAttendance");
+
+        $('#btnReport').on("click", function () {
+            ShowReport();
+
+        });
+
+
+
+    });
+
+    function ShowReport() {
+
+
+        var MultipleCode = $('#CodeMultiple').val();
+        var MultipleDesignation = $('#Designation').val();
+        var MultipleDepartment = $('#DepartmentMultiple').val();
+        var MultipleSection = $('#SectionMultiple').val();
+        var MultipleProject = $('#ProjectMultiple').val();
+        var MultipleOther1 = $('#Other1Multiple').val();
+        var MultipleOther2 = $('#Other2Multiple').val();
+        var MultipleOther3 = $('#Other3Multiple').val();
+
+
+
+
+        $('#MultipleCode').val(MultipleCode);
+        $('#MultipleDesignation').val(MultipleDesignation);
+        $('#MultipleDepartment').val(MultipleDepartment);
+        $('#MultipleSection').val(MultipleSection);
+        $('#MultipleProject').val(MultipleProject);
+        $('#MultipleOther1').val(MultipleOther1);
+        $('#MultipleOther2').val(MultipleOther2);
+        $('#MultipleOther3').val(MultipleOther3);
+
+        pageSubmit('frmMonthlyAttendance')
+
+    }
+
+    $("#Clear").on('click', function () {
+        $(".Dropdown").select2("val", "");
+        $(".form-control:not(#FiscalYear)").val("");
+    });
+
+
+</script>
+

@@ -1,0 +1,52 @@
+﻿@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee Salary Pre Calculation</p>
+    </div>
+     <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("FiscalPeriodDetailsId", "/Config/DropDown/DropDownPeriodByYear", new {  @onchange = "DDLChech('FiscalPeriodDetailsId')",@class = "required form-control" })
+                <label id="erFiscalPeriodDetailsId" style="color: red; display: none;">Please select fiscal period</label>
+            </div>
+        </div>
+       
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @onchange = "DDLChech('DepartmentId')", @class = "required form-control" })
+                <label id="erDepartmentId" style="color: red; display: none;">Please select department</label>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "//", new { @onchange = "DDLChech('SectionId')", @class = "required form-control" })
+                <label id="erSectionId" style="color: red; display: none;">Please select section</label>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "//", new { @onchange = "DDLChech('ProjectId')", @class = "required form-control" })
+                <label id="erProjectId" style="color: red; display: none;">Please select project</label>
+            </div>
+        </div>
+    </div>
+
+@*    <div class="col-md-2">
+        <button type="submit" title="Save Data"  class="sym-btn-save">&nbsp;Save</button>
+        <input style="margin-top: 19px;" class="btn btn-info" onclick="EmployeeSalaryProcess();" type="button" value="Save" />
+    </div>*@
+    </div>
+

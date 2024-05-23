@@ -1,0 +1,55 @@
+﻿@model SymViewModel.Attendance.AttendanceMigrationVM
+@{
+    ViewBag.Title = "ELProcess";
+}
+
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>EL Balance Process</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="editor-label">
+                @Html.Label("EL Month")
+            </div>
+            <div class="editor-field">
+                <div>
+                    @Html.TextBoxFor(model => model.AttendanceDate, null, new { @placeholder = "EL Month", @class = "attnDate customDatePicker form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Click for Report" data-url="/Common/ELProcess/ELBalanceProcess" onclick="selectData(this);" id="" class="sym-btn-report">&nbsp;Process</button>
+    &nbsp;
+    <button title="Clear the Entries" id="Clear" onclick="window.location.reload()" class="sym-btn-clear">&nbsp;Clear</button>
+</div>
+
+<script>
+    $(function () {
+        $('.customTimePicker').ptTimeSelect();
+        
+
+    });
+
+    function selectData(sender) {
+        var url = $(sender).attr("data-url");
+       
+        var attnDate = $(".attnDate").val();
+
+        if (attnDate == "") {
+            ShowResult("Fail", "Please Select Month First!");
+            return;
+        }
+
+
+        selectObj = new Object();
+        selectObj.attnDate = attnDate;
+        var selectParam = $.param(selectObj);
+        url = url + "?" + selectParam;
+        window.location = url;
+    }
+</script>
+

@@ -1,0 +1,80 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+<p>
+</p>
+<div id="container">
+    <div id="demo">
+        <table id="myDataTableEducation" class="display">
+            <thead>
+                <tr>
+                    <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                    <th>Degree</th>
+                    <th>Major</th>
+                    <th>Institute</th>
+                    <th>Year Of Passing</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+           // $(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableEducation').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Qualification/_indexEducation/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="EducationEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+                                    //org//return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                }
+                            }
+                           @* {
+                                "sName": "Degree_E",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+
+                                    //return '<input type="button" Onclick="EducationEdit(this);" class="btn btn-info btnEducationEdit" data-EmployeeId="Model.Id" data-Id="' + oObj.aData[4] + '" value="Show"/>'
+                                    return '<Lable Onclick="EducationEdit(this);" title="Click on for Edit"  class="innerListLink btnEducationEdit" data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                    ;
+                                }
+                            }*@
+
+                            , { "sName": "Degree_E", "sWidth": "20%" }
+                            , { "sName": "Major", "sWidth": "20%" }
+                            , { "sName": "Institute", "sWidth": "20%" }
+                            , { "sName": "EndDate", "sWidth": "20%" }
+
+            ]
+        });
+    });
+</script>

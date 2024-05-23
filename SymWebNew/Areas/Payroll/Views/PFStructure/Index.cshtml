@@ -1,0 +1,87 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New PF Structure" data-url="/Payroll/PFStructure/Create" id="" class="btnCreate sym-btn-add">&nbsp;New</button>
+    <button type="button" title="Delete PF Structure" data-url="/Payroll/PFStructure/PFStructureDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/Payroll/PFStructure/ImportEmployeePF" onclick="GoTo(this)">&nbsp;Import/Export</button>
+    <label class="pull-right">Provident Fund Structure</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Provident Fund Structure</p>
+    </div>
+    <div class="row">
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center">
+                                <input type="checkbox" class="chkAll" />
+                                Select All </th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>PF Value</th>
+                            <th>Fixed/Rate</th>
+                            <th>Remarks</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th style="text-align: left!important">PF Value</th>
+                            <th>Fixed/Rate</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Add New PF Structure" data-url="/Payroll/PFStructure/Create" id="" class="btnCreate sym-btn-add">&nbsp;New</button>
+    <button type="button" title="Delete PF Structure" data-url="/Payroll/PFStructure/PFStructureDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/Payroll/PFStructure/ImportEmployeePF" onclick="GoTo(this)">&nbsp;Import/Export</button>
+</div>
+<script>
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/PFStructure/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" id="lnkEdit1" class="lnkEdit sym-btn-edit-row" href=\"/Payroll/PFStructure/Edit/' + oObj.aData[0] + '\"></a>' +
+                                    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/PFStructure/PFStructureDelete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>';
+                                }
+                            }
+                            , { "sName": "Code", "sWidth": "18%" }
+                            , { "sName": "Name", "sWidth": "18%" }
+                            , { "sName": "PFValue", "sClass": "right", "sWidth": "20%" }
+                            , { "sName": "IsFixed", "sWidth": "15%" }
+                            , { "sName": "Remarks", "sWidth": "15%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "number-range" }
+				       , { type: "select", values: ["Fixed", "Rate"] }
+                       , { type: "text" }
+            ]
+        });
+        SelectAllForDelete();
+    });
+</script>

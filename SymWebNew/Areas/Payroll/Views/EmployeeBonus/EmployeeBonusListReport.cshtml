@@ -1,0 +1,217 @@
+﻿@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Bonus List Report</p>
+    </div>
+    @if ((string)ViewBag.EmployeeBonus == "N")
+    { 
+        
+        <div class="row">
+
+@*<label class="switch">
+  <input id="dojTo" type="checkbox" checked>
+  <div class="slider round"></div>
+</label>*@
+
+  @*      <div class="col-md-3">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("FiscalPeriodDetailsId", "/Config/DropDown/DropDownPeriodByYear", new { @onchange = "DDLChech('FiscalPeriodDetailsId')", @class = "required form-control" })
+                <label id="erFiscalPeriodDetailsId" style="color: red; display: none;">Please select fiscal period</label>
+            </div>
+        </div>*@
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @onchange = "DDLChech('DepartmentId')", @class = "required form-control" })
+                <label id="erDepartmentId" style="color: red; display: none;">Please select department</label>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "//", new { @onchange = "DDLChech('SectionId')", @class = "required form-control" })
+                <label id="erSectionId" style="color: red; display: none;">Please select section</label>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "//", new { @onchange = "DDLChech('ProjectId')", @class = "required form-control" })
+                <label id="erProjectId" style="color: red; display: none;">Please select project</label>
+            </div>
+        </div>
+        </div>
+
+                <div class="row">
+                     <div class="col-md-2">
+            <label>Employee Code From</label>
+            @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCode", new { @class = " form-control" })
+
+            <label>To</label>
+            @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCode", new { @class = " form-control" })
+        </div>
+
+                <div class="col-md-2">
+             <label>Employee Name</label>
+            @Html.TextBox("EmpName", null, new { @placeholder = "Employee Name", @class = "form-control" })
+
+            <label>Designation </label>
+            @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+        </div>
+                    
+
+                      
+                      <div class="col-md-2">
+            <label>Join Date From</label>
+            @Html.TextBox("dojFrom", null, new { @onchange = "DateCheck(this);",  @placeholder = "Date of Join From", @class = "customDatePicker form-control" })
+
+            <label>To</label>
+            @Html.TextBox("dojTo", null, new { @onchange = "DateCheck(this);",  @placeholder = "Date of Join To", @class = "customDatePicker form-control" })
+        </div>
+        
+    </div>
+        
+        
+        
+        
+          <div class="row">
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                     @Html.ActionLink(" Report", "EmployeeBonusListReport", "EmployeeBonus", null, new { target = "_blank", id = "sendRpt", @class = "sym-btn-report" })
+                </div>
+                <div class="col-md-1">
+                     <label>&nbsp;</label>
+                    <a id="Clear" class="sym-btn-clear"> Clear </a>
+                </div>
+            </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+
+            $('#DepartmentId').click(function () {
+                $('#ProjectId').html("");
+                $('#SectionId').html("");
+                var sections = "";
+                var pid = $('#ProjectId').val();
+                var did = $('#DepartmentId').val();
+                var url1 = "/Config/DropDown/SectionByDepartment/?projectId=" + pid + "&departmentId=" + did;
+                sections += "<option value=0>Select</option>";
+                sections += "<option value=0_0>=ALL=</option>";
+
+                $.getJSON(url1, function (data) {
+                    $.each(data, function (i, state) {
+                        sections += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                    });
+                    $('#SectionId').html(sections);
+                });
+            });
+
+            $('#SectionId').click(function () {
+                $('#ProjectId').html("");
+                var projects = "";
+                var sid = $('#SectionId').val();
+                var did = $('#DepartmentId').val();
+                var url1 = "/Config/DropDown/ProjectByDepartment/?departmentId=" + did + "&sectionId=" + sid;
+                projects += "<option value=0>Select</option>";
+                projects += "<option value=0_0>=ALL=</option>";
+
+                $.getJSON(url1, function (data) {
+                    $.each(data, function (i, state) {
+                        projects += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                    });
+                    $('#ProjectId').html(projects);
+                });
+            });
+
+            
+
+
+            $('#sendRpt').click(function () {
+
+                var dojTo = $("#dojTo").is(":checked");
+                ////alert((dojTo);
+                //var fid = $("#FiscalPeriodDetailsId").val();
+                var ProjectId = $("#ProjectId").val();
+                var DepartmentId = $("#DepartmentId").val();
+                var SectionId = $("#SectionId").val();
+                var DesignationId = $("#DesignationId").val();
+                var CodeF = $("#CodeF").val();
+                var CodeT = $("#CodeT").val();
+                var EmpName = $("#EmpName").val();
+                var dojFrom = $("#dojFrom").val();
+
+
+
+
+                //var dojTo = $("#dojTo").val();
+                var view = "N";// $("#view").val();
+
+                //if (fid == "") {
+                //    ShowResult('Fail', "Please Select  Fiscal Year");
+                //    return false;
+                //}
+                //else if (dtpTo == "") {
+                //    ShowResult('Fail', "Please Select  Attendance Date To");
+                //    return false;
+                //}
+                this.href = this.href.split('?')[0] + '?ProjectId=' + ProjectId
+               + '&DepartmentId=' + DepartmentId
+               + '&SectionId=' + SectionId
+               + '&DesignationId=' + DesignationId
+               + '&CodeF=' + CodeF
+               + '&CodeT=' + CodeT
+               + '&EmpName=' + EmpName
+               + '&dojFrom=' + dojFrom
+               + '&dojTo=' + dojTo
+               + '&view=' + view
+
+            });
+
+        });
+
+        $("#Clear").on('click', function () {
+            //$("#FiscalPeriodDetailsId").val("1");
+            $("#ProjectId").val("1");
+            $("#DepartmentId").val("1");
+            $("#SectionId").val("1");
+            $("#DesignationId").val("1");
+            $("#CodeF").val("1");
+            $("#CodeT").val("1");
+            $("#EmpName").val("");
+            $("#dojFrom").val("");
+            $("#dojTo").val("");
+        });
+
+        function DDLChech(val) {
+            $("#er" + val).hide();
+            if ($("#" + val).val() == "") {
+                $("#er" + val).show();
+            }
+        }
+
+        function DateCheck(sender) {
+            var joinDateFrom = ParseDate($("#dojFrom").val());
+            var joinDateTo = ParseDate($("#dojTo").val());
+
+            if (joinDateFrom > joinDateTo) {
+                ShowResult("Fail", "Join-Date From can't be prior to Join-Date To!");
+                $(sender).val("");
+            }
+        }
+    </script>
+}
+
+

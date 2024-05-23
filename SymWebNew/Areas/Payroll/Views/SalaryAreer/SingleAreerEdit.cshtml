@@ -1,0 +1,69 @@
+﻿@model SymViewModel.Payroll.SalaryAreerDetailVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("SingleAreerEdit", "SalaryAreer", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmGrade" }))
+{
+    <div class="headrow">
+             <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+            <button type="button" title="Back to Previous Page"  data-url="/Payroll/SalaryAreer" onclick="BackToList(this)" class="sym-btn-back">&nbsp;Back</button>
+        <label class="pull-right">Salary Arrear > Edit > Single Edit</label>
+    </div>
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+            <div class="th_thinbox">
+        <p>Employee Salary Arrear Edit </p>
+    </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, null, new { @class = " form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>Arrear Value </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.AreerAmount, null, new {@placeholder = "Arrear Amount", @class =" right form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class =" form-control" })
+                </div>
+            </div>
+        </div>
+           
+    </div>
+}
+<script>
+    $(function () {
+        if ('@ViewBag.result' != '') {
+            var dataAction = "";
+            if('@ViewBag.result'=='Success'){
+                dataAction = "redirect";
+            }
+            ShowResult('@ViewBag.result', '@ViewBag.msg', dataAction, '/Payroll/SalaryAreer');
+        }
+    });
+</script>

@@ -1,0 +1,170 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+    input[type='text'], input[type='password'], textarea {
+        margin: 0px!important;
+    }
+</style>
+ 
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>@Model.EmpName</p>
+                </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.FiscalYearDetailId)
+                    @*@Html.HiddenFor(model => model.SalaryEarningVMs)*@
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+    @using (Html.BeginCollectionItem("EarningVMs"))
+    {          <div class="thinbox">
+                  <div class="Earningdatail">
+                      @if (Model.SalaryEarningVMs.ToList().Count > 0 && Model.SalaryEarningVMs!= null)
+                      {
+                          <div class="col-md-3">
+                              <label>Head name</label>
+                              </div>
+                          <div class="col-md-3">
+                              <label>Amount</label>
+                              </div>
+                          
+                          <div class="col-md-6">
+                              <label>Remarks</label>
+                              </div>
+                          
+                          foreach (var salaryEarningvm in Model.SalaryEarningVMs)
+                                    { 
+                      <div class="row">
+                          <div class="col-md-3">
+                              <div class="editor-label">
+                                <h3> @Html.ValueFor(modelN=>salaryEarningvm.SalaryTypeName)</h3> 
+                                  @Html.HiddenFor(modelN =>salaryEarningvm.FiscalYearDetailId)
+                                  @Html.HiddenFor(model => salaryEarningvm.SalaryTypeId)
+                                  @Html.HiddenFor(model => salaryEarningvm.EmployeeId, new { @class = "empErid" })
+                              </div>
+                          </div>
+                           <div class="col-md-3">
+                              
+                              <div class="editor-field">
+                                  @Html.TextBoxFor(model => salaryEarningvm.Amount, new { @class = "right EarningAmount  required  form-control" , @disabled = "disabled" })
+                                  @Html.ValidationMessageFor(model => salaryEarningvm.Amount)
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                             
+                              <div class="editor-field">
+                                  @Html.TextAreaFor(model => salaryEarningvm.Remarks, new { @class = "  form-control"  , @disabled = "disabled" })
+                                  @Html.ValidationMessageFor(model => salaryEarningvm.Remarks)
+                              </div>
+                          </div>
+                      </div>
+                                    }
+                      }
+                <br />
+         @*       <div class="headrow">
+                     <button type="button" title="Save Data" id="SaveJSON" class=" Save sym-btn-save">&nbsp;Save</button>
+                      <button type="button" title="Save Data" id="UpdateJSON" class=" Save sym-btn-update"> Update</button>
+                    <button type="button" title="Delete Data" id="DeleteJSON" class=" Save sym-btn-remove">&nbsp;Delete</button>
+                </div>*@
+                      </div>
+                <div id="noearningempid">
+                   <h2> This Employee has no Eearning Structure assigned yet.</h2>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+ 
+<script>
+    $(function () {
+        InitDropDowns();
+        checkvalues();
+       
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+         }
+        //$('#empId').val('@Model.Code~@Model.EmpName');
+    });
+    $('#DeleteJSON').click(function () {
+        var myData = $('#frmSalEarning').serialize();
+        var url = "/Payroll/SalaryEarning/Create";
+        //submit(url, myData);
+        $('.EarningAmount').val('0');
+    })
+    $('#SaveJSON,#UpdateJSON').click(function () {
+        var myData = $('#frmSalEarningNew').serialize();
+        //var url = "/Payroll/SalaryOtherEarning/Create";
+        var url = "/Payroll/SalaryEarning/Create";
+        submit(url, myData);
+    })
+    function checkvalues() {
+        var EarningAmount = $(".EarningAmount").val();
+        if (EarningAmount == 0) {
+            $("#SaveJSON").show();
+            $("#UpdateJSON").hide();
+        }
+        else {
+            $("#SaveJSON").hide();
+            $("#UpdateJSON").show();
+        }
+        var empErid = $(".empErid").val();
+      
+        if (typeof empErid == undefined || empErid == "" || empErid == null) {
+            $(".Earningdatail").hide("slow");
+            $("#noearningempid").show();
+        }
+        else {
+            $(".Earningdatail").show();
+            $("#noearningempid").hide();
+        }
+    }
+</script>

@@ -1,0 +1,118 @@
+﻿@model SymViewModel.Common.Appraisal360DetailsVM
+@using UIHelper.MVC
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @*@Html.HiddenFor(model => model.CompanyId)*@
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        <button type="button" title="Index Appraisal 360" data-url="/Common/Appraisal360/Index" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp;Index</button>
+        <label class="pull-right"> Appraisal360 Details > Create</label>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal360 Details</p>
+        </div>
+        <div class="appraisalQuestions">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepartmentId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                    </div>
+                </div>
+
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("FeedBackYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDownFor(m => m.FeedBackMonthId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "  cFeedBackMonthId required form-control selectDropdown " })
+                            @* @Html.SimpleDropDown("FeedBackMonthId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.QuestionId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(m => m.QuestionId, "/Config/DropDown/Question", new { @class = " cDepartmentId required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.Label("", "Feedback Value")
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FeedbackValue, new { @placeholder = "Feedback Value", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.FeedbackValue)
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    @*
+
+        <p>
+            <input class="btn btn-info" type="submit" value="Create" />
+            <input type="button" class="btn btn-info" data-url="/Common/Branch" onclick="BackToList(this)" value="Back" />
+        </p>*@
+
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+    </div>
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            Country();
+            Division();
+            District();
+            //valiDation("frmDependent");
+            fromWriteColor("branch");
+        });
+    </script>
+}
+
+
+
+
+
+
+
+

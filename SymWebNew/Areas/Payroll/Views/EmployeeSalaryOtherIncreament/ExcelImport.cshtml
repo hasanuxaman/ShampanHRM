@@ -1,0 +1,191 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@{
+    ViewBag.Title = "ExcelImport";
+}
+
+@using UIHelper.MVC
+<div class="headrow">
+    <label class="pull-right">Salary Increament > Excel Import/Export</label>
+</div>
+
+
+<div class="row">
+    <div class="thinbox col-md-12">
+        <div class="th_thinbox">
+            <p>Salary Increment Import/Export </p>
+        </div>
+        <div class="row">
+            <div class="thinbox col-md-12">
+                <div class="th_thinbox">
+                    <p>Salary Increment Import </p>
+                </div>
+                @using (Html.BeginForm("ImportExcel", "EmployeeSalaryOtherIncreament", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmImportExcel" }))
+                {
+                    <div class="col-md-6">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <label>File</label>
+                            <input type="file" accept=".xlsx" name="file" id="FileUpload" style="width: 200px;" class="required" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>&nbsp;</label>
+                        <button type="button" onclick="pageSubmit('frmImportExcel');" class="sym-btn-file-upload" value="Upload" style="width: 50%; text-align: center;">&nbsp;Upload</button>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+        @using (Html.BeginForm("DownloadExcel", "EmployeeSalaryOtherIncreament", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmDownloadExcel", @target = "_blank" }))
+        {
+
+            <div class="row">
+                <div class="thinbox col-md-12">
+                    <div class="th_thinbox">
+                        <p>Salary Increment Export </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>Emp Code(From)</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.CodeF, "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>Emp Code(To)</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.CodeT, "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>Designation</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.DesignationId, "/Config/DropDown/Designation", new { @class = "form-control Dropdown " })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        @if (Session["LabelOther1"].ToString() != "")
+                        {
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>@Session["LabelOther1"]</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.Other1, "/Config/DropDown/OtherInfo?infoType=Other1", new { @class = " other1 form-control" })
+                            </div>
+                        </div>
+                        }
+
+                        @if (Session["LabelOther2"].ToString() != "")
+                        {
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>@Session["LabelOther2"]</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.Other2, "/Config/DropDown/OtherInfo?infoType=Other2", new { @class = " other2 form-control" })
+                            </div>
+                        </div>
+                        }
+
+                        @if (Session["LabelOther3"].ToString() != "")
+                        {
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>@Session["LabelOther3"]</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.MultiOther3, "/Config/DropDown/OtherInfo?infoType=Other3", new { @placeholder = "Multiple " + @Session["LabelOther3"], @class = "mulitpleOther3 form-control selectDropdown", @multiple = "multiple" })
+                                @Html.HiddenFor(model => model.MultipleOther3)
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>@Session["DepartmentLabel"]</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = "form-control  departmentsCom " })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>@Session["SectionLabel"]</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.SectionId, "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                <label>@Session["ProjectLabel"]</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.ProjectId, "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="editor-label">
+                                <label>Order By</label>
+                            </div>
+                            <div class="editor-field">
+                                @Html.SimpleDropDownFor(model => model.OrderBy, "/Config/DropDown/EnumOrderBy?Module=Salary", new { @class = "required form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <label>&nbsp;</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <button id="btnEmployee" class=" cDownloadExcel sym-btn-Excel-Export" type="button" >&nbsp;Download</button>
+                        &nbsp;
+                        <button type="button" title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation("frmDownloadExcel");
+    });
+
+    $("#Clear").on('click', function () {
+        $(".Dropdown").select2("val", "");
+        $(".form-control").val("");
+    });
+
+
+    $(".cDownloadExcel").on('click', function () {
+       
+        var MultipleOther3 = $('#MultiOther3').val();
+        $('#MultipleOther3').val(MultipleOther3);
+
+        pageSubmit('frmDownloadExcel');
+    });
+
+
+</script>

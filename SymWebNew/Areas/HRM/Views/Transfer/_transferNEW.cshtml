@@ -1,0 +1,154 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@* <div class="headrow">
+      <button type="button" title="Add New " onclick="Transfer();" id="" class="sym-btn-add "> New</button>
+     <button type="button" title="Cancel Data" onclick="CanclePromotion();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+    </div> *@
+
+@using (Html.BeginForm("Transfer", "Transfer", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTransfer" }))
+{
+
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Transfer To</p>
+        </div>
+
+        <div class="transfer">
+            @Html.HiddenFor(model => model.transferVM.Id)
+            @Html.HiddenFor(model => model.transferVM.EmployeeId)
+            <div class="row">
+                <div class="editor-label col-md-4">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.SimpleDropDownFor(model => model.transferVM.DepartmentId, "/Config/DropDown/Department", new { @class = "required form-control" })
+                    @Html.ValidationMessageFor(model => model.transferVM.DepartmentId)
+                </div>
+                <div class="editor-label col-md-4">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.SimpleDropDownFor(model => model.transferVM.SectionId, "/Config/DropDown/Section", new { @class = "required form-control" })
+                    @Html.ValidationMessageFor(model => model.transferVM.SectionId)
+                </div>
+
+                <div class=" editor-label col-md-4">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.SimpleDropDownFor(model => model.transferVM.ProjectId, "/Config/DropDown/Project", new { @class = "required form-control" })
+                    @Html.ValidationMessageFor(model => model.transferVM.ProjectId)
+                </div>
+
+                <div class=" col-md-4 editor-label">
+                    @Html.LabelFor(model => model.transferVM.TransferDate)
+                </div>
+                <div class="col-md-8 editor-field">
+                    @Html.TextBoxFor(model => model.transferVM.TransferDate, new { @onchange = "CheckTransferDate(this); ", @placeholder = "Transfer Date", @class = "currentdate required customDatePicker form-control" })
+
+                    @Html.ValidationMessageFor(model => model.transferVM.TransferDate)
+                </div>
+
+               
+                @if (Session["LabelOther1"].ToString() != "")
+                {
+                    <div class=" col-md-4 editor-label">
+                        <label>@Session["LabelOther1"]</label>
+                    </div>
+                    <div class="col-md-8 editor-field">
+                        @Html.TextBoxFor(model => model.transferVM.Other1, new { @placeholder = @Session["LabelOther1"].ToString(), @class = "Other1 form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Other1)
+                    </div>
+                }
+                @if (Session["LabelOther2"].ToString() != "")
+                {
+                    <div class=" col-md-4 editor-label">
+                        <label>@Session["LabelOther2"]</label>
+                    </div>
+                    <div class="col-md-8 editor-field">
+                        @Html.TextBoxFor(model => model.transferVM.Other2, new { @placeholder = @Session["LabelOther1"].ToString(), @class = "Other1 form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Other2)
+                    </div>
+                }
+                @if (Session["LabelOther3"].ToString() != "")
+                {
+                    <div class=" col-md-4 editor-label">
+                        <label>@Session["LabelOther3"]</label>
+                    </div>
+                    <div class="col-md-8 editor-field">
+                        @Html.TextBoxFor(model => model.transferVM.Other3, new { @placeholder = @Session["LabelOther1"].ToString(), @class = "Other1 form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Other3)
+                    </div>
+                }
+                <div class=" col-md-4 editor-label">
+                    @Html.LabelFor(model => model.transferVM.Remarks)
+                </div>
+                <div class="col-md-8 editor-field">
+                    @Html.TextAreaFor(model => model.transferVM.Remarks, new { @class = "form-control", @rows = "1" })
+                    @Html.ValidationMessageFor(model => model.transferVM.Remarks)
+                </div>
+                <div class=" col-md-4 ">
+                </div>
+                <div class="col-md-6">
+                    <input type="file" name="TransferF" id="TransferF" style="width: 200px;" />
+                </div>
+                <div class=" col-md-4 ">
+                </div>
+                <div class="col-md-6">
+                    <button type="button" title="Save Data" id="saveJSON" class="newtranfer sym-btn-save ">&nbsp;Save</button>
+                    <button type="button" title="Cancel Data" onclick="CancleTransfer();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    $('#transferVM_Other1').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other1', minLength: 2 });
+    $('#transferVM_Other2').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other2', minLength: 2 });
+    $('#transferVM_Other3').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other3', minLength: 2 });
+
+    InitDropDowns();
+    InitDateTimePickers();
+    fromWriteColor("transfer");
+    valiDation('frmTransfer');
+    jobjoin();
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    $('#saveJSON').click(function () {
+        if (isChange == true) {
+            if (pageSubmitJSON('frmTransfer') == 0) {
+                var myData = $('#frmTransfer').serialize();
+                var url = "/HRM/Transfer/Transfer";
+                var res = submit(url, myData);
+                if (res == true) {
+                    location.reload();
+                }
+                isChange = false;
+            }
+        }
+        else {
+            ShowResult("Success", "You have no changes for save");
+
+        }
+    });
+    function CancleTransfer() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                CancleTransfer();
+            })
+        }
+        else {
+            //isChange = false;
+            $(".search").hide();
+            $("#detailsDiv").hide();
+        }
+
+    }
+</script>

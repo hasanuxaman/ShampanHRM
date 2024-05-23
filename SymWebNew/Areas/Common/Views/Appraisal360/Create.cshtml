@@ -1,0 +1,175 @@
+﻿@model SymViewModel.Common.Appraisal360VM
+@using UIHelper.MVC
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @*@Html.HiddenFor(model => model.CompanyId)*@
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+        <button type="button" title="Index Appraisal 360" data-url="/Common/Appraisal360/Index" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp;Index</button>
+        <label class="pull-right"> Appraisa 360 > Create</label>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal360</p>
+        </div>
+        <div class="appraisalQuestions">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepartmentId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.UserId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.UserId, "/Config/DropDown/User", new { @class = " cUserId required form-control " })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FeedBackUserId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.FeedBackUserId, "/Config/DropDown/User", new { @class = " cFeedBackUserId required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.Label("", "Feedback Date")
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("FeedbackDate", null, new { @placeholder = "FeedbackDate", @class = "required customDatePicker form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("FeedBackYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDownFor(m => m.FeedBackMonthId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "  cFeedBackMonthId required form-control selectDropdown " })
+                            @* @Html.SimpleDropDown("FeedBackMonthId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsFeedbackCompeted)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsFeedbackCompeted, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsFeedbackCompeted)
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsUser)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsUser, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsUser)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsSupervisor)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsSupervisor, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsSupervisor)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsDepartmentHead)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsDepartmentHead, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsDepartmentHead)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsManagement)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsManagement, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsManagement)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsHR)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsHR, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsHR)
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @*
+
+        <p>
+            <input class="btn btn-info" type="submit" value="Create" />
+            <input type="button" class="btn btn-info" data-url="/Common/Branch" onclick="BackToList(this)" value="Back" />
+        </p>*@
+
+
+    <div class="headrow">
+        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+    </div>
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            Country();
+            Division();
+            District();
+            //valiDation("frmDependent");
+            fromWriteColor("branch");
+        });
+    </script>
+}
+
+
+
+

@@ -1,0 +1,198 @@
+﻿@*@model SymViewModel.HRM.EmployeeInfoVM*@
+@model SymViewModel.HRM.EmployeeInfoVM
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Contact Details";
+}
+<div id="mypresentAddressIndex">
+    @Html.Partial("_presentAddress", Model)
+</div>
+<div id="mypermanentAddressIndex">
+    @Html.Partial("_permanentAddress", Model)
+</div>
+
+@*<div id="mypermanentAddressBanglaIndex">
+<h3>Permanent Address(Bangla)</h3>
+    @Html.Partial("_permanentAddressBangla",Model)
+</div>
+test*@
+
+
+@*<div id="mypresentAddressBanglaIndex">
+<h3>Present Address(Bangla)</h3>
+    @Html.Partial("_presentAddressBangla",Model)
+</div>*@
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Reference</p>
+    </div>
+    <div>
+        <div id="myPortion">
+        </div>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" title="Add New  Reference" id="btnDialogTR" class=" sym-btn-add">&nbsp;New</button>
+            <button type="button" title="Delete Checked Reference" data-url="/hrm/ContactDetail/ReferenceDelete" onclick="deletedData(this, 'myDataTableRF');" class="showHideRF sym-btn-remove">&nbsp;Delete</button>
+        }
+    </div>
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableRF" class="display">
+                <thead>
+                    <tr>
+                        <th class="center">
+                            <input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Name</th>
+                        <th>Relation</th>
+                        <th>Phone</th>
+                        <th>Mobile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+<script>
+    function EditPermanentAddress() {
+        fnReadOnly("permanentAddress");
+        if ($(".permanentAddress").hasClass("readOnly")) {
+            $(".permanentAddress .Save").hide();
+            $(".permanentAddress .Cancle").hide();
+            $(".permanentAddress .SaveAbove").hide();
+            $(".permanentAddress .Edit").show();
+        }
+        else {
+            $(".permanentAddress .Cancle").show();
+            $(".permanentAddress .Save").show();
+            $(".permanentAddress .SaveAbove").show();
+            $(".permanentAddress .Edit").hide();
+        }
+    }
+    function EditPresentAddress() {
+        fnReadOnly("presentAddress");
+        if ($(".presentAddress").hasClass("readOnly")) {
+            $(".presentAddress .Save").hide();
+            $(".presentAddress .Cancle").hide();
+            $(".presentAddress .Edit").show();
+        }
+        else {
+            $(".presentAddress .Cancle").show();
+            $(".presentAddress .Save").show();
+            $(".presentAddress .Edit").hide();
+        }
+    }
+    $(function () {
+        Country();
+        Division();
+        District();
+        var oTable = $('#myDataTableRF').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/ContactDetail/_index/@Model.Id",
+              "bProcessing": true,
+              "aLengthMenu": tablelength(),
+              "bJqueryUI": true,
+              "bAutoWidth": false,
+              "aoColumns": [
+                              {
+                                  "sName": "Id",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "sWidth": "12%",
+                                  "sClass": "center",
+                                  "fnRender": function (oObj) {
+                                      return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="referanceEdit(this);" data-EmployeeId="@Model.Id"   data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>' +
+                                      '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/hrm/ContactDetail/ReferenceDelete" onclick="deletedData(this, myDataTableRF,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+                                  }
+                              }
+                              , { "sName": "Name" }
+                              , { "sName": "Relation" }
+                              , { "sName": "Phone" }
+                              , { "sName": "Mobile" }
+              ]
+          });
+          SelectAllForDelete();
+          if ('@ViewBag.mgs' != '') {
+              var msg = '@ViewBag.mgs';
+              msg = msg.split("~");
+              ShowResult(msg[0], msg[1]);
+          }
+      });
+      $('#btnDialogTR').click(function () {
+          // var code = 1;// $('#Id').val();
+          $("#myPortion").load('@Url.Action("Reference", "ContactDetail")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+        });
+        function referanceEdit(sender) {
+            var EmployeeId = $(sender).attr('data-employeeId');
+            var Id = $(sender).attr('data-Id');
+            $("#myPortion").load('@Url.Action("Reference", "ContactDetail")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+
+    function Editrefe() {
+        if ($(".reference #referenceVM_Id").val() <= 0) { $(".reference .Edit").hide(); fromWriteColor("reference"); return; }
+        fnReadOnly("reference");
+        if ($(".reference").hasClass("readOnly")) {
+            $(".reference .Save").hide();
+            $(".reference .Edit").show();
+        }
+        else {
+            $(".reference .Save").show();
+            $(".reference .Edit").hide();
+        }
+    }
+    function Cancletravel() {
+        $("#myPortion").html('');
+        $(".showHideRF").show();
+    }
+
+
+    function EditPermanentAddressBangla() {
+        fnReadOnly("permanentAddressBangla");
+        if ($(".permanentAddressBangla").hasClass("readOnly")) {
+            $(".permanentAddressBangla .Save").hide();
+            $(".permanentAddressBangla .Cancle").hide();
+            $(".permanentAddressBangla .Edit").show();
+        }
+        else {
+            $(".permanentAddressBangla .Cancle").show();
+            $(".permanentAddressBangla .Save").show();
+            $(".permanentAddressBangla .Edit").hide();
+        }
+    }
+
+    function EditPresentAddressBangla() {
+        fnReadOnly("presentAddressBangla");
+        if ($(".presentAddressBangla").hasClass("readOnly")) {
+            $(".presentAddressBangla .Save").hide();
+            $(".presentAddressBangla .Cancle").hide();
+            $(".presentAddressBangla .Edit").show();
+        }
+        else {
+            $(".presentAddressBangla .Cancle").show();
+            $(".presentAddressBangla .Save").show();
+            $(".presentAddressBangla .Edit").hide();
+        }
+    }
+    function Cancle() {
+        location.reload();
+    }
+    var leftMenuActive = "ContactDetails";
+</script>

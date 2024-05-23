@@ -1,0 +1,119 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="empInfo">
+                <div class="th_thinbox">
+                    <p>@Html.ValueFor(model => model.EmpName)</p>
+                </div>
+                @Html.HiddenFor(model => model.Id)
+                <div class=" col-md-2">
+                    <div class="editor-label col-md-2 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                </div>
+                <div class=" col-md-2">
+                    <div class="editor-label ">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field ">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                </div>
+                <div class=" col-md-2">
+                    <div class="editor-label ">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                </div>
+                <div class=" col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                </div>
+                <div class=" col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field ">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        
+        @using (Html.BeginForm("AttendanceLog", "EmployeeAttendance", FormMethod.Post, new { @Id = "frmAttendanceLog" }))
+        {
+            @Html.HiddenFor(model => model.EmployeeOtherEarningVM.Id)
+            @Html.HiddenFor(model => model.EmployeeOtherEarningVM.EmployeeId)
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p></p>
+                </div>
+                <div class="attendance">
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.EmployeeOtherEarningVM.GrossSalary)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeOtherEarningVM.GrossSalary, new { @placeholder = "Gross Salary", @class = " required  form-control" })
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.EmployeeOtherEarningVM.BasicSalary)
+                    </div>
+                    <div class="editor-field  col-md-8">
+                        @Html.TextBoxFor(model => model.EmployeeOtherEarningVM.GrossSalary, new { @placeholder = "Basic Salary", @class = " required  form-control" })
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.EmployeeOtherEarningVM.Remarks)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextAreaFor(model => model.EmployeeOtherEarningVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EmployeeOtherEarningVM.Remarks)
+                    </div>
+                    <p>
+                        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+                        <button type="button" title="Cancel Data" onclick="CancleLeave();" class="  sym-btn-cancel">&nbsp;Cancel</button>
+                    </p>
+                </div>
+            </div>
+        }
+ 
+    </div>
+    <div class="col-md-6">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p></p>
+                </div>
+        <div class="row">
+        @foreach (var item in Model.EmployeeSalaryStructureVMs) { 
+                   
+              <div class="editor-label col-md-4">
+                     <h2>   @Html.ValueFor(model => item.SalaryType)</h2>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model =>item.TotalValue, new {  @disabled = "disabled",@placeholder = "TotalValue", @class = " required form-control" })
+                    </div>
+        }
+                 </div>
+            </div>
+    </div>
+</div>

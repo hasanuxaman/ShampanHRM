@@ -1,0 +1,149 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Promotion", "Job", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmPromotion" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="promotion">
+        @Html.HiddenFor(model => model.promotionVM.Id)
+        @Html.HiddenFor(model => model.promotionVM.EmployeeId)
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.promotionVM.DesignationId)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.promotionVM.DesignationId, "/Config/DropDown/Designation", new { @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.promotionVM.GradeId)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.promotionVM.GradeId, "/Config/DropDown/Grade", new { @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.promotionVM.StepId)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.promotionVM.StepId, "/Config/DropDown/Step", new { @class = "step required form-control" })
+                </div>
+            </div>
+        
+
+            <div class="col-md-1">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.promotionVM.IsPromotion)
+                </div>
+                <div class="editor-field center">
+                    @Html.CheckBoxFor(model => model.promotionVM.IsPromotion, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.promotionVM.PromotionDate)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.promotionVM.PromotionDate, new { @onchange = "CheckPromotionDate(this);", @placeholder = "Promotion Date", @class = " required customDatePicker form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.promotionVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.promotionVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>&nbsp;</label>
+                <input type="file" onchange="CheckFileSize(this);" name="PromotionF" id="PromotionF" style="width: 200px;" />
+            </div>
+            @if (Model.promotionVM.FileName != null && Model.promotionVM.FileName != "")
+            {
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="col-md-6">
+                        <a target="_blank" href="~/Files/Promotion/@Model.promotionVM.Id@Model.promotionVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float: left;">
+                        <span onclick="FileDelete(this)"; data-id="@Model.promotionVM.Id" data-table="5"  data-field="FileName" data-url="~/Files/Promotion/@Model.promotionVM.Id@Model.promotionVM.FileName">
+                            <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                    </div>
+                </div>
+                }
+        </div>
+        <p>
+            @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+            {
+                if (((Model.promotionVM.Id > 0 && Model.promotionVM.IsCurrent) || Model.promotionVM.Id <= 0) && Model.IsActive)
+                {
+                @*<button type="button" title="Save Data" onclick="pageSubmit('frmPromotion');" class="Save sym-btn-save">&nbsp;Save</button>*@
+                
+                <button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>
+                
+                <button type="button" title="Edit Data" onclick="EditPromotion();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                                    }
+                                }
+            <button type="button" title="Edit Data" onclick="CanclePromotion();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </p>
+    </div> 
+}
+<script>
+    $(function () {
+        $(".showHidePR").hide();
+        customToollip();
+        EditPromotion();
+        valiDation("frmPromotion");
+        InitDateTimePickers();
+        InitDropDowns();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+
+        $('#saveJSOND').click(function () {
+            var url = "/HRM/Job/Promotion";
+
+            $form = $('#frmPromotion');
+
+            $form.attr("action", url);
+            $form.submit();
+
+        });
+        //$('#savePromotion').click(function () {
+        //    if (isChange == false) {
+        //        ShowResult("Success", "You have no changes for save");
+        //        return;
+        //    }
+        //    if (pageSubmitJSON('frmPromotion') == 0) {
+        //        var myData = $('#frmPromotion').serialize();
+        //        var url = "/HRM/Job/Promotion";
+        //        submit(url, myData);
+        //        EditJobDetail();
+        //    }
+        //})
+    });
+
+</script>

@@ -1,0 +1,434 @@
+﻿@using UIHelper.MVC
+<div class="headrow">
+ <label class="pull-right">Salary Process > Salary Tabs</label>
+    </div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>@ViewBag.emp</p>
+    </div>
+    <div>
+        <ul style="font-size:1.2em" class="nav nav-tabs" id="myTab">
+            <li class="active"><a href="#Pf">Salary PF</a></li>
+            <li><a href="#Tax">Salary Tax</a></li>
+            <li><a href="#Earning">Salary Earning</a></li>
+            <li><a href="#Areer">Salary Arrear</a></li>
+            <li><a href="#Deduction">Salary Deduction</a></li>
+            <li><a href="#Loan">Salary Loan</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="Pf" class="tab-pane fade in active">
+                <div class="Pf">
+                 <div id="container">
+                    <table id="pfDataTable" class="display">
+                          <thead>
+                        <tr>
+                            <th class="center">Select </th>
+                               <th>Period</th>
+                                <th>Basic</th>
+                                <th>Gross</th>
+                                <th>PF Value</th>
+                          
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                               <th>Period</th>
+                                <th style="text-align:left!important">Basic</th>
+                                <th style="text-align:left!important">Gross</th>
+                                <th style="text-align:left!important">PF Value</th>
+                      
+                        </tr>
+                    </thead>
+                       
+                        <tbody> 
+                        </tbody>
+                    </table>
+                                            <br />
+                    </div>
+                </div>
+            </div>
+            <div id="Tax" class="tab-pane fade">
+                <div class="Tax">
+                    <div id="container2">
+                    <table id="taxDataTable" class="display">
+                           <thead>
+                        <tr>
+                            <th class="center"> Select  </th>
+                                 <th>Period</th>
+                                <th>Basic</th>
+                                <th>Gross</th>
+                                <th>Tax Value</th>
+                          
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                               <th>Period</th>
+                                <th style="text-align:left!important">Basic</th>
+                                <th style="text-align:left!important">Gross</th>
+                                <th style="text-align:left!important">Tax Value</th>
+                        </tr>
+                    </thead>
+                      
+                        <tbody> 
+                        </tbody>
+                    </table>
+                                            <br />
+                    </div>
+                </div>
+            </div>
+            <div id="Earning" class="tab-pane fade">
+                <div class="Earning">
+                                        <div id="container3">
+                    <table id="earnningDataTable" class="display">
+                              <thead >
+                        <tr>
+                         @*<th>Select </th>*@
+                                 <th>Period</th>
+                                <th>Salary Type</th>
+                                <th>Amount</th>
+                          
+                        </tr>
+                        <tr>
+                         @*<th class="center">Actions</th>*@
+                                <th>Period</th>
+                                <th>Salary Type</th>
+                                <th style="text-align:left!important">Amount</th>
+                      
+                        </tr>
+                    </thead>
+                    
+                        <tbody> 
+                        </tbody>
+                    </table>
+                                            <br />
+                    </div>
+                </div>
+            </div>
+            <div id="Areer" class="tab-pane fade">
+                <div class="Areer">
+                 <div id="container4">
+                    <table id="areerDataTable" class="display">
+                         <thead>
+                        <tr>
+                            <th class="center"> Select  </th>
+                             <th>Period</th>
+                            <th>Arrear Value</th>
+                                <th >Remarks</th>
+                      
+                          
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                              <th>Period</th>
+                            <th style="text-align:left!important">Arrear Value</th>
+                                <th >Remarks</th>
+                    
+                      
+                        </tr>
+                    </thead>
+                        <tbody> 
+                        </tbody>
+                    </table>
+                                            <br />
+                    </div>
+                </div>
+            </div>
+            <div id="Deduction" class="tab-pane fade">
+                <div class="Deduction">
+                 <div id="container41">
+                    <table id="deductionDataTable" class="display">
+                           <thead>
+                        <tr>
+                            <th class="center">Select</th>
+                           <th>Name</th>
+                            <th>Deduction Value</th>
+                        </tr>
+                        <tr>
+                            <th>Actions</th>
+                           <th>Name</th>
+                            <th style="text-align:left!important">Deduction Value</th>
+                        </tr>
+                    </thead>
+                        <tbody> 
+                        </tbody>
+                    </table>
+                                            <br />
+                    </div>
+                </div>
+            </div>
+            <div id="Loan" class="tab-pane fade">
+                <div class="Loan">
+                <div id="container5">
+                    <table id="loanDataTable" class="display">
+                        <thead>
+                            <tr>
+                                 @*<th>Select </th>*@
+                                <th>Period</th>
+                                <th>Amount</th>
+                                <th >Remarks</th>
+                            </tr>
+                             <tr>
+                                 @*<th>Actions</th>*@
+                                <th>Period</th>
+                                <th style="text-align:left!important">Amount</th>
+                                <th >Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                        </tbody>
+                    </table>
+                                            <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+        $("#myTab").load($('li.active a[data-toggle="tab"]').attr('href'));
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // save the latest tab; use cookies if you like 'em better:
+            localStorage.setItem('lastTab', $(this).attr('href'));
+        });
+
+        // go to the latest tab, if it exists:
+        var lastTab = localStorage.getItem('lastTab');
+        if (lastTab) {
+            $('[href="' + lastTab + '"]').tab('show');
+        }
+    });
+
+    $(function () {
+        var oTable = $('#pfDataTable').dataTable
+            ({
+                "bServerSide": true,
+                "sAjaxSource": "/SalaryProcess/_EmployeePF?empID=@ViewBag.empID",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns":
+                    [
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "sWidth": "12%",
+                            "sClass":"center",
+                            "fnRender": function (oObj)
+                            {
+                             return ' <a  title="Click on for Edit" style="text-decoration:none;" id="lnkEdit1" Onclick="PFEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                                ; //+
+                            }
+                        }
+                        , { "sName": "FiscalPeriod", "sWidth": "15%" }
+                        , { "sName": "BasicSalary", "sClass": "right", "sWidth": "24%" }
+                        , { "sName": "GrossSalary", "sClass": "right", "sWidth": "24%" }
+                        , { "sName": "PFValue", "sClass": "right", "sWidth": "24%" }
+                ]
+            });
+
+        oTable.columnFilter
+            ({
+                sPlaceHolder: "head:after",
+                aoColumns:
+                    [
+                        { type: "checkbox", "sClass": "chkAll" }
+                      , { type: "text" }
+                      , { type: "number-range" }
+                      , { type: "number-range" }
+                      , { type: "number-range" }
+                    ]
+            });
+
+
+
+        //Tax DataTable
+
+        var oTable2 = $('#taxDataTable').dataTable({
+            "bServerSide": true,
+
+            "sAjaxSource": "/SalaryProcess/_EmployeeTax?empID=@ViewBag.empID",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                             {
+                                 "sName": "Id",
+                                 "bSearchable": false,
+                                 "bSortable": false,
+                                 "sWidth": "12%",
+                                 "sClass": "center",
+                                 "fnRender": function (oObj) {
+                                     return ' <a  title="Click on for Edit" style="text-decoration:none;" id="lnkEdit1" Onclick="TaxEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                                 }
+                             }
+                               , { "sName": "FiscalPeriod" , "sWidth": "15%" }
+                               , { "sName": "Basic" , "sClass":"right" , "sWidth": "24%" }
+                               , { "sName": "Gross" , "sClass":"right" , "sWidth": "24%" }
+                               , { "sName": "Tax"   , "sClass":"right" , "sWidth": "24%" }
+            ]
+        });
+        oTable2.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns:
+                [
+                    { type: "checkbox", "sClass": "chkAll" }
+                    , { type: "text" }
+                    , { type: "number-range" }
+                    , { type: "number-range" }
+                    , { type: "number-range" }
+                ]
+        });
+
+
+        //Earnning DataTable
+
+        var oTable3 = $('#earnningDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/SalaryProcess/_EmployeeEarning?empID=@ViewBag.empID",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns":
+                [
+                    { "sName": "Period", "sWidth": "24%" }
+                  , { "sName": "SalaryType", "sWidth": "24%" }
+                  , { "sName": "Amount", "sClass": "right", "sWidth": "24%" }
+                ]
+        });
+        oTable3.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns:
+                [
+                    { type: "text" }
+                    , { type: "number-range" }
+                    , { type: "text" }
+                ]
+        });
+
+
+        //Arrear DataTable
+        var oTable4 = $('#areerDataTable').dataTable
+            ({
+                "bServerSide": true,
+                "sAjaxSource": "/SalaryProcess/_EmployeeAreer?empID=@ViewBag.empID",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns":
+                    [
+                        {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         "sClass": "center",
+                         "fnRender": function (oObj)
+                         {
+                             return ' <a  title="Click on for Edit" style="text-decoration:none;" id="lnkEdit1"Onclick="AreerEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                         }
+                     }
+                     , { "sName": "FiscalPeriod", "sWidth": "35%" }
+                     , { "sName": "AreerAmount", "sClass": "right", "sWidth": "24%" }
+                     , { "sName": "Remarks", "sWidth": "24%" }
+                    ]
+            });
+
+        oTable4.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns:
+                [
+                    { type: "checkbox", "sClass": "chkAll" }
+                  , { type: "text" }
+                  , { type: "number-range" }
+                  , { type: "text" }
+                ]
+        });
+
+
+        //Deduction DataTable
+        var oTable5 = $('#deductionDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/SalaryProcess/_EmployeeDeduction?empID=@ViewBag.empID",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                 {
+                     "sName": "Id",
+                     "bSearchable": false,
+                     "bSortable": false,
+                     "sWidth": "12%",
+                     "sClass": "center",
+                     "fnRender": function (oObj) {
+                         return ' <a  title="Click on for Edit" style="text-decoration:none;" id="lnkEdit1"Onclick="DeductionEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                     }
+                 },
+                                                { "sName": "FiscalPeriod", "sWidth": "40%" }
+                                                , { "sName": "DeductionAmount", "sClass": "right", "sWidth": "40%" }
+            ]
+         });
+        oTable5.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                        , { type: "number-range" }
+
+            ]
+        });
+
+
+
+        //Loan DataTable
+
+        var oTable6 = $('#loanDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/SalaryProcess/_EmployeeLoan?empID=@ViewBag.empID",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns":
+                [
+            { "sName": "Period", "sWidth": "24%" }
+            , { "sName": "AreerAmount", "sClass": "right", "sWidth": "24%" }
+            , { "sName": "Remarks", "sWidth": "24%" }
+            ]
+        });
+        oTable6.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                         { type: "text" }
+                        , { type: "number-range" }
+                        , { type: "text" }
+            ]
+        });
+
+
+    });
+
+
+    function PFEdit(sender) {
+        window.location = "/Payroll/SalaryPF/SinglePFEdit?pfDetailsId=" + $(sender).attr('data-Id');
+    }
+    function TaxEdit(sender) {
+        window.location = "/Payroll/SalaryTax/SingleTaxEdit?taxDetailsId=" + $(sender).attr('data-Id');
+    }
+    function AreerEdit(sender) {
+        window.location = "/Payroll/SalaryAreer/SingleAreerEdit?AreerDetailsId=" + $(sender).attr('data-Id');
+    }
+    function DeductionEdit(sender) {
+        window.location = "/Payroll/SalaryDeduction/SingleDeductionEdit?DeductionDetailsId=" + $(sender).attr('data-Id');
+    }
+</script>
+

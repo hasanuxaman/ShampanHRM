@@ -1,0 +1,31 @@
+﻿@using UIHelper.MVC
+@model SymViewModel.Common.Appraisal360DetailVM
+@{
+    Layout = null;
+}
+<tr class="tablerow ">
+    @using (Html.BeginCollectionItem("Details"))
+    {
+        <td>
+            @Html.TextAreaFor(model => model.Question, new { @placeholder = "Question", @class = "dQuestion form-control", @readonly = "readonly" })
+        </td>
+        <td>
+            @Html.SimpleDropDownFor(m => m.FeedbackValue, "/Config/DropDown/GetFeedbackValue?periodName=" + Model.PeriodName + "&feedBackYear=" + Model.FeedBackYear, new { @class = "dFeedbackValue required form-control" })
+        </td>
+
+
+        @Html.HiddenFor(m => m.Appraisal360Id, new { @class = "dAppraisal360Id" })
+        @Html.HiddenFor(m => m.Id, new { @class = "dId" })
+
+    }
+</tr>
+
+<style>
+    .btnSize {
+        font-size: 1em !important;
+    }
+    textarea.form-control {
+        min-height: 55px;
+        max-height: 55px;
+        }
+</style>

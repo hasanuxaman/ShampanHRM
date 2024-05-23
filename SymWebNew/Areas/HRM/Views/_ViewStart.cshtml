@@ -1,0 +1,91 @@
+﻿@try
+{
+    SymOrdinary.ShampanIdentity Identity = (SymOrdinary.ShampanIdentity)System.Threading.Thread.CurrentPrincipal.Identity;
+
+    if (Identity.IsAdmin || Identity.IsHRM)
+    {
+        if (Request.Path.ToUpper().Equals("/HRM/EMPLOYEEINFO/")
+        || Request.Path.ToUpper().Equals("/HRM/EMPLOYEEINFO"))
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+        }
+
+        else if (Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEINFO/INDEXSEARCH"))
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_EmployeeSearchLayout.cshtml";
+        }
+
+        else if (Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEREPORT"))
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+        }
+        else if (Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEINFO")
+            || Request.Path.ToUpper().StartsWith("/HRM/QUALIFICATION")
+            || Request.Path.ToUpper().StartsWith("/HRM/CONTACTDETAIL")
+            || Request.Path.ToUpper().StartsWith("/HRM/EMERGENCYCONTACT")
+            || Request.Path.ToUpper().StartsWith("/HRM/SALARY")
+            || Request.Path.ToUpper().StartsWith("/HRM/JOB")
+            || Request.Path.ToUpper().StartsWith("/HRM/QUALIFICATION")
+            || Request.Path.ToUpper().StartsWith("/HRM/IMMIGRATION")
+            || Request.Path.ToUpper().StartsWith("/HRM/TRAINING")
+            || Request.Path.ToUpper().StartsWith("/HRM/TRAVEL")
+            || Request.Path.ToUpper().StartsWith("/HRM/DEPENDENTNOMINEE")
+            || Request.Path.ToUpper().StartsWith("/HRM/STRUCTURE")
+            || Request.Path.ToUpper().StartsWith("/HRM/LOAN")
+            || Request.Path.ToUpper().StartsWith("/HRM/EmployeeAsset".ToUpper())
+            || Request.Path.ToUpper().StartsWith("/HRM/ALLEMPLOYEE")
+            || Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEFILE")
+            )
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_EmployeeLayout.cshtml";
+        }
+        else if (Request.Path.ToUpper().StartsWith("/HRM/DESIGNATION")
+         )
+        {
+            Layout = "~/Areas/Common/Views/Shared/_HomeLayout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+        }
+
+    }
+    else if (Identity.IsESS)
+    {
+        if (Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEATTENDANCE/ATTENDANCELOG"))
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+        }
+        else if (Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEELEAVE")
+            || Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEREPORT")
+            )
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+        }
+        else if (Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEELEAVE")
+            || Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEECOMPENSATORYLEAVE")
+            || Request.Path.ToUpper().StartsWith("/HRM/EMPLOYEEREPORT")
+                   )
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+        }
+        
+        else
+        {
+            Layout = "~/Areas/HRM/Views/Shared/_EmployeeLayout.cshtml";
+        }
+    
+    }
+    else
+    {
+        Layout = "~/Areas/Common/Views/Shared/_AuthorizationLayout.cshtml";
+
+    }
+
+}
+catch (Exception)
+{
+    Layout = "~/Areas/Common/Views/Shared/_AuthorizationLayout.cshtml";
+
+}
+

@@ -1,0 +1,120 @@
+﻿@model SymViewModel.Tax.TaxStructureVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("Edit", "TaxStructure", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTaxStructure" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="TaxStructure">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.BranchId)
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Code)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Code, new {@placeholder = "TAX Code", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Name)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Name, new {@placeholder = "TAX Name", @class = " required form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-4">
+                    @Html.Label("Fixed/Rate")
+                </label>
+                <div class="col-sm-2">
+                    @Html.CheckBoxFor(model => model.IsFixed, new {@placeholder = "Is it Fixed?", @class ="required form-control" })
+                </div>
+                <label class="col-sm-6">
+                    @Html.Label("Rate (%of Basic)",new {@class ="pCheck"})
+                </label>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.TaxValue)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.TaxValue, new {@placeholder = "Tax Value", @class = " right required form-control NumberCheck" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.PortionSalaryType)
+                </label>
+                <div class="col-sm-9">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryHeadType", new {@placeholder = "Salary Head Type", @class = "form-control" })
+                </div>
+            </div> 
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Remarks)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    <button type="button" title="Edit Data"  onclick="Edit();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                    @*<input type="button" value="Edit" onclick="Edit();" class="Edit btn btn-primary" />*@
+                     <button type="button"  title="Save Data" class="Save sym-btn-save" onclick="pageSubmit('frmTaxStructure');" >&nbsp;Save</button>
+                    @*<input type="button" onclick="pageSubmit('frmTaxStructure');" value="Save" class=" Save btn btn-primary" />*@
+
+                </label>
+@*                <div class="col-sm-3">
+                    <input type="button" data-url="/Payroll/TaxStructure/Delete/@Model.Id"  value="Delete"  class=" lnkDelete btn btn-primary" />
+                </div>*@
+                <label class="col-sm-4">
+                     <button type="button" title="Cancel Data" class="btncancel  sym-btn-cancel">&nbsp;Cancel</button>
+                    @*<input type="button" value="Cancel" class="btncancel btn btn-primary" />*@
+                </label>
+            </div>
+        </div>
+    </div>
+}
+    <script>
+
+
+        $(function () {
+            Edit();
+            valiDation("frmTaxStructure");
+            InitDropDowns();
+            checkIsfixed();
+            function checkIsfixed() {
+                if ($("#IsFixed").prop("checked") == true) {
+                    $(".pCheck").hide();
+                }
+                else if ($("#IsFixed").prop("checked") == false) {
+                    $(".pCheck").show();
+                }
+
+            }
+            $("#IsFixed").click(function () {
+                checkIsfixed();
+            });
+        });
+        function Edit() {
+            fnReadOnly("TaxStructure");
+            if ($(".TaxStructure").hasClass("readOnly")) {
+                $(".Save").hide();
+                $(".Edit").show();
+            }
+            else {
+                $(".Save").show();
+                $(".Edit").hide();
+            }
+        }
+
+    </script>

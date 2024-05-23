@@ -1,0 +1,170 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("PermanentAddress", "ContactDetail", FormMethod.Post, new { enctype = "multipart/form-data"}))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.permanentAddress.Id)
+    @Html.HiddenFor(model => model.permanentAddress.EmployeeId)
+    <div class="thinbox">
+            <div class="th_thinbox">
+         <p>Permanent Address</p>   
+        </div>
+        <div class="permanentAddress">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Address)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.permanentAddress.Address,  new { @placeholder = "Address",@rows="1", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Country)
+                    </div>
+                    <div class="editor-field">
+                   <select id="permanentAddress.Country" name="permanentAddress.Country" data-val="@Model.permanentAddress.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>
+                       </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Division)
+                    </div>
+                    <div class="editor-field">
+                   <select id="permanentAddress.Division" name="permanentAddress.Division" data-val="@Model.permanentAddress.Division"  data-url="/Config/DropDown/Division/"  class = " division form-control" ></select>
+                          </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.District)
+                    </div>
+                    <div class="editor-field">
+                   <select id="permanentAddress.District" name="permanentAddress.District" data-val="@Model.permanentAddress.District"  data-url="/Config/DropDown/District/"  class = " district form-control" ></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.City )
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.City, null, new { @placeholder = "City", @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.PostalCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.PostalCode, null, new { @placeholder = "Postal Code", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Phone)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.Phone, null, new { @placeholder = "Phone", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Mobile)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.Mobile, null, new { @placeholder = "Mobile", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Fax)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.Fax, null, new { @placeholder = "Fax", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.permanentAddress.Remarks,  new { @placeholder = "Remarks",@rows="1", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+
+            <br />
+            @if (identity.IsAdmin || identity.IsHRM)
+{          <p class="actionButton_pAddress"></p>
+            }
+            
+
+
+        </div>
+    </div>
+}
+<script>
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+
+        var html = "";
+        if ('@Model.IsActive' == 'True') {
+            html = '<button type="Submit"    title="Save Data"  class="Save sym-btn-save" >&nbsp;Save</button><button type="button" title="Edit Data"   onclick="EditPermanentAddress();" class="Edit sym-btn-edit" >&nbsp;Edit</button> &nbsp;<button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>'
+            //html = '<button type="Submit"   class="Save sym-btn-save" >&nbsp;Save</button><button type="button" onclick="EditPermanentAddress();" class="Edit sym-btn-edit" >&nbsp;Edit</button> &nbsp;<button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>'
+
+            //html = '<input type="Submit" value="Save" class="Save btn btn-info" /><input type="button" value="Edit" onclick="EditPermanentAddress();" class="Edit btn btn-info" />&nbsp;<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+        }
+         else {
+            //html = '<input type="button" value="Cancel" onclick="Cancle();" class="Cancle sym-btn-cancel" />';
+            //html = '<button type="button" title="Cancel Data"  onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>';
+            html = '<button type="button" title="Cancel Data"  onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>';
+        }
+        if (('@identity.IsAdmin'.toLowerCase() == "true" || '@identity.IsHRM'.toLowerCase() == "true")) {
+            $(".actionButton_pAddress").append(html);
+        }
+        EditPermanentAddress();
+        @*urlDivision = "/Config/Autocomplete/Division?country=" + $("#emergencyContact_Country").val();
+        urlDistrict = "/Config/Autocomplete/District?country=" + $("#emergencyContact_Country").val()
+            + '&division=' + $("#emergencyContact_Division").val();
+        $('.country').autocomplete({ source: '@Url.Action("Country", "Autocomplete", new { area = "Config" })', minLength: 2 });
+     $('.division').autocomplete({ source: urlDivision, minLength: 2 });
+     $('.district').autocomplete({ source: urlDistrict, minLength: 2 });*@
+    });
+    //$('.country').focusout(function () {
+    //    urlDivision = "/Config/Autocomplete/Division?country=" + $("#emergencyContact_Country").val();
+    //    $('.division').autocomplete({ source: urlDivision, minLength: 2 });
+    //});
+
+    //$('.division').focusout(function () {
+    //    urlDivision = "/Config/Autocomplete/District?country=" + $("#emergencyContact_Country").val()
+    //        + '&division=' + $("#emergencyContact_Division").val();
+    //    $('.district').autocomplete({ source: urlDivision, minLength: 2 });
+    //});
+
+</script>

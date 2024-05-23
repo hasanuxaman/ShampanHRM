@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/MHRM/Views/Shared/_Layout.cshtml";
+}
+@model SymViewModel.Attendance.AttLogsVM
+@using (Html.BeginForm("Index", "Attendance", FormMethod.Post, new { @Id = "frmAttendanceLog" }))
+        {
+<div class="row" id="AttendanceEntry">
+    <div class="col-md-12 col-sm-12 col-xs-12 ">
+            @Html.HiddenFor(model => model.AttendanceStructureId)
+            @Html.HiddenFor(model => model.UserID)
+            @Html.HiddenFor(model => model.EmployeeId)
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>Attendance</p>
+                </div>
+                <div class="attendance">
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.PunchDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                         @Html.TextBoxFor(model => model.PunchDate, new { @disabled = "disabled", @placeholder = "Punch Date", @class = " required customDatePicker form-control PunchDate" })
+                            @Html.HiddenFor(model => model.PunchDate)                    
+                      
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.PunchTime)
+                    </div>
+                    <div class="editor-field  col-md-8">
+                            @Html.TextBoxFor(model => model.PunchTime, new { @disabled = "disabled", @placeholder = "Punch Time", @class = " required customTimePicker form-control" })
+                            @Html.HiddenFor(model => model.PunchTime) 
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                    <p>
+                        <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save1</button>
+                        <button type="button" title="Cancel Data" onclick="CancleLeave();" class="sym-btn-cancel">&nbsp;Cancel</button>
+                    </p>
+                </div>
+            </div>
+    </div>
+</div>
+  }
+<script>
+   
+    $(function () {
+        InitDateTimePickers();
+    });
+    function InitDateTimePickers() {
+        $(".customDatePicker").datepicker({
+            changeYear: true, changeMonth: true, dateFormat: 'dd-M-yy', yearRange: '-90:+9', maxYear: '100'
+        });
+        $('.customTimePicker').prop("readonly", "readonly");
+        $('.customDatePicker').prop("readonly", "readonly");
+    };
+    </script>
+

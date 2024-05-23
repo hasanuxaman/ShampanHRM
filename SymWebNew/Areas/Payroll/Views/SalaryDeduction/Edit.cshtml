@@ -1,0 +1,115 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New " data-url="/Payroll/SalaryDeduction/SalaryDeductionSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    @*<button type="button" title="Delete Checked" data-url="/Payroll/SalaryDeduction/SalaryDeductionDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>*@
+    <button type="button" title="Back to Previous Page" data-url="/Payroll/SalaryDeduction" onclick="BackToList(this)" class="sym-btn-back">&nbsp;Back</button>
+ <label class="pull-right">Salary Deduction > Edit</label>
+</div>
+
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+    <p>
+        @*<input type="button" style="width: 65px;" data-url="/Payroll/SalaryDeduction/SalaryDeductionSingle" onclick="GoTo(this)" id="" class=" btn btn-info  " value="Add" />*@
+        @*<input type="button" style="width: 65px;" data-url="/Payroll/SalaryDeduction/SalaryDeductionDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />*@
+        @*<input type="button" style="width: 65px;" data-url="/Payroll/SalaryDeduction" class="btn btn-info" onclick="BackToList(this)" value="Back" />*@
+ </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead ">
+
+                        <tr>
+                            <th class="center">Select</th>
+                           <th>Name</th>
+                            <th>Deduction Value</th>
+                        </tr>
+
+                        <tr>
+                            <th class="center">Actions</th>
+                           <th>Name</th>
+                           <th style="text-align:left!important">Deduction Value</th>
+                        </tr>
+
+
+
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+
+ <div class="headrow">
+<button type="button" title="Add New "data-url="/Payroll/SalaryDeduction/SalaryDeductionSingle" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+@*<button type="button" title="Delete Checked"   data-url="/Payroll/SalaryDeduction/SalaryDeductionDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>*@
+<button type="button"   title="Back to Previous Page"    data-url="/Payroll/SalaryDeduction" onclick="BackToList(this)" class="sym-btn-back" >&nbsp;Back</button>
+    </div>
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        $(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryDeduction/_salaryDeductionDetails?salaryDeductionID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+
+                                  {
+                                      "sName": "ID",
+                                      "bSearchable": false,
+                                      "bSortable": false,
+                                      "sWidth": "12%",
+                                      "sClass":"center",
+                                      //"sClass":"actionColumn",
+                                      "fnRender": function (oObj) {
+                                          return '<a title="Click to Edit" style="text-decoration:none" Onclick="DeductionEdit(this);"  data-Id="' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>'
+
+                                          //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0].split('~')[1] + '">'
+                                          ;
+                                      }
+                                  }
+
+                                  //,{
+                                  //    "sName": "Name",
+                                  //    "bSearchable": false,
+                                  //    "bSortable": false,
+                                  //    "fnRender": function (oObj) {
+
+                                  //        return '<Lable Onclick="DeductionEdit(this);" class="innerListLink "  data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                  //    }
+                                  //}
+
+                                  //,{ "sName": "Deduction" }
+                                  //,{ "sName": "Remarks" }
+                                 , { "sName": "Name", "sWidth": "50%" }
+                                 , { "sName": "Deduction", "sClass": "right", "sWidth": "35%" }
+                ]
+            });
+
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [
+                    { type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "text" }
+                           //, { type: "date-range" }
+
+                ]
+
+            });
+
+        });
+    });
+    function DeductionEdit(sender) {
+        window.location = "/Payroll/SalaryDeduction/SingleDeductionEdit?DeductionDetailsId=" + $(sender).attr('data-Id');
+    }
+</script>

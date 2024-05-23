@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Details";
+}
+@model SymViewModel.Tax.TaxSetupVM
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Tax Structure List</p>
+    </div>
+    <p></p>
+    <p></p>
+    <div class="row">
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable1" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center">
+                                <input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Salary Type Name</th>
+                            <th>Percent Of Basic</th>
+                            <th>Fixed Exempted</th>
+                            <th>Remarks</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Salary Type Name</th>
+                            <th>Percent Of Basic</th>
+                            <th>Fixed Exempted</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Tax Slap List</p>
+    </div>
+    <div class="headrow">
+        <button type="button" title="Add New Tax Setup" data-url="/TAX/TaxSetup/TaxSlabCreate/@Model.Id" id="" class="btnCreate sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Tax Setup" data-url="/TAX/TaxSetup/TaxSlapDelete" onclick="deletedData(this, 'myDataTable2');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+        <label class="pull-right">Tax Slap</label>
+    </div>
+    <p></p>
+    <div class="row">
+        <table id="myDataTable2" class="display">
+            <thead>
+                <tr>
+                    <th class="center">
+                        <input type="checkbox" class="chkAll" />Select All</th>
+                    <th>Step</th>
+                    <th>Max Range</th>
+                    <th>Remarks</th>
+                </tr>
+                <tr>
+                    <th class="center">Actions</th>
+                    <th>Step</th>
+                    <th>Max Range</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable1').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/TAX/TaxSetup/_indexTaxStructure?Id=" + '@Model.Id',
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return '<a title="Click on for Edit" style="text-decoration:none;"   href=\"/TAX/TaxSetup/TaxStructureEdit/' + oObj.aData[0] + '\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>';
+                                }
+                            }
+                            , { "sName": "SalaryTypeId" }
+                            , { "sName": "PercentOfBasic" }
+                            , { "sName": "FixedExampted" }
+                            , { "sName": "Remarks" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+            ]
+        });
+    });
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable2').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/TAX/TaxSetup/_indexTaxSlap?Id=" + '@Model.Id',
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "10%",
+                                    "sClass": "center",
+                                    "fnRender": function (oObj) {
+                                        return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/TAX/TaxSetup/TaxSlabEdit/' + oObj.aData[0] + '\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' +
+                                        '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/TAX/TaxSetup/TaxSlapDelete" onclick="deletedData(this, myDataTable2,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>';
+                                    }
+                                }
+                                , { "sName": "Step" }
+                                , { "sName": "MaxRange" }
+                                , { "sName": "Remarks" }
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                          , { type: "text" }
+                          , { type: "text" }
+                          , { type: "text" }
+                          , { type: "text" }
+                          //, { type: "text" }
+                          //, { type: "text" }
+                          //, { type: "text" }
+                          //, { type: "text" }
+                          //, { type: "text" }
+                ]
+            });
+        });
+</script>

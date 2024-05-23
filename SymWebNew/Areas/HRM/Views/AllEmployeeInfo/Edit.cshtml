@@ -1,0 +1,237 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit";
+}
+@using (Html.BeginForm("Edit", "EmployeeInfo", FormMethod.Post, new { @Id = "afrmEmployeeEdit" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.BranchId)
+
+    @*  @Html.ValidationSummary(true)
+    *@<div class="thinbox">
+        <div class="th_thinbox">
+            <p>Basic Info</p>
+        </div>
+        <div class="empInfo">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Code)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Code, null, new { @placeholder = "Employee Code", @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Salutation_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Salutation_E, "/Config/DropDown/Salutation", new { @placeholder = "Salutation", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MiddleName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MiddleName, null, new { @placeholder = "Middle Name", @class = "required  form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastName, null, new { @placeholder = "Last Name", @class = "   form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AttnUserId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.AttnUserId, new { @placeholder = "Attendence User Id", @class = "   form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "   form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+            <br />
+            @if (identity.IsAdmin || identity.IsHRM)
+            {
+                <button type="button" title="Edit Data" id="editJSON" class="sym-btn-edit">&nbsp;Edit</button>
+                <button type="button" title="Save Data" id="saveJSON" class=" sym-btn-save">&nbsp;Save</button>
+                <button type="button" title="Cancel Data" id="cancelJSON" class=" sym-btn-cancel">&nbsp;Cancel</button>
+                @*  <p class="actionButton">
+                    </p>*@
+            }
+        </div>
+    </div>
+}
+<span id="ip"></span>
+<div id="mypermanentAddressBanglaIndex">
+    @Html.Partial("_personalDetail", Model)
+</div>
+<script>
+
+
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+
+    $(function () {
+        setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 500);
+        valiDation("afrmEmployeeEdit");
+    });
+
+    $('#cancelJSON').click(function () {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                location.reload();
+                //location = "/HRM/EmployeeInfo/Edit?Id=@Model.Id&empcode=@Model.Code";// + $('#Id').val() + "empcode";
+            })
+        }
+        else {
+            isChange = false;
+            location.reload();
+            //location = "/HRM/EmployeeInfo/Edit?Id=@Model.Id&empcode=@Model.Code";// + $('#Id').val();
+        }
+    });
+
+
+
+    $('#editJSON').click(function () {
+
+        $("#saveJSON").show();
+        $("#cancelJSON").show();
+        $("#editJSON").hide();
+        fnReadOnly("empInfo");
+    });
+
+
+    $('#saveJSON').click(function () {
+        if (isChange == true) {
+            if (pageSubmitJSON('afrmEmployeeEdit') == 0) {
+
+                var myData = $('#afrmEmployeeEdit').serialize();
+                var url = "/HRM/EmployeeInfo/Edit";
+                var res = submit(url, myData);
+
+                if (res == true) {
+                    location.reload();
+                }
+                isChange = false;
+            }
+        }
+        else {
+            ShowResult("Success", "You have no changes for save");
+        }
+    });
+    var submit1 = function (url, mydata) {
+        $.ajax({
+            type: 'POST',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $("#cancelJSON").hide();
+        $("#saveJSON").hide();
+        $("#cancelJSOND").hide();
+        $("#saveJSOND").hide();
+        //$('.alert(-autocloseable-success)').hide();
+
+        //$(".accordion").accordion();
+        var html = "";
+        if ('@Model.IsActive'=='True') {
+            html = '<button type="button" title="Save Data"   onclick="pageSubmit(\'afrmEmployeeEdit\');" class="Save sym-btn-save" >&nbsp;Save</button><button type="button" title="Edit Data"   onclick="EditempInfo();" class=" Edit sym-btn-edit" >&nbsp;Edit</button> &nbsp;<button type="button"  title="Cancel Data"  onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>'
+
+
+            //original//html = '<input type="button" value="Save" onclick="pageSubmit(\'afrmEmployeeEdit\');" class="Save btn btn-info" /><input type="button" value="Edit" onclick="EditempInfo();" class="Edit btn btn-info" /> &nbsp;<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />'
+        }
+        else {
+            html = '<button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+            //original//html = '<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+
+        }
+        $(".actionButton").append(html);
+        InitAccordions();
+
+        //InitDateTimePickers();
+        EditempInfo();
+
+
+    });
+    function EditempInfo() {
+        fnReadOnly("empInfo");
+        if ($(".empInfo").hasClass("readOnly")) {
+            $(".empInfo .SaveJSON").hide();
+            $(".empInfo .Cancle").hide();
+            $(".empInfo .Edit").show();
+        }
+        else {
+            $(".empInfo .Cancle").show();
+            $(".empInfo .SaveJSON").show();
+            $(".empInfo .Edit").hide();
+        }
+    }
+    function EditpersonalDetail() {
+        fnReadOnly("personalDetail");
+        if ($(".personalDetail").hasClass("readOnly")) {
+            $(".personalDetail .Save").hide();
+            $(".personalDetail .Cancle").hide();
+            $(".personalDetail .Edit").show();
+        }
+        else {
+            $(".personalDetail .Cancle").show();
+            $(".personalDetail .Save").show();
+            $(".personalDetail .Edit").hide();
+        }
+    }
+
+    function Cancle() {
+        location = "/HRM/EmployeeInfo/Edit/" + $('#Id').val();;
+    }
+    var leftMenuActive = "PersonalDetails";
+</script>

@@ -1,0 +1,71 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<div class="thinbox panel">
+    <div class="th_thinbox panel-actions">
+        <p>Employee Structure Detail <a href="#" id="panel-fullscreen" role="button" title="Toggle fullscreen"><i class="glyphicon glyphicon-resize-full"></i></a> 	<span class="pull-right clickable" data-toggle="collapse" data-target="#demo1"></span></p>
+    </div>
+<div class="row">
+        <div id="container">
+            <div id="demo1">
+                <table id="myDataTable1" class="display">
+                    <thead>
+                         <tr>
+                            <th>Salary Type Name</th>
+                            <th>Fixed/Rate</th>
+                            <th>Portion</th>
+                            <th>Portion Salary Type</th>
+                            <th style="text-align:left!important">Amount</th>
+                            <th>Earning/Deduction</th>
+                        </tr>
+                        <tr>
+                            <th>Salary Type Name</th>
+                            <th>Fixed/Rate</th>
+                            <th>Portion</th>
+                            <th>Portion Salary Type</th>
+                              <th>Amount</th>
+                            <th>Earning/Deduction</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+</div>
+ @Html.HiddenFor(model => model.Id)
+    <script>
+     $(document).ready(function () {
+            var id = $('#Id').val();
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+            var oTable1 = $('#myDataTable1').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/Structure/_employeeSalaryStructuredetail?Id=" + id,
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                { "sName": "SalaryTypeName", "sWidth": "20%" }
+                                    , { "sName": "IsFixed", "sWidth": "10%" }
+                                , { "sName": "Portion", "sWidth": "15%" }
+                                , { "sName": "PortionSalaryType", "sWidth": "20%" }
+                                , { "sName": "Amount", "sClass":"right", "sWidth": "20%" }
+                                , { "sName": "IsEarning", "sWidth": "10%" }
+                ]
+            });
+            oTable1.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [
+                           { type: "text" }
+				           , { type: "select", values: ["Fixed", "Rate"] }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+				           , { type: "select", values: ["Earning", "Deduction"] }
+                ]
+            });
+     });
+        </script>

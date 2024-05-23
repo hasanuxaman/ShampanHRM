@@ -1,0 +1,58 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+<div class="thinbox"> 
+            <div class="th_thinbox">
+    </div>
+    <p>
+    </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                              <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+                       
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+<script>
+    $(function () {
+        SelectAllForDelete();
+
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/EmployeeSalaryOtherIncreament/_Index?DepartmentId=@Model.DepartmentId&SectionId=@Model.SectionId&ProjectId=@Model.ProjectId&DesignationId=@Model.DesignationId&CodeF=@Model.CodeF&CodeT=@Model.CodeT",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [{
+                                     "sName": "Id",
+                                     "bSearchable": false,
+                                     "bSortable": false,
+                                     "sWidth": "6%",
+                                     "sClass": "center",
+                                     "fnRender": function (oObj) {
+                                         return ' <input onclick="CheckAll(this)" class="dSelected" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a id="lnkEdit1"  title="Click on for Edit" style="text-decoration:none;"  data-Id="' + oObj.aData[0] + '"  Onclick="SelectEmployee(this)" class=" sym-btn-edit-row"></i></a>';
+                                     }}
+                               , { "sName": "Code", "sWidth": "6%" }
+                                , { "sName": "EmpName",  "sWidth": "14%" }
+                                , { "sName": "Designation",  "sWidth": "10%" }
+                                , { "sName": "Department", "sWidth": "10%" }
+                                , { "sName": "Section",  "sWidth": "10%" }
+                                , { "sName": "Project", "sWidth": "10%" }
+                ]
+            });
+        });
+       
+</script>

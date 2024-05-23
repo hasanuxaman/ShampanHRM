@@ -1,0 +1,195 @@
+﻿@{
+    ViewBag.Title = "ImportEarning";
+}
+<style>
+    #dropArea{
+        background:#b5b5b5;
+        border:black dashed 1px;
+        height:50px;
+        text-align:center;
+        color:#fff;
+        padding-top:12px;
+    }
+    .active-drop{
+        background:#77bafa !important;
+        border:solid 2px blue !important;
+        opacity:.5;
+        color:black !important;
+    }
+</style>
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+         <p>Salary Earning</p>
+    </div>
+    <div class="row">
+        <div class="thinbox col-md-12" >
+            <div class="th_thinbox">
+                <p>Import Salary Earning </p>
+            </div>
+          @using (Ajax.BeginForm("ImportEarningExcel", "SalaryEarning", null, new AjaxOptions { }, new { enctype = "multipart/form-data", id = "ImportSalaryEarningExcel" }))
+            { 
+              <h2>Drag & Drop file upload </h2>
+<div id="dropArea">
+    Drop your files here
+</div>
+<h4>Uploaded files : </h4>
+<ul class="list-group" id="uploadList">
+
+</ul>
+              @*
+                <div class="col-md-6">
+                     <div class="col-md-6"></div>
+                     <div class="col-md-6">
+                    <label>File</label>
+                    <input type="file" accept=".xls" name="file" id="FileUpload" style="width: 200px;" class="required" />
+                         </div>
+                </div>*@
+                <div class="col-md-6">
+                  
+                    <label>&nbsp;</label>
+                    <button type="button"  onclick="pageSubmit('ImportSalaryEarningExcel');"class="sym-btn-file-upload" value="Upload" style="width: 50%; text-align: center;">&nbsp;Upload</button>
+                </div>
+            }
+        </div>
+            <div class="thinbox col-md-12">
+    <div class="th_thinbox">
+        <p>Salary Earning Export</p>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+            <div class="editor-field">
+                <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "required fpDetailsCom form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Employee Code(From)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Employee Code(To)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Designation</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+            </div>
+        </div>
+    </div>
+   <br />
+<br />
+<div class="row">
+    <div class="col-md-1">
+        <label>&nbsp;</label>
+           <button id="btnSearch" class="sym-btn-Excel-Export" type="button">&nbsp;Download</button>
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+    <script src="~/assets/plugins/jquery.filedrop.js"></script>
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation('ImportSalaryEarningExcel');
+    });
+
+    $('#btnSearch').click(function () {
+        var fid = $("#FiscalPeriodDetailId").val();
+        if (fid == "") {
+            ShowResult('Fail', "Please Select Fiscal year");
+            return;
+        }
+        var ProjectId = $("#ProjectId").val();
+        var DepartmentId = $("#DepartmentId").val();
+        var SectionId = $("#SectionId").val();
+        var DesignationId = $("#DesignationId").val();
+        var CodeF = $("#CodeF").val();
+        var CodeT = $("#CodeT").val();
+        window.location = '@Url.Action("DownloadEarningExcel", "SalaryEarning")' + '?fid=' + fid
+                  + '&ProjectId=' + ProjectId
+                  + '&DepartmentId=' + DepartmentId
+                  + '&SectionId=' + SectionId
+                  + '&DesignationId=' + DesignationId
+                  + '&CodeF=' + CodeF
+                  + '&CodeT=' + CodeT;
+    });
+
+    $(function () {
+        $('#dropArea').filedrop({
+            url: '@Url.Action("ImportEarningExcel","SalaryEarning")',
+            allowedfiletypes: ['image/jpeg', 'image/png', 'image/gif', 'file/xls'],
+            allowedfileextensions: ['.jpg', '.jpeg', '.png', '.gif', '.xls'],
+                paramname: 'files',
+                maxfiles: 5,
+                maxfilesize: 5, // in MB
+                dragOver: function () {
+                    $('#dropArea').addClass('active-drop');
+                },
+                dragLeave: function () {
+                    $('#dropArea').removeClass('active-drop');
+                },
+                drop: function () {
+                    $('#dropArea').removeClass('active-drop');
+                },
+                afterAll: function (e) {
+                    $('#dropArea').html('file(s) uploaded successfully');
+                },
+                uploadFinished: function (i, file, response, time) {
+                    $('#uploadList').append('<li class="list-group-item">' + file.name + '</li>')
+                }
+            })
+     })
+</script>

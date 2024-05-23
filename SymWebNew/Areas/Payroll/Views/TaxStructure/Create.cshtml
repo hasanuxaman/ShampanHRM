@@ -1,0 +1,100 @@
+﻿@model SymViewModel.Tax.TaxStructureVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("Create", "TaxStructure", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTaxStructure" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+         <div class="th_thinbox">
+        <p>Tax Structure</p>
+    </div>
+        <div class="EnumTaxStructure">
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Code)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Code, new {@placeholder = "TAX Code", @class ="required form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Name)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Name, new {@placeholder = "TAX Name", @class ="required form-control" })
+
+                </div>
+            </div>
+
+               <div class="row">
+                   <label class="col-sm-4">
+                       @Html.Label("Fixed/Rate")
+                   </label>
+                   <div class="col-sm-2">
+                       @Html.CheckBoxFor(model => model.IsFixed, new { @placeholder = "Is it Fixed?", @class = "required form-control" })
+                   </div>
+                   <label class="col-sm-6">
+                       @Html.Label("Rate (%of Basic)", new { @class = "pCheck" })
+                   </label>
+               </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.TaxValue)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.TaxValue, new { @placeholder = "TAX Value", @class = " right required form-control NumberChecks" })
+
+                </div>
+            </div>
+                 <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.PortionSalaryType)
+                </label>
+                <div class="col-sm-9">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryHeadType", new { @class = "form-control" })
+                </div>
+            </div>  
+            <div class="row">
+                <label class="col-sm-3">
+                    @Html.LabelFor(model => model.Remarks)
+                </label>
+                <div class="col-sm-9">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class ="form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    @*<input type="button" onclick="pageSubmit('frmTaxStructure');" value="Add" class=" Save btn btn-primary" />*@
+                     <button type="submit"  title="Save Data" class="sym-btn-save" onclick="pageSubmit('frmTaxStructure');" >&nbsp;Save</button>
+
+                </label>
+
+                <label class="col-sm-4">
+                  <button type="button" title="Cancel Data" class="btncancel  sym-btn-cancel">&nbsp;Cancel</button>
+                </label>
+            </div>
+        </div>
+    </div>
+}
+    <script>
+        $(function () {
+            valiDation("frmTaxStructure");
+            InitDropDowns();
+            $("#IsFixed").click(function () {
+                if ($(this).prop("checked") == true) {
+                    $(".pCheck").hide();
+                }
+                else if ($(this).prop("checked") == false) {
+                    $(".pCheck").show();
+                }
+            })
+        });
+
+    </script>

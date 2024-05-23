@@ -1,0 +1,277 @@
+﻿@model SymViewModel.Tax.AdvanceTaxVM
+@using UIHelper.MVC
+@{
+    if (Model.Id > 0)
+    {
+        ViewBag.Title = "Edit";
+    }
+    else
+    {
+        ViewBag.Title = "Create";
+    }
+}
+
+@using (Html.BeginForm("CreateEdit", "AdvanceTax", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAdvanceTax" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.EmployeeId)
+    @Html.HiddenFor(model => model.Operation)
+
+    <div class="headrow">
+        @if (Model.Operation == "update")
+        {
+            <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
+            <label class="pull-right">Advance Tax > Edit</label>
+        }
+        else
+        {
+            @*<button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmAdvanceTax')" class="sym-btn-save">&nbsp;Save</button>*@
+            
+            <button type="button" name="btnName" value="Save" title="Save Data" onclick="SaveData()" class="sym-btn-save">&nbsp;Save</button>
+            <label class="pull-right">Advance Tax > Create</label>
+
+
+        }
+        <button type="button" title="Go To Index" data-url="/Tax/AdvanceTax" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New AdvanceTax" data-url="/Tax/AdvanceTax/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+
+
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p class="thinHead">Advance Tax</p>
+        </div>
+        <div class="AdvanceTax">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmployeeCode)
+                    </div>
+                    <div class="editor-field">
+                        @if (Model.Operation == "update")
+                        {
+                            @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " form-control " })
+                        }
+                        else
+                        {
+                            @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " form-control selectDropdown" })
+
+                        }
+                    </div>
+                </div>
+               
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepositAmount)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.DepositAmount, new { @placeholder = "Deposit Amount", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.DepositAmount)
+                    </div>
+                </div>
+
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+
+                    <div class="editor-field">
+                        <div>@Html.TextBoxFor(model => model.Year, @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" })</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control " })
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Particular</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.Particular, new List<SelectListItem>
+                        {
+                            new SelectListItem
+                            {
+                                Text = "Select", Value = ""
+                            },
+                            new SelectListItem
+                            {
+                                Text = "Salary", Value = "SALARY"
+                            },
+                            new SelectListItem
+                            {
+                                Text = "Bonus", Value = "BONUS"
+                            }
+                        }, new { @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepositDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.DepositDate, new { @placeholder = "Deposit Date", @class = "dpDate customDatePicker required form-control" })
+                        @Html.ValidationMessageFor(model => model.DepositDate)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="headrow">
+        @if (Model.Operation == "update")
+        {
+            <button type="button" name="btnName" value="Update" title="Update Data" onclick="UpdateData()" class="sym-btn-update">&nbsp;Update</button>
+        }
+        else
+        {
+            @*<button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmAdvanceTax')" class="sym-btn-save">&nbsp;Save</button>*@
+            <button type="button" name="btnName" value="Save" title="Save Data" onclick="SaveData()" class="sym-btn-save">&nbsp;Save</button>
+        }
+        <button type="button" title="Go To Index" data-url="/Tax/AdvanceTax" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New AdvanceTax" data-url="/Tax/AdvanceTax/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    </div>
+}
+
+<script>
+
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+
+    function UpdateData() {
+
+        var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+        var Particular = $("#Particular").val();
+        var DepositDate = $("#DepositDate").val();
+
+
+        if (FiscalYearDetailId == "") {
+            ShowResult("Fail", "Please Select the Fiscal Period");
+            return;
+        }
+
+        if (Particular == "") {
+            ShowResult("Fail", "Please Select the Particular");
+            return;
+        }
+
+        if (DepositDate == "") {
+            ShowResult("Fail", "Please Select the Deposit Date");
+            return;
+        }
+
+        var url = "/Common/FiscalYear/FiscalPeriodLockCheck?FiscalYearDetailId=" + FiscalYearDetailId;
+
+        $.ajax({
+            url: url
+               , type: 'Post'
+               , traditional: true
+               , beforeSend: function () { $(".loading").show(); }
+               , success: DataUpdate
+            , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+        });
+
+        ////pageSubmit('frmAdvanceTax');
+    }
+
+    function DataUpdate(result) {
+
+        var results = result.split("~");
+
+        if (results[0].toLowerCase() == 'true') {
+
+            ShowResult("Fail", results[1]);
+
+        }
+        else {
+
+            pageSubmit('frmAdvanceTax');
+
+        }
+
+    }
+
+
+    function SaveData() {
+
+        var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+        var Particular = $("#Particular").val();
+        var DepositDate = $("#DepositDate").val();
+
+        if (FiscalYearDetailId == "") {
+            ShowResult("Fail", "Please Select the Fiscal Period");
+            return;
+        }
+
+        if (Particular == "") {
+            ShowResult("Fail", "Please Select the Particular");
+            return;
+        }
+
+        if (DepositDate == "") {
+            ShowResult("Fail", "Please Select the Deposit Date");
+            return;
+        }
+
+        var url = "/Common/FiscalYear/FiscalPeriodLockCheck?FiscalYearDetailId=" + FiscalYearDetailId;
+
+        $.ajax({
+            url: url
+               , type: 'Post'
+               , traditional: true
+               , beforeSend: function () { $(".loading").show(); }
+               , success: DataSave
+            , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+        });
+
+        ////pageSubmit('frmAdvanceTax');
+    }
+
+    function DataSave(result) {
+
+        var results = result.split("~");
+
+        if (results[0].toLowerCase() == 'true') {
+
+            ShowResult("Fail", results[1]);
+
+        }
+        else {
+
+            pageSubmit('frmAdvanceTax');
+
+        }
+
+    }
+
+
+</script>

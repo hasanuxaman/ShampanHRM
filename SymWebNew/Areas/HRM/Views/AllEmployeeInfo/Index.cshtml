@@ -1,0 +1,2274 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "AllEmployeeInfo";
+}
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Basic Info</p>
+    </div>
+    <div class="empInfo">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Code)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Code, null, new { @placeholder = "Employee Code", @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => model.Code)
+                </div>
+            </div>
+            @*<div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Salutation_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.Salutation_E, "/Config/DropDown/Salutation", new { @placeholder = "Salutation", @class = "required form-control" })
+                    </div>
+                </div>*@
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.MiddleName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.MiddleName, null, new { @placeholder = "Middle Name", @class = "required  form-control" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LastName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.LastName, null, new { @placeholder = "Last Name", @class = "   form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.AttnUserId)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.AttnUserId, new { @placeholder = "Attendence User Id", @class = "   form-control" })
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "   form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+        </div>
+        <br />
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" title="Edit Data" id="eDitJSON" class="sym-btn-edit">&nbsp;Edit</button>
+            <button type="button" title="Save Data" id="sAveJSON" class=" sym-btn-save">&nbsp;Save</button>
+            @*<button type="button" title="Cancel Data" id="cAncelJSON" class=" sym-btn-cancel">&nbsp;Cancel</button>*@
+            
+            @*  <p class="actionButton">
+                </p>*@
+        }
+    </div>
+</div>
+
+
+@*<div id="mypermanentAddressBanglaIndex">
+        @Html.Partial("_personalDetail", Model)
+    </div>*@
+
+
+<span id="ip"></span>
+<div id="mypermanentAddressBanglaIndexs">
+    @Html.Partial("_personalDetail", Model)
+</div>
+
+<div id="mypresentAddressIndex">
+    @Html.Partial("_presentAddress", Model)
+</div>
+
+
+
+<div id="mypermanentAddressIndex">
+    @Html.Partial("_permanentAddress", Model)
+</div>
+
+@Html.Partial("_employeeJob", Model)
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Emergency Contact</p>
+    </div>
+    <div class="emergencyContact">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.Name, new { @placeholder = "Emergency Contact Name", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Relation)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.Relation, new { @placeholder = "Relation", @class = "required form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Address)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.emergencyContactVM.Address, new { @placeholder = "Village/House & Road", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.PostalCode)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.PostalCode, new { @placeholder = "Postal Code", @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.PostOffice)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.PostOffice, new { @placeholder = "Post Office", @class = " form-control" })
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.City)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.City, new { @placeholder = "Police Station", @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            @*<div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Country)
+                    </div>
+                    <div class="editor-field">
+                        <select id="emergencyContactVM.Country" name="emergencyContactVM.Country" data-val="@Model.emergencyContactVM.Country" data-url="/Config/DropDown/CountryEN/" class=" country form-control"></select>
+                    </div>
+                </div>*@
+            @*<div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.Division)
+                    </div>
+                    <div class="editor-field">
+                        <select id="emergencyContactVM.Division" name="emergencyContactVM.Division" data-val="@Model.emergencyContactVM.Division" data-url="/Config/DropDown/Division/" class=" division form-control"></select>
+                    </div>
+                </div>*@
+            @*<div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.emergencyContactVM.District)
+                    </div>
+                    <div class="editor-field">
+                        <select id="emergencyContactVM.District" name="emergencyContactVM.District" data-val="@Model.emergencyContactVM.District" data-url="/Config/DropDown/District/" class=" district form-control"></select>
+                    </div>
+
+                </div>*@
+
+
+        </div>
+        <div class="row">
+
+
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Phone)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.Phone, new { @placeholder = "Phone", @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Mobile)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.Mobile, new { @placeholder = " Mobile", @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Email)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.Email, new { @placeholder = "Email", @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Fax)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.emergencyContactVM.Fax, new { @placeholder = "Fax", @class = " form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.emergencyContactVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.emergencyContactVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-md-3">
+                    <label>Image Attachment</label>
+                    <input type="file" onchange="CheckImageSize(this);" name="EmergencyContactF" id="EmergencyContactF" style="width: 200px;" />
+                </div>
+                @if (Model.emergencyContactVM.FileName != null && Model.emergencyContactVM.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/EmergencyContact/@Model.emergencyContactVM.Id@Model.emergencyContactVM.FileName">
+                                <img src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.emergencyContactVM.Id" data-table="2" data-field="FileName" data-url="~/Files/EmergencyContact/@Model.emergencyContactVM.Id@Model.emergencyContactVM.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>*@
+        @if (identity.IsAdmin || identity.IsHRM)
+        {            <p class="actionButton_EC">
+        </p>
+            if (@Model.IsActive)
+            {
+
+                <button type="button" title="Save Data" onclick="pageSubmit('frmEmergency');" class="Save sym-btn-save">&nbsp;Save</button>
+
+                @*<button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>*@
+                <button type="button" title="Edit Data" onclick="EditEmergencyContact();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+            }
+            else
+            {
+
+                <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+            }
+        }
+    </div>
+</div>
+
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Transfer</p>
+    </div>
+    <div id="TN">
+        <div id="myTransfer">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            <button type="button" id="btnDialogTN" title="Add New Transfer Delete" class=" sym-btn-add showHideTN">&nbsp;New</button>
+            <button type="button" title="Delete Checked Transfer Delete" data-url="/hrm/Job/TransferDelete" onclick="deletedData(this, 'myDataTableTN');" class="showHideTN sym-btn-remove">&nbsp;Delete</button>
+        }
+        <p></p>
+        <table id="myDataTableTN" class="display">
+            <thead>
+                <tr>
+                    <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                    <th>@Session["DepartmentLabel"]</th>
+                    <th>@Session["ProjectLabel"]</th>
+                    <th>@Session["ProjectLabel"]</th>
+                    <th>Transfer Date</th>
+                    <th>Current</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Promotion</p>
+    </div>
+    <div id="PR">
+        <div id="myPromotion">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+
+            <button type="button" id="btnDialogPR" title="Add New  Promotion" class=" sym-btn-add showHidePR">&nbsp;New</button>
+            <button type="button" title="Delete Checked Promotions" data-url="/hrm/Job/PromotionDelete" onclick="deletedData(this, 'myDataTablePR');" class="showHidePR sym-btn-remove">&nbsp;Delete</button>
+        }
+
+        <p></p>
+        <table id="myDataTablePR" class="display">
+            <thead>
+                <tr>
+                    <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                    <th>Designation Name</th>
+                    <th>Grade</th>
+                    <th>Promotion Date</th>
+                    <th>Current</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Reference</p>
+    </div>
+    <div>
+        <div id="myPortion">
+        </div>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" title="Add New  Reference" id="btnDialogTR" class=" sym-btn-add">&nbsp;New</button>
+            <button type="button" title="Delete Checked Reference" data-url="/hrm/ContactDetail/ReferenceDelete" onclick="deletedData(this, 'myDataTableRF');" class="showHideRF sym-btn-remove">&nbsp;Delete</button>
+        }
+    </div>
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableRF" class="display">
+                <thead>
+                    <tr>
+                        <th class="center">
+                            <input type="checkbox" class="chkAll" />Select All
+                        </th>
+                        <th>Name</th>
+                        <th>Relation</th>
+                        <th>Phone</th>
+                        <th>Mobile</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Education</p>
+    </div>
+    <div id="myEducationIndex">
+        <div id="myEducation">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            <button type="button" id="btnDialogED" title="Add New Education info" class="sym-btn-add showHideED">&nbsp;New</button>
+            <button type="button" title="Delete Checked Education info" data-url="/hrm/Qualification/EducationDelete" onclick="deletedData(this, 'myDataTableEducation');" class="showHideED sym-btn-remove">&nbsp;Delete</button>
+        }
+        @Html.Partial("_education", Model)
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Professional Degree</p>
+    </div>
+    <div id="professionalDegree">
+        <div id="professionalDegree">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+
+            <button type="button" id="btnDialogPD" title="Add New ProfessionalDegree info" class=" sym-btn-add showHidePD">&nbsp;New</button>
+            <button type="button" title="Delete Checked ProfessionalDegree info" data-url="/hrm/Qualification/ProfessionalDegreeDelete" onclick="deletedData(this, 'myDataTableProfessionalDegree');" class="showHidepf sym-btn-remove">&nbsp;Delete</button>
+
+        }
+
+        <p></p>
+        @Html.Partial("_ProfessionalDegree", Model)
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Language</p>
+    </div>
+    <div id="myLanguageIndex">
+        <div id="myLanguage">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+
+            <button type="button" id="btnDialogLg" title="Add New Language info" class=" sym-btn-add showHideLN">&nbsp;New</button>
+            <button type="button" title="Delete Checked Language info" data-url="/hrm/Qualification/LanguageDelete" onclick="deletedData(this, 'myDataTableLanguage1');" class="showHideLN sym-btn-remove">&nbsp;Delete</button>
+
+        }
+
+        <p></p>
+        @Html.Partial("_language", Model)
+    </div>
+    <br />
+</div>
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Experience</p>
+    </div>
+    <div id="JH">
+        <div id="myJob">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            <button type="button" id="btnDialogJH" title="Add New  Job History" class=" sym-btn-add showHideJH">&nbsp;New</button>
+            <button type="button" title="Delete Checked Job History" data-url="/hrm/Qualification/JobHistoryDelete" onclick="deletedData(this, 'myDataTableJH');" class="showHideJH sym-btn-remove">&nbsp;Delete</button>
+
+        }
+        <p></p>
+        <table id="myDataTableJH" class="display">
+            <thead>
+                <tr>
+                    <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                    <th>Company</th>
+                    <th>Job Title</th>
+                    <th>Job From</th>
+                    <th>Job To</th>
+                    <th>Service Length</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Immigration</p>
+    </div>
+    <div>
+        <div id="myImmigration">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            // <input type="button" id="btnDialogIM" class="btn btn-info showHideIM" value="Add" />
+            // <input type="button" style="width:65px;" data-url="/hrm/Immigration/ImmigrationDelete" onclick="deletedData(this, 'myDataTableIM');" id="" class=" showHideIM btn btn-info" value="Delete" />
+            <button type="button" id="btnDialogIM" title="Add New Immigration info" class="sym-btn-add showHideIM">&nbsp;New</button>
+            <button type="button" title="Delete Checked Immigration info" data-url="/hrm/Immigration/ImmigrationDelete" onclick="deletedData(this, 'myDataTableIM');" class="showHideIM sym-btn-remove">&nbsp;Delete</button>
+        }
+    </div>
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableIM" class="display">
+                <thead>
+                    <tr>
+                        <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Immigration Number</th>
+                        <th>Immigration Type</th>
+                        <th>Issued By</th>
+                        <th>Issue Date</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Training</p>
+    </div>
+    <div>
+        <div id="myTraining">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            <button type="button" id="btnDialogTAR" title="Add New Training info" class=" sym-btn-add showHideTAR">&nbsp;New</button>
+            <button type="button" title="Delete Checked Training info" data-url="/hrm/Training/Delete" onclick="deletedData(this, 'myDataTableTR');" class="showHideTR sym-btn-remove">&nbsp;Delete</button>
+        }
+
+
+    </div>
+    <br />
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableTR" class="display">
+                <thead>
+                    <tr>
+                        <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Topics</th>
+                        <th>Achievement</th>
+                        <th>Training Place</th>
+                        <th>Location</th>
+                        <th>Duration(Day)</th>
+
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Travel</p>
+    </div>
+    <div>
+        <div id="myTravel">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            //<input type="button" id="btnDialogTR" class="btn btn-info showHideTR" value="Add" />
+            // <input type="button" style="width:65px;" data-url="/hrm/Travel/TravelDelete" onclick="deletedData(this, 'myDataTableTR');" id="" class=" showHideTR btn btn-info " value="Delete" />
+            <button type="button" id="btnDialogTRV" title="Add New Travel info" class=" sym-btn-add showHideTR">&nbsp;New</button>
+            <button type="button" title="Delete Checked Travel info" data-url="/hrm/Travel/TravelDelete" onclick="deletedData(this, 'myDataTableTRV');" class="showHideTR sym-btn-remove">&nbsp;Delete</button>
+
+        }
+
+
+    </div>
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableTRV" class="display">
+                <thead>
+                    <tr>
+                        <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Travel Type</th>
+                        <th>Travel To Address</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Extra Curriculum Activity</p>
+    </div>
+    <div id="myExtraCri">
+    </div>
+    @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+        <button type="button" id="btnDialogEX" title="Add New Language" class=" sym-btn-add showHideEX">&nbsp;New</button>
+        <button type="button" title="Delete Checked Language" data-url="/hrm/Qualification/ExtraCurriDelete" onclick="deletedData(this, 'myDataTableEX');" class="showHideEX sym-btn-remove">&nbsp;Delete</button>
+    }
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableEX" class="display">
+                <thead>
+                    <tr>
+                        <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Skill</th>
+                        <th>Institute</th>
+                        <th>Achievement</th>
+                        <th>Year Of Experience</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Nominee</p>
+    </div>
+    <div id="myNomineeIndex">
+        <div id="myNominee">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            // <input type="button" id="btnDialogNO" class="btn btn-info showHideNM" value="Add" />
+            // <input type="button" style="width:65px;" data-url="/hrm/DependentNominee/NomineeDelete" onclick="deletedData(this, 'myDataTableDependent');" id="" class=" showHideNM btn btn-info  " value="Delete" />
+            <button type="button" id="btnDialogNO" title="Add New Nominee info" class=" sym-btn-add showHideNM">&nbsp;New</button>
+            <button type="button" title="Delete Checked Nominee info" data-url="/hrm/DependentNominee/NomineeDelete" onclick="deletedData(this, 'myDataTableNominee');" class="showHideNM sym-btn-remove">&nbsp;Delete</button>
+        }
+        @Html.Partial("_nominee", Model)
+    </div><br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Dependent</p>
+    </div>
+    <div id="myDependentIndex">
+        <div id="myDependent">
+        </div>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" id="btnDialogDP" title="Add New Nominee info" class=" sym-btn-add showHideDP">&nbsp;New</button>
+            <button type="button" title="Delete Checked Dependent info" data-url="/hrm/DependentNominee/DependentDelete" onclick="deletedData(this, 'myDataTableDependent');" class="showHideDP sym-btn-remove">&nbsp;Delete</button>
+            //<input type="button" id="btnDialogDP" class="btn btn-info showHideDP" value="Add" />
+            // <input type="button" style="width:65px;" data-url="/hrm/DependentNominee/DependentDelete" onclick="deletedData(this, 'myDataTableNominee');" id="" class=" showHideDP btn btn-info  " value="Delete" />
+        }
+        @Html.Partial("_dependent", Model)
+    </div>
+    <br />
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee Asset</p>
+    </div>
+    <div>
+        <div id="myEmployeeAsset">
+        </div>
+        @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+        {
+            <button type="button" id="btnDialogAsset" title="Add New Employee Asset" class=" sym-btn-add">&nbsp;New</button>
+            <button type="button" title="Delete Checked Employee Asset" data-url="/hrm/EmployeeAsset/Delete" onclick="deletedData(this, 'myDataTableAsset');" class=" sym-btn-remove">&nbsp;Delete</button>
+        }
+    </div>
+    <br />
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableAsset" class="display">
+                <thead>
+                    <tr>
+                        <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Asset Name</th>
+                        <th>Issue Date</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+
+
+@*<div id="mypermanentAddressBanglaIndex">
+        @Html.Partial("_personalDetail", Model)
+    </div>*@
+
+
+
+<script>
+
+    $(function () {
+        Country();
+        Division();
+        District();
+        var oTable = $('#myDataTableRF').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/ContactDetail/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="referanceEdit(this);" data-EmployeeId="@Model.Id"   data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>' +
+                                    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/hrm/ContactDetail/ReferenceDelete" onclick="deletedData(this, myDataTableRF,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+                                }
+                            }
+                            , { "sName": "Name" }
+                            , { "sName": "Relation" }
+                            , { "sName": "Phone" }
+                            , { "sName": "Mobile" }
+            ]
+        });
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+
+    $('#btnDialogTR').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myPortion").load('@Url.Action("Reference", "ContactDetail")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function referanceEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myPortion").load('@Url.Action("Reference", "ContactDetail")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+    function Editrefe() {
+        if ($(".reference #referenceVM_Id").val() <= 0) { $(".reference .Edit").hide(); fromWriteColor("reference"); return; }
+        fnReadOnly("reference");
+        if ($(".reference").hasClass("readOnly")) {
+            $(".reference .Save").hide();
+            $(".reference .Edit").show();
+        }
+        else {
+            $(".reference .Save").show();
+            $(".reference .Edit").hide();
+        }
+    }
+    function Cancletravel() {
+        $("#myPortion").html('');
+        $(".showHideRF").show();
+    }
+
+    $(function () {
+        ////................JOB History
+        $('#myDataTableJH').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Qualification/_indexJH/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="JHEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "Company", "sWidth": "25%" }
+                            , { "sName": "Job Title", "sWidth": "20%" }
+                            , { "sName": "Job From", "sWidth": "15%" }
+                            , { "sName": "Job To", "sWidth": "15%" }
+                            , { "sName": "Service Length", "sWidth": "10%" }
+
+            ]
+        });
+        SelectAllForDelete();
+    });
+
+    @*if ('@ViewBag.mgs' != '') {
+        var msg = '@ViewBag.mgs';
+        msg = msg.split("~");
+        ShowResult(msg[0], msg[1]);
+    }*@
+
+    function JHEdit(sender) {
+        // $("#myPromotion").html('');
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myJob").load('@Url.Action("JobHistory", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function CancleJob() {
+        $("#myJob").html('');
+        $(".showHideJH").show();
+
+    }
+    function CancleJob() {
+        $("#myJob").html('');
+        $(".showHideJH").show();
+
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+
+    //===========JOB=====
+
+    $(function () {
+        $('.selectDropdown').val('@Model.Code').change();
+        InitDateTimePickers();
+        ////................transfer
+        $('#myDataTableTN').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Job/_indexTN/@Model.Id",
+
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass":"center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="TNEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    //    +
+                                    //'&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/hrm/Job/TransferDelete" onclick="deletedData(this, myDataTableRF,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>'
+                                    ;
+                                }
+                            }
+
+                            , { "sName": "Department", "sWidth": "20%" }
+                            , { "sName": "Project", "sWidth": "20%" }
+                            , { "sName": "Section", "sWidth": "15%" }
+                            , { "sName": "Transfer Date", "sWidth": "15%" }
+                            , { "sName": "Current", "sWidth": "15%" }
+            ]
+        });
+
+        ////................promotion
+        $('#myDataTablePR').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Job/_indexPR/@Model.Id",
+
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="PREdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+                                    //org//return '<input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                }
+                            }
+
+                            @*{
+                                "sName": "Designation Name",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+                                    //return '<input type="button" Onclick="PREdit(this);" class="btn btn-info" data-EmployeeId="Model.Id" data-Id="' + oObj.aData[3] + '" value="Show"/>'
+                                    return '<Lable Onclick="PREdit(this);" class="innerListLink" data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                    ;
+                                }
+                            }*@
+
+
+                            , { "sName": "Designation Name", "sWidth": "25%" }
+                            , { "sName": "Grade", "sWidth": "20%" }
+                            , { "sName": "Promotion Date", "sWidth": "20%" }
+                            , { "sName": "Current", "sWidth": "20%" }
+            ]
+        });
+
+
+        SelectAllForDelete();
+    if ('@ViewBag.mgs' != '') {
+        var msg = '@ViewBag.mgs';
+        msg = msg.split("~");
+        ShowResult(msg[0], msg[1]);
+    }
+    });
+    ///// ..........................................
+    ////................transfer
+
+    function EditTransfer() {
+        debugger
+        if ($(".transfer #transferVM_Id").val() <= 0) { $(".transfer .Edit").hide(); fromWriteColor("transfer"); return; }
+        fnReadOnly("transfer");
+        if ($(".transfer").hasClass("readOnly")) {
+            $(".transfer .Save").hide();
+            $(".transfer .Edit").show();
+        }
+        else {
+            $(".transfer .Save").show();
+            $(".transfer .Edit").hide();
+        }
+    }
+    $('#btnDialogTN').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myTransfer").load('@Url.Action("Transfer", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function TNEdit(sender) {
+        // $("#myTransfer").html('');
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myTransfer").load('@Url.Action("Transfer", "Job")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+
+    }
+    function CancleTransfer() {
+        $("#myTransfer").html('');
+        $(".showHideTN").show();
+    }
+    ////................promotion
+    function EditPromotion() {
+        if ($(".promotion #promotionVM_Id").val() <= 0) { $(".promotion .Edit").hide(); fromWriteColor("promotion"); return; }
+        fnReadOnly("promotion");
+        if ($(".promotion").hasClass("readOnly")) {
+            $(".promotion .Save").hide();
+            $(".promotion .Edit").show();
+        }
+        else {
+            $(".promotion .Save").show();
+            $(".promotion .Edit").hide();
+        }
+    }
+    $('#btnDialogPR').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myPromotion").load('@Url.Action("Promotion", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function PREdit(sender) {
+        // $("#myPromotion").html('');
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myPromotion").load('@Url.Action("Promotion", "Job")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function CanclePromotion() {
+        $("#myPromotion").html('');
+        $(".showHidePR").show();
+
+    }
+    ////................ JOB HISTORY
+    function FromToDate(sender) {
+        var from = ParseDate($("#jobHistoryVM_JobFrom").val());
+        var to = ParseDate($("#jobHistoryVM_JobTo").val());
+        if (from > to) {
+            $(sender).val("");
+            ShowResult("Fail", "To date can't be prior to From date!");
+        }
+        else if (from >= ParseDate(FormatDate(new Date()))) {
+            $("#jobHistoryVM_JobFrom").val("");
+            ShowResult("Fail", "From date can't be prior to today!");
+        }
+    }
+    $('#btnDialogJH').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myJob").load('@Url.Action("JobHistory", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function JHEdit(sender) {
+        // $("#myPromotion").html('');
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myJob").load('@Url.Action("JobHistory", "Job")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function CancleJob() {
+        $("#myJob").html('');
+        $(".showHideJH").show();
+
+    }
+    function EditJobHistory() {
+        if ($(".jobHistory #jobHistoryVM_Id").val() <= 0) { $(".jobHistory .Edit").hide(); fromWriteColor("jobHistory"); return; }
+        fnReadOnly("jobHistory");
+        if ($(".jobHistory").hasClass("readOnly")) {
+            $(".jobHistory .Save").hide();
+            $(".jobHistory .Edit").show();
+        }
+        else {
+            $(".jobHistory .Save").show();
+            $(".jobHistory .Edit").hide();
+        }
+    }
+
+      function EditJobDetail() {
+          fnReadOnly("employeeJob");
+          if ($(".employeeJob").hasClass("readOnly")) {
+              $(".employeeJob .Save").hide();
+              $(".employeeJob .Cancle").hide();
+              $(".employeeJob .Edit").show();
+          }
+          else {
+              $(".employeeJob .Cancle").show();
+              $(".employeeJob .Save").show();
+              $(".employeeJob .Edit").hide();
+          }
+          $('#employeeJob_GradeId').attr('disabled', true);
+      }
+    function EditEmployeeSG() {
+        fnReadOnly("employeeSG");
+        if ($(".employeeSG").hasClass("readOnly")) {
+            $(".employeeSG .Save").hide();
+            $(".employeeSG .Cancle").hide();
+            $(".employeeSG .Edit").show();
+        }
+        else {
+            $(".employeeSG .Cancle").show();
+            $(".employeeSG .Save").show();
+            $(".employeeSG .Edit").hide();
+        }
+    }
+
+    ////////////////////
+
+    function joinDate(sender) {
+        var joinDate = ParseDate($("#employeeJob_JoinDate").val());
+        var Probation = ParseDate($("#employeeJob_ProbationEnd").val());
+        var Permanent = ParseDate($("#employeeJob_DateOfPermanent").val());
+
+        if (joinDate > Probation) {
+            ShowResult("Fail", "Join Date can't be prior to Probation End Date!");
+            $(sender).val("");
+        }
+        else if (joinDate > Permanent) {
+            ShowResult("Fail", "Join Date can't be prior to Permanent Date!");
+            $(sender).val("");
+        }
+        else if (Probation > Permanent) {
+            ShowResult("Fail", "Probation End Date can't be prior to Permanent Date!");
+            $(sender).val("");
+        }
+    }
+
+    function salary(sender) {
+        var GrossSalary =$("#employeeJob_GrossSalary").val();
+        var BasicSalary = $("#employeeJob_BasicSalary").val();
+        if (parseFloat(BasicSalary) > parseFloat(GrossSalary)) {
+            $(sender).val("");
+            ShowResult("Fail", "Basic Salary can't be greater then Gross Salary!");
+        }
+
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    function Cancle() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                window.location.reload();
+            })
+        }
+        else {
+            isChange = false;
+            window.location.reload();
+        }
+    };
+    var   leftMenuActive = "Job";
+
+    //===========End=========
+
+
+    function EditJobHistory() {
+        if ($(".jobHistory #jobHistoryVM_Id").val() <= 0) { $(".jobHistory .Edit").hide(); fromWriteColor("jobHistory"); return; }
+        fnReadOnly("jobHistory");
+        if ($(".jobHistory").hasClass("readOnly")) {
+            $(".jobHistory .Save").hide();
+            $(".jobHistory .Edit").show();
+        }
+        else {
+            $(".jobHistory .Save").show();
+            $(".jobHistory .Edit").hide();
+        }
+    }
+    ////................ JOB HISTORY
+    function FromToDate(sender) {
+        var from = ParseDate($("#jobHistoryVM_JobFrom").val());
+        var to = ParseDate($("#jobHistoryVM_JobTo").val());
+        if (from > to) {
+            $(sender).val("");
+            ShowResult("Fail", "To date can't be prior to From date!");
+        }
+        else if (from >= ParseDate(FormatDate(new Date()))) {
+            $("#jobHistoryVM_JobFrom").val("");
+            ShowResult("Fail", "From date can't be prior to today!");
+        }
+    }
+    $('#btnDialogJH').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myJob").load('@Url.Action("JobHistory", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+
+    function EditPresentAddress() {
+        fnReadOnly("presentAddress");
+        if ($(".presentAddress").hasClass("readOnly")) {
+            $(".presentAddress .Save").hide();
+            $(".presentAddress .Cancle").hide();
+            $(".presentAddress .Edit").show();
+        }
+        else {
+            $(".presentAddress .Cancle").show();
+            $(".presentAddress .Save").show();
+            $(".presentAddress .Edit").hide();
+        }
+    }
+
+
+    function EditPermanentAddress() {
+        fnReadOnly("permanentAddress");
+        if ($(".permanentAddress").hasClass("readOnly")) {
+            $(".permanentAddress .Save").hide();
+            $(".permanentAddress .Cancle").hide();
+            $(".permanentAddress .SaveAbove").hide();
+            $(".permanentAddress .Edit").show();
+        }
+        else {
+            $(".permanentAddress .Cancle").show();
+            $(".permanentAddress .Save").show();
+            $(".permanentAddress .SaveAbove").show();
+            $(".permanentAddress .Edit").hide();
+        }
+    }
+
+
+    @*if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }*@
+
+
+    //==========Language===========
+
+    $('#btnDialogLg').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myLanguage").load('@Url.Action("Language", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function Canclelanguage() {
+        $("#myLanguage").html('');
+        $(".showHideLN").show();
+
+    }
+    function LanguageEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myLanguage").load('@Url.Action("Language", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function EditLanguage() {
+        if ($(".language #languageVM_Id").val() <= 0) { $(".language .Edit").hide(); fromWriteColor("language"); return; }
+        fnReadOnly("language");
+        if ($(".language").hasClass("readOnly")) {
+            $(".language .Save").hide();
+            $(".language .Edit").show();
+        }
+        else {
+            $(".language .Save").show();
+            $(".language .Edit").hide();
+        }
+    }
+
+    function EditEducation() {
+        if ($(".education #educationVM_Id").val() <= 0) { $(".education .Edit").hide(); fromWriteColor("education"); return; }
+        fnReadOnly("education");
+        if ($(".education").hasClass("readOnly")) {
+            $(".education .Save").hide();
+            $(".education .Edit").show();
+        }
+        else {
+            $(".education .Save").show();
+            $(".education .Edit").hide();
+        }
+    }
+    function CancleEducation(isChange) {
+        //alert('Call From _editEducation');
+        //alert('isChange Again :' + isChange);
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the changes.</6>", null, function () {
+                isChange = false;
+                $("#myEducation").html('');
+                $(".showHideED").show();
+            })
+        }
+        else {
+            //isChange = false;
+            //alert('This will show');
+            $("#myEducation").html('');
+            $(".showHideED").show();
+            //window.location.reload();
+        }
+
+
+    }
+
+
+    function ResultCheck(dval) {
+        $(".marks").hide();
+        $(".marks input").removeClass('required');
+        $(".cgpa").hide();
+        $(".cgpa input").removeClass('required');
+        var val = "";
+        if (dval == "") {
+            val = $(".educationVMResult").val();
+        }
+        else {
+            val = dval;
+        }
+        if (val == "First Division/Class" || val == "Second Division/Class" || val == "Third Division/Class") {
+            $(".marks").show();
+            $(".cgpa input").val('');
+            $(".marks input").addClass('required');
+        }
+        else if (val == "Grade") {
+            $(".cgpa").show();
+            $(".marks input").val('');
+            $(".cgpa input").addClass('required');
+        }
+    }
+
+    //===========ProfessionalDegree================
+
+    $('#btnDialogPD').click(function (e) {
+        // var code = 1;// $('#Id').val();
+
+        $("#professionalDegree").load('@Url.Action("ProfessionalDegree", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function ProfessionalDegreeEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#professionalDegree").load('@Url.Action("ProfessionalDegree", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+    function EditProfessionalDegree() {
+        if ($(".professionalDegree #professionalDegreeVM_Id").val() <= 0) { $(".professionalDegree .Edit").hide(); fromWriteColor("professionalDegree"); return; }
+        fnReadOnly("professionalDegree");
+        if ($(".professionalDegree").hasClass("readOnly")) {
+            $(".professionalDegree .Save").hide();
+            $(".professionalDegree .Edit").show();
+        }
+        else {
+            $(".professionalDegree .Save").show();
+            $(".professionalDegree .Edit").hide();
+        }
+    }
+
+    //function CancleProfessionalDegree() {
+    //    $("#professionalDegree").html('');
+    //    $(".showHidepf").show();
+
+    //}
+
+    //=====
+
+
+    //=========Immigration============
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableIM').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Immigration/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "ImmigrationNumber",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="ImmigrationEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                    //org//return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                      //;
+                                }
+                            }
+                            @*{
+                                "sName": "ImmigrationNumber",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+                                    //return '<input type="button" Onclick="ImmigrationEdit(this);" class="btn btn-info " data-EmployeeId="Model.Id" data-Id="' + oObj.aData[4] + '" value="Show"/>'
+                                    //return '<a  class=" btn btn-primary lnkEdit" href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[4] + '\">Show</a>'
+                                    return '<Lable Onclick="ImmigrationEdit(this);" class="innerListLink " data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                }
+                            }*@
+                            , { "sName": "ImmigrationNumber", "sWidth": "25%" }
+                            , { "sName": "ImmigrationType", "sWidth": "20%" }
+                            , { "sName": "IssuedBy", "sWidth": "20%" }
+                            , { "sName": "IssueDate", "sWidth": "20%" }
+            ]
+        });
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    $('#btnDialogIM').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myImmigration").load('@Url.Action("Immigration", "Immigration")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function ImmigrationEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myImmigration").load('@Url.Action("Immigration", "Immigration")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+    function Editimmigration() {
+        if ($(".immigration #immigrationVM_Id").val() <= 0) { $(".immigration .Edit").hide(); fromWriteColor("immigration"); return; }
+        fnReadOnly("immigration");
+        if ($(".immigration").hasClass("readOnly")) {
+            $(".immigration .Save").hide();
+            $(".immigration .Edit").show();
+        }
+        else {
+            $(".immigration .Save").show();
+            $(".immigration .Edit").hide();
+        }
+    }
+
+    function Cancleimmigration() {
+        $("#myImmigration").html('');
+        $(".showHideIM").show();
+    }
+
+    //=========Training============
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+
+        SelectAllForDelete();
+        $('#myDataTableTR').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Training/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        + '&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="TrainingEdit(this);"'
+                                        + ' data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+
+                                }
+                            }
+
+
+                           , { "sName": "Topics", "sWidth": "20%" }
+                           , { "sName": "Achievement", "sWidth": "20%" }
+                           , { "sName": "TrainingPlace", "sWidth": "15%" }
+                           , { "sName": "Location", "sWidth": "15%" }
+                           , { "sName": "DurationDay", "sWidth": "15%" }
+            ]
+        });
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+
+    $('#btnDialogTAR').click(function () {
+        $("#myTraining").load('@Url.Action("Training", "Training")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+
+    function TrainingEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myTraining").load('@Url.Action("Training", "Training")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+    function Edittraining() {
+        if ($(".training #trainingVM_Id").val() <= 0) { $(".training .Edit").hide(); fromWriteColor("training"); return; }
+        fnReadOnly("training");
+        if ($(".training").hasClass("readOnly")) {
+            $(".training .Save").hide();
+            $(".training .Edit").show();
+        }
+        else {
+            $(".training .Save").show();
+            $(".training .Edit").hide();
+        }
+    }
+
+
+
+    function traningStatus(valu, sender) {
+        $(".traningStatus").hide();
+        var val = "";
+        if (valu == "") {
+            val = $(sender).val();
+        }
+        else {
+            val = valu;
+        }
+        if (val == "Schedule") {
+            $("#TrainingF").val('');
+            $("#trainingVM_Achievement").val('');
+            $(".traningStatus").hide();
+        }
+        else {
+            $(".traningStatus").show();
+
+        }
+    }
+
+    function DateFromToCheck(sender) {
+        if (ParseDate($("#trainingVM_DateFrom").val()) > ParseDate($("#trainingVM_DateTo").val())) {
+            ShowResult("Fail", "DateTo can't be prior to  DateFrom");
+            $(sender).val('');
+            $("#trainingVM_DurationDay").val(0);
+        }
+        else {
+            CheckDuration();
+        }
+    }
+
+    function CheckDuration() {
+
+        var a = Math.round((ParseDate($("#trainingVM_DateTo").val()) - ParseDate($("#trainingVM_DateFrom").val())) / (1000 * 60 * 60 * 24)) + 1;
+
+        if (a >= 0) {
+            $("#trainingVM_DurationDay").val(a);
+        }
+
+
+        if (parseFloat($("#trainingVM_DurationDay").val()) > parseFloat(a)) {
+            ShowResult("Fail", "Duration day can't be greater then two date difference!");
+        }
+    }
+
+    var leftMenuActive = "Training";
+
+    //===================Nominee=============
+    $(function () {
+        InitDropDowns();
+        SelectAllForDelete();
+    });
+    $('#btnDialogNO').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myNominee").load('@Url.Action("Nominee", "DependentNominee")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+    });
+    function NomineeEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myNominee").load('@Url.Action("Nominee", "DependentNominee")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+    function Editnominee() {
+        if ($(".nominee #nomineeVM_Id").val() <= 0) { $(".nominee .Edit").hide(); fromWriteColor("nominee"); return; }
+        fnReadOnly("nominee");
+        if ($(".nominee").hasClass("readOnly")) {
+            $(".nominee .Save").hide();
+            $(".nominee .Edit").show();
+        }
+        else {
+            $(".nominee .Save").show();
+            $(".nominee .Edit").hide();
+        }
+    }
+    var leftMenuActive = "DependentNominee";
+    //=============Dependent===============
+
+    $('#btnDialogDP').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myDependent").load('@Url.Action("Dependent", "DependentNominee")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+    });
+    function DependentEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myDependent").load('@Url.Action("Dependent", "DependentNominee")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function Editdependent() {
+        if ($(".dependent #dependentVM_Id").val() <= 0) { $(".dependent .Edit").hide(); fromWriteColor("dependent"); return; }
+        fnReadOnly("dependent");
+        if ($(".dependent").hasClass("readOnly")) {
+            $(".dependent .Save").hide();
+            $(".dependent .Edit").show();
+        }
+        else {
+            $(".dependent .Save").show();
+            $(".dependent .Edit").hide();
+        }
+    }
+    var leftMenuActive = "DependentNominee";
+
+    //=============EmployeeAsset===============
+    $(document).ready(function () {
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            alert(tt);
+            var tt1 = tt.split("~");
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+
+        $('#myDataTableAsset').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeAsset/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="EmployeeAssetEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                }
+                            }
+                           , { "sName": "AssetName", "sWidth": "20%" }
+                           , { "sName": "IssueDate", "sWidth": "20%" }
+                           , { "sName": "Remark", "sWidth": "15%" }
+            ]
+        });
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+
+    $('#btnDialogAsset').click(function () {
+        $("#myEmployeeAsset").load('@Url.Action("Asset", "EmployeeAsset")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+    });
+    function EmployeeAssetEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myEmployeeAsset").load('@Url.Action("Asset", "EmployeeAsset")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function AssetEdit() {
+        if ($(".Asset #AssetVM_Id").val() <= 0) { $(".Asset .Edit").hide(); fromWriteColor("frmAsset"); return; }
+        fnReadOnly("frmAsset");
+        if ($(".Asset").hasClass("readOnly")) {
+            $(".Save").hide();
+            $(".Edit").show();
+        }
+        else {
+            $(".Save").show();
+            $(".Edit").hide();
+        }
+    }
+
+    //================basic=============
+
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+
+    $(function () {
+        setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 500);
+        valiDation("afrmEmployeeEdit");
+    });
+
+    $('#cancelJSON').click(function () {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                location.reload();
+                //location = "/HRM/EmployeeInfo/Edit?Id=@Model.Id&empcode=@Model.Code";// + $('#Id').val() + "empcode";
+            })
+        }
+        else {
+            isChange = false;
+            location.reload();
+            //location = "/HRM/EmployeeInfo/Edit?Id=@Model.Id&empcode=@Model.Code";// + $('#Id').val();
+        }
+    });
+
+
+
+    $('#eDitJSON').click(function () {
+
+        $("#sAveJSON").show();
+        $("#cAncelJSON").show();
+        $("#eDitJSON").hide();
+        fnReadOnly("empInfo");
+    });
+
+
+    $('#sAveJSON').click(function () {
+        if (isChange == true) {
+            if (pageSubmitJSON('afrmEmployeeEdit') == 0) {
+
+                var myData = $('#afrmEmployeeEdit').serialize();
+                var url = "/HRM/EmployeeInfo/Edit";
+                var res = submit(url, myData);
+
+                if (res == true) {
+                    location.reload();
+                }
+                isChange = false;
+            }
+        }
+        else {
+            ShowResult("Success", "You have no changes for save");
+        }
+    });
+    var submit1 = function (url, mydata) {
+        $.ajax({
+            type: 'POST',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $("#cAncelJSON").hide();
+        $("#sAveJSON").hide();
+        $("#cAncelJSOND").hide();
+        $("#sAveJSOND").hide();
+        //$('.alert(-autocloseable-success)').hide();
+
+        //$(".accordion").accordion();
+        var html = "";
+        if ('@Model.IsActive'=='True') {
+            html = '<button type="button" title="Save Data"   onclick="pageSubmit(\'afrmEmployeeEdit\');" class="Save sym-btn-save" >&nbsp;Save</button><button type="button" title="Edit Data"   onclick="EditempInfo();" class=" Edit sym-btn-edit" >&nbsp;Edit</button> &nbsp;<button type="button"  title="Cancel Data"  onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>'
+
+
+            //original//html = '<input type="button" value="Save" onclick="pageSubmit(\'afrmEmployeeEdit\');" class="Save btn btn-info" /><input type="button" value="Edit" onclick="EditempInfo();" class="Edit btn btn-info" /> &nbsp;<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />'
+        }
+        else {
+            html = '<button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+            //original//html = '<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+
+        }
+        $(".actionButton").append(html);
+        InitAccordions();
+
+        //InitDateTimePickers();
+        EditempInfo();
+
+
+    });
+    function EditempInfo() {
+        fnReadOnly("empInfo");
+        if ($(".empInfo").hasClass("readOnly")) {
+            $(".empInfo .sAveJSON").hide();
+            $(".empInfo .cAncelJSON").hide();
+            $(".empInfo .Edit").show();
+        }
+        else {
+            $(".empInfo .CAncle").show();
+            $(".empInfo .SAveJSON").show();
+            $(".empInfo .Edit").hide();
+        }
+    }
+
+    //===============Emergency==================
+
+    $(function () {
+
+    });
+
+    var url = "";
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        valiDation("frmEmergency");
+        Country();
+        Division();
+        District();
+
+        EditEmergencyContact();
+
+
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    function EditEmergencyContact() {
+        fnReadOnly("emergencyContact");
+        if ($(".emergencyContact").hasClass("readOnly")) {
+            $(".emergencyContact .Save").hide();
+            $(".emergencyContact .Cancle").hide();
+            $(".emergencyContact .Edit").show();
+        }
+        else {
+            $(".emergencyContact .Cancle").show();
+            $(".emergencyContact .Save").show();
+            $(".emergencyContact .Edit").hide();
+        }
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    function Cancle() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                window.location.reload();
+            })
+        }
+        else {
+            isChange = false;
+            window.location.reload();
+        }
+    }
+    var leftMenuActive = "EmergencyContact";
+
+
+    $('#editJSONEmergency').click(function () {
+        var a = pageSubmitJSON('frmEmergency');
+        if (a != 0) {
+            return;
+        }
+        if (isChange == false) {
+            ShowResult("Success", "You have no changes for save");
+            return;
+        }
+        if (pageSubmitJSON('frmEmergency') == 0) {
+            var myData = $('#frmEmergency').serialize();
+            var url = "/HRM/EmergencyContact/Edit";
+            submit(url, myData);
+        }
+    })
+
+    $('#saveJSOND').click(function () {
+        var url = "/HRM//EmergencyContact/Edit";
+
+        $form = $('#frmEmergency');
+
+        $form.attr("action", url);
+        $form.submit();
+
+    });
+
+    //===========Travel============
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableTRV').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Travel/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="travelEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+                                    //org //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                }
+                            }
+
+                           @* {
+                               "sName": "TravelType",
+                               "bSearchable": false,
+                               "bSortable": false,
+                               "fnRender": function (oObj) {
+
+                                   //return '<input type="button" Onclick="travelEdit(this);" class="btn btn-info " data-EmployeeId="Model.Id" data-Id="' + oObj.aData[4] + '" value="Show"/>'
+                                   //return '<a  class=" btn btn-primary lnkEdit" href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[4] + '\">Show</a>'
+                                   return '<Lable Onclick="travelEdit(this);" class="innerListLink " data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                   ;
+                               }
+                           }*@
+
+                            , { "sName": "TravelType", "sWidth": "20%" }
+                            , { "sName": "TravelToAddress", "sWidth": "20%" }
+                            , { "sName": "FromDate", "sWidth": "15%" }
+                            , { "sName": "ToDate", "sWidth": "15%" }
+                            , { "sName": "Duration", "sWidth": "15%" }
+
+            ]
+        });
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    $('#btnDialogTRV').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myTravel").load('@Url.Action("Travel", "Travel")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function travelEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myTravel").load('@Url.Action("Travel", "Travel")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+   
+   
+    var leftMenuActive = "Travel";
+
+    //-=======dumb==========
+    $(function () {
+        //$('.language').autocomplete({ source: 'Url.Action("Language", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        SelectAllForDelete();
+        var oTable = $('#myDataTableEX').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Qualification/_indexExtraCurri/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="ExtraCurriEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "Skill", "sWidth": "20%" }
+                            , { "sName": "Institute", "sWidth": "25%" }
+                            , { "sName": "Achievement", "sWidth": "20%" }
+                            , { "sName": "Year Of Experience", "sWidth": "20%" }
+            ]
+        });
+        @* if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }*@
+        });
+
+    $('#btnDialogED').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myEducation").load('@Url.Action("Education", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function EducationEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myEducation").load('@Url.Action("Education", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+        EditEducation();
+    }
+    
+
+    @*if ('@ViewBag.mgs' != '') {
+        var msg = '@ViewBag.mgs';
+        msg = msg.split("~");
+        ShowResult(msg[0], msg[1]);
+    }*@
+
+function JHEdit(sender) {
+    // $("#myPromotion").html('');
+    var EmployeeId = $(sender).attr('data-employeeId');
+    var Id = $(sender).attr('data-Id');
+    $("#myJob").load('@Url.Action("JobHistory", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+}
+    function CancleJob() {
+        $("#myJob").html('');
+        $(".showHideJH").show();
+
+    }
+    function CancleJob() {
+        $("#myJob").html('');
+        $(".showHideJH").show();
+
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+
+
+    function EditJobHistory() {
+        if ($(".jobHistory #jobHistoryVM_Id").val() <= 0) { $(".jobHistory .Edit").hide(); fromWriteColor("jobHistory"); return; }
+        fnReadOnly("jobHistory");
+        if ($(".jobHistory").hasClass("readOnly")) {
+            $(".jobHistory .Save").hide();
+            $(".jobHistory .Edit").show();
+        }
+        else {
+            $(".jobHistory .Save").show();
+            $(".jobHistory .Edit").hide();
+        }
+    }
+    ////................ JOB HISTORY
+    function FromToDate(sender) {
+        var from = ParseDate($("#jobHistoryVM_JobFrom").val());
+        var to = ParseDate($("#jobHistoryVM_JobTo").val());
+        if (from > to) {
+            $(sender).val("");
+            ShowResult("Fail", "To date can't be prior to From date!");
+        }
+        else if (from >= ParseDate(FormatDate(new Date()))) {
+            $("#jobHistoryVM_JobFrom").val("");
+            ShowResult("Fail", "From date can't be prior to today!");
+        }
+    }
+    $('#btnDialogJH').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myJob").load('@Url.Action("JobHistory", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    $('#btnDialogLg').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myLanguage").load('@Url.Action("Language", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+
+    function LanguageEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myLanguage").load('@Url.Action("Language", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+
+
+    function EditEducation() {
+        if ($(".education #educationVM_Id").val() <= 0) { $(".education .Edit").hide(); fromWriteColor("education"); return; }
+        fnReadOnly("education");
+        if ($(".education").hasClass("readOnly")) {
+            $(".education .Save").hide();
+            $(".education .Edit").show();
+        }
+        else {
+            $(".education .Save").show();
+            $(".education .Edit").hide();
+        }
+    }
+
+    function CancleEducation(isChange) {
+        //alert('Call From _editEducation');
+        //alert('isChange Again :' + isChange);
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the changes.</6>", null, function () {
+                isChange = false;
+                $("#myEducation").html('');
+                $(".showHideED").show();
+            })
+        }
+        else {
+            //isChange = false;
+            //alert('This will show');
+            $("#myEducation").html('');
+            $(".showHideED").show();
+            //window.location.reload();
+        }
+
+
+    }
+    function CancleLanguage() {
+        $("#myLanguage").html('');
+        $(".showHideLN").show();
+
+    }
+    function EditLanguage() {
+        if ($(".language #languageVM_Id").val() <= 0) { $(".language .Edit").hide(); fromWriteColor("language"); return; }
+        fnReadOnly("language");
+        if ($(".language").hasClass("readOnly")) {
+            $(".language .Save").hide();
+            $(".language .Edit").show();
+        }
+        else {
+            $(".language .Save").show();
+            $(".language .Edit").hide();
+        }
+    }
+    
+    function ResultCheck(dval) {
+        $(".marks").hide();
+        $(".marks input").removeClass('required');
+        $(".cgpa").hide();
+        $(".cgpa input").removeClass('required');
+        var val = "";
+        if (dval == "") {
+            val = $(".educationVMResult").val();
+        }
+        else {
+            val = dval;
+        }
+        if (val == "First Division/Class" || val == "Second Division/Class" || val == "Third Division/Class") {
+            $(".marks").show();
+            $(".cgpa input").val('');
+            $(".marks input").addClass('required');
+        }
+        else if (val == "Grade") {
+            $(".cgpa").show();
+            $(".marks input").val('');
+            $(".cgpa input").addClass('required');
+        }
+    }
+
+    $('#btnDialogEX').click(function () {
+        $("#myExtraCri").load('@Url.Action("ExtraCurri", "Qualification")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+    function ExtraCurriEdit(sender) {
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myExtraCri").load('@Url.Action("ExtraCurri", "Qualification")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function EditExtraCurri() {
+        if ($(".extraCurri #extraCurriculumVM_Id").val() <= 0) { $(".extraCurri .Edit").hide(); fromWriteColor("extraCurri"); return; }
+        fnReadOnly("extraCurri");
+        if ($(".extraCurri").hasClass("readOnly")) {
+            $(".extraCurri .Save").hide();
+            $(".extraCurri .Edit").show();
+        }
+        else {
+            $(".extraCurri .Save").show();
+            $(".extraCurri .Edit").hide();
+        }
+    }
+    function CancleExtraCurri() {
+        $("#myExtraCri").html('');
+        $(".showHideEX").show();
+    }
+    function PassingYearLength(sender) {
+        if ($(sender).val().length < 4) {
+            ShowResult("Fail", "Minimum 4 digit required!");
+            $(sender).val("0000");
+        }
+    }
+    function CGPAANDScale(sender) {
+        if (parseFloat($("#educationVM_Scale").val()) < parseFloat($("#educationVM_CGPA").val())) {
+            $(sender).val('');
+            ShowResult("Fail", "CGPA can't be greater than Scale!");
+        }
+    }
+    var leftMenuActive = "Qualification";
+
+
+
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+
+    $(function () {
+        setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 500);
+        valiDation("afrmEmployeeEdit");
+    });
+
+    $('#cancelJSON').click(function () {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                location.reload();
+                //location = "/HRM/EmployeeInfo/Edit?Id=@Model.Id&empcode=@Model.Code";// + $('#Id').val() + "empcode";
+            })
+        }
+        else {
+            isChange = false;
+            location.reload();
+            //location = "/HRM/EmployeeInfo/Edit?Id=@Model.Id&empcode=@Model.Code";// + $('#Id').val();
+        }
+    });
+
+
+   
+    $('#editJSON').click(function () {
+
+        $("#saveJSON").show();
+        $("#cancelJSON").show();
+        $("#editJSON").hide();
+        fnReadOnly("empInfo");
+    });
+
+
+    $('#saveJSON').click(function () {
+        if (isChange == true) {
+            if (pageSubmitJSON('afrmEmployeeEdit') == 0) {
+
+                var myData = $('#afrmEmployeeEdit').serialize();
+                var url = "/HRM/EmployeeInfo/Edit";
+                var res = submit(url, myData);
+
+                if (res == true) {
+                    location.reload();
+                }
+                isChange = false;
+            }
+        }
+        else {
+            ShowResult("Success", "You have no changes for save");
+        }
+    });
+    var submit1 = function (url, mydata) {
+        $.ajax({
+            type: 'POST',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $("#cancelJSON").hide();
+        $("#saveJSON").hide();
+        $("#cancelJSOND").hide();
+        $("#saveJSOND").hide();
+        //$('.alert(-autocloseable-success)').hide();
+
+        //$(".accordion").accordion();
+        var html = "";
+        if ('@Model.IsActive' == 'True') {
+            html = '<button type="button" title="Save Data"   onclick="pageSubmit(\'afrmEmployeeEdit\');" class="Save sym-btn-save" >&nbsp;Save</button><button type="button" title="Edit Data"   onclick="EditempInfo();" class=" Edit sym-btn-edit" >&nbsp;Edit</button> &nbsp;<button type="button"  title="Cancel Data"  onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>'
+
+
+            //original//html = '<input type="button" value="Save" onclick="pageSubmit(\'afrmEmployeeEdit\');" class="Save btn btn-info" /><input type="button" value="Edit" onclick="EditempInfo();" class="Edit btn btn-info" /> &nbsp;<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />'
+        }
+        else {
+            html = '<button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+            //original//html = '<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+
+        }
+        $(".actionButton").append(html);
+        InitAccordions();
+
+        //InitDateTimePickers();
+        EditempInfo();
+
+
+    });
+    function EditempInfo() {
+        fnReadOnly("empInfo");
+        if ($(".empInfo").hasClass("readOnly")) {
+            $(".empInfo .SaveJSON").hide();
+            $(".empInfo .Cancle").hide();
+            $(".empInfo .Edit").show();
+        }
+        else {
+            $(".empInfo .Cancle").show();
+            $(".empInfo .SaveJSON").show();
+            $(".empInfo .Edit").hide();
+        }
+    }
+    function EditpersonalDetail() {
+        fnReadOnly("personalDetail");
+        if ($(".personalDetail").hasClass("readOnly")) {
+            $(".personalDetail .Save").hide();
+            $(".personalDetail .Cancle").hide();
+            $(".personalDetail .Edit").show();
+        }
+        else {
+            $(".personalDetail .Cancle").show();
+            $(".personalDetail .Save").show();
+            $(".personalDetail .Edit").hide();
+        }
+    }
+
+    function Cancle() {
+        location = "/HRM/EmployeeInfo/Edit/" + $('#Id').val();;
+    }
+    var leftMenuActive = "PersonalDetails";
+
+</script>

@@ -1,0 +1,47 @@
+﻿<div id="chart">
+</div>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", { packages: ["orgchart"] });
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        $.ajax({
+
+            type: "POST",
+            url: "/SetUp/EmpHierarchy",
+            data: '{}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                debugger
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Entity');
+                data.addColumn('string', 'ParentEntity');
+                data.addColumn('string', 'ToolTip');
+                for (var i = 0; i < r.length; i++) {
+                    var employeeId = r[i][0];
+                    var Name = r[i][1];
+                    var designation = r[i][2];
+                    var reportingManager = r[i][3] != null ? r[i][3].toString() : '';
+                    data.addRows([[{
+                        v: employeeId,
+                        //f: Name + '<div>(<span>' + designation + '</span>)</div><img src = "~/assets/Pictures/' + employeeId + '.jpg" />'
+                        f: Name + '<div>(<span>' + designation + '</span>)</div><img src = "/assets/Pictures/' + employeeId + '.jpg" />'
+
+                    }, reportingManager, designation]]);
+                }
+                var chart = new google.visualization.OrgChart($("#chart")[0]);
+                chart.draw(data, { allowHtml: true });
+            },
+            failure: function (r) {
+                alert(r);
+            },
+            error: function (r) {
+                alert(r);
+            }
+        });
+    }
+</script>

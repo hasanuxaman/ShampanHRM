@@ -1,0 +1,17 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+<div class="thinbox panel  StructureEarningDeductionDetail">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#Earning">Employee Structure Earning Detail</a></li>
+        <li><a data-toggle="tab" href="#Deduction">Employee Structure Deduction Detail</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="Earning" class="tab-pane fade in active">
+            @Html.Partial("_structureEarningDetail",Model)
+        </div>
+        <div id="Deduction" class="tab-pane fade">
+            @Html.Partial("_structureDeductionDetail",Model)
+        </div>
+    </div>
+</div>

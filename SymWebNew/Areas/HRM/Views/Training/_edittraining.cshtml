@@ -1,0 +1,225 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Training", "Training", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTraining" }))
+{
+        @Html.ValidationSummary(true)
+
+            <div class="training">
+            @Html.HiddenFor(model => model.trainingVM.EmployeeId)
+            @Html.HiddenFor(model => model.trainingVM.Id)
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.TrainingStatus_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.trainingVM.TrainingStatus_E, "/Config/DropDown/TrainingStatus", new {@onchange="traningStatus('',this);", @placeholder = "Training Status", @class ="required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.Topics)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.trainingVM.Topics, new { @placeholder = "Topics",@rows="1", @class ="required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4 traningStatus">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.Achievement)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.trainingVM.Achievement, new { @placeholder = "Achievement",@rows="1", @class ="form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            
+                                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.InstituteName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.trainingVM.InstituteName, new { @placeholder = "Institute Name",@rows="1", @class ="form-control" })
+                    </div>
+                </div>
+                 <div class="col-sm-4">
+                    <div class="editor-label">
+                       <label>Address</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.trainingVM.Location, new { @placeholder = "Location",@rows="1", @class ="form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.FundedBy)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.trainingVM.FundedBy, new { @placeholder = "Funded By",@rows="1", @class ="form-control" })
+                    </div>
+                </div>
+               
+                </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.TrainingPlace_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.trainingVM.TrainingPlace_E, "/Config/DropDown/TrainingPlace", new { @placeholder = "Training Place", @class ="required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.AllowancesTotalTk)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.trainingVM.AllowancesTotalTk, new {@onchange="NumberCheck(this);" , @placeholder = "Allowances Total Tk", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.DateFrom)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.trainingVM.DateFrom, new {@onchange="DateFromToCheck(this);" ,@rows="1", @placeholder = "Date From", @class ="customDatePicker required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.DateTo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.trainingVM.DateTo, new {@onchange="DateFromToCheck(this);" ,@rows="1", @placeholder = "Date To", @class ="customDatePicker required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.DurationDay)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.trainingVM.DurationDay, new {@onchange="NumberCheck(this);CheckDuration();" , @placeholder = "Duration Day", @class ="required form-control" })
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.trainingVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.trainingVM.Remarks, new { @placeholder = "Remarks",@rows="1", @class ="form-control" })
+                    </div>
+                </div>
+            </div>
+                <div class="row traningStatus">
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.trainingVM.FileName)
+                        <input type="file" onchange="CheckFileSize(this);" name="TrainingF" id="TrainingF" style="width: 200px;" />
+                    </div>
+                    @if (Model.trainingVM.FileName != null && Model.trainingVM.FileName != "")
+                    {
+                        <div class="col-md-2">
+                            <label>&nbsp;</label>
+                            <div class="col-md-6">
+                                <a target="_blank" href="~/Files/Training/@Model.trainingVM.Id@Model.trainingVM.FileName">
+                                    <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                            </div>
+                            <div class="col-md-6" style="float: left;">
+                                <span onclick="FileDelete(this)"; data-id="@Model.trainingVM.Id" data-table="11"  data-field="FileName" data-url="~/Files/Training/@Model.trainingVM.Id@Model.trainingVM.FileName">
+                                    <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                            </div>
+                        </div>
+                    }
+                </div>
+             <br />
+        <p>
+            @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                 <button type="button" title="Click to Save" onclick="pageSubmit('frmTraining');" class="Save sym-btn-save">&nbsp;Save</button>
+                
+                @*<button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>*@
+                <button type="button" title="Click for Edit" onclick="Edittraining();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+            }
+            <button type="button" title="Click for Cancel" id="cancelJSONTraining" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </p>
+        </div>
+}
+<script>
+ 
+
+    $(function () {
+        Edittraining();
+        traningStatus('@Model.trainingVM.TrainingStatus_E');
+        valiDation("frmTraining");
+        $(".showHideTR").hide();///////Index page new btn
+        InitDropDowns();
+        InitDateTimePickers();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+
+        $('#cancelJSONTraining').click(function () {
+            if (isChange == true) {
+                Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                    isChange = false;
+                    $("#myTraining").html('');
+                    $(".showHideTR").show();
+                })
+            }
+            else {
+                //isChange = false;
+                $("#myTraining").html('');
+                $(".showHideTR").show();
+            }
+        });
+
+
+        //$('#saveJSON').click(function () {
+        //    if (isChange == true) {
+        //        if (pageSubmitJSON('frmTraining') == 0) {
+        //            var myData = $('#frmTraining').serialize();
+        //            var url = "/HRM/Training/Training";
+        //            var res = submit(url, myData);
+        //            if (res == true) {
+        //                location.reload();
+        //            }
+        //            isChange = false;
+        //        }
+        //    }
+        //    else {
+        //        ShowResult("Success", "You have no changes for save");
+        //    }
+        //});
+        //$('#saveJSOND').click(function () {
+        //    var url = "/HRM/Training/Training";
+
+        //    $form = $('#frmEducation');
+
+        //    $form.attr("action", url);
+        //    $form.submit();
+
+        //});
+    });
+
+    
+</script>

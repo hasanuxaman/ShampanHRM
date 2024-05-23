@@ -1,0 +1,205 @@
+﻿@{
+    Layout = null;
+}
+@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using (Html.BeginForm("AttendanceLog", "EmployeeAttendance", FormMethod.Post, new { @Id = "frmAttendanceLog" }))
+{
+    <div class="thinbox" id="empInformation">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="empInfo">
+                    <div class="th_thinbox">
+                        <p>@Html.ValueFor(model => model.EmpName)</p>
+                    </div>
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.AttendanceSystem)
+                    <div class=" col-md-2">
+                        <div class="editor-label col-md-2 ">
+                            <label><b>Code</b> </label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Code)
+                        </div>
+                    </div>
+                    <div class=" col-md-2">
+                        <div class="editor-label ">
+                            @Html.LabelFor(model => model.Designation)
+                        </div>
+                        <div class="editor-field ">
+                            @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Designation)
+                        </div>
+                    </div>
+                    <div class=" col-md-2">
+                        <div class="editor-label ">
+                            <label>@Session["DepartmentLabel"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Department)
+                        </div>
+                    </div>
+                    <div class=" col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["SectionLabel"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Section)
+                        </div>
+                    </div>
+                    <div class=" col-md-2">
+                        <div class="editor-label">
+                            <label>@Session["ProjectLabel"]</label>
+                        </div>
+                        <div class="editor-field ">
+                            @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Project)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="AttendanceEntry">
+        <div class="col-md-6">
+
+            @Html.HiddenFor(model => model.AttLogsVM.AttendanceStructureId)
+            @Html.HiddenFor(model => model.AttLogsVM.UserID)
+            @Html.HiddenFor(model => model.AttLogsVM.EmployeeId)
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>Attendance</p>
+                </div>
+                <div class="attendance">
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.AttLogsVM.PunchDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @if (Model.AttLogsVM.Self)
+                        {
+                            @Html.TextBoxFor(model => model.AttLogsVM.PunchDate, new { @disabled = "disabled", @placeholder = "Punch Date", @class = " required customDatePicker form-control PunchDate" })
+                            @Html.HiddenFor(model => model.AttLogsVM.PunchDate)                    }
+                        else
+                        { 
+                            @Html.TextBoxFor(model => model.AttLogsVM.PunchDate, new { @placeholder = "Punch Date", @class = " required customDatePicker form-control PunchDate" })
+                        }
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.AttLogsVM.PunchTime)
+                    </div>
+                    <div class="editor-field  col-md-8">
+                        @if (Model.AttLogsVM.Self)
+                        {
+                            @Html.TextBoxFor(model => model.AttLogsVM.PunchTime, new { @disabled = "disabled", @placeholder = "Punch Time", @class = " required customTimePicker form-control" })
+                            @Html.HiddenFor(model => model.AttLogsVM.PunchTime) }
+                        else
+                        { @Html.TextBoxFor(model => model.AttLogsVM.PunchTime, new { @placeholder = "Punch Time", @class = " required customTimePicker form-control" })}
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.AttLogsVM.Remarks)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextAreaFor(model => model.AttLogsVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AttLogsVM.Remarks)
+                    </div>
+                    <p>
+
+                        @if (Model.AttendanceSystem == "ManualRoster")
+                        {
+                            <button type="button" title="Save Data" class="saveJSON  sym-btn-save">&nbsp;Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+                        }
+                        <button type="button" title="Cancel Data" onclick="CancleLeave();" class="  sym-btn-cancel">&nbsp;Cancel</button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="AttendancePolicy">
+            </div>
+        </div>
+    </div>
+}
+<script>
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+
+    $(function () {
+        InitDatePickers();
+        InitDateTimePickers();
+        //$(".customDatePicker").datepicker();
+        $('.customTimePicker').ptTimeSelect();
+        fromWriteColor("attendance");
+        valiDation("frmAttendanceLog");
+        fnReadOnly("tPolicy");
+        fromReadColor("tPolicy");
+        timepolicycheck();
+    });
+
+
+    function timepolicycheck() {
+        var EmployeeId = $('#Id').val();
+        var PunchDate = $(".PunchDate").val();
+
+
+
+        var url = '@Url.Action("AttendancePolicy", "EmployeeAttendance")' + '?EmployeeId=' + EmployeeId + '&PunchDate=' + PunchDate;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                //alert(11);
+                if (data.split('~')[0] == "Fail") {
+                    //alert(data.split('~')[0])
+                    $("div.EditPlace").hide();
+
+                    ShowResult(data);
+                }
+                else {
+                    $('.AttendancePolicy').html(data);
+                }
+            },
+        });
+    }
+
+
+
+    function CancleLeave() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                CancleLeave();
+            })
+        }
+        else {
+            //isChange = false;
+            $(".AttendancePolicy").hide();
+            $("#empInformation").hide();
+            $("#AttendanceEntry").hide();
+        }
+
+    }
+
+</script>
+<script>
+    $('.saveJSON').click(function () {
+
+        var url = "/HRM/EmployeeAttendance/AttendanceLogNew";
+        var myData = $('#frmAttendanceLog').serialize();
+        submit(url, myData);
+
+    });
+
+
+</script>

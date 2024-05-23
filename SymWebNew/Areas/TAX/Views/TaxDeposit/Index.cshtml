@@ -1,0 +1,87 @@
+﻿@model SymViewModel.Tax.TaxDepositVM
+<div class="headrow">
+    <button type="button" title="Add New Tax Deposit" data-url="/Tax/TaxDeposit/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Multiple Tax Deposit" data-url="/Tax/TaxDeposit/CreateMultiple" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;Multiple Diposit</button>
+    <button type="button" title="Delete Tax Deposit" data-url="/Tax/TaxDeposit/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/Tax/TaxDeposit/ExcelImport"
+            onclick="GoTo(this)">
+        &nbsp;Import/Export
+    </button>
+    <label class="pull-right">Tax Deposit </label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p class="thinHead">Tax Deposit List</p>
+    </div>
+    <p>
+    </p>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All
+                </th>
+                <th>Employee Code </th>
+                <th>Name </th>
+                <th>Designation </th>
+                <th>Challan No</th>
+                <th>Deposit Amount</th>
+                <th>Deposit Date </th>
+                @*
+                    EmployeeCode
+                    EmployeeName
+                    Designation
+                    ChallanNo
+                    DepositAmount
+                    DepositDate
+                *@
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<div class="headrow">
+    <div class="pull-left">
+        <button type="button" title="Add New Tax Deposit" data-url="/Tax/TaxDeposit/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Tax Deposit" data-url="/Tax/TaxDeposit/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Tax/TaxDeposit/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "16%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return '<input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        + '&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Id=""   class=" innerListLink  sym-btn-edit-row"   href=\"/Tax/TaxDeposit/Edit/' + oObj.aData[0] + '\"></a>'
+                                        + '&nbsp; <a title="Click on for Delete" data-url="/Tax/TaxDeposit/Delete"  onclick=btnDelete(this); data-Id="' + oObj.aData[0] + '\" class="sym-btn-remove-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "EmployeeCode", "sWidth": "10%" }
+                            , { "sName": "EmployeeName", "sWidth": "10%" }
+                            , { "sName": "Designation", "sWidth": "10%" }
+                            , { "sName": "ChallanNo", "sWidth": "15%" }
+                            , { "sName": "DepositAmount", "sWidth": "15%" }
+                            , { "sName": "TransactionDateTime", "sWidth": "15%" }
+
+            ]
+        });
+    });
+</script>
+

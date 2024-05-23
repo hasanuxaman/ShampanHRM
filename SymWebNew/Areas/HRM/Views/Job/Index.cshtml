@@ -1,0 +1,526 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+ @Html.Partial("_employeeJob",Model)
+ @*@Html.Partial("_employeeStructureGroup",Model)*@
+@if (@Model.employeeJob.JoinDate !=null)
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Transfer</p>   
+        </div>
+<div id="TN">
+    <div id="myTransfer">
+    </div>
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+         <button type="button" id="btnDialogTN" title="Add New Transfer Delete" class=" sym-btn-add showHideTN">&nbsp;New</button>
+    <button type="button" title="Delete Checked Transfer Delete" data-url="/hrm/Job/TransferDelete" onclick="deletedData(this, 'myDataTableTN');" class="showHideTN sym-btn-remove">&nbsp;Delete</button>
+    }
+    <p></p>
+    <table id="myDataTableTN" class="display">
+        <thead>
+            <tr>
+                <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+                <th>Transfer Date</th>
+                <th>Current</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+        <br />
+        </div>
+<hr />
+    <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Promotion</p>   
+        </div>
+<div id="PR">
+    <div id="myPromotion">
+    </div>
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+ {
+    
+       <button type="button" id="btnDialogPR" title="Add New  Promotion" class=" sym-btn-add showHidePR">&nbsp;New</button>
+    <button type="button" title="Delete Checked Promotions" data-url="/hrm/Job/PromotionDelete" onclick="deletedData(this, 'myDataTablePR');" class="showHidePR sym-btn-remove">&nbsp;Delete</button>
+ }
+
+    <p></p>
+    <table id="myDataTablePR" class="display">
+        <thead>
+            <tr>
+                <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                <th>Designation Name</th>
+                <th>Grade</th>
+                <th>Promotion Date</th>
+                <th>Current</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+        <br />
+        </div>
+}
+    
+<hr />
+<!-- JH
+    <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Experience</p>   
+        </div>
+<div id="JH">
+    <div id="myJob">
+    </div>
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+ {
+     // <input type="button" id="btnDialogJH" class="btn btn-info showHideJH " value="Add" />
+     //<input type="button" style="width:65px;" data-url="/hrm/Job/JobHistoryDelete" onclick="deletedData(this, 'myDataTableJH');" id="" class="showHideJH btn btn-info " value="Delete" />
+       <button type="button" id="btnDialogJH" title="Add New  Job History" class=" sym-btn-add btnHover showHideJH">&nbsp;New</button>
+    <button type="button" title="Delete Checked Job History" data-url="/hrm/Job/JobHistoryDelete" onclick="deletedData(this, 'myDataTableJH');" class="showHideJH sym-btn-remove">&nbsp;Delete</button>
+  
+ }
+
+    <p></p>
+    <table id="myDataTableJH" class="display">
+        <thead>
+            <tr>
+                <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Job From</th>
+                <th>Service Length</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+        <br />
+        </div>
+-->
+<script>
+    $(function () {
+        $('.selectDropdown').val('@Model.Code').change();
+        InitDateTimePickers();
+        ////................transfer
+        $('#myDataTableTN').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Job/_indexTN/@Model.Id",
+
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass":"center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="TNEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    //    +
+                                    //'&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/hrm/Job/TransferDelete" onclick="deletedData(this, myDataTableRF,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>'
+                                    ;
+                                }
+                            }
+                            
+                            , { "sName": "Department", "sWidth": "20%" }
+                            , { "sName": "Project", "sWidth": "20%" }
+                            , { "sName": "Section", "sWidth": "15%" }
+                            , { "sName": "Transfer Date", "sWidth": "15%" }
+                            , { "sName": "Current", "sWidth": "15%" }
+            ]
+        });
+       
+        ////................promotion
+        $('#myDataTablePR').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Job/_indexPR/@Model.Id",
+
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="PREdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>' 
+                                    ;
+
+                                    //org//return '<input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                    }
+                            }
+
+                            @*{
+                                "sName": "Designation Name",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+                                    //return '<input type="button" Onclick="PREdit(this);" class="btn btn-info" data-EmployeeId="Model.Id" data-Id="' + oObj.aData[3] + '" value="Show"/>'
+                                    return '<Lable Onclick="PREdit(this);" class="innerListLink" data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                    ;
+                                }
+                            }*@
+
+
+                            , { "sName": "Designation Name", "sWidth": "25%" }
+                            , { "sName": "Grade", "sWidth": "20%" }
+                            , { "sName": "Promotion Date", "sWidth": "20%" }
+                            , { "sName": "Current", "sWidth": "20%" }
+            ]
+        });
+
+        @* 
+        ////................JOB History
+        $('#myDataTableJH').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Job/_indexJH/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="JHEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+                                    //org//return '<input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                            //;
+                                        }
+                            }
+                          //{
+                                "sName": "Company",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "fnRender": function (oObj) {
+                                        //return '<input type="button" Onclick="JHEdit(this);" class="btn btn-info" data-EmployeeId="Model.Id" data-Id="' + oObj.aData[3] + '" value="Show"/>'
+                                        return '<Lable Onclick="JHEdit(this);" class="innerListLink" data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                ;
+                                }
+                            //}
+                            , { "sName": "Company", "sWidth": "25%" }
+                            , { "sName": "Job Title", "sWidth": "20%" }
+                            , { "sName": "Job From", "sWidth": "15%" }
+                            , { "sName": "Job To", "sWidth": "15%" }
+                            , { "sName": "Service Length", "sWidth": "10%" }
+
+            ]
+        });
+    *@
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+                        ///// ..........................................
+                        ////................transfer
+
+                        function EditTransfer() {
+                            if ($(".transfer #transferVM_Id").val() <= 0) { $(".transfer .Edit").hide(); fromWriteColor("transfer"); return; }
+                            fnReadOnly("transfer");
+                            if ($(".transfer").hasClass("readOnly")) {
+                                $(".transfer .Save").hide();
+                                $(".transfer .Edit").show();
+                            }
+                            else {
+                                $(".transfer .Save").show();
+                                $(".transfer .Edit").hide();
+                            }
+                        }
+                        $('#btnDialogTN').click(function () {
+                            // var code = 1;// $('#Id').val();
+                            $("#myTransfer").load('@Url.Action("Transfer", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+        function TNEdit(sender) {
+            // $("#myTransfer").html('');
+            var EmployeeId = $(sender).attr('data-employeeId');
+            var Id = $(sender).attr('data-Id');
+            $("#myTransfer").load('@Url.Action("Transfer", "Job")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+       
+    }
+    function CancleTransfer() {
+        $("#myTransfer").html('');
+        $(".showHideTN").show();
+    }
+    ////................promotion
+    function EditPromotion() {
+        if ($(".promotion #promotionVM_Id").val() <= 0) { $(".promotion .Edit").hide(); fromWriteColor("promotion"); return; }
+        fnReadOnly("promotion");
+        if ($(".promotion").hasClass("readOnly")) {
+            $(".promotion .Save").hide();
+            $(".promotion .Edit").show();
+        }
+        else {
+            $(".promotion .Save").show();
+            $(".promotion .Edit").hide();
+        }
+    }
+    $('#btnDialogPR').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myPromotion").load('@Url.Action("Promotion", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+        function PREdit(sender) {
+            // $("#myPromotion").html('');
+            var EmployeeId = $(sender).attr('data-employeeId');
+            var Id = $(sender).attr('data-Id');
+            $("#myPromotion").load('@Url.Action("Promotion", "Job")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+        }
+        function CanclePromotion() {
+            $("#myPromotion").html('');
+            $(".showHidePR").show();
+
+        }
+    ////................ JOB HISTORY
+        function FromToDate(sender) {
+            var from = ParseDate($("#jobHistoryVM_JobFrom").val());
+            var to = ParseDate($("#jobHistoryVM_JobTo").val());
+            if (from > to) {
+                $(sender).val("");
+                ShowResult("Fail", "To date can't be prior to From date!");
+            }
+            else if (from >= ParseDate(FormatDate(new Date()))) {
+                $("#jobHistoryVM_JobFrom").val("");
+                ShowResult("Fail", "From date can't be prior to today!");
+            }
+        }
+        $('#btnDialogJH').click(function () {
+            // var code = 1;// $('#Id').val();
+            $("#myJob").load('@Url.Action("JobHistory", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+        function JHEdit(sender) {
+            // $("#myPromotion").html('');
+            var EmployeeId = $(sender).attr('data-employeeId');
+            var Id = $(sender).attr('data-Id');
+            $("#myJob").load('@Url.Action("JobHistory", "Job")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+        }
+        function CancleJob() {
+            $("#myJob").html('');
+            $(".showHideJH").show();
+
+        }
+        function EditJobHistory() {
+            if ($(".jobHistory #jobHistoryVM_Id").val() <= 0) { $(".jobHistory .Edit").hide(); fromWriteColor("jobHistory"); return; }
+            fnReadOnly("jobHistory");
+            if ($(".jobHistory").hasClass("readOnly")) {
+                $(".jobHistory .Save").hide();
+                $(".jobHistory .Edit").show();
+            }
+            else {
+                $(".jobHistory .Save").show();
+                $(".jobHistory .Edit").hide();
+            }
+        }
+        ////////////
+  @*      $('#btnDialogLT').click(function () {
+            // var code = 1;// $('#Id').val();
+            $("#myLeft").load('@Url.Action("Left", "Job")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+        });*@
+            //function CancleLeft() {
+            //    $("#myLeft").html('');
+            //    $(".btnNewLT").show();
+
+            //}
+
+            function EditJobDetail() {
+                fnReadOnly("employeeJob");
+                if ($(".employeeJob").hasClass("readOnly")) {
+                    $(".employeeJob .Save").hide();
+                    $(".employeeJob .Cancle").hide();
+                    $(".employeeJob .Edit").show();
+                }
+                else {
+                    $(".employeeJob .Cancle").show();
+                    $(".employeeJob .Save").show();
+                    $(".employeeJob .Edit").hide();
+                }
+                $('#employeeJob_GradeId').attr('disabled', true);
+            }
+            function EditEmployeeSG() {
+                fnReadOnly("employeeSG");
+                if ($(".employeeSG").hasClass("readOnly")) {
+                    $(".employeeSG .Save").hide();
+                    $(".employeeSG .Cancle").hide();
+                    $(".employeeSG .Edit").show();
+                }
+                else {
+                    $(".employeeSG .Cancle").show();
+                    $(".employeeSG .Save").show();
+                    $(".employeeSG .Edit").hide();
+                }
+            }
+
+    ////////////////////
+
+            function joinDate(sender) {
+                var joinDate = ParseDate($("#employeeJob_JoinDate").val());
+                var Probation = ParseDate($("#employeeJob_ProbationEnd").val());
+                var Permanent = ParseDate($("#employeeJob_DateOfPermanent").val());
+
+                if (joinDate > Probation) {
+                    ShowResult("Fail", "Join Date can't be prior to Probation End Date!");
+                        $(sender).val("");
+                }
+                else if (joinDate > Permanent) {
+                    ShowResult("Fail", "Join Date can't be prior to Permanent Date!");
+                        $(sender).val("");
+                }
+                else if (Probation > Permanent) {
+                    ShowResult("Fail", "Probation End Date can't be prior to Permanent Date!");
+                        $(sender).val("");
+                }
+            }
+                //tt = comparedate(joinDate, Probation, "Join", "Probation")
+                //if (tt == false) {
+                //    $(sender).val("");
+                //    return false;
+                //}
+
+                //tt = comparedate(joinDate, Permanent, "Join", "Permanent")
+                //if (tt == false) {
+                //    $(sender).val("");
+                //    return false;
+                //}
+                //else if (Probation > Permanent) {
+                //    $(sender).val("");
+                //    ShowResult("Fail", "Job Probation date can't be prior to permanent date");
+                //}
+           
+
+
+            //function joinDate(sender) {
+            //    var joinDate = ParseDate($("#employeeJob_JoinDate").val());
+            //    var Probation = ParseDate($("#employeeJob_ProbationEnd").val());
+            //    var Permanent = ParseDate($("#employeeJob_DateOfPermanent").val());
+            //    //if (joinDate > Probation) {
+            //    //    $(sender).val("");
+            //    //    ShowResult("Fail", "Job join date can't be prior to probation end date!");
+            //    //}
+            //    //else if (joinDate > Permanent) {
+            //    //    $(sender).val("");
+            //    //    ShowResult("Fail", "Job join date can't be prior to permanent date");
+            //    //}
+            //    var dateTypes = [joinDate, Probation, Permanent];
+            //    var dateNames = ["Join", "Probation End", "Permanent"];
+            //    var tt;
+
+
+            //    //tt = comparedate(dateTypes[1], dateTypes[2], dateNames[1], dateNames[2])
+            //    //if (tt == false) {
+            //    //    $(sender).val("");
+            //    //    return false;
+            //    //}
+
+            //    $.each(dateTypes, function (i, v) {
+            //        //alert(dateTypes[i] + ": " + dateNames[i]);
+            //        if (i == dateTypes.length - 1) {
+            //            return false;
+            //        }
+
+            //        $.each(dateNames, function (k, vk) {
+
+            //            if ((i == dateNames.length - 1) || (k == dateNames.length - 1) || (k < i)) {
+            //                return true;
+            //            }
+
+            //            //alert(dateTypes[i] + " : " + dateTypes[k + 1]);
+            //            tt = comparedate(dateTypes[i], dateTypes[k + 1], dateNames[i], dateNames[k + 1])
+            //            if (tt == false) {
+            //                $(sender).val("");
+            //                return false;
+            //            }
+            //        });
+            //    });
+
+
+            //    //tt = comparedate(joinDate, Probation, "Join", "Probation")
+            //    //if (tt == false) {
+            //    //    $(sender).val("");
+            //    //    return false;
+            //    //}
+
+            //    //tt = comparedate(joinDate, Permanent, "Join", "Permanent")
+            //    //if (tt == false) {
+            //    //    $(sender).val("");
+            //    //    return false;
+            //    //}
+            //    //else if (Probation > Permanent) {
+            //    //    $(sender).val("");
+            //    //    ShowResult("Fail", "Job Probation date can't be prior to permanent date");
+            //    //}
+            //}
+            //function comparedate(first, second, firstName, secondName) {
+            //    if (first > second) {
+            //        ShowResult("Fail", "" + firstName + " date can't be after " + secondName + " date");
+            //        return false;
+            //    }
+            //}
+
+            function salary(sender) {
+                var GrossSalary =$("#employeeJob_GrossSalary").val();
+                var BasicSalary = $("#employeeJob_BasicSalary").val();
+                if (parseFloat(BasicSalary) > parseFloat(GrossSalary)) {
+                    $(sender).val("");
+                    ShowResult("Fail", "Basic Salary can't be greater then Gross Salary!");
+                }
+                
+            }
+            var isChange = false;
+            $('.form-control').change(function () {
+                isChange = true;
+            });
+            function Cancle() {
+                if (isChange == true) {
+                    Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                        isChange = false;
+                        window.location.reload();
+                    })
+                }
+                else {
+                    isChange = false;
+                    window.location.reload();
+                }
+            };
+         var   leftMenuActive = "Job";
+</script>

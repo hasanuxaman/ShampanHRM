@@ -1,0 +1,166 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Reference", "ContactDetail", FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmReference" }))
+{
+    @Html.ValidationSummary(true)
+
+
+        <div class="reference">
+                        @Html.HiddenFor(model => model.referenceVM.Id)
+                        @Html.HiddenFor(model => model.referenceVM.EmployeeId)
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Name)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.Name,  new { @placeholder = "Reference Name", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Relation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.Relation,  new { @placeholder = "Relation", @class = "required form-control" })
+                    </div>
+                </div>
+                </div>
+            <div class="row">
+               
+                 <div class="col-md-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Address)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.Address,  new { @placeholder = "Address", @class = "form-control" })
+                    </div>
+                </div>
+                </div>
+            <div class="row">
+                 <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Country)
+                    </div>
+                    <div class="editor-field">
+                   <select id="referenceVM.Country" name="referenceVM.Country" data-val="@Model.referenceVM.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>
+                    </div>
+                </div>
+                  <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Division)
+                    </div>
+                    <div class="editor-field">
+                   <select id="referenceVM.Division" name="referenceVM.Division" data-val="@Model.referenceVM.Division"  data-url="/Config/DropDown/Division/"  class = " division form-control" ></select>
+                    </div>
+                </div>
+                 <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.District)
+                    </div>
+                    <div class="editor-field">
+                   <select id="referenceVM.District" name="referenceVM.District" data-val="@Model.referenceVM.District"  data-url="/Config/DropDown/District/"  class = " district form-control" ></select>
+                    </div>
+                </div>
+              
+           <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.City)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.City,  new { @placeholder = "City", @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+               
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.PostalCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.PostalCode,  new { @placeholder = "Postal Code", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Phone)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.Phone,  new { @placeholder = "Phone", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Mobile)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.referenceVM.Mobile,  new { @placeholder = "Mobile", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-md-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.referenceVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.referenceVM.Remarks,  new { @placeholder = "Remarks",@rows="1", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+@*            <div class="row">
+                <div class="col-md-10">
+                    <input type="file" name="ReferenceF" id="ReferenceF" style="width: 200px;" />
+                </div>
+                @if (Model.referenceVM.FileName != null && Model.referenceVM.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <a target="_blank" href="~/Files/Reference/@Model.referenceVM.Id@Model.referenceVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" /></a>
+                    </div>
+                    }
+            </div>*@
+            <br />
+            <p>
+                @if (identity.IsAdmin || identity.IsHRM)
+{
+           <button type="Submit"  title="Save Data"  onclick="pageSubmit('frmReference');" class="Save sym-btn-save" >&nbsp;Save</button>
+            <button type="button"  title="Edit Data"  onclick="Editrefe();" class="Edit sym-btn-edit" >&nbsp;Edit</button>
+                    
+                }
+                   @*<input type="button" value="Cancel" onclick="Cancletravel();" class="Cancle btn btn-info" />*@
+                   <button type="button" title="Cancel Data"   onclick="Cancletravel();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+
+            </p>
+        </div>
+}
+<script>
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        InitDropDowns();
+        Editrefe();
+        Country();
+        Division();
+        District();
+        valiDation("frmReference");
+        $(".showHideRF").hide()
+    });
+</script>

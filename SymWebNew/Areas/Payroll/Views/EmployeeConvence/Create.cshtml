@@ -1,0 +1,82 @@
+﻿@model SymViewModel.Payroll.EmployeeConvenceVM
+@using UIHelper.MVC
+
+@{
+    Layout = null;
+}
+
+<script>
+    $(function () {
+        InitDateTimePickers();
+    });
+
+
+
+</script>
+@using (Html.BeginForm("Create", "EmployeeConvence", FormMethod.Post, new { @Id = "frmEMCON" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        @Html.HiddenFor(model => model.EmployeeId)
+
+        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.EmpName)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextAreaFor(model => model.EmpName, new {@placeholder = "Employee Name",@rows="1", @class ="required form-control", @readonly="readonly" })
+                @Html.ValidationMessageFor(model => model.EmpName)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.ConvenceAmount)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.ConvenceAmount, null, new {@placeholder = "Conveyance Amount", @class =" right required form-control" })
+                @Html.ValidationMessageFor(model => model.ConvenceAmount)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 ">
+                <label>Fiscal Period</label>
+            </label>
+            <div class="col-sm-8">
+                @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new {@placeholder = "Fiscal Period", @class ="required form-control" })
+            </div>
+        </div>
+       @* <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.ConvenceDate)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.ConvenceDate, null, new {@placeholder = "Convence Date", @class ="customDatePicker required form-control" })
+                @Html.ValidationMessageFor(model => model.ConvenceDate)
+            </div>
+        </div>*@
+
+        <div class="row">
+            <label class="col-sm-4">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.Remarks, null, new {@placeholder = "Remarks",@rows="1", @class ="   form-control" })
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4">
+             <button type="button" onclick="pageSubmit('frmEMCON');" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+            </label>
+            <label class="col-sm-4">
+                <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+            </label>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        valiDation("frmEMCON");
+        InitDropDowns();
+    });
+</script>

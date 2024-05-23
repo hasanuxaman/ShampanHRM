@@ -1,0 +1,59 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Employee Tax Shchedule" data-url="/Tax/TaxSchedule/EmployeeIndex" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+    <label class="pull-right">Fiscal Year</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p class="thinHead">Fiscal Year List</p>
+    </div>
+    <p>
+
+    </p>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All
+                </th>
+                <th>Fiscal Year</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        InitDateTimePickers();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Tax/TaxSchedule/_indexFiscalYears",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return '  <a title="Click on for Details" style="text-decoration:none;"    href=\"/Tax/TaxSchedule/IndexYearly?fYear=' + oObj.aData[0] + '\"  class="sym-btn-detail-row"></a>';
+                                    ;
+                                }
+                            }
+                            , { "sName": "FiscalYear", "sWidth": "20%" }
+                    , { "sName": "Remarks", "sWidth": "12%" }
+            ]
+        });
+
+    });
+
+</script>

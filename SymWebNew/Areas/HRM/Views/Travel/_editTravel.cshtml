@@ -1,0 +1,275 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Travel", "Travel", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTravel" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="travel">
+        @Html.HiddenFor(model => model.travelVM.EmployeeId)
+        @Html.HiddenFor(model => model.travelVM.Id)
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.TravelType_E)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.travelVM.TravelType_E, "/Config/DropDown/TravelType", new { @placeholder = "Travel Type", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.FromDate)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.FromDate, new { @onchange = "FromToDate(this)", @placeholder = "From Date", @class = "required customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.ToDate)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.ToDate, new { @onchange = "FromToDate(this)", @placeholder = "To Date", @class = "required customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.FromTime)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.FromTime, new { @onchange = "FromToTime(this)", @placeholder = "From Time", @class = "customTimePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.ToTime)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.ToTime, new { @onchange = "FromToTime(this)", @placeholder = "To Time", @class = "customTimePicker form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.Country)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.travelVM.Country, "/Config/DropDown/CountryEN?isContact=false", new { @class = "required form-control"})
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.PassportNumber)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.PassportNumber, new { @placeholder = "Passport Number", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.IssueDate)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.IssueDate, new { @placeholder = "Issue Date", @class = " customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.ExpiryDate)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.ExpiryDate, new { @placeholder = "Expiry Date", @class = " customDatePicker form-control" })
+                </div>
+            </div>
+
+        </div>
+        @*//IssueDate
+//ExpiryDate
+//Country
+//PassportNumber*@
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.EmbassyName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.EmbassyName, new { @placeholder = "Embassy Name", @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.TravelFromAddress)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.travelVM.TravelFromAddress, new { @placeholder = "Travel From Address", @rows = "1", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.TravelToAddress)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.travelVM.TravelToAddress, new { @placeholder = "Travel To Address", @rows = "1", @class = "required form-control" })
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.travelVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.travelVM.Allowances)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.travelVM.Allowances, new { @onchange = "NumberCheck(this);", @rows = "1", @placeholder = "Allowances", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.travelVM.FileName)
+                <input type="file" onchange="CheckFileSize(this);" name="TravelF" id="TravelF" style="width: 200px;" />
+            </div>
+            @if (Model.travelVM.FileName != null && Model.travelVM.FileName != "")
+            {
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="col-md-6">
+                        <a target="_blank" href="~/Files/Travel/@Model.travelVM.Id@Model.travelVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float: left;">
+                        <span onclick="FileDelete(this)"; data-id="@Model.travelVM.Id" data-table="12"  data-field="FileName" data-url="~/Files/Travel/@Model.travelVM.Id@Model.travelVM.FileName">
+                            <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" /></span>
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+        <p>
+            @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                <button type="button" title="Click to Save" onclick="pageSubmit('frmTravel');" class="Save sym-btn-save">&nbsp;Save</button>
+                
+                @*<button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>*@
+                
+                <button type="button" title="Click for Edit" onclick="Edittravel();" class="Edit sym-btn-edit">Edit</button>
+            }
+            <button type="button" title="Click for Cancel" onclick="Cancletravel();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </p>
+    </div>
+}
+<script>
+
+    $(function () {
+        InitDateTimePickers();
+        Edittravel();
+        valiDation("frmTravel");
+        $(".showHideTR").hide();///////Index page new btn
+        $('.customTimePicker').ptTimeSelect();
+        InitDropDowns();
+    });
+
+    function FromToDate(sender) {
+        var from = ParseDate($("#travelVM_FromDate").val());
+        var to = ParseDate($("#travelVM_ToDate").val());
+        if (from > to) {
+            $(sender).val("");
+            ShowResult('Fail', "To-Date can't be prior to From-date!");
+        }
+    }
+
+    function FromToTime(sender) {
+        var fromTime = Date.ParseTime($("#travelVM_FromTime").val());
+        var toTime = Date.ParseTime($("#travelVM_ToTime").val());
+
+        if (fromTime > toTime) {
+            $(sender).val("");
+            ShowResult('Fail', "To-Time can't be prior to From-Time!");
+        }
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    function Cancletravel() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                Cancletravel();
+            })
+        }
+        else {
+            //isChange = false;
+            $("#myTravel").html('');
+            $(".showHideTR").show();
+        }
+
+    }
+
+    //$('#saveJSOND').click(function () {
+    //    var url = "/HRM/Travel/Travel";
+
+    //    $form = $('#frmTravel');
+
+    //    $form.attr("action", url);
+    //    $form.submit();
+
+    //});
+  
+
+    //$('#saveJSON').click(function () {
+    //    if (isChange == true) {
+    //        if (pageSubmitJSON('frmTravel') == 0) {
+    //            var myData = $('#frmTravel').serialize();
+    //            var url = "/HRM/Travel/Travel";
+    //            var res = submit(url, myData);
+    //            if (res == true) {
+    //                location.reload();
+    //            }
+    //            isChange = false;
+    //        }
+    //    }
+    //    else {
+    //        ShowResult("Success", "You have no changes for save");
+
+    //    }
+    //});
+    function Edittravel() {
+        if ($(".travel #travelVM_Id").val() <= 0) { $(".travel .Edit").hide(); fromWriteColor("travel"); return; }
+        fnReadOnly("travel");
+        if ($(".travel").hasClass("readOnly")) {
+            $(".travel .Save").hide();
+            $(".travel .Edit").show();
+        }
+        else {
+            $(".travel .Save").show();
+            $(".travel .Edit").hide();
+        }
+    }
+
+</script>

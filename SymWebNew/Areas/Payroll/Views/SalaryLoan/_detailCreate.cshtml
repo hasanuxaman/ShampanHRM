@@ -1,0 +1,197 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+    input[type='text'], input[type='password'], textarea {
+        margin: 0px!important;
+    }
+</style>
+@using (Html.BeginForm("Create", "SalaryLoan", FormMethod.Post, new { @Id = "afrmEmployeeEdit" }))
+{   
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>@Model.EmpName</p>
+                </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.FiscalYearDetailId)
+                    @Html.HiddenFor(model => model.SalaryLoanDetailVMs)
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="thinbox">
+
+                <div class="Earningdatail">
+                      @if (Model.SalaryLoanDetailVMs.ToList().Count > 0 && Model.SalaryLoanDetailVMs != null)
+                      { <div class="row">
+                          <div class="col-md-3">
+                              <label>Head name</label>
+                              </div>
+                          <div class="col-md-2">
+                              <label>Amount</label>
+                              </div>
+                           <div class="col-md-2">
+                              <label>Interest Amount</label>
+                              </div>
+                          <div class="col-md-5">
+                              <label>Remarks</label>
+                              </div>
+                          </div>
+                          foreach (var SalaryLoanvm in Model.SalaryLoanDetailVMs)
+                          { 
+                              
+                      <div class="row">
+                          <div class="col-md-3">
+                              <div class="editor-label">
+                                <b style="margin-top:-1px;font-size:16px"> @Html.ValueFor(modelN => SalaryLoanvm.LoanTypeName)</b> 
+                                 @* @Html.HiddenFor(modelN => SalaryLoanvm.FiscalYearDetailId)
+                                  @Html.HiddenFor(model => SalaryLoanvm.LoanType_E)*@
+                                  @Html.HiddenFor(model => SalaryLoanvm.EmployeeId, new { @class = "empErid" })
+                              </div>
+                          </div>
+                           <div class="col-md-2">
+                              
+                              <div class="editor-field">
+                                  @Html.TextBoxFor(model => SalaryLoanvm.PrincipalAmount, new { @class = "right EarningAmount  required  form-control",@readonly="disable" })
+                                  @Html.ValidationMessageFor(model => SalaryLoanvm.PrincipalAmount)
+                              </div>
+                          </div>
+                          <div class="col-md-2">
+                              
+                              <div class="editor-field">
+                                  @Html.TextBoxFor(model => SalaryLoanvm.InterestAmount, new { @class = "right EarningAmount  required  form-control",@readonly="disable"  })
+                                  @Html.ValidationMessageFor(model => SalaryLoanvm.InterestAmount)
+                              </div>
+                          </div>
+                          <div class="col-md-5">
+                              <div class="editor-field">
+                                  @Html.TextAreaFor(model => SalaryLoanvm.Remarks, new { @class = "  form-control",@readonly="disable"  })
+                                  @Html.ValidationMessageFor(model => SalaryLoanvm.Remarks)
+                              </div>
+                          </div>
+                      </div>
+                          }
+                      }
+                <br />
+              @*  <div class="headrow">
+                     <button type="button" title="Save Data" id="SaveJSON" class=" Save sym-btn-save">&nbsp;Save</button>
+                      <button type="button" title="Save Data" id="UpdateJSON" class=" Save sym-btn-update"> Update</button>
+                    <button type="button" title="Delete Data" id="DeleteJSON" class=" Save sym-btn-remove">&nbsp;Delete</button>
+                </div>*@
+                      </div>
+                
+                @*<br />
+                <div class="headrow">
+                    <button type="button" title="Save Data" id="SaveJSON" class=" Save sym-btn-edit">&nbsp;Save</button>
+                    <button type="button" title="Delete Data" id="DeleteJSON" class=" Save sym-btn-remove">&nbsp;Delete</button>
+                </div>*@
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+         }
+        //$('#empId').val('@Model.Code~@Model.EmpName');
+        //$('#empId').val($('#Code').val());
+    });
+    $('#DeleteJSON').click(function () {
+
+        var myData = $('#afrmEmployeeEdit').serialize();
+        var url = "/Payroll/SalaryLoan/Create?btn=delete";
+        submit(url, myData);
+        $('.DeductionAmount').val('0');
+    })
+    function checkvalues() {
+        var EarningAmount = $(".EarningAmount").val();
+        if (EarningAmount == 0) {
+            $("#SaveJSON").show();
+            $("#UpdateJSON").hide();
+        }
+        else {
+            $("#SaveJSON").hide();
+            $("#UpdateJSON").show();
+        }
+        var empErid = $(".empErid").val();
+
+        if (typeof empErid == undefined || empErid == "" || empErid == null) {
+            $(".Earningdatail").hide("slow");
+            $("#noearningempid").show();
+        }
+        else {
+            $(".Earningdatail").show();
+            $("#noearningempid").hide();
+        }
+    }
+
+    //var submit = function (url, mydata) {
+    //    $.ajax({
+    //        type: 'POST',
+    //        data: mydata, // #2
+    //        url: url,
+    //        success: function (result) {
+    //            var msg1 = result.split('~')[0];
+    //            var msg2 = result.split('~')[1];
+    //            if (msg1 != "Fail") {
+    //                ShowResult("Success", msg2);
+    //                EditempInfo();
+    //                EditpersonalDetail();
+    //            }
+    //            else {
+    //                ShowResult("Fail",msg2);
+    //            }
+    //        }
+    //    });
+    //}
+
+</script>

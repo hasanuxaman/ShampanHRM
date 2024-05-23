@@ -1,0 +1,61 @@
+﻿<div class="headrow">
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/Payroll/SalaryTax/ImportTAX" onclick="GoTo(this)">&nbsp;Import/Export</button>
+    <label class="pull-right">Salary Tax</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Tax</p>
+    </div>
+    <div>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center">Action</th>
+                            <th>Period Name</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryTax/_SalaryTax",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                              {
+                                  "sName": "ID",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "sWidth": "12%",
+                                  "sClass": "center",
+                                  "fnRender": function (oObj) {
+                                      return ' <a title="Click on for Details" style="text-decoration:none;" id="" class="innerListLink sym-btn-detail-row" href=\"/Payroll/SalaryTax/Edit?fid=' + oObj.aData[0] + '\"></a>'
+                                      //+ '&nbsp; <a title="Click on for Delete"  data-url="/Payroll/SalaryTax/SalaryTaxDelete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>'
+                                      ;
+
+                                  }
+                              }
+
+                              , { "sName": "PeriodName" }
+                              , { "sName": "Remarks" }
+            ]
+        });
+    });
+</script>

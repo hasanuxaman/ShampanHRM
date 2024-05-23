@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "EditByEmployee";
+}
+<div class="headrow">
+ <label class="pull-right">Salary Other Earning > Employee > Details </label>
+</div>
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.empName</p>
+    </div>
+    <p>
+    </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"> Action </th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Earning Type</th>
+                            <th>Earning Amount</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Earning Type</th>
+                            <th style="text-align: left!important">Earning Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+<script>
+        $(function () {
+            SelectAllForDelete();
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryOtherEarning/_SalaryOtherEarningDetails?empid=@ViewBag.empid&FID=@ViewBag.fId",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                     {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         "sClass":"center",
+                         "fnRender": function (oObj) {
+                             return ' <a title="Click on for Details" id="lnkEdit1" style="text-decoration:none;" Onclick="Edit(this);"  class=" sym-btn-detail-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                             ;
+                             //' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp;'
+                             //    +
+                                 //+ '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryOtherEarning/Delete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>'
+                             
+                         }
+                     }
+                                , { "sName": "Code", "sWidth": "12%" }
+                                , { "sName": "Name", "sWidth": "13%" }
+                                , { "sName": "EarningType", "sWidth": "25%" }
+                                , { "sName": "EarningAmount", "sClass": "right", "sWidth": "20%" }
+                                
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                ]
+
+            });
+        });
+    function Edit(sender) {
+        window.location = "/Payroll/SalaryOtherEarning/SingleSalaryOtherEarningEdit?soeId=" + $(sender).attr('data-Id');
+    }
+</script>
+

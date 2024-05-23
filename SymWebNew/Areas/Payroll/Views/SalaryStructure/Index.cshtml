@@ -1,0 +1,107 @@
+﻿<div class="headrow">
+        <button type="button" title="Add New Salary Structure" data-url="/Payroll/SalaryStructure/Create" onclick="GoTo(this)" id="" class="sym-btn-add showHideLS">&nbsp;New</button>
+        <button type="button" title="Delete Salary Structure" data-url="/Payroll/SalaryStructure/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+ <label class="pull-right"> Salary Structure</label>
+</div>
+ <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Salary Structure List</p>   
+        </div>
+@*        <input type="button" data-url="/Payroll/SalaryStructure/Create" onclick="GoTo(this);" class="btn btn-info showHideLS" value="New" />
+        <input type="button" style="width:65px;" data-url="/Payroll/SalaryStructure/Delete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />
+        <p></p>*@
+     <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                      <thead>
+                        <tr>
+                            <th class="center">
+                                <input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Active/Inactive</th>
+                            <th>Remarks</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Active/Inactive</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+     <br />
+ </div>
+<div class="headrow">
+        <button type="button" title="Add New Salary Structure" data-url="/Payroll/SalaryStructure/Create" onclick="GoTo(this)" id="" class="sym-btn-add showHideLS">&nbsp;New</button>
+        <button type="button" title="Delete Salary Structure" data-url="/Payroll/SalaryStructure/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+<script>
+    $(document).ready(function () {
+        if ('@ViewBag.Success' != "") {
+            ShowResult('Success', '@ViewBag.Success');
+    }
+        if ('@ViewBag.Fail' != "") {
+            ShowResult('Fail', '@ViewBag.Fail');
+     }
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryStructure/_SalaryStructure",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass":"center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"  href=\"/Payroll/SalaryStructure/Edit/' + oObj.aData[0] + '\" id=" "  class="innerListLink sym-btn-edit-row"></a>' +
+                                    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryStructure/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>';
+                                }
+                            }
+                            , { "sName": "Code", "sWidth": "20%" }
+                            , { "sName": "Name", "sWidth": "35%" }
+                            , { "sName": "Active", "sWidth": "15%" }
+                            , { "sName": "Remarks", "sWidth": "15%" }
+                            //Name
+                            //IsActive
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+				       , { type: "select", values: ["Active", "Inactive"] }
+                       , { type: "text" }
+                       //, { type: "date-range" }
+            ]
+            //"bProcessing": true,
+            //"aoColumns": [
+            //                {
+            //                    "sName": "Name",
+            //                    "bSearchable": false,
+            //                    "bSortable": false,
+            //                    "fnRender": function (oObj) {
+            //                        return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a id=""  title="Click on for Edit" style="text-decoration:none;"   href=\"/Payroll/SalaryStructure/Edit/' + oObj.aData[0] + '\" class=" innerListLink sym-btn-edit-row "></a>' +
+            //                           '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryStructure/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');" class="sym-btn-remove-row"></a>';
+            //                    }
+            //                }
+            //                ,{ "sName": "Name" }
+            //                , { "sName": "Active" }
+            //                , { "sName": "Remarks" }
+            //]
+        });
+        SelectAllForDelete();
+    });
+    var topMenuActive = "SalaryStructure";
+    </script>

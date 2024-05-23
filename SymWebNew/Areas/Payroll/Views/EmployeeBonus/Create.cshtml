@@ -1,0 +1,35 @@
+﻿@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Create Employee Bonus</p>
+    </div>
+    <div class="row" id="SelectBonusSID">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Bonus Structure</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("BonusStructureId", "/Config/DropDown/BonusStructureList", new { @class = "required form-control" })
+            </div>
+        </div>
+        <div class="col-md-2">
+              <button type="button" title="Save Data"  onclick="EmployeeBonusInit();" class="sym-btn-save"> GO</button>
+        </div>
+    </div>
+    <div id="BonusStructure">
+    </div> 
+    <div id="EmployeeInfo">
+    </div> 
+</div>
+<script>
+    $(function () {
+        $("#Save").hide();
+    });
+    function EmployeeBonusInit() {
+        var BonusStructureId = $("#BonusStructureId").val();
+        if (BonusStructureId == "" || BonusStructureId > 0) return;
+        $("#SelectBonusSID").hide();
+        $("#Save").show();
+        $("#BonusStructure").load('@Url.Action("BonusStructure", "EmployeeBonus")' + '?BonusStructureId=' + BonusStructureId);
+    }
+</script>

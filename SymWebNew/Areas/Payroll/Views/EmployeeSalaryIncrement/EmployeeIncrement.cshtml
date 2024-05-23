@@ -1,0 +1,74 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using (Html.BeginForm("EmployeeIncrement", "EmployeeSalaryIncrement", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSalarySheet", @target = "_blank" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Employee Increment</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-label">
+                    <label>Employee Name</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @*@Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })*@
+                        @Html.SimpleDropDownFor(model => model.EmployeeId, "/Config/DropDown/EmployeeCodeNameAll", new { @class = "  form-control selectDropdown" })
+
+
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+       
+    </div>
+
+    @Html.HiddenFor(model => model.View)
+
+    <div class="headrow">
+        @*@Html.ActionLink(" Report", "SalarySheet", null, new { title = "Click to Show Report", target = "_blank", id = "sendRpt", @class = "btn sym-btn-report" })*@
+
+        <button type="button" data-url="/Payroll/EmployeeSalaryIncrement/EmployeeIncrement" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>
+
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            //$('.Dropdown').select2();
+            //$(".Dropdown").removeClass("form-control");
+            //////InitDropDowns();
+            InitDropdownsCommon();
+
+
+        });
+
+        $('.sendRpt').click(function () {
+          
+
+           
+            $('#View').val("N");
+
+
+            var url = $(this).attr("data-url");
+
+            //var url = '/VMS/SaleInvoice/ExportExcell';
+             $form = $('#frmSalarySheet');
+
+            $form.attr("action", url);
+            $form.submit();
+
+        });
+
+   
+    </script>
+
+
+
+}
+

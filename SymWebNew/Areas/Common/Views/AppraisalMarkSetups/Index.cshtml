@@ -1,0 +1,238 @@
+﻿
+@*<div class="headrow">
+    <button type="button" title="Add New Branch" data-url="/Common/AppraisalMarkSetups/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete Branch" data-url="/Common/AppraisalMarkSetups/BranchDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <label class="pull-right"> Branch</label>
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Branch List</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All
+                </th>
+                <th>Department</th>
+                <th>FeedBack Year</th>
+                <th>FeedBack Month</th>
+                <th>Eatch Question Mark</th>
+                <th>Eatch Question Mark</th>
+                <th>User Mark</th>
+                <th>Supervisor Mark</th>
+                <th>DepartmentHeadMark</th>
+                <th>ManagementMark</th>
+                <th> HRMark</th>
+            </tr>
+
+            <tr>
+                <th class="center">Actions</th>
+                <th>Department</th>
+                <th>FeedBack Year</th>
+                <th>FeedBack MonthId</th>
+                <th>Eatch Question Mark</th>
+                <th>User Mark</th>
+                <th>Supervisor Mark</th>
+                <th>Department Head Mark</th>
+                <th>ManagementMark</th>
+                <th>HR Mark</th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+
+<div class="headrow">
+    <div class="pull-left">
+        <button type="button" title="Add New Appraisal Mark Setups" data-url="/Common/AppraisalMarkSetups/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Appraisal Mark Setups" data-url="/Common/AppraisalMarkSetups/AppraisalMarkSetupsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+</div>*@
+
+@*<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/AppraisalMarkSetups/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    debugger;
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/AppraisalMarkSetups/Edit/' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>' +
+                                    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Common/AppraisalMarkSetups/BranchDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+                                }
+                            }
+                            , { "sName": "DepartmentId", "sWidth": "20%" }
+                            , { "sName": "FeedBackYear", "sWidth": "25%" }
+                            , { "sName": "FeedBackMonthId", "sWidth": "20%" }
+                            , { "sName": "EatchQuestionMark", "sWidth": "20%" }
+
+                            , { "sName": "UserMark", "sWidth": "20%" }
+                            , { "sName": "SupervisorMark", "sWidth": "20%" }
+                            , { "sName": "DepartmentHeadMark", "sWidth": "20%" }
+                            , { "sName": "ManagementMark", "sWidth": "20%" }
+                            , { "sName": "HRMark", "sWidth": "20%" }
+
+
+            ]
+        });
+
+        debugger;
+
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+
+            ]
+
+        });
+
+    });
+</script>*@
+
+
+<div class="headrow">
+    <button type="button" title="Add New AppraisalMarkSetups" data-url="/Common/AppraisalMarkSetups/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete AppraisalMarkSetups" data-url="/Common/AppraisalMarkSetups/AppraisalMarkSetupsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <label class="pull-right"> Appraisal Mark Setups</label>
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Appraisal Mark Setups List</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All
+                </th>
+                <th>Department</th>
+                <th>FeedBack Year</th>
+                <th>FeedBack Month</th>
+                <th>Eatch Question Mark</th>
+                <th>User Mark</th>
+                <th>Supervisor Mark</th>
+                <th>Department Head Mark</th>
+                <th>Management Mark</th>
+                <th>HRMark</th>
+                <th>PeriodName</th>
+            </tr>
+
+            <tr>
+                <th class="center">Actions</th>
+                <th>Department</th>
+                <th>FeedBack Year</th>
+                <th>FeedBack Month</th>
+                <th>Eatch Question Mark</th>
+                <th>User Mark</th>
+                <th>Supervisor Mark</th>
+                <th>Department Head Mark</th>
+                <th>Management Mark</th>
+                <th>HR Mark</th>
+                <th>Period Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <br />
+</div>
+
+<div class="headrow">
+    <div class="pull-left">
+        <button type="button" title="Add New AppraisalMarkSetups" data-url="/Common/AppraisalMarkSetups/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete AppraisalMarkSetups" data-url="/Common/AppraisalMarkSetups/BranchDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Common/AppraisalMarkSetups/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/AppraisalMarkSetups/Edit/' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>' +
+                                    '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Common/AppraisalMarkSetups/AppraisalMarkSetupsDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+                                }
+                            }
+                            , { "sName": "DepartmentId", "sWidth": "20%" }
+                            , { "sName": "FeedBackYear", "sWidth": "20%" }
+                            , { "sName": "FeedBackMonthId", "sWidth": "20%" }
+                            , { "sName": "EatchQuestionMark", "sWidth": "20%" }
+
+                            , { "sName": "UserMark", "sWidth": "20%" }
+                            , { "sName": "SupervisorMark", "sWidth": "20%" }
+                            , { "sName": "DepartmentHeadMark", "sWidth": "20%" }
+                            , { "sName": "ManagementMark", "sWidth": "20%" }
+                            , { "sName": "HRMark", "sWidth": "20%" }
+                            , { "sName": "PeriodName", "sWidth": "20%" }
+                            
+                            //, { "sName": "Remarks", "sWidth": "10%" }
+                            //City
+                            //Mobile
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "text" }
+
+                       //, { type: "text" }
+                       //, { type: "date-range" }
+
+            ]
+
+        });
+
+    });
+</script>

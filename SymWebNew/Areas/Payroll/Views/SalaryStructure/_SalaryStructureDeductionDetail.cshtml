@@ -1,0 +1,68 @@
+﻿@model SymViewModel.Payroll.SalaryStructureDetailVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<div class="row">
+    @using (Html.BeginCollectionItem("salaryStructureDeductionDetailVMs"))
+    {
+        @Html.HiddenFor(model => model.Id)
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=D", new { @class = " form-control" })
+            </div>
+        </div>
+           <div class="col-md-2">
+           <div class="editor-field">
+        <div class="col-md-1">
+                @Html.CheckBoxFor(model => model.IsFixed, new {@onchange="FixedCheck(this);", @class = "IsFixed required form-control" })
+
+            </div> 
+        <div class="col-md-9">
+                      <label  class="fr">Rate(% of Basic)</label>
+            </div> 
+
+            </div> 
+        </div>
+        @*
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.TextBox("SalaryType",null, new { @class = "form-control",@readonly="readonly" })
+            </div>
+        </div>*@
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Portion, new { @onchange="SalaryTypePortion(this);",@placeholder = "Portion", @class =" right Portion required form-control" })
+            </div>
+        </div>@*
+        <div class="col-md-2">
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryHeadType", new {@placeholder = "Code", @class ="PortionSalaryTypeId form-control" })
+            </div>
+        </div>*@
+        <div class="col-md-3">
+            <div class="editor-field">
+           @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class ="form-control" })
+
+            </div>
+        </div>
+        @*
+        <div class="col-md-1">
+            <input type="button" class="RemoveRow btn btn-info" value="Remove" />
+        </div>*@
+        
+         <div class="col-md-1" style="margin-top:7px">
+            @*<input type="button" class="RemoveRow btn btn-info" value="Remove" />*@
+            <button type="button" title="Delete Checked" class="RemoveRow sym-btn-remove-row"></button>
+        </div>
+    }
+    <script>
+        $(function () {
+            InitButtons();
+            InitDropDowns();
+          
+        });
+
+ 
+    </script>
+</div>

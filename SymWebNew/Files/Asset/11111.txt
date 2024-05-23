@@ -1,0 +1,14 @@
+        $('#ProjectId').click(function () {
+            $('#DepartmentId').html("");
+            $('#SectionId').html("");
+            var departments = "";
+            var pid = $('#ProjectId').val();
+            var url1 = "/Config/DropDown/DerparmentByProject/?projectId=" + pid;
+            departments += "<option value=0>Select</option>";
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    departments += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#DepartmentId').html(departments);
+            });
+        });

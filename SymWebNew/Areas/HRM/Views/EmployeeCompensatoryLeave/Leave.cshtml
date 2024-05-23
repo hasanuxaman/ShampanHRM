@@ -1,0 +1,301 @@
+﻿@model SymViewModel.Leave.EmployeeCompensatoryLeaveVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+<div class="headrow">
+    <label class="pull-right">Compensatory Leave Entry</label>
+</div>
+<style>
+    .text-color {
+        margin: auto;
+    }
+
+        .text-color a {
+            color: #ff6a00!important;
+        }
+
+    .input-group .form-control {
+        padding-top: 0px!important;
+        margin-top: 0px!important;
+    }
+</style>
+<div class="thinbox">
+    <div class="row">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                @if (identity.IsAdmin || identity.IsHRM)
+                {
+                    <div class="input-group   col-lg-8  col-md-8  col-sm-12 col-xs-12 text-color" style="">
+
+                        <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='first' id="first"><i class="fa fa-angle-double-left"></i>&nbsp;First</a>
+                        <a class="input-group-addon btn btn-primary" data-pager-action='previous' id="precode"><i class="fa fa-angle-left"></i>&nbsp;Previous</a>
+                        @*<input type="text" placeholder="Code" class="form-control" data-pager-action='pagenum'  id="empId" value="@Model.Code~@Model.EmpName">*@
+                        @Html.SimpleDropDownFor(model => model.EmpCode, "/Config/DropDown/EmployeeCodeName", new { @class = "form-control selectDropdown empCode" })
+                        <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i></a>
+                        <a class="input-group-addon btn btn-primary" data-pager-action='next' id="nextcode">Next <i class="fa  fa-angle-right"></i></a>
+                        <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='last' id="last">Last <i class="fa  fa-angle-double-right"></i></a>
+                    </div>
+                }
+
+
+                <div class="row">
+                    <div class=" col-md-4  col-sm-4 text-color">
+                        &nbsp;
+                    </div>
+                    <div class=" col-md-1  col-sm-1 text-color" style="text-align: right; margin-top: 10px; margin-right: -20px;">
+                        <label>Year</label>
+                    </div>
+                    <div class=" col-md-1  col-sm-1 text-color" style="text-align: left;">
+                        <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                        <div>@Html.Hidden("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                  
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="detailsDiv">
+</div>
+
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee List for Compensatory Leave Entry</p>
+    </div>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTable" class="display">
+                <thead>
+                    <tr>
+                        <th class="center">Show Detail</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>@Session["DepartmentLabel"]</th>
+                        <th>Designation</th>
+                        <th>Join Date</th>
+                    </tr>
+                    <tr>
+                        <th class="center">Actions</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>@Session["DepartmentLabel"]</th>
+                        <th>Designation</th>
+                        <th>Join Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+
+<div id="SingleLeavedetailsDiv">
+</div>
+<script>
+
+    $(function () {
+        $(".selectDropdown").val('@Model.EmpCode').trigger('change');
+
+
+        $(".EditPlace").hide();
+        InitDateTimePickers();
+        fromWriteColor("leave");
+        valiDation('frmLeave');
+        $(".search").hide();
+        $(".detailsDiv").hide();
+
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+
+        var oTable = $('#myDataTable').dataTable
+            ({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/EmployeeCompensatoryLeave/_LeaveIndex",
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns":
+                    [
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "sWidth": "12%",
+                            "sClass": "center",
+                            "fnRender": function (oObj) {
+                                console.log(oObj);
+                                //return ' <input title="Click on for Details" style="text-decoration:none;"  onclick="SelectEmployee(this);" name="empId" value="' + oObj.aData[0] + '">'
+                                return ' <a title="Click on for Details" style="text-decoration:none;" onclick="SelectEmployee(this);"   data-code="' + oObj.aData[1] + '" name="empId" value="' + oObj.aData[0] + '" class="sym-btn-detail-row sym-sx"></a>' //+
+
+                                ;
+                            }
+                        }
+
+                        , { "sName": "Code", "sWidth": "12%" }
+                        , { "sName": "EmpName", "sWidth": "16%" }
+                        , { "sName": "Department", "sWidth": "16%" }
+                        , { "sName": "Designation", "sWidth": "16%" }
+                        , { "sName": "JoinDate", "sWidth": "18%" }
+                    ]
+            });
+
+        oTable.columnFilter
+            ({
+                sPlaceHolder: "head:after",
+                aoColumns:
+                    [
+                        { type: "checkbox", "sClass": "chkAll" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "date-range" }
+                    ]
+            });
+      
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+
+    function CancleTransfer() {
+        window.location.reload();
+    }
+    function SelectEmployee(sender) {
+        var EmployeeId = $(sender).attr("value");
+
+        var url = '@Url.Action("LeavedetailForSearch", "EmployeeCompensatoryLeave")' + '?id=' + EmployeeId
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            success: function (data) {
+                if (data.indexOf("#~#") > -1) {
+                    if (data.split('#~#')[0] == "Fail") {
+                        ShowResult(data.split('#~#')[0], data.split('#~#')[1])
+                    }
+                    return;
+                }
+                $('#detailsDiv').html(data);
+                
+                $("#indexDiv").load('@Url.Action("_index", "EmployeeCompensatoryLeave")' + '?empId=' + EmployeeId)
+                var btn = 'current';
+                var EmployeeCode = $(sender).attr("data-code");
+                console.log(EmployeeCode)
+                SingleEmpLeave(btn, EmployeeCode);
+            },
+            complete: function () {
+                $(".loading").fadeOut(200).hide("slow")
+
+            }
+        });
+       
+
+        $(".search").show();
+        $("#detailsDiv").show();
+        $("#indexDiv").show();
+
+        $(".EditPlace").show();
+
+    }
+    $(function () {
+        $('#empCode').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $('#current').click(function () {
+            var btn = 'current';
+            var empCode = $('.empCode  :selected').text();
+
+            Searching(btn);
+            SingleEmpLeave(btn, empCode);
+        });
+        $('#nextcode').click(function () {
+            var btn = 'next';
+            var empCode = $('.empCode  :selected').text();
+
+            Searching(btn);
+            SingleEmpLeave(btn, empCode);
+        });
+        $('#precode').click(function () {
+            var btn = 'previous';
+            Searching(btn);
+            SingleEmpLeave(btn, empCode);
+        });
+        $('#first').click(function () {
+            var btn = 'first';
+            var empCode = $('.empCode  :selected').text();
+
+            Searching(btn);
+            SingleEmpLeave(btn, empCode);
+        });
+        $('#last').click(function () {
+            var btn = 'last';
+            var empCode = $('.empCode  :selected').text();
+
+            Searching(btn);
+            SingleEmpLeave(btn, empCode);
+        });
+        function Searching(btn) {
+            var empCode = $('.empCode  :selected').text();
+            var fiscalyearCom = $('.fiscalyearCom').val();
+            empCode = empCode.split('~')[0];
+            var url = "/HRM/EmployeeCompensatoryLeave/LeavedetailForSearch?empcode=" + empCode + '&btn=' + btn + '&leaveyear=' + fiscalyearCom;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+
+                success: function (data) {
+
+                    $('#detailsDiv').html(data);
+                   
+                },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") }
+            });
+
+            
+        }
+
+
+
+    });
+
+    function SingleEmpLeave(btn, empCode) {
+        
+        var fiscalyearCom = $('.fiscalyearCom').val();
+        empCode = empCode.split('~')[0];
+        var url = "/HRM/EmployeeCompensatoryLeave/SingleLeavedetailForSearch?empcode=" + empCode + '&btn=' + btn + '&leaveyear=' + fiscalyearCom;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+
+            success: function (data) {
+                $('#SingleLeavedetailsDiv').html(data);
+
+            },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") }
+        });
+
+
+    }
+</script>

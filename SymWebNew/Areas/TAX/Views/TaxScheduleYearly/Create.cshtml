@@ -1,0 +1,230 @@
+﻿@model SymViewModel.Tax.TaxScheduleVM
+@using UIHelper.MVC
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.EmployeeId)
+@Html.HiddenFor(model => model.ProjectId)
+@Html.HiddenFor(model => model.DepartmentId)
+@Html.HiddenFor(model => model.SectionId)
+@Html.HiddenFor(model => model.DesignationId)
+@Html.HiddenFor(model => model.Operation)
+
+
+<div class="headrow">
+    <button type="button" title="Add New Employee Tax Shchedule" data-url="/Tax/TaxScheduleYearly/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <label class="pull-right">Tax Schedule Yearly</label>
+</div>
+
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p class="thinHead">Employee Info</p>
+    </div>
+    <div class="EmployeeInfo">
+        <div class="row">
+            @if (string.IsNullOrWhiteSpace(Model.EmployeeCode) && string.IsNullOrWhiteSpace(Model.EmployeeId))
+            {
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Employee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " form-control selectDropdown" })
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @placeholder = "Employee Name", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.EmployeeName)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Designation)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Designation", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Designation)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Department, new { @placeholder = "Department", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Department)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Section, new { @placeholder = "Section", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Section)
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Project, new { @placeholder = "Project", @class = " form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Project)
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBoxFor(model => model.Year, @Session["SessionYear"].ToString(), new { @Id = "fYear", @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <button type="button" title="Process Data" id="" class="processSchedule1SalaryYearly sym-btn-detail">&nbsp;Process Data</button>
+
+    </div>
+</div>
+
+
+
+@*<ul style="font-size: 1.4em;" class="nav nav-tabs">
+    <li class="tabDefault active "><a data-toggle="tab" href="#Schedule1SalaryYearly">Schedule1 Salary Yearly</a></li>
+    <li class="tabDefault"><a data-toggle="tab" href="#Schedule2HousePropertyYearly">Schedule2 House Property Yearly</a></li>
+</ul>
+<div class="tab-content">*@
+
+
+    
+<div id="Schedule1SalaryYearly" class=" tab-pane fade in active">
+    @if (Model.EmployeeTaxSlabCount > 0)
+    {
+        @Html.Partial("_schedule1SalaryYearly", Model)
+    }
+    else
+    {
+        @Html.Partial("_schedule1SalaryYearly")
+    }
+</div>
+
+
+
+@*    <div id="Schedule2HousePropertyYearly" class=" tab-pane fade">
+        @Html.Partial("_schedule2HousePropertyYearly", Model)
+    </div>
+</div>*@
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+</script>
+
+<script>
+    $(function () {
+        @*if ('@Model.Operation' == "update") {
+            processSchedule1SalaryYearly();
+        }*@
+        $('#EmployeeCode').change(function () {
+            LoadEmployeeDetails();
+        });
+
+        var LoadEmployeeDetails = function () {
+            $('#EmployeeName, #Designation, #Department, #Section, #Project').removeAttr("readonly");
+
+            //$('#EmployeeName').html("");
+            //$('#Designation').html("");
+            //$('#Department').html("");
+            //$('#Section').html("");
+            //$('#Project').html("");
+
+            var EmployeeCode = $('#EmployeeCode :selected').val();
+            var url = "/Tax/TaxScheduleYearly/SelectEmployeeDetails/?EmployeeCode=" + EmployeeCode;
+
+            $.getJSON(url, function (data) {
+                var EmployeeName = data.split('~')[0];
+                var Designation = data.split('~')[1];
+
+                var Department = data.split('~')[2];
+                var Section = data.split('~')[3];
+                var Project = data.split('~')[4];
+
+                $('#EmployeeName').val(EmployeeName);
+                $('#Designation').val(Designation);
+                $('#Department').val(Department);
+                $('#Section').val(Section);
+                $('#Project').val(Project);
+            });
+
+            $('#EmployeeName, #Designation, #Department, #Section, #Project').prop("readonly", true);
+        }
+
+        $('.processSchedule1SalaryYearly').click(function () {
+            processSchedule1SalaryYearly();
+        });
+
+
+        function processSchedule1SalaryYearly() {
+            var data = "";
+            $(".valA").each(function () {
+                data = data + "~" + $(this).val();
+            });
+
+            var fYear = $("#fYear").val();
+
+            if ('@Model.EmployeeId' != "") {
+                var EmployeeId = '@Model.EmployeeId';
+            }
+            else {
+                var EmployeeId = $("#EmployeeId").val();
+            }
+
+            if ('@Model.EmployeeCode' != "") {
+                var EmployeeCode = '@Model.EmployeeCode';
+            }
+            else {
+                var EmployeeCode = $("#EmployeeCode").val();
+            }
+
+            if (fYear == "") {
+                ShowResult("Fail", "Please Select the Fiscal Year");
+                return;
+            }
+            var url = "/Tax/TaxScheduleYearly/ProcessSASalaryYearly?fYear=" + fYear
+                + "&EmployeeId=" + EmployeeId + "&EmployeeCode=" + EmployeeCode + "&LineA=" + data;
+
+            $('#Schedule1SalaryYearly').load(url)
+        }
+
+
+    });
+</script>

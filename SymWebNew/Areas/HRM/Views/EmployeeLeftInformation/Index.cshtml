@@ -1,0 +1,55 @@
+﻿<div>
+    <div id="myPortion">
+    </div> 
+@*    <input type="button" id="btnDialog" class="btn btn-info" value="New" />*@
+        <button type="button" title="Add New" id="btnDialog" class="sym-btn-add ">&nbsp;New</button>
+</div>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Left Type </th>
+                            <th>Left Date</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+<script>
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeLeftInformation/_index",
+            "bProcessing": true,
+            "aoColumns": [
+                            { "sName": "Left Type" },
+                            { "sName": "LeftDate" },
+                            { "sName": "Remarks" },
+                            {
+                                "sName": "ID",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return '<input type="button" title="Save Data"  Onclick="EditVal(this);" class="btn btn-primary "  data-Id="' + oObj.aData[3] + '" value="Show"/>'
+                                    ;
+                                }
+                            }
+            ]
+        });
+    });
+    $('#btnDialog').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myPortion").load('@Url.Action("EmployeeLeftInformation", "EmployeeLeftInformation")' + '?Id=0');
+    });
+    function EditVal(sender) {
+        var Id = $(sender).attr('data-Id');
+        $("#myPortion").load('@Url.Action("EmployeeLeftInformation", "EmployeeLeftInformation")' + '?Id=' + Id);
+  }
+    </script>

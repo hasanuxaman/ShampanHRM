@@ -1,0 +1,118 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Create", "EmployeeAsset", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmAsset" }))
+{
+    @Html.ValidationSummary(true)
+        <div class="Asset">
+            @Html.HiddenFor(model => model.AssetVM.Id)
+            @Html.HiddenFor(model => model.AssetVM.EmployeeId)
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AssetVM.AssetName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.AssetVM.AssetId, "/Config/DropDown/Asset", new { @placeholder = "Asset Name", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.AssetVM.AssetId)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AssetVM.IssueDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.AssetVM.IssueDate, new { @placeholder = "Issue Date", @class = "required customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.AssetVM.IssueDate)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.AssetVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.AssetVM.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AssetVM.Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                        @Html.LabelFor(model => model.AssetVM.FileName)
+                    <input type="file" onchange="CheckFileSize(this);" name="AssetFile" id="AssetFile" style="width:200px;" />
+                </div>
+                        @if (Model.AssetVM.FileName != null && Model.AssetVM.FileName != "")
+                        {
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/Asset/@Model.AssetVM.Id@Model.AssetVM.FileName">
+                                <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)"; data-id="@Model.AssetVM.Id" data-table="3"  data-field="FileName" data-url="~/Files/Asset/@Model.AssetVM.Id@Model.AssetVM.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                        </div>
+                    </div>
+                        }
+            </div>
+            <p>
+                @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+                @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+                {
+                   <button type="button"  title="Click on for Save" onclick="pageSubmit('frmAsset');" id="saveJSONAsset"  class="Save sym-btn-save" >&nbsp;Save</button>
+                   <button type="button"  title="Click on for Edit" onclick="AssetEdit();" class="Edit sym-btn-edit" >&nbsp;Edit</button>
+                }
+                   <button type="button"  title="Click on for Cancel" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+            </p>
+        </div>
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        customToollip();
+        AssetEdit();
+        valiDation("frmAsset");
+        InitDateTimePickers();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+
+
+       
+   
+    });
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+        ////alert(('Main-FromCh: ');
+    });
+    function Cancle() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                $(".Asset").hide();
+            })
+        }
+        else {
+            isChange = false;
+            $(".Asset").hide();
+        }
+    };
+</script>

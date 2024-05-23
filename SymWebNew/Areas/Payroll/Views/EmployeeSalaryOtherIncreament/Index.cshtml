@@ -1,0 +1,295 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using UIHelper.MVC
+@model SymViewModel.Common.ParameterVM
+@*<div id="detailsDiv1"></div>*@
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Filtering for Employee Salary Increament </p>
+    </div>
+    <div class="row">
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Emp Code(From)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Emp Code(To)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Designation</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+            </div>
+        </div>
+        <div class="thinbox col-md-12">
+            <div class="th_thinbox">
+                <p>Multiple Employee Salary Increment </p>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Increment Date</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("IncrDate", "", new { @placeholder = "Increment Date", @class = "required IncrDate customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("Year", @Session["SessionYear"] as string, new { @class = "fyear form-control" }) </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <br />
+
+
+
+
+
+</div>
+<div class="headrow">
+    @*@Html.ActionLink(" Report", "EmployeeOtherEarningReport", "EmployeeOtherEarning", null, new { title="Click to Show Report", target = "_blank", id = "sendRpt", @class = "sym-btn-report" })*@
+    &nbsp;<button title="Click to Show Other Earning List" id="Searchbtn" class="btn sym-btn-search">&nbsp;Search</button>
+    &nbsp;<button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+    &nbsp;<button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/payroll/EmployeeSalaryOtherIncreament/ExcelImport"
+            onclick="GoTo(this)">
+        &nbsp;Import/Export
+    </button>
+    &nbsp;<button title="Click to Show Other Earning List" id="saveMultiple" class="btn sym-btn-search">&nbsp;Multiple Incr.</button>
+
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Earning List</p>
+    </div>
+    <p>
+    </p>
+    <div>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>&nbsp; </th>
+                            <th>Period Name</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+<div id="detailsDiv"></div>
+<div id="detailsDiv1"></div>
+<div style="display: none" id="formAppend"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            InitDropdownsCommon();
+
+        });
+
+        $("#Clear").click(function () {
+            $(".form-control").val("");
+            Searching();
+        });
+
+        $("#Searchbtn").click(function () {
+            Searching();
+        });
+
+        function Searching() {
+            var ProjectId = $("#ProjectId").val();
+            var DepartmentId = $("#DepartmentId").val();
+            var SectionId = $("#SectionId").val();
+            var DesignationId = $("#DesignationId").val();
+            var CodeF = $("#CodeF").val();
+            var CodeT = $("#CodeT").val();
+
+
+            var url = '/Payroll/EmployeeSalaryOtherIncreament/_IndexPartial?ProjectId=' + ProjectId
+              + '&DepartmentId=' + DepartmentId
+              + '&SectionId=' + SectionId
+              + '&DesignationId=' + DesignationId
+              + '&CodeF=' + CodeF
+              + '&CodeT=' + CodeT
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                success: function (data) {
+                    $('#detailsDiv').html(data);
+                },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") }
+            });
+
+        }
+        $('#saveMultiple').click(function () {
+            var incDate = $(".IncrDate").val();
+            var fiscalyear = $(".fyear").val();
+
+
+            if (incDate == "") {
+                ShowResult("Fail", "Please Select Increment Date!");
+                return;
+            }
+            if (fiscalyear == "") {
+                ShowResult("Fail", "Please Select Year!");
+                return;
+            }
+
+            var questionMSG = "Are you sure to Multiple Employee Increment Data!";
+
+            Ask(questionMSG, function () {
+
+                var IDs = $('#IDs').val();
+                var IDs = [];
+                var $Items = $(".dSelected:input:checkbox:checked");
+                if ($Items == null || $Items.length == 0) {
+                    ShowResult("Fail", "You are requested to Select before Export!");
+                    return;
+                }
+
+                $Items.each(function () {
+                    var ID;
+                    ID = $(this).attr("data-Id");
+                    var vID = ID.split("~")[0];
+                    IDs.push(vID);
+                });
+
+
+                var url = '/Payroll/EmployeeSalaryOtherIncreament/MultipleCreateEdit';
+
+                var form = $('<form action="' + url + '"></form>');
+
+                IDs.forEach(function (item) {
+                    form.append($('<input  value="' + item + '" name="IDs" />'))
+
+                })
+
+                form.append($('<input  value="' + incDate + '" name="IncrementDate" />'))
+                form.append($('<input  value="' + fiscalyear + '" name="CurrentYear" />'))
+
+
+                form.appendTo('#formAppend').submit()
+
+
+
+            });
+
+        });
+        function SelectEmployee(sender) {
+            var EmployeeId = $(sender).attr("data-id");
+            var url = '/Payroll/EmployeeSalaryOtherIncreament/Selectemployee?Id=' + EmployeeId
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                success: function (data) {
+                    $('#detailsDiv1').html(data);
+                }
+                , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+            });
+        }
+
+
+
+        function UpdateData(sender, checkboxId, id) {
+            var deletedIds = "";
+            if (typeof id === 'undefined') {
+                var length = $("#" + checkboxId + " tbody input:checkbox").length;
+                for (var i = 0; i < length; i++) {
+                    if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                        deletedIds += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                    }
+                }
+            }
+            else {
+                deletedIds = id + "~";
+            }
+
+            var ProjectId = $("#ProjectId").val();
+            var DepartmentId = $("#DepartmentId").val();
+            var SectionId = $("#SectionId").val();
+            var DesignationId = $("#DesignationId").val();
+            var CodeF = $("#CodeF").val();
+            var CodeT = $("#CodeT").val();
+            var Amount = $("#Amount").val();
+            var GB = $("input:radio[name=GB]:checked").val();
+            var FR = $("input:radio[name=FR]:checked").val();
+            var url = '/Payroll/EmployeeSalaryIncrement/insertIncreament?ProjectId=' + ProjectId
+              + '&DepartmentId=' + DepartmentId
+              + '&SectionId=' + SectionId
+              + '&DesignationId=' + DesignationId
+              + '&CodeF=' + CodeF
+              + '&CodeT=' + CodeT
+              + '&Amount=' + Amount
+              + '&GB=' + GB
+              + '&FR=' + FR
+              + '&ids=' + deletedIds
+            if (deletedIds == "") {
+                ShowResult("Fail", "Select first to delete");
+                return;
+            }
+            $.getJSON(url, function (item, textStatus, jqXHR) {
+                ShowResult("Success", item);
+            });
+        }
+
+    </script>
+}

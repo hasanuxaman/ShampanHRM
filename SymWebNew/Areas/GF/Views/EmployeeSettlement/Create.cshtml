@@ -1,0 +1,407 @@
+﻿@model SymViewModel.GF.EmployeeSettlementVM
+@using UIHelper.MVC
+@using (Html.BeginForm("CreateEdit", "EmployeeSettlement", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmployeeSettlement" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Operation)
+
+    @Html.HiddenFor(model => model.EmployeeId)
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.DepartmentId)
+    @Html.HiddenFor(model => model.SectionId)
+    @Html.HiddenFor(model => model.DesignationId)
+    //@Html.HiddenFor(model => model.JoinDate)
+    //@Html.HiddenFor(model => model.LeftDate)
+                                   
+
+    <div class="headrow">
+        @if (Model.Operation == "add")
+        {
+            <button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmEmployeeSettlement')" class="sym-btn-save">&nbsp;Save</button>
+            <label class="pull-right">Employee Settlement > Create</label>
+        }
+        else
+        {
+            <button type="button" name="btnName" value="Update" title="Update Data" onclick="pageSubmit('frmEmployeeSettlement')" class="sym-btn-update">&nbsp;Update</button>
+            <label class="pull-right">Employee Settlement > Edit</label>
+        }
+        <button type="button" title="Go To Index" data-url="/GF/EmployeeSettlement" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New Employee Settlement" data-url="/GF/EmployeeSettlement/IndexLeftEmployee" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Employee Info</p>
+        </div>
+        <div class="EmployeeInfo">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmpCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EmpCode, new { @placeholder = "Employee Code", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmpCode)
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmpName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.EmpName, new { @placeholder = "Employee Name", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.EmpName)
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Designation", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Department", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Section", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Project", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastGross)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastGross, new { @placeholder = "Last Gross", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.LastGross)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastBasic)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastBasic, new { @placeholder = "Last Basic", @class = "  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.LastBasic)
+                    </div>
+                </div>
+
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Join Date", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LeftDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LeftDate, new { @placeholder = "Left Date", @class = " form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.LeftDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TotalJobDurationYear)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.TotalJobDurationYear, new { @placeholder = "Total Job Duration (Year)", @class = "  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.TotalJobDurationYear)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Employee Settlement</p>
+        </div>
+        <div class="EmployeeSettlement">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.GFPolicyId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.GFPolicyName, "", new { @class = " gfPolicyName form-control", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.GFPolicyId, new { @class = "gfPolicyId required form-control" })
+                        @Html.ValidationMessageFor(model => model.GFPolicyId)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastBasic)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastBasic, new { @placeholder = "Last Basic", @class = " lastBasic form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.LastBasic)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TotalJobDurationYear)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.TotalJobDurationYear, new { @placeholder = "Total Job Duration (Year)", @class = " jobYear form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.TotalJobDurationYear)
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.GFValue)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.GFValue, new { @placeholder = "GF Value", @class = " gfValue form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.GFValue)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ServiceCharge)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ServiceCharge, new { @placeholder = "Service Charge", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.ServiceCharge)
+                    </div>
+                </div>
+            </div>
+            <div class="row" hidden="hidden">
+
+                <div class="col-md-2" hidden="hidden">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PolicyJobDurationYearFrom)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.PolicyJobDurationYearFrom, new { @placeholder = "Policy Job Duration (Year) From", @class = " PJobYearFrom form-control" })
+                        @Html.ValidationMessageFor(model => model.PolicyJobDurationYearFrom)
+                    </div>
+                </div>
+                <div class="col-md-2" hidden="hidden">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PolicyJobDurationYearTo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.PolicyJobDurationYearTo, new { @placeholder = "Policy Job Duration (Year) To", @class = " PJobYearTo form-control" })
+                        @Html.ValidationMessageFor(model => model.PolicyJobDurationYearTo)
+                    </div>
+                </div>
+
+                <div class="col-md-2" hidden="hidden">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PolicyMultipicationFactor)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.PolicyMultipicationFactor, new { @placeholder = "Policy Multipication Factor", @class = " MFactor form-control" })
+                        @Html.ValidationMessageFor(model => model.PolicyMultipicationFactor)
+                    </div>
+                </div>
+                <div class="col-md-2" hidden="hidden">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PolicyIsFixed)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.PolicyIsFixed, new { @class = " PIsFixed form-control" })
+                        @Html.ValidationMessageFor(model => model.PolicyIsFixed)
+                    </div>
+                </div>
+                <div class="col-md-2" hidden="hidden">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PolicyLastBasicMultipication)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.PolicyLastBasicMultipication, new { @placeholder = "Policy Last Basic Multipication", @class = " PLastBasicMultipication form-control" })
+                        @Html.ValidationMessageFor(model => model.PolicyLastBasicMultipication)
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.SettlementDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.SettlementDate, new { @placeholder = "Settlement Date", @class = " customDatePicker required form-control" })
+                        @Html.ValidationMessageFor(model => model.SettlementDate)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = " Remarks", @class = "  form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>GF Policies</p>
+        </div>
+        @Html.Partial("_gfPolicy", Model)
+
+    </div>
+    
+    
+    <div class="headrow">
+        @if (Model.Operation == "add")
+        {
+            <button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmEmployeeSettlement')" class="sym-btn-save">&nbsp;Save</button>
+        }
+        else
+        {
+            <button type="button" name="btnName" value="Update" title="Update Data" onclick="pageSubmit('frmEmployeeSettlement')" class="sym-btn-update">&nbsp;Update</button>
+        }
+        <button type="button" title="Go To Index" data-url="/GF/EmployeeSettlement" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New Employee Settlement" data-url="/GF/EmployeeSettlement/IndexLeftEmployee" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+    </div>
+}
+<script>
+    $(function () {
+        valiDation("frmEmployeeSettlement");
+    });
+
+    $(window).on('load', function () {
+        LoadGFPolicy();
+    });
+
+    $('.gfPolicy').change(function () {
+        LoadGFPolicy();
+    });
+
+    function LoadGFPolicy() {
+        $('.gfPolicyName, .gfValue').removeAttr("readonly");
+        var lastBasic = parseFloat($('.lastBasic').val());
+        var jobYear = parseFloat($('.jobYear').val());
+        //var GFPolicyId = $('.gfPolicy :selected').val();
+        var url = "/GF/EmployeeSettlement/SelectGFPolicy/?jobYear=" + jobYear;
+        var gfValue = 0;
+
+        $.getJSON(url, function (data) {
+            if (data == "Fail") {
+                ShowResult(data, "This Employee is not Eligible for GF!");
+                return;
+            }
+            var PJobYearFrom = parseFloat(data.split('~')[0]);
+            var PJobYearTo = parseFloat(data.split('~')[1]);
+            var MFactor = parseFloat(data.split('~')[2]);
+            var PIsFixed = (data.split('~')[3]);
+            var PLastBasicMultipication = parseFloat(data.split('~')[4]);
+            var PolicyId = data.split('~')[5];
+            var PolicyName = data.split('~')[6];
+
+            if (jobYear >= PJobYearFrom && jobYear < PJobYearTo) {
+                if (PIsFixed.toLowerCase() == "true") {
+                    gfValue = PolicyLastBasicMultipication * lastBasic;
+                }
+                else {
+                    gfValue = jobYear * MFactor * lastBasic;
+                }
+            }
+
+            $('.PJobYearFrom').val(PJobYearFrom);
+            $('.PJobYearTo').val(PJobYearTo);
+            $('.MFactor').val(MFactor);
+            $('.PIsFixed').val(PIsFixed);
+            $('.PLastBasicMultipication').val(PLastBasicMultipication);
+            $('.gfPolicyId').val(PolicyId);
+            $('.gfPolicyName').val(PolicyName);
+
+
+            $('.gfValue').val(gfValue);
+        });
+
+        $('.gfPolicyName, .gfValue').prop("readonly", true);
+    }
+
+
+
+</script>
+<script>
+    //var LoadGFPolicy = function () {
+    //    $('.PJobYearFrom, .PJobYearTo, .MFactor, .PIsFixed, .PLastBasicMultipication, .gfValue').removeAttr("readonly");
+    //    var lastBasic = parseFloat($('.lastBasic').val());
+    //    var totalJobDurationYear = parseFloat($('.totalJobDurationYear').val());
+    //    var GFPolicyId = $('.gfPolicy :selected').val();
+    //    var url = "/GF/EmployeeSettlement/SelectGFPolicy/?GFPolicyId=" + GFPolicyId;
+    //    var gfValue = 0;
+
+    //    $.getJSON(url, function (data) {
+
+    //        var PJobYearFrom = parseFloat(data.split('~')[0]);
+    //        var PJobYearTo = parseFloat(data.split('~')[1]);
+    //        var MFactor = parseFloat(data.split('~')[2]);
+    //        var PIsFixed = (data.split('~')[3]);
+    //        var PLastBasicMultipication = parseFloat(data.split('~')[4]);
+
+    //        if (totalJobDurationYear >= PJobYearFrom && totalJobDurationYear < PJobYearTo) {
+    //            alert(PIsFixed.toLowerCase());
+    //            if (PIsFixed.toLowerCase() == "true") {
+    //                gfValue = PolicyLastBasicMultipication * lastBasic;
+    //            }
+    //            else {
+    //                alert(PIsFixed.toLowerCase());
+
+    //                gfValue = totalJobDurationYear * MFactor * lastBasic;
+    //            }
+    //        }
+
+    //        $('.PJobYearFrom').val(PJobYearFrom);
+    //        $('.PJobYearTo').val(PJobYearTo);
+    //        $('.MFactor').val(MFactor);
+    //        $('.PIsFixed').val(PIsFixed);
+    //        $('.PLastBasicMultipication').val(PLastBasicMultipication);
+    //        $('.gfValue').val(gfValue);
+    //    });
+
+    //    $('.PJobYearFrom, .PJobYearTo, .MFactor, .PIsFixed, .PLastBasicMultipication, .gfValue').prop("readonly", true);
+    //}
+
+</script>

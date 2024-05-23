@@ -1,0 +1,79 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM  
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee Salary Structure List</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>Total Value</th>
+                <th>Increment Date</th>
+                <th>Remarks</th>
+
+@*
+TotalValue
+IncrementDate
+*@
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/Structure/_indexEmployeeSalaryStructure?employeeId="+'@Model.Id',
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        + '&nbsp; <a id=""  title="Click on for Edit" style="text-decoration:none;" data-url="/Payroll/Structure/StructureEarningDeductionDetail" onclick="SelectEarningDeductionDetail(this)"   data-Id =' + oObj.aData[0] + ' class=" sym-btn-edit-row"></a>'
+                                        //+ '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/Structure/Delete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "Name", "sWidth": "15%" }
+                            , { "sName": "TotalValue", "sWidth": "20%" }
+                            , { "sName": "IncrementDate", "sWidth": "20%" }
+                           
+
+            ]
+        });
+    });
+</script>
+
+<script>
+    function SelectEarningDeductionDetail(sender) {
+        var url = $(sender).attr("data-url");
+        var employeeSalaryStructureId = $(sender).attr("data-Id");
+        var employeeId = '@Model.Id';
+
+        Obj = new Object();
+        Obj.employeeId = employeeId;
+        Obj.employeeSalaryStructureId = employeeSalaryStructureId;
+
+        var objParam = $.param(Obj);
+        url = url + "?" + objParam;
+        var win = window.open(url, '_blank');
+
+    }
+
+</script>

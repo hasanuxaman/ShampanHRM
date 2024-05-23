@@ -1,0 +1,30 @@
+﻿                        
+@model SymViewModel.Payroll.SalaryEarningDetailVM
+@using UIHelper.MVC
+   @using (Html.BeginCollectionItem("SalaryEarningVMs"))
+    {
+<div class="row">
+                           <div class="col-md-3">
+                                <div class="editor-label">
+                                  
+                                <h3>@Html.ValueFor(m => m.SalaryTypeName)</h3>
+                                    @Html.HiddenFor(model => model.FiscalYearDetailId)
+                                    @Html.HiddenFor(model => model.SalaryTypeId)
+                                    @Html.HiddenFor(model => model.EmployeeId, new { @class = "empErid" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="editor-field">
+                                    @Html.TextBoxFor(model => model.Amount, new { @class = "right EarningAmount  required  form-control" })
+                                    @Html.ValidationMessageFor(model => model.Amount)
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="editor-field">
+                                    @Html.TextAreaFor(model => model.Remarks, new { @class = "  form-control" })
+                                    @Html.ValidationMessageFor(model => model.Remarks)
+                                </div>
+                            </div>
+                        </div>
+       
+   }

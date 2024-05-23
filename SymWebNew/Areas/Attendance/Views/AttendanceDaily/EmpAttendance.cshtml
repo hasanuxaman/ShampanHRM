@@ -1,0 +1,289 @@
+﻿@using UIHelper.MVC
+@{
+    ViewBag.Title = "EmpAttendance";
+}
+
+
+
+<div class="headrow">
+    <label class="pull-right">Employee Attendance Report</label>
+</div>
+<div class="col-md-9">
+    <div class="row">
+        <div class="thinbox">
+            <div class="th_thinbox">
+                <p>Attendance Status</p>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Attendance Date</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("AttendanceDate", null, new { @placeholder = "Attendance Date", @class = "required customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label center">
+                        <label>All</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", "", new { @class = " form-control", @checked = true })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label center">
+                        <label>Present</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", "Pre", new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Absent</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", "Abs", new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Late</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", "Late", new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2 center">
+                    <div class="editor-label">
+                        <label>Only In</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", false, new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2 center">
+                    <div class="editor-label center">
+                        <label>Only Out</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", false, new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label center">
+                        <label>Missing</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", "Que", new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label center">
+                        <label>Leave</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("AttnStatus", "L", new { @class = " form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="thinbox">
+            <div class="th_thinbox">
+                <p>Filter</p>
+            </div>
+            <div class="row ">
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>All</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "", new { @class = " form-control filters", @checked = true })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Department</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "Department", new { @class = " form-control filters" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Section</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "Section", new { @class = " form-control filters" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Project</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "Project", new { @class = " form-control filters" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "Designation", new { @class = " form-control filters" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Group</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "Group", new { @class = " form-control filters" })
+                    </div>
+                </div>
+                <div class="col-md-1 center">
+                    <div class="editor-label">
+                        <label>Policy</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.RadioButton("Filter", "AttendancePolicy", new { @class = " form-control filters" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="editor-label">
+                        <label>Multiple Selection</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MulitpleSelection", "//", new {@placeholder="Multiple Selection", @class = "form-control selectDropdown", @multiple = "multiple" })
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Summary </p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 right">
+                <label>Department</label>
+            </div>
+            <div class="col-md-6">
+                <label>@Html.RadioButton("Summary", "Department", new { @class = " form-control" })</label>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-6 right">
+                <label>Section</label>
+            </div>
+            <div class="col-md-6 right">
+                <label>@Html.RadioButton("Summary", "Section", new { @class = " form-control" })</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 right">
+                <label>Project</label>
+            </div>
+            <div class="col-md-6">
+                <label>@Html.RadioButton("Summary", "Project", new { @class = " form-control" })</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 right">
+                <label>Designation</label>
+            </div>
+            <div class="col-md-6">
+                <label>@Html.RadioButton("Summary", "Designation", new { @class = " form-control" })</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button title="Click to Show Report" id="sendRpt" data-url="/Attendance/AttendanceDaily/EmpAttendance" class="btn sym-btn-report">&nbsp;Report</button>
+    &nbsp;<button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+</div>
+
+
+<script>
+    $(function () {
+        $(".filters").change(function () {
+            filtering();
+        });
+        function filtering() {
+            var filter = $("input:radio[name=Filter]:checked").val();
+            var url = "";
+            if (filter == "Department") {
+                url = "/Config/DropDown/Department";
+            }
+            else if (filter == "Section") {
+                url = "/Config/DropDown/Section";
+            }
+            else if (filter == "Project") {
+                url = "/Config/DropDown/Project";
+            }
+            else if (filter == "Designation") {
+                url = "/Config/DropDown/Designation";
+            }
+            else if (filter == "Department") {
+                url = "/Config/DropDown/EmployeeCode";
+            }
+            else if (filter == "Group") {
+                url="/Config/DropDown/GroupList";
+            }
+            else if (filter == "AttendancePolicy") {
+                url="/Config/DropDown/AttendanceStructure";
+            }
+            else if (filter == "") {
+                $("#MulitpleSelection").select2("val", "");
+                return;
+            }
+            var selection = "";
+            $('select#MulitpleSelection').attr("data-url", url);
+            $.getJSON(url, function (data) {
+                $.each(data, function (i, state) {
+                    selection += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('select#MulitpleSelection').html(selection).change();;
+            });
+        }
+    });
+
+    $('#sendRpt').click(function () {
+       @* var actionName = '@ViewBag.actionName';
+        var controllerName = '@ViewBag.controllerName';
+        alert(actionName+" : "+controllerName);*@
+
+        var url = $(this).attr("data-url");
+
+        var MulitpleSelection = $("#MulitpleSelection").val();
+        var Filter = $("input:radio[name=Filter]:checked").val();
+        var AttnStatus = $("input:radio[name=AttnStatus]:checked").val();
+        var Summary = $("input:radio[name=Summary]:checked").val();
+        var AttendanceDate= $("#AttendanceDate").val();
+
+        url = url + '?MulitpleSelection=' + MulitpleSelection
+        + '&Filter=' + Filter
+        + '&AttnStatus=' + AttnStatus
+        + '&Summary=' + Summary
+        + '&AttendanceDate=' + AttendanceDate
+        + '&ReportNo=1'
+        
+        var win = window.open(url, '_blank');
+    });
+
+    $("#Clear").on('click', function () {
+        $("#MulitpleSelection").select2("val", "");
+    });
+
+</script>
+
+

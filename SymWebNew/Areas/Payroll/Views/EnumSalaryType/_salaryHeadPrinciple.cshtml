@@ -1,0 +1,89 @@
+﻿<div class="headrow">
+    <label class="pull-right">Salary Type</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Type List</p>
+    </div>
+    <p></p>
+    <div class="row">
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable2" class="display">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Earning/Deduction</th>
+                            <th>GL Account</th>
+                            <th>Active/Inactive</th>
+                        </tr>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Earning/Deduction</th>
+                            <th>GL Account</th>
+                            <th>Active/Inactive</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="headrow">
+</div>
+<script>
+    $(document).ready(function () {
+        var oTable = $('#myDataTable2').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/EnumSalaryType/_indexSalaryHeadPrinciple",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            { "sName": "Code" }
+                              , { "sName": "Name" }
+                              , { "sName": "Earning" }
+                              , { "sName": "GLAccountCode" }
+            //,{
+            //    "sName": "GLAccountCode",
+            //    "bSearchable": false,
+            //    "bSortable": false,
+            //    "sWidth": "12%",
+            //    "sClass": "center",
+            //    "fnRender": function (oObj) {
+            //        return ' <input type="text" class="glac" value="' + oObj.aData[3] + '">';
+            //    }
+            //}
+                              , { "sName": "Active" }
+                              ,{
+                                  "sName": "Id",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "sWidth": "12%",
+                                  "sClass": "center",
+                                  "fnRender": function (oObj) {
+                                      return '<a title="Click on for Edit" style="text-decoration:none;"  class=" lnkEdit sym-btn-edit-row" href=\"/Payroll/EnumSalaryType/EditGLPrinciple/' + oObj.aData[5] + '\"></a>'
+                                      //return '<a title="Click on for Edit" style="text-decoration:none;" onclick="UpdatePrinciple(this,\'' + oObj.aData[5] + '\')" class="sym-btn-edit-row"></a>';
+                                  }
+                              }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "text" }
+                       , { type: "text" }
+                       , { type: "select", values: ["Earning", "Deduction"] }
+                       , { type: "text" }
+                       , { type: "select", values: ["Active", "Inactive"] }
+                       , { type: "" }
+            ]
+        });
+        SelectAllForDelete();
+    });
+</script>

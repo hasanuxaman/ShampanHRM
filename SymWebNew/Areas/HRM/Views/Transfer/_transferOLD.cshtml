@@ -1,0 +1,73 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="empInfo">
+        <div class="th_thinbox">
+        <p>@Html.ValueFor(model => model.EmpName)</p>   
+        </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.JoinDate)
+
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.transferVM.DepartmentName, new { @placeholder = "Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.transferVM.DepartmentName)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.transferVM.SectionName, new { @placeholder = "Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.transferVM.SectionName)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.transferVM.ProjectName, new { @placeholder = "Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.transferVM.ProjectName)
+                    </div>
+                     <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.transferVM.TransferDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBox("TransferDate",null, new {  @class = "pastdate form-control", @disabled = "disabled" })
+           
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+<script>
+    InitDropDowns();
+
+    fromReadColor("transferOld");
+    $(function () {
+        $('.pastdate').val('@Model.transferVM.TransferDate');
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+         }
+    });
+</script>
+
+

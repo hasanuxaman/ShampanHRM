@@ -1,0 +1,310 @@
+﻿@using UIHelper.MVC
+@model SymViewModel.Common.ParameterVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee Other Deduction Report</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+
+            <div class="editor-field">
+                <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "fpDetailsCom  required form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period(To)</label>
+            </div>
+
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailIdTo", "//", new { @Text = "test", @class = "required fpDetailsComTo form-control" })
+                </div>
+            </div>
+        </div>
+        @if (identity.IsAdmin || identity.IsPayroll)
+{
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Code(From)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Code(To)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Designation</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <div class="row">
+        @if (identity.IsAdmin || identity.IsPayroll)
+{
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                </div>
+            </div>
+        }
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Deduction Type</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.DeductionTypeId, "/Config/DropDown/DeductionTypeDropDown", new { @id = "DeductionTypeId1", @class = "DeductionTypeId eType form-control" })
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Report Group 1</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ReportGroup1", "/Config/DropDown/DeductionRptParamName", new { @id = "", @class = "ReportGroup1 required  form-control" })
+
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Report Group 2</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ReportGroup2", "/Config/DropDown/DeductionRptParamName", new { @id = "", @class = " ReportGroup2 required form-control" })
+
+            </div>
+        </div>
+                    <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Order By</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("Orderby", "/Config/DropDown/EnumOrderBy?Module=Salary", new { @class = "required form-control" })
+                </div>
+            </div>
+    </div>
+    <br />
+</div>
+    <div class="headrow">
+            &nbsp;@Html.ActionLink(" Report", "EmployeeOtherDeductionReport", "EmployeeOtherDeduction", null, new { title = "Click to Show Report", target = "_blank", id = "sendRpt", @class = "sym-btn-report" })
+            &nbsp;<a title="Click to Show Other Deduction List" id ="Searchbtn"  class = "btn sym-btn-search">&nbsp;Search</a>
+            &nbsp;<a title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</a>
+    </div>
+
+<div id="detailsDiv">
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function defaultLoad() {
+            $('select.fpDetailsComTo').html("<option value=0>Select</option>");
+        }
+
+        $(function () {
+            InitDropdownsCommon();
+            defaultLoad();
+
+
+            window.onload = $('#sendRpt').click(function () {
+
+                var fid = $("#FiscalPeriodDetailId").val();
+                var fidTo = $("#FiscalPeriodDetailIdTo").val();
+                var ProjectId = $("#ProjectId").val();
+                var DepartmentId = $("#DepartmentId").val();
+                var SectionId = $("#SectionId").val();
+                var DesignationId = $("#DesignationId").val();
+                var CodeF = $("#CodeF").val();
+                var CodeT = $("#CodeT").val();
+                var DTId = $("#DeductionTypeId").val();
+                var rptPG1 = $(".ReportGroup1 option:selected").text();
+                var rptPG2 = $(".ReportGroup2 option:selected").text();
+                var Orderby = $("#Orderby").val();
+
+
+                if (fid == "") {
+                    ShowResult('Fail', "Please Select  Fiscal Period From!");
+                    return false;
+                }
+
+                if (fidTo == "0") {
+                    ShowResult('Fail', "Please Select  Fiscal Period To!");
+                    return false;
+                }
+
+                if (rptPG1 == "Select") {
+                    ShowResult('Fail', "Please Select  Report Group 1");
+                    return false;
+                }
+                if (rptPG2 == "Select") {
+                    ShowResult('Fail', "Please Select  Report Group 2");
+                    return false;
+                }
+
+                if (Orderby == "") {
+                    ShowResult('Fail', "Please Select Order By ");
+                    return false;
+                }
+
+                var preURL = this.href;
+
+                this.href = this.href.split('?')[0] + '?fid=' + fid
+                + '&fidTo=' + fidTo
+                + '&ProjectId=' + ProjectId
+                + '&DepartmentId=' + DepartmentId
+                + '&SectionId=' + SectionId
+                + '&DesignationId=' + DesignationId
+                + '&CodeF=' + CodeF
+                + '&CodeT=' + CodeT
+                + '&DTId=' + DTId
+                + '&rptPG1=' + rptPG1
+                + '&rptPG2=' + rptPG2
+                + '&Orderby=' + Orderby
+
+                + '&view=N'
+
+                history.pushState(this.href, null, preURL);
+            });
+        });
+
+        $("#Clear").on('click', function () {
+            $("#FiscalPeriodDetailId").val("");
+            $("#FiscalPeriodDetailIdTo").val("1");
+            $("#ProjectId").val("1");
+            $("#DepartmentId").val("1");
+            $("#SectionId").val("1");
+            $("#DesignationId").val("1");
+            $("#CodeF").val("1");
+            $("#CodeT").val("1");
+            $("#DeductionTypeId").val("1");
+            $(".ReportGroup1").val("0");
+            $(".ReportGroup2").val("0");
+            $(".Orderby").val("0");
+
+        });
+
+        $("#Searchbtn").click(function () {
+            Searching();
+        });
+
+        function Searching() {
+            var fid = $("#FiscalPeriodDetailId").val();
+            var fidTo = $("#FiscalPeriodDetailIdTo").val();
+            if (fid == "") {
+                ShowResult('Fail', "Please Select  Fiscal Period From!");
+                return false;
+            }
+
+            if (fidTo == "0") {
+                ShowResult('Fail', "Please Select  Fiscal Period To!");
+                return false;
+            }
+
+            var ProjectId = $("#ProjectId").val();
+            var DepartmentId = $("#DepartmentId").val();
+            var SectionId = $("#SectionId").val();
+            var DesignationId = $("#DesignationId").val();
+            var CodeF = $("#CodeF").val();
+            var CodeT = $("#CodeT").val();
+            var DTId = $("#DeductionTypeId").val();
+            var Orderby = $("#Orderby").val();
+
+
+            var url = '/Payroll/EmployeeOtherDeduction/_rptIndexPartial?fid=' + fid
+              + '&fidTo=' + fidTo
+              + '&ProjectId=' + ProjectId
+              + '&DepartmentId=' + DepartmentId
+              + '&SectionId=' + SectionId
+              + '&DesignationId=' + DesignationId
+              + '&CodeF=' + CodeF
+              + '&CodeT=' + CodeT
+              + '&DTId=' + DTId
+              + '&Orderby=' + Orderby;
+
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+                    $('#detailsDiv').html(data);
+                },
+            });
+        }
+    </script>
+}
+
+

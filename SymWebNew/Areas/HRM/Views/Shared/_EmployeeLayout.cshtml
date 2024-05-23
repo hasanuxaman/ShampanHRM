@@ -1,0 +1,302 @@
+@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+}
+@{
+    Layout = "~/Areas/HRM/Views/Shared/_HomeLayout.cshtml";
+}
+@RenderSection("head", false)
+<style>
+    #cssmenu .col-md-2 {
+        padding-left: 1px!important;
+        padding-right: 1px!important;
+    }
+
+    #cssmenu div ul li a .active {
+        color: #26370A;
+        background: url(/assets/Images/menu1.gif) 0 -32px;
+        background-repeat: no-repeat;
+        padding: 8px 0 0 10px;
+    }
+</style>
+<div class="content white menuheight visible-xs">
+    <nav style="background-color: #F4FA58;" class=" navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <ul class="nav col-xs-8 visible-xs">
+                <li class="dropdown1" style="padding-top: 4px">
+                    <a href="#" class=" btn btn-success">
+                        @if (Model != null)
+                        {
+                            @Model.Salutation_E  @Model.LastName 
+                            
+                        }
+
+                    </a>
+                </li>
+            </ul>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!--/.navbar-header-->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
+                </li>
+                <li class="EmployeeInfo"><a href='/HRM/EmployeeInfo/Edit/@Model.Id'><span>Personal Details</span></a></li>
+                <li class="ContactDetails"><a href='/HRM/ContactDetail/Index/@Model.Id'><span>Contact Details</span></a></li>
+                <li class="EmergencyContact"><a href='/HRM/EmergencyContact/Edit/@Model.Id'><span>Emergency Contact</span></a></li>
+                <li class="Job"><a href='/HRM/Job/Index/@Model.Id'><span>Job</span></a></li>
+                @if (CompanyName != "EGCB")
+                {
+                <li class="Qualification"><a href='/HRM/Qualification/Index/@Model.Id'><span>Qualification and Experience</span></a></li>
+                <li class="Immigration"><a href='/HRM/Immigration/Index/@Model.Id'><span>Immigration</span></a></li>
+                <li class="Training"><a href='/HRM/Training/Index/@Model.Id'><span>Training</span></a></li>
+                <li class="Travel"><a href='/HRM/Travel/Index/@Model.Id'><span>Travel</span></a></li>
+                <li class="DependentNominee"><a href='/HRM/DependentNominee/Index/@Model.Id'><span>Dependent & Nominee</span></a></li>
+                <li class="Asset"><a href='/HRM/EmployeeAsset/Index/@Model.Id'><span>Asset</span></a></li>
+              
+                    <li class="Left"><a href='/HRM/Job/Left/@Model.Id'><span>Left</span></a></li>
+               
+              
+                    <li class="Structure"><a href='/HRM/Structure/Index/@Model.Id'><span>Structure</span></a></li>
+                
+                <li class="ChangePassword"><a href='/HRM/EmployeeInfo/ChangePassword/@Model.Id'><span>Change Password</span></a></li>
+                <li class="AllEmployeeInfo"><a href='/HRM/AllEmployeeInfo/Index/@Model.Id'><span>AllEmployee Info</span></a></li>
+                
+                <li class="EmployeeFile"><a href='/HRM/EmployeeFile/Edit/@Model.Id'><span>Employee File</span></a></li>
+                }
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="">
+    <div id="cssmenu" class="col-md-2 col-sm-12 col-xs-12" style="padding-left: 1px!important; padding-right: 1px!important;">
+        @*<img src= "@Url.Content("~/Files/EmployeeInfo/" + Model.PhotoName)" id="EmployeeImage" style="text-align:center"  alt="IMAGES" height="200" />*@
+
+        <img src="@Url.Content("~/Files/EmployeeInfo/" + Model.PhotoName)" id="EmployeeImage" style="text-align:center" alt="IMAGES" height="200" />
+        @using (Ajax.BeginForm("EmployeeImage", "EmployeeInfo", null, new AjaxOptions { UpdateTargetId = "FindEmployee" }, new { enctype = "multipart/form-data", id = "frmEmployeeEdit" }))
+        {
+            <input type="file" accept=".jpg,.png,.gif,.jpeg" name="file" id="FileUpload" style="width: 200px;" onchange="CheckImageSize(this);ShowpImagePreview(this); " />
+            <button type="submit" class="sym-btn-file-upload" style="width: 50%; text-align: center; float: left;" title="Save Data">Pic Save</button>
+            <button type="button" title="Delete Checked Indent" onclick="EmployeeImageDelete(this)" data-id="@Model.Id" style="width: 40.20%;float:left;" class="sym-btn-remove ">&nbsp;Delete</button>
+            <input type="hidden" id="employeeId" name="employeeId" value="@Model.Id" />
+        }
+        <span class="clearfix"></span>
+        <h3 style="text-align: center; font-weight: bold">@Model.Salutation_E @Model.MiddleName @Model.LastName</h3>
+        <div class="hidden-xs">
+            <ul class="">
+                <li class="PersonalDetails"><a href='/HRM/EmployeeInfo/Edit/@Model.Id'><span>Personal Details</span></a></li>
+                <li class="ContactDetails"><a href='/HRM/ContactDetail/Index/@Model.Id'><span>Contact Details</span></a></li>
+                <li class="EmergencyContact"><a href='/HRM/EmergencyContact/Edit/@Model.Id'><span>Emergency Contact</span></a></li>
+                <li class="Job"><a href='/HRM/Job/Index/@Model.Id'><span>Job</span></a></li>
+                @if (CompanyName != "EGCB")
+                {               
+                <li class="Qualification"><a href='/HRM/Qualification/Index/@Model.Id'><span>Qualification and Experience</span></a></li>
+                <li class="Immigration"><a href='/HRM/Immigration/Index/@Model.Id'><span>Immigration</span></a></li>
+                <li class="Training"><a href='/HRM/Training/Index/@Model.Id'><span>Training</span></a></li>
+                <li class="Travel"><a href='/HRM/Travel/Index/@Model.Id'><span>Travel</span></a></li>
+                <li class="DependentNominee"><a href='/HRM/DependentNominee/Index/@Model.Id'><span>Dependent & Nominee</span></a></li>
+                <li class="Asset"><a href='/HRM/EmployeeAsset/Index/@Model.Id'><span>Asset</span></a></li>
+                if (identity.IsAdmin || identity.IsHRM)
+                {
+                    <li class="Left"><a href='/HRM/Job/Left/@Model.Id'><span>Left</span></a></li>
+                }               
+                if (identity.IsAdmin || identity.IsHRM)
+                {
+                    <li class="Structure"><a href='/HRM/Structure/Index/@Model.Id'><span>Structure</span></a></li>
+                }
+                <li class="ChangePassword"><a href='/HRM/EmployeeInfo/ChangePassword/@Model.Id'><span>Change Password</span></a></li>
+                <li class="AllEmployeeInfo"><a href='/HRM/AllEmployeeInfo/Index/@Model.Id'><span>AllEmployee Info</span></a></li>
+                
+                <li class="EmployeeFile"><a href='/HRM/EmployeeFile/Edit/@Model.Id'><span>Employee File</span></a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-10">
+        <style>
+            .text-color {
+                margin: auto;
+            }
+
+                .text-color a {
+                    color: #ff6a00 !important;
+                }
+
+            .input-group .form-control {
+                padding-top: 0px !important;
+                margin-top: 0px !important;
+            }
+        </style>
+        <span class="clearfix"></span>
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <div class="">
+                <div class="col-sm-12 col-md-12 thinbox">
+                    <div class="input-group   col-lg-8  col-md-8  col-sm-8 col-xs-12 text-color" style="">
+                        <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='first' id="first"><i class="fa fa-angle-double-left"></i>First</a>
+                        <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='previous' id="precode"><i class="fa fa-angle-left"></i>Previous</a>
+                        @Html.SimpleDropDownFor(model => model.Code, "/Config/DropDown/EmployeeCodeName", new { @class = "form-control selectDropdown" })
+                        <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i></a>
+                        <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='next' id="nextcode">Next <i class="fa  fa-angle-right"></i></a>
+                        <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='last' id="last">Last <i class="fa  fa-angle-double-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="thinbox">
+            <div class="empInfo">
+                <div class="th_thinbox">
+                    <p>Employee Info</p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>
+                            @Html.HiddenFor(model => model.JoinDate)
+                            @Html.Label("Code")
+                        </label>
+                        <div>
+                            @Html.TextBoxFor(model => model.Code, null, new { readOnly = "readOnly", @placeholder = "Employee Code", @class = "  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>
+                            @Html.Label("Name")
+                        </label>
+                        <div>
+                            @Html.TextAreaFor(model => model.EmpName, new { readOnly = "readOnly", @placeholder = "Full Name", @class = "  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>
+                            <label>@Session["DepartmentLabel"]</label>
+                        </label>
+                        <div>
+                            @Html.TextAreaFor(model => model.Department, new { readOnly = "readOnly", @placeholder = "Department", @class = "  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>
+                            @Html.LabelFor(model => model.Designation)
+                        </label>
+                        <div>
+                            @Html.TextAreaFor(model => model.Designation, new { readOnly = "readOnly", @placeholder = "Designation", @class = "   form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>
+                            <label>@Session["ProjectLabel"]</label>
+                        </label>
+                        <div>
+                            @Html.TextAreaFor(model => model.Project, new { readOnly = "readOnly", @placeholder = "Project", @class = "   form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>
+                            <label>@Session["SectionLabel"]</label>
+                        </label>
+                        <div>
+                            @Html.TextAreaFor(model => model.Section, new { readOnly = "readOnly", @placeholder = "Section", @class = "   form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="clearfix"></span>
+        @RenderBody()
+    </div>
+</div>
+
+<div id="footer">&nbsp;</div>
+<script>
+    $(function () {
+        setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 700);
+         @* $('#empId').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });*@
+        var path = location.pathname.split('/')
+        var pathname = location.protocol + '//' + location.host + '/' + path[1] + '/' + path[2] + '/' + path[3]
+        $('#current').click(function () {
+            var btn = 'current';
+            Searching(btn);
+        });
+        $('#nextcode').click(function () {
+            var btn = 'next';
+            Searching(btn);
+        });
+        $('#precode').click(function () {
+            var btn = 'previous';
+            Searching(btn);
+        });
+        $('#first').click(function () {
+            var btn = 'first';
+            Searching(btn);
+        });
+        $('#last').click(function () {
+            var btn = 'last';
+            Searching(btn);
+        });
+        function Searching(btn) {
+            var empid = $('.selectDropdown  :selected').text();
+            empid = empid.split('~')[0].replace("Select", "");
+            window.location.href = pathname + "?empcode=" + empid + '&btn=' + btn;
+        }
+        var urlArray = window.location.pathname.split('/');
+        var pagAtual = urlArray[urlArray.length - 3];
+        $("a[href*=" + pagAtual + "]").addClass("active");
+    });
+    function ShowpImagePreview(input) {
+        if (input.files && input.files[0]) {
+            //if (input.files[0].type != input.accept) {
+            //    ShowResult("Fail", "Only jpg formated accepted!");
+            //    $("#FileUpload").val('');
+            //    return;
+            //}
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#EmployeeImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    var topMenuActive = "Employee";
+    function EmployeeImageDelete(sender) {
+        Ask("Are you sure to delete this file!", function () {
+            var url = "/HRM/EmployeeInfo/EmployeeImageDelete?EmployeeId=" + $(sender).attr('data-id');
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    if (response) {
+                        //$(sender).closest("div").parent().remove();
+                        ShowResult("Success", "Image deleted!");
+                        window.location.reload(true);
+                    }
+                    else {
+                        ShowResult("Fail", "Image deleted failed!");
+                    }
+                }
+            })
+        }, function () { })
+    };
+</script>

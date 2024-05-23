@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "SalaryStructureMatrix";
+}
+@model SymViewModel.Payroll.SalaryStructureMatrixVM
+@using UIHelper.MVC
+
+<div class="headrow">
+    <button type="button" title="Go To Index" data-url="/Payroll/SalaryStructureMatrix/IndexFiscalYears" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+    <label class="pull-right">Salary Structure Matrix</label>
+</div>
+
+ 
+<div id="detail">
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        url = "/Payroll/SalaryStructureMatrix/SalaryStructure?CurrentYear=@Model.CurrentYear" + "&CurrentYearPart=@Model.CurrentYearPart";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $('#detail').html(data);
+            }
+        });
+    });
+</script>

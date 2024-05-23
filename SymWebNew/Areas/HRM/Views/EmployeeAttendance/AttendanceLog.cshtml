@@ -1,0 +1,70 @@
+﻿@model SymViewModel.Attendance.AttLogsVM
+<div class="headrow">
+    <label class="pull-right">Attendance Entry</label>
+</div>
+<div class="EditPlace">
+    <div id="attendanceP">
+    </div>
+</div>
+<div class="clearfix"></div>
+<div>
+ @Html.Partial("_index");
+</div>
+<script>
+    function SelectEmployee(sender) {
+        $(".EditPlace").show();
+        var EmployeeId = $(sender).attr("data-id");
+        var url = '@Url.Action("_attendance", "EmployeeAttendance")' + '?EmployeeId=' + EmployeeId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $('#attendanceP').html(data);
+            },
+        });
+
+        var url = '@Url.Action("AttendancePolicy", "EmployeeAttendance")' + '?EmployeeId=' + EmployeeId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $('#timePolicy').html(data);
+            },
+        });
+
+
+    };
+
+
+
+    $(function () {
+        $("body").removeClass("loading");
+        $('.loading').hide();
+         $("div.EditPlace").hide();
+        function CancleTransfer() {
+            window.location.reload();
+        }
+        function Attendance(sender) {
+            for (var i = 0; i < $("[name='empId']").length; i++) {
+                if ($($("[name='empId']")[i]).is(':checked')) {
+                    $("#EmployeeId").val($($("[name='empId']")[i]).val());
+                    pageSubmit('frmAttendanceLog');
+                    break;
+                }
+            }
+            if ($("#EmployeeId").val() == "") {
+                ShowResult("Fail", "Please select employee!");
+                return;
+            }
+        }
+        function CancleLeave() {
+            $(".EditPlace").hide();
+        }
+        var topMenuActive = "Attendance";
+    });
+</script>
+

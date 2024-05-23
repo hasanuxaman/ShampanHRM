@@ -1,0 +1,81 @@
+﻿@model SymViewModel.Payroll.EmployeeOverTimeVM
+@using UIHelper.MVC
+
+@{
+    Layout = null;
+}
+
+<script>
+    $(function () {
+        InitDateTimePickers();
+    });
+
+
+
+</script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.EmpName)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextAreaFor(model => model.EmpName, new {@placeholder = "Employee Name",@rows="1", @class ="required form-control" })
+                @Html.ValidationMessageFor(model => model.EmpName)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.OverTimeAmount)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.OverTimeAmount, null, new {@placeholder = "Overtime Amount", @class =" right required form-control" })
+                @Html.ValidationMessageFor(model => model.OverTimeAmount)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 ">
+                <label>Fiscal Period</label>
+            </label>
+            <div class="col-sm-8">
+                @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new {@placeholder = "Fiscal Period", @class ="required form-control" })
+            </div>
+        </div>
+
+@*        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.OverTimeDate)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.OverTimeDate, null, new {@placeholder = "Overtime Date", @class ="customDatePicker required form-control" })
+                @Html.ValidationMessageFor(model => model.OverTimeDate)
+            </div>
+        </div>*@
+
+        <div class="row">
+            <label class="col-sm-4">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.Remarks, null, new {@placeholder = "Remarks",@rows="1", @class ="  required form-control" })
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4">
+                <button type="submit" title="Update Data" class="sym-btn-update">&nbsp;Update</button>
+            </label>
+            <label class="col-sm-4">
+               	 <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+            </label>
+        </div>
+    </div>
+}
+<script>
+    $(function () { InitDropDowns(); });
+</script>

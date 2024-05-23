@@ -1,0 +1,398 @@
+﻿@model SymViewModel.HRM.ViewEmployeeInfoAllVM
+<style>
+
+</style>
+<div class="thinbox">
+    <div class="th_thinbox">
+    </div>
+    <p>
+    </p>
+    <div id="container">
+        <table id="myDataTable" class="display">
+            <thead>
+                <tr>
+                    <th>Code                </th>                                        <!-- 0  -->
+                    <th>Name                </th>                                        <!-- 1  -->
+                    <th>Designation	   	    </th>                                        <!-- 2  -->
+                    <th>Join Date            </th>                                       <!-- 3  -->
+                    <th>Grade               </th>                                        <!-- 4  -->
+                    <th>Basic Salary        </th>                                        <!-- 5  -->
+                    <th>Gross Salary        </th>                                        <!-- 6  -->
+                    <th>Branch              </th>                                        <!-- 7  -->
+                    <th>@Session["DepartmentLabel"]</th>                                 <!-- 8  -->
+                    <th>@Session["SectionLabel"]</th>                                    <!-- 9  -->
+                    <th>@Session["ProjectLabel"]</th>                                    <!-- 10 -->
+
+                    <th>Probation End       </th>                                        <!-- 11 -->
+                    <th>Date Of Permanent   </th>                                        <!-- 12 -->
+                    <th>Permanent (Yes/No)  </th>                                        <!-- 13 -->
+                    <th>Supervisor          </th>                                        <!-- 14 -->
+                    <th>Bank Information    </th>                                        <!-- 15 -->
+                    <th>Bank Account No     </th>                                        <!-- 16 -->
+                    <th>Employment Status   </th>                                        <!-- 17 -->
+                    <th>Employment Type     </th>                                        <!-- 18 -->
+                    <th>Transfer Date       </th>                                        <!-- 19 -->
+                    <th>Promotion Date      </th>                                        <!-- 20 -->
+                    <th>Email               </th>                                        <!-- 21 -->
+                    <th>Nick Name	        </th>                                        <!-- 22 -->
+                    <th>Date Of Birth       </th>                                        <!-- 23 -->
+                    <th>Religion            </th>                                        <!-- 24 -->
+                    <th>Blood Group         </th>                                        <!-- 25 -->
+                    <th>Gender			    </th>                                        <!-- 26 -->
+                    <th>Marital Status      </th>                                        <!-- 27 -->
+                    <th>Nationality         </th>                                        <!-- 28 -->
+                    <th>Smoker (Yes/No)     </th>                                        <!-- 29 -->
+                    <th>NID                 </th>                                        <!-- 30 -->
+                    <th>Passport Number      </th>                                        <!-- 31 -->
+                    <th>Expiry Date          </th>                                        <!-- 32 -->
+                    <th>TIN                 </th>                                        <!-- 33 -->
+                    <th>Disable (Yes/No)  </th>                                          <!-- 34 -->
+                    <th>Kinds Of Disability </th>                                        <!-- 35 -->
+                    <th>Other Id            </th>                                        <!-- 36 -->
+                    <th>Present Address     </th>                                        <!-- 37 -->
+                    <th>Present Mobile      </th>                                        <!-- 38 -->
+                    <th>Present District    </th>                                        <!-- 39 -->
+                    <th>Present Division    </th>                                        <!-- 40 -->
+                    <th>Present Country     </th>                                        <!-- 41 -->
+                    <th>Present City        </th>                                        <!-- 42 -->
+                    <th>Present Postal Code </th>                                        <!-- 43 -->
+                    <th>Present Phone       </th>                                        <!-- 44 -->
+                    <th>Present Fax         </th>                                        <!-- 45 -->
+                    <th>Permanent Address   </th>                                        <!-- 46 -->
+                    <th>Permanent Mobile    </th>                                        <!-- 47 -->
+                    <th>Permanent District  </th>                                        <!-- 48 -->
+                    <th>Permanent Division  </th>                                        <!-- 49 -->
+                    <th>Permanent Country   </th>                                        <!-- 50 -->
+                    <th>Permanent City      </th>                                        <!-- 51 -->
+                    <th>Permanent Postal Code</th>                                       <!-- 52 -->
+                    <th>Emergency Contact   </th>                                        <!-- 53 -->
+                    <th>Emergency Relation  </th>                                        <!-- 54 -->
+                    <th>Emergency Address   </th>                                        <!-- 55 -->
+                    <th>Emergency Country   </th>                                        <!-- 56 -->
+                    <th>Emergency Mobile    </th>                                        <!-- 57 -->
+                    <th>Education Degree           	    </th>                            <!-- 58 -->
+                    <th>Education Institute        	    </th>                            <!-- 59 -->
+                    <th>Education Major            	    </th>                            <!-- 60 -->
+                    <th>Education Year Of Passing    	    </th>                            <!-- 61 -->
+                    <th>Education Total Year		    	    </th>                        <!-- 62 -->
+                </tr>
+                <tr>
+                    <th>Code                </th>                                        <!-- 0  -->
+                    <th>Name                </th>                                        <!-- 1  -->
+                    <th>Designation	   	    </th>                                        <!-- 2  -->
+                    <th>Join Date            </th>                                       <!-- 3  -->
+                    <th>Grade               </th>                                        <!-- 4  -->
+                    <th>Basic Salary        </th>                                        <!-- 5  -->
+                    <th>Gross Salary        </th>                                        <!-- 6  -->
+                    <th>Branch              </th>                                        <!-- 7  -->
+                    <th>@Session["DepartmentLabel"]</th>                                 <!-- 8  -->
+                    <th>@Session["SectionLabel"]</th>                                    <!-- 9  -->
+                    <th>@Session["ProjectLabel"]</th>                                    <!-- 10 -->
+
+                    <th>Probation End       </th>                                        <!-- 11 -->
+                    <th>Date Of Permanent   </th>                                        <!-- 12 -->
+                    <th>Permanent (Yes/No)  </th>                                        <!-- 13 -->
+                    <th>Supervisor          </th>                                        <!-- 14 -->
+                    <th>Bank Information    </th>                                        <!-- 15 -->
+                    <th>Bank Account No     </th>                                        <!-- 16 -->
+                    <th>Employment Status   </th>                                        <!-- 17 -->
+                    <th>Employment Type     </th>                                        <!-- 18 -->
+                    <th>Transfer Date       </th>                                        <!-- 19 -->
+                    <th>Promotion Date      </th>                                        <!-- 20 -->
+                    <th>Email               </th>                                        <!-- 21 -->
+                    <th>Nick Name	        </th>                                        <!-- 22 -->
+                    <th>Date Of Birth       </th>                                        <!-- 23 -->
+                    <th>Religion            </th>                                        <!-- 24 -->
+                    <th>Blood Group         </th>                                        <!-- 25 -->
+                    <th>Gender			    </th>                                        <!-- 26 -->
+                    <th>Marital Status      </th>                                        <!-- 27 -->
+                    <th>Nationality         </th>                                        <!-- 28 -->
+                    <th>Smoker (Yes/No)     </th>                                        <!-- 29 -->
+                    <th>NID                 </th>                                        <!-- 30 -->
+                    <th>PassportNumber      </th>                                        <!-- 31 -->
+                    <th>ExpiryDate          </th>                                        <!-- 32 -->
+                    <th>TIN                 </th>                                        <!-- 33 -->
+                    <th>Disable (Yes/No)  </th>                                          <!-- 34 -->
+                    <th>Kinds Of Disability </th>                                        <!-- 35 -->
+                    <th>Other Id            </th>                                        <!-- 36 -->
+                    <th>Present Address     </th>                                        <!-- 37 -->
+                    <th>Present Mobile      </th>                                        <!-- 38 -->
+                    <th>Present District    </th>                                        <!-- 39 -->
+                    <th>Present Division    </th>                                        <!-- 40 -->
+                    <th>Present Country     </th>                                        <!-- 41 -->
+                    <th>Present City        </th>                                        <!-- 42 -->
+                    <th>Present Postal Code </th>                                        <!-- 43 -->
+                    <th>Present Phone       </th>                                        <!-- 44 -->
+                    <th>Present Fax         </th>                                        <!-- 45 -->
+                    <th>Permanent Address   </th>                                        <!-- 46 -->
+                    <th>Permanent Mobile    </th>                                        <!-- 47 -->
+                    <th>Permanent District  </th>                                        <!-- 48 -->
+                    <th>Permanent Division  </th>                                        <!-- 49 -->
+                    <th>Permanent Country   </th>                                        <!-- 50 -->
+                    <th>Permanent City      </th>                                        <!-- 51 -->
+                    <th>Permanent Postal Code</th>                                       <!-- 52 -->
+                    <th>Emergency Contact   </th>                                        <!-- 53 -->
+                    <th>Emergency Relation  </th>                                        <!-- 54 -->
+                    <th>Emergency Address   </th>                                        <!-- 55 -->
+                    <th>Emergency Country   </th>                                        <!-- 56 -->
+                    <th>Emergency Mobile    </th>                                        <!-- 57 -->
+                    <th>Education Degree           	    </th>                            <!-- 58 -->
+                    <th>Education Institute        	    </th>                            <!-- 59 -->
+                    <th>Education Major            	    </th>                            <!-- 60 -->
+                    <th>Education Year Of Passing    	    </th>                            <!-- 61 -->
+                    <th>Education Total Year		    	    </th>                        <!-- 62 -->
+                     </tr>
+                <!-- #region Comments -->
+                               @*  
+                      Code 			   
+                      EmpName            
+                      Designation	   	
+                      JoinDate          	
+                      Grade              
+                      BasicSalary        
+                      GrossSalary        
+                      Branch             
+                      Department         
+                      Section		    
+                      Project 	        
+                      ProbationEnd       
+                      DateOfPermanent    
+                      LeftDate           
+                      IsPermanent        
+                      Supervisor         
+                      BankInfo           
+                      BankAccountNo      
+                      EmploymentStatus   
+                      EmploymentType     
+                      TransferDate       
+                      IsPromotion        
+                      PromotionDate      
+                      PersonalEmail      
+                      NickName	        
+                      DateOfBirth        
+                      Religion           
+                      BloodGroup         
+                      Gender			  	
+                      MaritalStatus      
+                      Nationality        
+                      Smoker             
+                      NID                
+                      PassportNumber     
+                      ExpiryDate         
+                      TIN                
+                      IsDisable          
+                      KindsOfDisability  
+                      OtherId            
+                      PresentAddress     
+                      PresentMobile      
+                      PresentDistrict    
+                      PresentDivision    
+                      PresentCountry     
+                      PresentCity        
+                      PresentPostalCode  
+                      PresentPhone       
+                      PresentFax         
+                      PermanentAddress   
+                      PermanentMobile    
+                      PermanentDistrict  
+                      PermanentDivision  
+                      PermanentCountry   
+                      PermanentCity      
+                      PermanentPostalCode
+                      PermanentPhone     
+                      PermanentFax       
+                      EmConName          
+                      EmConRelation      
+                      EmConAddress       
+                      EmConDistrict      
+                      EmConDivision      
+                      EmConCountry       
+                      EmConCity          
+                      EmConPostalCode    
+                      EmConPhone         
+                      EmConMobile        
+                      EmConFax           
+                      LeftType     
+                               
+                               EducationDegree       
+                               EducationInstitute    
+                               EducationMajor        
+                               EducationYearOfPassing
+                               EducationTotalYear		
+                        *@
+                <!-- #endregion -->
+
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br />
+</div>
+<table>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+
+
+
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeReport/_EmpInfoAllIndex?CodeF=@Model.CodeF&CodeT=@Model.CodeT&DepartmentId=@Model.DepartmentId&SectionId=@Model.SectionId"
+                + "&ProjectId=@Model.ProjectId&DesignationId=@Model.DesignationId&dtpFrom=@Model.dtpFrom&dtpTo=@Model.dtpTo"
+                + "&Gender=@Model.Gender&Religion=@Model.Religion&GradeId=@Model.GradeId&MulitpleColumn=@Model.MulitpleColumn",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": true,
+                "sServerMethod": "POST",
+                "sScrollX": '1100%',
+                "aoColumns": [                                                        
+                                { "sName": "Code  "                     , "sWidth": "1%" }            // 0
+                                , { "sName": "EmpName"                  , "sWidth": "1.5%" }          // 1   
+                                , { "sName": "Designation"              , "sWidth": "1.5%" }          // 2   
+                                , { "sName": "JoinDate"                 , "sWidth": "1%" }            // 3   
+                                , { "sName": "Grade"                    , "sWidth": "1%" }            // 4   
+                                , { "sName": "BasicSalary"              , "sWidth": "1%" }            // 5   
+                                , { "sName": "GrossSalary"              , "sWidth": "1%" }            // 6   
+                                , { "sName": "Branch"                   , "sWidth": "1.5%" }          // 7   
+                                , { "sName": "Department"               , "sWidth": "1.5%" }          // 8   
+                                , { "sName": "Section"                  , "sWidth": "1.5%" }          // 9   
+                                , { "sName": "Project"                  , "sWidth": "1.5%" }          // 10  
+                                , { "sName": "ProbationEnd"             , "sWidth": "1%" }            // 11  
+                                , { "sName": "DateOfPermanent"          , "sWidth": "1%" }            // 12  
+                                , { "sName": "IsPermanent"              , "sWidth": "1%" }            // 13  
+                                , { "sName": "Supervisor"               , "sWidth": "1.5%" }          // 14  
+                                , { "sName": "BankInfo"                 , "sWidth": "1.5%" }          // 15  
+                                , { "sName": "BankAccountNo"            , "sWidth": "1%" }            // 16  
+                                , { "sName": "EmploymentStatus"         , "sWidth": "1%" }            // 17  
+                                , { "sName": "EmploymentType"           , "sWidth": "1%" }            // 18  
+                                , { "sName": "TransferDate"             , "sWidth": "1%" }            // 19  
+                                , { "sName": "PromotionDate"            , "sWidth": "1%" }            // 20  
+                                , { "sName": "PersonalEmail"            , "sWidth": "1.5%" }          // 21  
+                                , { "sName": "NickName"                 , "sWidth": "1%" }            // 22  
+                                , { "sName": "DateOfBirth"              , "sWidth": "1%" }            // 23  
+                                , { "sName": "Religion"                 , "sWidth": "1%" }            // 24  
+                                , { "sName": "BloodGroup"               , "sWidth": "1%" }            // 25  
+                                , { "sName": "Gender"                   , "sWidth": "1%" }            // 26  
+                                , { "sName": "MaritalStatus"            , "sWidth": "1%" }            // 27  
+                                , { "sName": "Nationality"              , "sWidth": "1%" }            // 28  
+                                , { "sName": "Smoker"                   , "sWidth": "1%" }            // 29  
+                                , { "sName": "NID"                      , "sWidth": "1%" }            // 30  
+                                , { "sName": "PassportNumber"           , "sWidth": "1%" }            // 31  
+                                , { "sName": "ExpiryDate"               , "sWidth": "1%" }            // 32  
+                                , { "sName": "TIN"                      , "sWidth": "1%" }            // 33  
+                                , { "sName": "IsDisable"                , "sWidth": "1%" }            // 34  
+                                , { "sName": "KindsOfDisability"        , "sWidth": "1%" }            // 35  
+                                , { "sName": "OtherId"                  , "sWidth": "1%" }            // 36  
+                                , { "sName": "PresentAddress"           , "sWidth": "2%" }            // 37  
+                                , { "sName": "PresentMobile"            , "sWidth": "1%" }            // 38  
+                                , { "sName": "PresentDistrict"          , "sWidth": "1%" }            // 39  
+                                , { "sName": "PresentDivision"          , "sWidth": "1%" }            // 40  
+                                , { "sName": "PresentCountry"           , "sWidth": "1%" }            // 41  
+                                , { "sName": "PresentCity"              , "sWidth": "1%" }            // 42  
+                                , { "sName": "PresentPostalCode"        , "sWidth": "1%" }            // 43  
+                                , { "sName": "PresentPhone"             , "sWidth": "1%" }            // 44  
+                                , { "sName": "PresentFax"               , "sWidth": "1%" }            // 45  
+                                , { "sName": "PermanentAddress"         , "sWidth": "2%" }            // 46  
+                                , { "sName": "PermanentMobile"          , "sWidth": "1%" }            // 47  
+                                , { "sName": "PermanentDistrict"        , "sWidth": "1%" }            // 48  
+                                , { "sName": "PermanentDivision"        , "sWidth": "1%" }            // 49  
+                                , { "sName": "PermanentCountry"         , "sWidth": "1%" }            // 50  
+                                , { "sName": "PermanentCity"            , "sWidth": "1%" }            // 51  
+                                , { "sName": "PermanentPostalCode"      , "sWidth": "1%" }            // 52
+                                , { "sName": "EmConName"                , "sWidth": "1%" }            // 53  
+                                , { "sName": "EmConRelation"            , "sWidth": "1%" }            // 54  
+                                , { "sName": "EmConAddress"             , "sWidth": "2%" }            // 55  
+                                , { "sName": "EmConCountry"             , "sWidth": "1%" }            // 56  
+                                , { "sName": "EmConMobile"              , "sWidth": "1%" }            // 57  
+                                , { "sName": "EducationDegree       "   , "sWidth": "1%" }            // 58
+                                , { "sName": "EducationInstitute    "   , "sWidth": "1.5%" }          // 59
+                                , { "sName": "EducationMajor        "   , "sWidth": "1%" }            // 60
+                                , { "sName": "EducationYearOfPassing"   , "sWidth": "1%" }            // 61
+                                , { "sName": "EducationTotalYear"       , "sWidth": "1%" }            // 62
+                ]                                                                           
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [                              
+                        { type: "text" }              // 0
+                       , { type: "text" }             // 1 
+                       , { type: "text" }             // 2 
+                       , { type: "text" }             // 3 
+                       , { type: "text" }             // 4 
+                       , { type: "text" }             // 5 
+                       , { type: "text" }             // 6 
+                       , { type: "text" }             // 7 
+                       , { type: "text" }             // 8 
+                       , { type: "text" }             // 9 
+                       , { type: "text" }             // 10
+                       , { type: "text" }             // 11
+                       , { type: "text" }             // 12
+                       , { type: "text" }             // 13
+                       , { type: "text" }             // 14
+                       , { type: "text" }             // 15
+                       , { type: "text" }             // 16
+                       , { type: "text" }             // 17
+                       , { type: "text" }             // 18
+                       , { type: "text" }             // 19
+                       , { type: "text" }             // 20
+                       , { type: "text" }             // 21
+                       , { type: "text" }             // 22
+                       , { type: "text" }             // 23
+                       , { type: "text" }             // 24
+                       , { type: "text" }             // 25
+                       , { type: "text" }             // 26
+                       , { type: "text" }             // 27
+                       , { type: "text" }             // 28
+                       , { type: "text" }             // 29
+                       , { type: "text" }             // 30
+                       , { type: "text" }             // 31
+                       , { type: "text" }             // 32
+                       , { type: "text" }             // 33
+                       , { type: "text" }             // 34
+                       , { type: "text" }             // 35
+                       , { type: "text" }             // 36
+                       , { type: "text" }             // 37
+                       , { type: "text" }             // 38
+                       , { type: "text" }             // 39
+                       , { type: "text" }             // 40
+                       , { type: "text" }             // 41
+                       , { type: "text" }             // 42
+                       , { type: "text" }             // 43
+                       , { type: "text" }             // 44
+                       , { type: "text" }             // 45
+                       , { type: "text" }             // 46
+                       , { type: "text" }             // 47
+                       , { type: "text" }             // 48
+                       , { type: "text" }             // 49
+                       , { type: "text" }             // 50
+                       , { type: "text" }             // 51
+                       , { type: "text" }             // 52
+                       , { type: "text" }             // 53
+                       , { type: "text" }             // 54
+                       , { type: "text" }             // 55
+                       , { type: "text" }             // 56
+                       , { type: "text" }             // 57
+                       , { type: "text" }             // 58
+                       , { type: "text" }             // 59
+                       , { type: "text" }             // 60
+                       , { type: "text" }             // 61
+                       , { type: "text" }             // 62
+                                       
+            ]
+        });
+
+        });
+       
+
+
+   
+
+</script>
+

@@ -1,0 +1,374 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+    input[type='text'], input[type='password'], textarea {
+        margin: 0px !important;
+    }
+</style>
+@using (Html.BeginForm("Create", "EmployeeEarnLeaveEncashment", FormMethod.Post, new { @Id = "afrmEmployeeEdit" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>@Model.EmpName</p>
+                </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="thinbox">
+
+
+                <div class="row">
+                    @*@if (!string.IsNullOrWhiteSpace(Model.EmployeeLeaveEncashmentVM.Year))
+                        {
+                            <div class="col-md-3">
+                                <div class="editor-label">
+                                    <label>Year</label>
+                                </div>
+                                <div class="editor-field">
+                                    <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                                    @Html.TextBoxFor(model => model.EmployeeLeaveEncashmentVM.EncashmentBalance, new { @class = "EncashmentBalance NumberCheck required  form-control" })
+
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-3">
+                                <div class="editor-label">
+                                    <label>Year</label>
+                                </div>
+                                <div class="editor-field">
+                                    <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                                </div>
+                            </div>
+                        }*@
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Year</label>
+                            @Html.HiddenFor(model => model.EmployeeLeaveEncashmentVM.IsApproved)
+
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeLeaveEncashmentVM.Year, new { @class = "Year NumberCheck required  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>En.ment Ratio</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeLeaveEncashmentVM.EncashmentRatio, new { @class = "Ratio NumberCheck   form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Anual Balance</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeLeaveEncashmentVM.AnualBalance, new { @class = "AnualBalance NumberCheck   form-control" ,@disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Encashable</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeLeaveEncashmentVM.EncashmentTotal, new { @class = "Total NumberCheck   form-control", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Encashment</label>
+                            @Html.HiddenFor(model => model.EmployeeLeaveEncashmentVM.EmployeeId, new { @class = "emplearningid" })
+                            @Html.HiddenFor(model => model.EmployeeLeaveEncashmentVM.Id, new { @class = "empLeaveEncashmentid" })
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeLeaveEncashmentVM.EncashmentBalance, new { @class = "EncashmentBalance NumberCheck required  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.EmployeeOtherEarningVM.Remarks)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.EmployeeOtherEarningVM.Remarks, new { @class = "  form-control" })
+                            @Html.ValidationMessageFor(model => model.EmployeeOtherEarningVM.Remarks)
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="headrow">
+                    <button type="button" title="Save Data" id="SaveJSON" class=" Save sym-btn-save">&nbsp;Save</button>
+                    <button type="button" title="Save Data" id="UpdateJSON" class=" Save sym-btn-update">Update</button>
+                    <button type="button" title="Save Data" id="PostJSON" class=" Save sym-btn-post">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    var OTAmount = function () {
+
+       
+
+        var FiscalYearDetailId = $('.ccFiscalYearDetailId').val();
+        var emplearningid = $('.emplearningid').val();
+
+        if (FiscalYearDetailId == "") {
+            ShowResult('Fail', "Please Select Fiscal year");
+            return;
+        }
+
+        var OTHrs = '0';
+        var OTHrsSpecial = '0';
+        OTHrs = $(".OTHrs").val();
+        OTHrsSpecial = $(".OTHrsSpecial").val();
+        var Code = $('#Code').val();
+        if (OTHrs.split('.')[1] > 59) {
+            ShowResult("Fail", "Normal OT Minutes Cannot Be greater than .59!");
+            $(".OTHrs").val(0);
+            return;
+        }
+        if (OTHrsSpecial.split('.')[1] > 59) {
+            ShowResult("Fail", "Special OT Minutes Cannot Be greater than .59!");
+            $(".OTHrsSpecial").val(0);
+            return;
+        }
+        $(".EarningAmount").val("0");
+        if (OTHrs != '0' || OTHrsSpecial != '0') {
+            var url = '/Payroll/EmployeeOtherEarning/OvertimeAmount?OTHrs=' + OTHrs + '&OTHrsSpecial=' + OTHrsSpecial + '&Code=' + Code + '&PayrollPeriodId=' + FiscalYearDetailId + '&EmployeeId=' + emplearningid;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                type: 'GET',
+                success: function (data) {
+                    $(".EarningAmount").val(data.split('~')[0]);
+                }
+            });
+        }
+    }
+    $(".OTHrs").change(function () {
+        OTAmount();
+    });
+
+    $(".ccFiscalYearDetailId").change(function () {
+
+        OTAmount();
+    });
+
+    $(".OTHrsSpecial").change(function () {
+        OTAmount();
+    });
+    $("#EmployeeLeaveEncashmentVM_EncashmentRatio").change(function () {
+        EncashableBalance();
+    });
+
+    $(function () {
+
+       
+        EncashableBalance();
+        InitDropDowns();
+        checkvalue();
+
+        //var empid = $('.empId').val();
+
+        //empid = empid.split("~")[0];
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            $('#empId').val('@Model.Code~@Model.EmpName');
+        }
+
+        //$('.empId').val($('#Code').val());
+        @* $('.selectDropdown').select2('data', { id: '@Model.Code', a_key: '@Model.Code' });*@
+        $('.selectDropdown').val('@Model.Code').change();
+    });
+    $('#DeleteJSON').click(function () {
+        var myData = $('#afrmEmployeeEdit').serialize();
+        var url = "/Payroll/EmployeeOtherEarning/Create?btn=delete";
+        submit(url, myData);
+        $('.EarningAmount').val('0');
+    });
+    $(function () {
+        valiDation("afrmEmployeeEdit");
+    });
+    function checkvalue() {
+        var EarningAmount = $(".empLeaveEncashmentid").val();
+        console.log(EarningAmount)
+        if (EarningAmount == 0) {
+            $("#SaveJSON").show();
+            $("#UpdateJSON").hide();
+        }
+        else {
+            $("#SaveJSON").hide();
+            $("#UpdateJSON").show();
+            $("#PostJSON").show();
+        }
+    }
+    function EncashableBalance() {
+        var AnualBalance = $('#EmployeeLeaveEncashmentVM_AnualBalance').val();
+
+        //var EncashmentBalance = $('#EmployeeLeaveEncashmentVM_EncashmentBalance').val();
+        //if (parseInt(EncashmentBalance) > parseInt(EncashmentTotal)) {
+        //    ShowResult("Fail", "EncashmentBalance Getter then EncashmentTotal Not Allowed!");
+        //    return;
+        //}
+
+        var EncashmentRatio = $('#EmployeeLeaveEncashmentVM_EncashmentRatio').val();
+        if (parseInt(EncashmentRatio) > 50) {
+            ShowResult("Fail", "EncashmentRatio Getter then 50 Not Allowed!");
+            return;
+        }
+        EncashmentTotal = parseInt(AnualBalance) * EncashmentRatio / 100
+        $('#EmployeeLeaveEncashmentVM_EncashmentTotal').val(EncashmentTotal);
+
+    }
+
+    $('#SaveJSON,#UpdateJSON').click(function () {
+        var FiscalYearDetailId = $('.Year').val();
+
+        if (FiscalYearDetailId == "") {
+            ShowResult('Fail', "Please Select Fiscal year");
+            return;
+        }
+
+        SaveUpdateData();
+
+
+    });
+    $('#PostJSON').click(function () {
+        var IsApproved = $('#EmployeeLeaveEncashmentVM_IsApproved').val();
+
+        var FiscalYearDetailId = $('.Year').val();
+        var Code = $('#Code').val();
+        if (Code == "") {
+            ShowResult("Fail", "Please Select Code!");
+            return;
+        }
+        if (IsApproved == "Y") {
+            ShowResult("Fail", "Leave Encashment Already Approved !");
+            return;
+        }
+        if (FiscalYearDetailId == "") {
+            ShowResult('Fail', "Please Select Fiscal year");
+            return;
+        }
+        var myData = $('#afrmEmployeeEdit').serialize();
+
+        console.log(myData);
+
+        var url = "/Common/EmployeeEarnLeaveEncashment/Post";
+        submit(url, myData);
+
+
+    });
+
+
+    function SaveUpdateData() {
+
+        var IsApproved = $('#EmployeeLeaveEncashmentVM_IsApproved').val();
+        var EarningTypeId = $('.eType').val();
+        var EncashmentBalance = $('#EmployeeLeaveEncashmentVM_EncashmentBalance').val();
+        var EncashmentTotal = $('#EmployeeLeaveEncashmentVM_EncashmentTotal').val();
+
+        
+        if (parseInt(EncashmentBalance) > parseInt(EncashmentTotal)) {
+            ShowResult("Fail", "Insufficient balance for Incashment transaction!");
+            return;
+        }
+        var EncashmentRatio = $('#EmployeeLeaveEncashmentVM_EncashmentRatio').val();
+        if (parseInt(EncashmentRatio) > 50) {
+            ShowResult("Fail", "EncashmentRatio Getter then 50 Not Allowed!");
+            return;
+        }
+        var Code = $('#Code').val();
+        if (Code == "") {
+            ShowResult("Fail", "Please Select Code!");
+            return;
+        }
+
+        if (IsApproved == "Y") {
+            ShowResult("Fail", "Leave Encashment Already Approved !");
+            return;
+        }
+
+        var text = /^[0-9]+$/;
+        var FiscalYearDetailId = $('.Year').val();
+
+        if (FiscalYearDetailId != 0) {
+            if ((FiscalYearDetailId != "") && (!text.test(FiscalYearDetailId))) {
+
+                ShowResult("Fail", "Please Enter Numeric Values Only!");
+
+                return false;
+            }
+
+            if (FiscalYearDetailId.length != 4) {
+                ShowResult("Fail", "Year is not proper. Please check!");
+                return false;
+            }
+
+        }
+        var myData = $('#afrmEmployeeEdit').serialize();
+
+        console.log(myData);
+
+       
+        var url = "/Common/EmployeeEarnLeaveEncashment/Create?btn=save";
+        submit(url, myData);
+
+    }
+
+</script>
+
+

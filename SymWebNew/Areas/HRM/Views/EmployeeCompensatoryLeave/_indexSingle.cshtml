@@ -1,0 +1,125 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Employee Compensatory Leave</p>   
+        </div>
+<p></p>
+ 
+    <table id="myDataTable10" class="display">
+        <thead>
+            <tr>
+                <th class="center">Action</th>
+                <th>Code</th>
+                <th>Employee Name</th>
+                <th>Leave Type</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Day Type</th>
+                <th>Approved / Not Approved</th>
+            </tr>
+            <tr>
+                <th class="center">Action</th>
+                <th>Code</th>
+                <th>Employee Name</th>
+                <th>Leave Type</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Day Type</th>
+                <th>Approved / Not Approved</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+        <br />
+</div>
+<script>
+    $(function () {
+        setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 300);
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var daytype = "";
+        var oTable = $('#myDataTable10').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeCompensatoryLeave/_indexByEmployeeId/?empId=" +'@Model.Id',
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "20%",
+                    "sClass":"center",
+                    "fnRender": function (oObj) {
+                        if (!('@identity.IsAdmin'.toLowerCase() == "true" || '@identity.IsHRM'.toLowerCase() == "true")) {
+                           
+                            return '<a title="Click for Details"  style="text-decoration:none; font-size: 1.3em!important;"  href=\"/HRM/EmployeeCompensatoryLeave/_leaveDetails/?parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + '\"     class="sym-btn-detail-row"></a>'
+                                + '<a title="Click to Edit" style="text-decoration:none" class="sym-btn-edit-row" href=\"/HRM/EmployeeCompensatoryLeave/LeaveEdit/?parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + '\"></a>'
+                                //+ '<a title="Click for Report" target="_blank"   class="sym-btn-report-row" href=\"/HRM/EmployeeReport/LAF/?CodeF=' + oObj.aData[1] + '&CodeT=' + oObj.aData[1] + '&Statement=y' + '&ReportNo=4' + '\"></a>'
+                            ;
+                        }
+                        else {
+                            //return ' <a title="Click to Approve"  style="text-decoration:none; font-size: 1.3em!important;" class="approve btn btn-success btn-xs " href=\"/HRM/EmployeeCompensatoryLeave/LeaveApprove/?parm=' + oObj.aData[0].split('~')[1] + '~' + oObj.aData[0].split('~')[0] + '\"><i class="fa fa-check"></i></a>'
+                            return ' <a title="Click to Approve"  class="approve sym-btn-approve-row" href=\"/HRM/EmployeeCompensatoryLeave/LeaveApprove/?parm=' + oObj.aData[0].split('~')[2] + '~' + 'Approve' + '~' + oObj.aData[0].split('~')[1] + '~' + oObj.aData[0].split('~')[0] + '&Code=' + oObj.aData[1] +'&Id=' + oObj.aData[0].split('~')[2] + '\"></a>'
+                                + ' <a title="Click to Reject" onclick=" RejectButton();"  class="reject sym-btn-reject-row"" value="abc" href=\"/HRM/EmployeeCompensatoryLeave/LeaveApprove/?parm=' + oObj.aData[0].split('~')[2] + '~' + 'Reject' + '~' + oObj.aData[0].split('~')[1] + '~' + oObj.aData[0].split('~')[0] + '\"></a>'
+
+                                + '<a title="Click for Details"   href=\"/HRM/EmployeeCompensatoryLeave/_leaveDetails/?parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + '\" class="sym-btn-detail-row"></a>'
+                                + '<a title="Click to Edit"   href=\"/HRM/EmployeeCompensatoryLeave/LeaveEdit/?parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + '\"></a>'
+                                //+ '<a title="Click for Report" target="_blank"   class="sym-btn-report-row" href=\"/HRM/EmployeeReport/LAF/?CodeF=' + oObj.aData[1] + '&CodeT=' + oObj.aData[1] + '&Statement=y' + '&ReportNo=4' + '\"></a>'
+                                + '<a title="Click To Send Email" target="_blank"  class="sym-btn-mail-row" href=\"/HRM/EmployeeCompensatoryLeave/LeaveEmail/?Code=' + oObj.aData[1] + '&Id=' + oObj.aData[0].split('~')[2] + '\"></a>'
+
+                            ;
+
+                        }
+                    }
+                }
+                  , { "sName": "EmpCode", "sWidth": "8%" }
+                  , { "sName": "EmpName", "sWidth": "12%" }
+                  , { "sName": "LeaveType_E", "sWidth": "8%" }
+                  , { "sName": "FromDate", "sWidth": "18%" }
+                  , { "sName": "ToDate", "sWidth": "18%" }
+                  , { "sName": "DayType", "sWidth": "8%" }
+                  , { "sName": "Approval", "sWidth": "10%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                          null
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "date-range" }
+                        , { type: "date-range" }
+                        , { type: "text" }
+                         //{ type: "select", values: daytype },
+                           , { type: "select", values: ["Approved", "Not Approved"] }
+            ]
+        });
+        $(".number_filter").addClass("customDatePicker");
+    });
+ 
+</script>

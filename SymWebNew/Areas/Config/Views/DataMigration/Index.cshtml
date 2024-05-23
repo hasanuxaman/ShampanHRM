@@ -1,0 +1,42 @@
+﻿@using UIHelper.MVC
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="headrow">
+    <label class="pull-right">Data Migration</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Data Migration</p>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Structure Type</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("StructureType", "/Config/DropDown/StructureType", new { @class = "sType required form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Migrate Data" id="MigrateData" class=" sym-btn-save">&nbsp;Migrate</button>
+</div>
+
+<script>
+    $('#MigrateData').click(function () {
+        var sType = $('.sType').val().replace(" ","");
+        if(sType == "")
+        {
+            ShowResult("Fail","Select Structure Type First");
+            return;
+        }
+        obj = new Object();
+        obj.structureType = sType;
+        var objParam = $.param(obj);
+        var url = "/Config/DataMigration/DataMigration?" + objParam;
+        window.location = url;
+    });
+</script>

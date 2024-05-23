@@ -1,0 +1,141 @@
+@model IEnumerable<SymViewModel.HRM.EmployeeInfoVM>
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+<!DOCTYPE html>
+<html>
+    <head>
+       
+    </head>
+    <body>
+
+  
+        <div  id="container" class="ex_highlight">
+            <div id="demo" class="ex_highlight_row">
+                <table id="myDataTable" class="display">
+                    <thead ">
+                        <tr>
+                           <th ><input type="checkbox" class="chkAll" /> Select All</th>
+                            <th>Code</th>
+                            <th>Salutation</th>
+                            <th>First Name</th>
+                            <th >Last Name</th>
+                            <th class="wth" >Photo</th>
+                        </tr>
+                           <tr>
+                             <th  style="padding-left:2.5%" >Actions</th>
+                            <th>Code</th>
+                            <th>Salutation</th>
+                            <th>First Name</th>
+                            <th >Last Name</th>
+                            <th class="wth" >Photo</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+     </body>
+</html>
+ 
+ 
+<script>
+ 
+    function deletedMe(sender, checkboxId, id) {
+        alert("ll")
+        var deletedIds = "";
+        if (typeof id === 'undefined') {
+            var length = $("#" + checkboxId + " tbody input:checkbox").length;
+            for (var i = 0; i < length; i++) {
+                if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                    deletedIds += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                }
+            }
+        }
+        else {
+            deletedIds = id + "~";
+        }
+
+
+        var url = $(sender).attr("data-url") + "?ids=" + deletedIds;
+        if (deletedIds == "") {
+            ShowResult("failure", "Select first to delete");
+            return;
+        }
+        Ask("Are you sure to delete!", function () {
+            $.getJSON(url, function (item, textStatus, jqXHR) {
+                ShowResult("Success", item);
+                var interval = setInterval(function () { window.location.reload(true); clearInterval(interval); }, 2000);
+            });
+        }, function () { })
+    }
+
+    $(document).ready(function () {
+        
+         @* if ('@TempData["msg"]' != "") {
+              var tt = '@TempData["msg"]';
+               var tt1 = tt.split("~");
+               $("#dialog-msg").append('' + tt1[1]);
+               $(".ui-dialog").addClass('' + tt1[0]);
+           }*@
+          SelectAllForDelete();
+          $.datepicker.regional[""].dateFormat = 'dd/MMM/yy';
+          $.datepicker.setDefaults($.datepicker.regional['']);
+          var oTable = $('#myDataTable').dataTable({
+              "bServerSide": true,
+              "sAjaxSource": "/HRM/EmployeeInfo/_index",
+              "bProcessing": true,
+              "aLengthMenu": tablelength(),
+              "bJqueryUI": true,
+              "bAutoWidth": false,
+           
+              "aoColumns": [
+                              {
+                                  "sName": "Id",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "sWidth": "9%",
+                                  "fnRender": function (oObj) {
+                                      return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for edit" style="text-decoration:none;"  href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[0] + '\" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-edit"></i></a>' +
+                                      '&nbsp; <a title="Click on for edit" style="text-decoration:none;"  data-url="/hrm/employeeinfo/EmployeeDelete"  onclick="deletedData(\this, myDataTable,' + oObj.aData[0] + '\);"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>'+
+                                      '|&nbsp; <a title="Click on for edit" style="text-decoration:none;" data-url="/PharmaRaw/Product/Delete" onclick="deletedMe(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                                  }
+                              },
+                          
+                               { "sName": "Code" },
+                               { "sName": "Salutation" },
+                            { "sName": "First Name" },
+                            { "sName": "Last Name" },
+                             {
+                                 "sName": "Image",
+                                 "bSearchable": true,
+                                 "bSortable": false,
+                                 "fnRender": function (oObj) {
+                                     var imgSrc = "" + "/Files/EmployeeInfo/" + oObj.aData[5] + ".jpg";
+                                     return '<img width="50px;" src="' + imgSrc + '" />'
+                                     ;
+                                 }
+                             }
+                            
+              ]
+          });
+          oTable.columnFilter({
+              sPlaceHolder: "head:after",
+              aoColumns: [{ type: "checkbox", "sClass": "chkAll" },
+                          { type: "text" },
+                          { type: "text" },
+                          { type: "text" },
+                          { type: "text" }
+                          
+              ]
+
+          });
+
+      });
+
+
+
+    </script>

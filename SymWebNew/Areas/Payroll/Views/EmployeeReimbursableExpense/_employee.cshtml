@@ -1,0 +1,157 @@
+﻿@model IEnumerable<SymViewModel.HRM.EmployeeInfoVM>
+@{
+    ViewBag.Title = "Employee List";
+    ViewBag.Location = "Employee List"; 
+}
+
+
+<!-- #region Script -->
+@section head{
+    <script language="javascript" type="text/javascript">
+
+        //$.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        //$.datepicker.setDefaults($.datepicker.regional['']);
+
+        $(document).ready(function () {
+
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/EmployeeReimbursableExpense/_EmployeeInfoForReimbursableExpense",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "12%",
+                                    "sClass": "center",
+                                    "fnRender": function (oObj) {
+                                        //return '<a  class="lnkEdit innerListLink"  href=\"/Payroll/EmployeeReimbursableExpense/Create/?empId=' + oObj.aData[0].split('~')[1] + '\">' + oObj.aData[0].split('~')[0] + '</a>'
+                                        return '   <a id="lnkEdit1"  title="Click for Entry" style="text-decoration:none;"   href=\"/Payroll/EmployeeReimbursableExpense/Create/?empId=' + oObj.aData[0] + '\" class=" lnkCreate btn btn-warning btn-xs "><i class="fa fa-check-square-o"></i></a>' //+
+                                        //'&nbsp; <a title="Click on for Edit" style="text-decoration:none;" data-url="/Payroll/EmployeeReimbursableExpense/EmployeeReimbursableExpenseDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                                    }
+                                }
+                                , { "sName": "Code", "sWidth": "15%" }
+                                , { "sName": "EmpName", "sWidth": "20%" }
+                                , { "sName": "Department", "sWidth": "15%" }
+                                , { "sName": "Designation", "sWidth": "15%" }
+                                , { "sName": "JoinDate", "sWidth": "20%" }
+
+        //Code
+        //EmpName 
+        //Department 
+        //Designation
+        //JoinDate
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "date-range" }
+                ]
+
+            });
+
+        });
+
+    </script>
+
+}
+<!-- #endregion Script -->
+
+
+<!DOCTYPE html>
+      <div class="headrow">
+            <a href="@Url.Action("Index")" style="text-decoration:none" class="btn sym-btn-back"  title="Back to Index">&nbsp;Back< /a>
+           <label class="pull-right">Employee Reimbursable Expense > New</label>
+       @*<button type="button"   title="Back to Index"  data-url="@Url.Action("Index")"  class="sym-btn-back" >&nbsp;Back</button>*@
+        </div>
+
+        <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Employee List for Reimbursable Expense Entry</p>   
+        </div>
+        <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead ">
+                         <tr>
+                            <th style="text-align:center"> Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th >Designation</th>
+                            <th >Join Date</th>
+                        </tr>
+
+                        <tr>
+                            <th style="text-align:center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                        </tr>
+
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+            <br />
+ </div>
+
+  <div class="headrow">
+            <a href="@Url.Action("Index")" style="text-decoration:none" class="btn sym-btn-back"  title="Back to Index">&nbsp;Back< /a>
+
+       @*<button type="button"   title="Back to Index"  data-url="@Url.Action("Index")"  class="sym-btn-back" >&nbsp;Back</button>*@
+        </div>
+ 
+@*<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@TempData["msg"]' != "") {
+            var tt = '@TempData["msg"]';
+            var tt1 = tt.split("~");
+            // $(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/EmployeeReimbursableExpense/_EmployeeInfoForReimbursableExpense",
+            "bProcessing": true,
+            "aoColumns": [
+          {
+              "sName": "Code",
+              "bSearchable": false,
+              "bSortable": false,
+              "fnRender": function (oObj) {
+
+                  return '<a  class="lnkEdit innerListLink"  href=\"/Payroll/EmployeeReimbursableExpense/Create/?empId=' + oObj.aData[0].split('~')[1] + '\">' + oObj.aData[0].split('~')[0] + '</a>'
+                  ;
+              }
+          },
+                            { "sName": "Salutation" },
+                            { "sName": "First Name" },
+                            { "sName": "Last Name" } 
+            ]
+        });
+
+    });
+
+    </script>*@

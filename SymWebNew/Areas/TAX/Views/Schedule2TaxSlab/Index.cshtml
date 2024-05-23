@@ -1,0 +1,82 @@
+﻿@model SymViewModel.Tax.Schedule2TaxSlabVM
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="headrow">
+    <div class="pull-left">
+        <button type="button" title="Add New Tax Slab" data-url="/TAX/Schedule2TaxSlab/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Checked Tax Slab" data-url="/TAX/Schedule2TaxSlab/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    </div>
+    <div class=" pull-right">
+    </div>
+</div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Schedule2 Tax Slab List</p>
+    </div>
+    <p></p>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />
+                    Select All</th>
+                <th>Name</th>
+                <th>Minimum TAX</th>
+                <th>Remarks</th>
+               @* Name
+                MinimumTAX*@
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+
+<div class="headrow">
+    <button type="button" title="Add New Tax Slab" data-url="/TAX/Schedule2TaxSlab/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete Checked Tax Slab" data-url="/TAX/Schedule2TaxSlab/Delete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(function () {
+
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/TAX/Schedule2TaxSlab/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "16%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        +'&nbsp; <a title="Click on for Edit" href=\"/TAX/Schedule2TaxSlab/Edit/' + oObj.aData[0].split('~')[0] + '\" class="sym-btn-edit-row"></a>' 
+                                        + '&nbsp; <a title="Click on for Delete" data-url="/TAX/Schedule2TaxSlab/Delete"  "deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');" class="sym-btn-remove-row"></a>'
+                                    ;
+                                }
+                            }
+                            , { "sName": "Name", "sWidth": "20%" }
+                            , { "sName": "MinimumTAX", "sWidth": "15%" }
+                            , { "sName": "Remarks", "sWidth": "15%" }
+            ]
+        });
+
+    });
+
+</script>
+
+

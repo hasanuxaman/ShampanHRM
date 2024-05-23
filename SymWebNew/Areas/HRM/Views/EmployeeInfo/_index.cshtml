@@ -1,0 +1,174 @@
+﻿@model IEnumerable<SymViewModel.HRM.EmployeeInfoVM>
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+    <body>
+        <style>
+            .dataTables_filter {
+     /*display: none;*/
+}
+        </style>
+  
+        <div  id="container" class="ex_highlight">
+            <div id="demo" class="ex_highlight_row" style="overflow-x:auto;">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                           <th style="text-align:center" ><input type="checkbox" class="chkAll" /> Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>@Session["SectionLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th>Join Date</th>
+                           @* <th class="wth" >Photo</th>*@
+                        </tr>
+                      
+                           <tr>
+                             <th style="text-align:center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                             <th>Designation</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>@Session["SectionLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th>Join Date</th>
+                           @* <th class="wth" >Photo</th>*@
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+     </body>
+</html>
+<script>
+    function RemoveProduct(sender) {
+        Ask("Are you sure to delete the item!", function () {
+            var tt = $(sender).parents("div.row:first").remove();
+            //alert((tt);
+            //$(sender).parents("div.row:first").remove();
+        });
+        var a = $(sender);
+
+
+        var proName = $('.ProductName').val();
+        if (proName == null) {
+            $('#detail').hide();
+        }
+        else {
+            $('#detail').show();
+        }
+    };  
+    function deletedMe(id) {
+        //alert((id)
+        var deletedIds = "";
+        if (typeof id === 'undefined') {
+            var length = $("#" + checkboxId + " tbody input:checkbox").length;
+            for (var i = 0; i < length; i++) {
+                if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                    deletedIds += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                }
+            }
+        }
+        else {
+            deletedIds = id + "~";
+        }
+        var url = $(sender).attr("data-url") + "?ids=" + deletedIds;
+        if (deletedIds == "") {
+            ShowResult("Fail", "Select first to delete");
+            return;
+        }
+        Ask("Are you sure to delete!", function () {
+            $.getJSON(url, function (item, textStatus, jqXHR) {
+                ShowResult("Success", item);
+                var interval = setInterval(function () { window.location.reload(true); clearInterval(interval); }, 2000);
+            });
+        }, function () { })
+    }
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+          //  "sDom": 'T<"clear">lfrtip', //initialize tableTools 
+            //"sDom": 'TC<"clear">lfrtip',    // enable colvis
+
+            //"tableTools": {
+            //    "sSwfPath": "../assets/swf/copy_csv_xls_pdf.swf",  // set swf path
+            //    "sRowSelect": "multi",
+            //    "aButtons": [
+            //        "select_all",
+            //        "select_none",
+            //        {
+            //            "sExtends": "collection",
+            //            "sButtonText": "Export",
+            //            "aButtons": ["csv", "xls", "pdf"]
+            //        }
+            //    ]
+            //},
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeInfo/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns":
+                [
+                    {
+                        "sName": "Id",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "sWidth": "12%",
+                        "sClass": "center",
+                        "fnRender": function (oObj)
+                        {
+                            return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[0] + '\" class="sym-btn-edit-row sym-sx"></a>' //+
+                            ;
+                        }
+                    }
+                    , { "sName": "Code", "sWidth": "8%" }
+                    , { "sName": "EmpName", "sWidth": "12%" }
+                    , { "sName": "Designation", "sWidth": "12%" }
+                    , { "sName": "Department ", "sWidth": "12%" }
+                    , { "sName": "Section", "sWidth": "12%" }
+                    , { "sName": "Project", "sWidth": "12%" }
+                    , { "sName": "JoinDate", "sWidth": "18%" }
+                ]   
+            });
+
+        //var colvis = new $.fn.dataTable.ColVis(oTable, {
+        //    buttonText: '<img src=&quot;images/down.gif" >',
+        //    activate: 'mouseover',
+        //    exclude: [0]
+        //});
+        //$(colvis.button()).prependTo('th:nth-child(1)');
+       
+
+        oTable.columnFilter
+            ({
+            sPlaceHolder: "head:after",
+            aoColumns:
+                [
+                    { type: "checkbox", "sClass": "chkAll" }
+                    , { type: "text" }
+                    , { type: "text" }
+                    , { type: "text" }
+                    , { type: "text" }
+                    , { type: "text" }
+                    , { type: "text" }
+                    , { type: "date-range" }
+                ]
+            });
+    });
+</script>

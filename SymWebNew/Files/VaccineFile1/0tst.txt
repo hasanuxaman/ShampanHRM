@@ -1,0 +1,17 @@
+ sqlText = "select count(Id) NumberOfEmployees from EmployeeInfo";
+                SqlCommand cmdExistingEmployees = new SqlCommand(sqlText, currConn, transaction);
+
+
+
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(cmdExistingEmployees);
+                DataTable dt = new DataTable();
+                dataAdapter.Fill(dt);
+                foreach (DataRow dataRow in dt.Rows)
+                {
+                    NumberOfEmployees = Convert.ToInt32(dataRow["NumberOfEmployees"]) + 1;
+                }
+
+                sqlText = "select NumberOfEmployees From Company";
+                SqlCommand cmdPermitedEmployees = new SqlCommand(sqlText, currConn, transaction);
+                dataAdapter = new SqlDataAdapter(cmdPermitedEmployees);
+                dataAdapter.Fill(dt);

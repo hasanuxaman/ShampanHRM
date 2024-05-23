@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "ImportOtherEarning";
+}
+@using UIHelper.MVC
+<div class="headrow">
+    <label class="pull-right">Salary Other Earning > Excel Import/Export</label>
+</div>
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p> Salary Other Earning</p>
+    </div>
+    <div class="row">
+        <div class="thinbox col-md-12">
+            <div class="th_thinbox">
+                <p>Salary Other Earning Import</p>
+            </div>
+            @using (Ajax.BeginForm("ImportOtherEarningExcel", "SalaryOtherEarning", null, new AjaxOptions { }, new { enctype = "multipart/form-data", id = "ImportOtherEarningExcel" }))
+            { 
+                <div class="col-md-6">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <label>File</label>
+                        <input type="file" accept=".xls" name="file" id="FileUpload" style="width: 200px;" class="required" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>&nbsp;</label>
+                    <button type="button"  onclick="pageSubmit('ImportOtherEarningExcel');" class="sym-btn-file-upload" value="Upload" style="width: 50%; text-align: center;">&nbsp;Upload</button>
+                </div>
+            }
+        </div>
+        <div class="thinbox col-md-12">
+            <div class="th_thinbox">
+                <p>Salary Other Earning Export</p>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "required fpDetailsCom form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Employee Code(From)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Employee Code(To)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Earning Type</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("EarningTypeId", "/Config/DropDown/EarningTypeDropDown", new { @id = "ETId", @class = "required EarningTypeId eType form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button id="btnSearch" class="sym-btn-Excel-Export" type="button">&nbsp;Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation('ImportOtherEarningExcel');
+    });
+    $('#btnSearch').click(function () {
+        var fid = $("#FiscalPeriodDetailId").val();
+        if (fid == "") {
+            ShowResult('Fail', "Please Select Fiscal year");
+            return;
+        }
+        var ProjectId = $("#ProjectId").val();
+        var DepartmentId = $("#DepartmentId").val();
+        var SectionId = $("#SectionId").val();
+        var DesignationId = $("#DesignationId").val();
+        var CodeF = $("#CodeF").val();
+        var CodeT = $("#CodeT").val();
+        var ETId = $("#EarningTypeId").val();
+        if (ETId == "") {
+            ShowResult('Fail', "Please Select  Earning Type!");
+            return false;
+        }
+     
+        window.location = '@Url.Action("DownloadOtherEarningExcel", "SalaryOtherEarning")' + '?fid=' + fid
+                  + '&ProjectId=' + ProjectId
+                  + '&DepartmentId=' + DepartmentId
+                  + '&SectionId=' + SectionId
+                  + '&DesignationId=' + DesignationId
+                  + '&CodeF=' + CodeF
+                  + '&CodeT=' + CodeT
+                  + '&ETId=' + ETId;
+    });
+</script>

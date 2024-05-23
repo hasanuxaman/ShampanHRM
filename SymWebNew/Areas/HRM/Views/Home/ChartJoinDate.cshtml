@@ -1,0 +1,45 @@
+﻿
+    <canvas id="myChartBarJoinDate" height="5" width="20"></canvas>
+
+
+<script>
+
+    $(document).ready(function () {
+        var section = [];
+        var Genders = [];
+        var labels = [];
+        var vpersons = [];
+        var datamulti = [];
+        $.ajax({
+            url: "@Url.Action("JoinDate","Home",  new { area="HRM"})" + "?FormDate=" + '@ViewBag.Fromdate' + "&ToDate=" + '@ViewBag.ToDate',
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+                    $.each(data[0], function (index, value) {
+                        section.push(value);
+                    });
+                    $.each(data[2], function (index, value) {
+                        //alert(JSON.stringify(value));
+                        datamulti.push(
+                         {
+                             label: value.Gender,
+                             data: value.Persons,
+                             backgroundColor: backgroundColor[index]
+                         }
+                        )
+                    });
+
+                    var ctx = document.getElementById("myChartBarJoinDate").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: section,
+                            datasets: datamulti
+                        }
+                    });
+
+                },
+            });
+    });
+</script>

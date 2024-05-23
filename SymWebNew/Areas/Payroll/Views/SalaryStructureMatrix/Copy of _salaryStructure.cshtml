@@ -1,0 +1,109 @@
+﻿
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Fiscal Period List</p>
+    </div>
+    <p>
+        </p>
+    <div>
+                <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Salary Type</th>
+                            <th>Grade Name</th>
+                            <th>Step1 Amount"</th>
+                            <th>Step2 Amount"</th>
+                            <th>Step3 Amount"</th>
+                            <th>Step4 Amount"</th>
+                            <th>Step5 Amount"</th>
+                            <th>Step6 Amount"</th>
+                            <th>Step7 Amount"</th>
+                            <th>Step8 Amount"</th>
+                            <th>Step9 Amount"</th>
+                            <th>Step10 Amount</th>
+                            <th>Step11 Amount</th>
+                            <th>Step12 Amount</th>
+                            <th>Step13 Amount</th>
+                            <th>Step14 Amount</th>
+                            <th>Step15 Amount</th>
+                            <th>Step16 Amount</th>
+                            <th>Step17 Amount</th>
+                            <th>Step18 Amount</th>
+                            <th>Step19 Amount</th>
+                            <th>Step20 Amount</th>
+                            <th>Step21 Amount</th>
+                            <th>Step22 Amount</th>
+                            <th>Step23 Amount</th>
+                            <th>Step24 Amount</th>
+                            <th>Step25 Amount</th>
+                            <th>Step26 Amount</th>
+                            <th>Step27 Amount</th>
+                            <th>Step28 Amount</th>
+                            <th>Step29 Amount</th>
+                            <th>Step30 Amount</th>
+                            <th class="center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+<script>
+    $(function () {
+        $.get("/Payroll/SalaryStructureMatrix/_salaryStructure",fu)
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryStructureMatrix/_salaryStructure",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            //"scrollY": 200,
+            //"scrollX": true,
+            "aoColumns": [
+                              { "sName": "SalaryTypeName" }
+           ,  
+            { "sName": "GradeId" }
+                              ,{ "sName": "Step1Amount" }
+                              , { "sName": "Step1Amount" }
+                              , { "sName": "Step2Amount" }
+                              , { "sName": "Step3Amount" }
+                              , { "sName": "Step4Amount" }
+                              , { "sName": "Step5Amount" }
+                              , { "sName": "Step6Amount" }
+                              , { "sName": "Step7Amount" }
+                              , { "sName": "Step8Amount" }
+                              , { "sName": "Step9Amount" }
+                              , { "sName": "Step10Amount" }
+                              , { "sName": "Step11Amount" }
+                              , { "sName": "Step12Amount" }
+                              , { "sName": "Step13Amount" }
+                              , { "sName": "Step14Amount" }
+                              , { "sName": "Step15Amount" }
+                              , { "sName": "Step16Amount" }
+                              , { "sName": "Step17Amount" }
+                              , { "sName": "Step18Amount" }
+                              , { "sName": "Step19Amount" }
+                              , { "sName": "Step20Amount" }
+                              , { "sName": "Step21Amount" }
+                              , { "sName": "Step22Amount" }
+                              , { "sName": "Step23Amount" }
+                              , { "sName": "Step24Amount" }
+                              , { "sName": "Step25Amount" }
+                              , { "sName": "Step26Amount" }
+                              , { "sName": "Step27Amount" }
+                              , { "sName": "Step28Amount" }
+                              , { "sName": "Step29Amount" }
+                              , { "sName": "Step30Amount" }
+            ]
+        });
+    });
+    </script>

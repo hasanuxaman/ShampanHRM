@@ -1,0 +1,9 @@
+diff a/SymServices/Payroll/SalaryProcessDAL.cs b/SymServices/Payroll/SalaryProcessDAL.cs	(rejected hunks)
+@@ -4993,6 +4993,7 @@
+ 
+                 //Ep.NID TIN,Ep.Nationality_E Email, 
+                 sqlText += @"
++<<<<<<< HEAD
+  select s.*, e.StepName,ep.OtherId,e.EmploymentTypeId,e.EmploymentType
+ =======
+ DECLARE @PeriodId AS varchar(100)

@@ -1,0 +1,447 @@
+﻿@model List<SymViewModel.Payroll.EmployeeSalaryStructureVM>
+@using UIHelper.MVC
+@Html.ValidationSummary(true)
+@using (Html.BeginForm("CreateEdit", "EmployeeSalaryOtherIncreament", FormMethod.Post, new { @Id = "frmEmployeeSalaryStructure" }))
+{
+    <div class="thinbox">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Increment Date</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("IncrementDate", "", new { @placeholder = "Increment Date", @class = "required incDate customDatePicker form-control" })
+                </div>
+            </div>
+
+
+            @*<div class="col-md-2">
+                &nbsp;
+            </div>*@
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Grade</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model[0].GradeId, "/Config/DropDown/Grade", new { @class = "grade  form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Step</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model[0].StepSL, "/Config/DropDown/StepSL", new { @class = "step  form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("FiscalYear", @Session["SessionYear"] as string, new { @class = "fiscalyearCom form-control" }) </div>
+
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year Part</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model[0].CurrentYearPart, "/Config/DropDown/CurrentYearPartList", new { @class = "CurrentYearPart  form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    &nbsp;
+                </div>
+                <div class="editor-field" style="margin-top: 1em;">
+                    &nbsp;
+                    <button type="button" title="Load Data" id="btnLoad" class=" sym-btn-search">&nbsp;Load</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Basic</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("Basic", "", new { @class = "basic form-control" }) </div>
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>House Rent</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("HouseRent", "", new { @class = "HouseRent form-control" }) </div>
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Medical</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("Medical", "", new { @class = "Medical form-control" }) </div>
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Conveyance</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("Conveyance", "", new { @class = "Conveyance form-control" }) </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    &nbsp;
+                </div>
+                <div class="editor-field" style="margin-top: 1em;">
+                    &nbsp;
+                    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save">&nbsp;Save</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Last Increment Date</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("LastIncrementDate", "", new { @placeholder = "Last Increment Date", @class = " lastIncrementDate customDatePicker form-control", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Salary Earning</p>
+        </div>
+        <div class="row">
+            <div class="editor-label col-md-3">
+                <label>Salary Type</label>
+            </div>
+            <div class="editor-label col-md-3">
+                <label>Total Value</label>
+            </div>
+            <div class="editor-label col-md-3">
+                <label>Increment Value</label>
+            </div>
+            <div class="editor-label col-md-3">
+                <label>After Increment Value</label>
+            </div>
+
+            <h3>@Html.HiddenFor(model => Model.ToList().FirstOrDefault().EmployeeId, new { @class = " employeeId" })</h3>
+        </div>
+
+
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            //SalaryTypeId
+            //SalaryType
+            //EmployeeId
+            //IsFixed
+            //IsEarning
+            //Portion
+            //PortionSalaryType
+            @Html.HiddenFor(model => Model.ToList()[i].EmployeeId)
+            @Html.HiddenFor(model => Model.ToList()[i].SalaryTypeId)
+            @Html.HiddenFor(model => Model.ToList()[i].SalaryType)
+            @Html.HiddenFor(model => Model.ToList()[i].EmployeeId)
+            @Html.HiddenFor(model => Model.ToList()[i].IsFixed)
+            @Html.HiddenFor(model => Model.ToList()[i].IsEarning)
+            @Html.HiddenFor(model => Model.ToList()[i].Portion)
+            @Html.HiddenFor(model => Model.ToList()[i].PortionSalaryType)
+            if (Model.ToList()[i].SalaryType != "Gross")
+            {
+                <div class="row">
+                    <div class="editor-label col-md-3">
+                        <h3>@Html.ValueFor(model => Model.ToList()[i].SalaryType)</h3>
+                    </div>
+                    <div class="editor-field col-md-3">
+                        @Html.TextBoxFor(model => Model.ToList()[i].TotalValue, new { @placeholder = "Total Value", @class = " required form-control totalValue NumberCheck " + Model[i].SalaryType + "TotalValue", @readonly = "readonly" })
+                    </div>
+                    <div class="editor-field col-md-3">
+                        @Html.TextBoxFor(model => Model.ToList()[i].IncrementValue, new { @placeholder = "Increment Value", @class = " required form-control incValue NumberCheck " + Model[i].SalaryType + "IncrementValue" })
+                    </div>
+                    <div class="editor-field col-md-3">
+                        @Html.TextBoxFor(model => Model.ToList()[i].AfterIncrementValue, new { @placeholder = "After IncrementValue", @class = " required form-control afterInc NumberCheck " + Model[i].SalaryType + "AfterIncrementValue", @readonly = "readonly" })
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="editor-label col-md-3">
+                        <h3>@Html.ValueFor(model => Model.ToList()[i].SalaryType)</h3>
+                    </div>
+                    <div class="editor-field col-md-3">
+                        @Html.TextBoxFor(model => Model.ToList()[i].TotalValue, new { @placeholder = "Total Value", @class = " required form-control totalValueGross NumberCheck", @readonly = "readonly" })
+                    </div>
+                    <div class="editor-field col-md-3">
+                        @Html.TextBoxFor(model => Model.ToList()[i].IncrementValue, new { @placeholder = "Increment Value", @class = " required form-control incValueGross NumberCheck", @readonly = "readonly" })
+                    </div>
+                    <div class="editor-field col-md-3">
+                        @Html.TextBoxFor(model => Model.ToList()[i].AfterIncrementValue, new { @placeholder = "After IncrementValue", @class = " required form-control afterIncGross NumberCheck", @readonly = "readonly" })
+                    </div>
+                </div>
+            }
+        }
+
+
+    </div>
+}
+
+
+<script>
+    $(function() {
+        $(".salaryvalue").val(0);
+        InitDateTimePickers();
+        InitDropDowns();
+
+    })
+</script>
+
+<script>
+    $(function() {
+        var EmployeeId = '@Model.ToList().FirstOrDefault().EmployeeId';
+        var url = "/Payroll/EmployeeSalaryOtherIncreament/LastIncrement?EmployeeId=" + EmployeeId;
+
+        $.getJSON(url,
+            function(data) {
+                $(".lastIncrementDate").val(data.IncrementDate);
+            });
+    });
+</script>
+
+<script>
+    $('.saveJSON').click(function() {
+        var incDate = $(".incDate").val();
+        var lastIncrementDate = $(".lastIncrementDate").val();
+
+
+        //if (ParseDate(incDate) <= ParseDate(lastIncrementDate)) {
+        //    ShowResult("Fail", "Increment Date " + incDate + " can't be earlier than Last Increment Date " + lastIncrementDate);
+        //    return;
+        //}
+
+
+        var incValueGross = 0;
+        var incValueOtherTotal = 0;
+
+        $(".incValue").each(function() {
+            incValueOtherTotal += parseFloat($(this).val());
+        });
+
+        incValueGross = parseFloat($(".incValueGross").val());
+
+        if (incValueGross != incValueOtherTotal) {
+            ShowResult("Fail", "Gross and Other Total Value Not Same!");
+            return;
+        }
+
+        if (incDate == "") {
+            ShowResult("Fail", "Please Select Increment Date!");
+            return;
+        }
+
+
+        if (pageSubmitJSON('frmEmployeeSalaryStructure') == 0) {
+
+            var myData = $('#frmEmployeeSalaryStructure').serialize();
+            var url = "/Payroll/EmployeeSalaryOtherIncreament/CreateEdit?incDate=" + incDate;
+
+            submit(url, myData);
+        }
+    });
+
+    $('.incValue').change(function() {
+
+        var totalValue = 0;
+        var incValue = 0;
+        var afterInc = 0;
+
+        totalValue = parseFloat($(this).closest(".row").find(".totalValue").val());
+        incValue = parseFloat($(this).val());
+        afterInc = totalValue + incValue;
+
+        $(this).closest(".row").find(".afterInc").val(afterInc);
+
+        GrossValue();
+    });
+
+
+    function GrossValue() {
+
+        var totalValueGross = 0;
+        var incValueOtherTotal = 0;
+        var afterIncGross = 0;
+
+        totalValueGross = parseFloat($(".totalValueGross").val());
+
+        $(".incValue").each(function() {
+            incValueOtherTotal += parseFloat($(this).val());
+        });
+
+        afterIncGross = totalValueGross + incValueOtherTotal;
+
+        $(".incValueGross").val(incValueOtherTotal);
+        $(".afterIncGross").val(afterIncGross);
+
+    }
+
+
+    $('.incValueGross').change(function() {
+
+        var totalValueGross = 0;
+        var incValueGross = 0;
+        var afterIncGross = 0;
+
+        totalValueGross = parseFloat($(".totalValueGross").val());
+        incValueGross = parseFloat($(".incValueGross").val());
+        afterIncGross = totalValueGross + incValueGross;
+
+        $(".afterIncGross").val(afterIncGross);
+
+    });
+
+
+    $('#btnLoad').click(function() {
+
+        GradeStep();
+    });
+
+
+    $('.basic').change(function() {
+
+        SetIncrementValues();
+    });
+
+    $('.Medical').change(function() {
+
+        SetIncrementValues();
+    });
+
+    $('.HouseRent').change(function() {
+
+        SetIncrementValues();
+    });
+
+    $('.Conveyance').change(function () {
+
+        SetIncrementValues();
+    });
+
+
+    var GradeStep = function () {
+        debugger;
+        var grade = '0';
+        var step = '0';
+        var fiscalyearCom = "";
+
+        grade = $(".grade").val();
+        step = $(".step").val();
+
+        fiscalyearCom = $(".fiscalyearCom").val();
+        yearpart = $(".CurrentYearPart").val();
+
+        $(".basic").val("0");
+
+
+        if (grade != '0' && step != '0' && fiscalyearCom != "") {
+            console.log(fiscalyearCom)
+
+            var url = '/Payroll/SalaryStructureMatrix/BasicAmount?grade=' + grade + '&StepSL=' + step + '&year=' + fiscalyearCom + '&yearpart=' + yearpart;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                type: 'GET',
+                success: function(data) {
+                    //alert(data);
+                    $(".HouseRent").val(0);
+                    $(".Medical").val(0);
+                    $(".Conveyance").val(0);
+                    $(".basic").val(0);
+
+                    var arra = data.split('~');
+                    $(".basic").val(arra[0]);
+
+                    if (arra.length > 1) {
+                        $(".HouseRent").val(arra[1]);
+                        $(".Medical").val(arra[2]);
+                        $(".Conveyance").val(arra[3]);
+                    }
+
+                    //$("#VATRate").val(data.split('~')[1]);
+
+                    SetIncrementValues();
+                }
+            });
+        }
+    }
+
+    function SetIncrementValues() {
+        debugger;
+        if ($(".HouseRent").val() != "") {
+            var HouseRent = parseFloat($(".HouseRent").val()) - parseFloat($(".HouseRentTotalValue").val());
+            $(".HouseRentIncrementValue").val(HouseRent);
+            $(".HouseRentAfterIncrementValue").val($(".HouseRent").val());
+        }
+
+
+        if ($(".Medical").val() != "") {
+            var Medical = parseFloat($(".Medical").val()) - parseFloat($(".MedicalTotalValue").val());
+            $(".MedicalIncrementValue").val(Medical);
+            $(".MedicalAfterIncrementValue").val($(".Medical").val());
+        }
+
+        if ($(".Conveyance").val() != "") {
+            var Conveyance = parseFloat($(".Conveyance").val()) - parseFloat($(".ConveyanceTotalValue").val());
+            $(".ConveyanceIncrementValue").val(Conveyance);
+            $(".ConveyanceAfterIncrementValue").val($(".Conveyance").val());
+        }
+
+        if ($(".basic").val() != "") {
+            var BasicValue = parseFloat($(".basic").val()) - parseFloat($(".BasicTotalValue").val());
+            $(".BasicIncrementValue").val(BasicValue);
+            $(".BasicAfterIncrementValue").val($(".basic").val());
+        }
+
+        GrossValue();
+    }
+
+
+</script>
+<script>
+        //$(".NumberCheck").change(function () {
+    //    var val = $(this).val().replace('.', '');
+    //    val = val.replace(',', '');
+    //    if (isNaN(val)) {
+    //        $(this).val(0);
+    //        ShowResult("Fail", "Only numeric allowed!");
+    //    }
+    //    else {
+
+    //    }
+    //});
+
+</script>
+<style>
+    /*.NumberCheck {
+        text-align: right;
+    }*/
+    
+</style>

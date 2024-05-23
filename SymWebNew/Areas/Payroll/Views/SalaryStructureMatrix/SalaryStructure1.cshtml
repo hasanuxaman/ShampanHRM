@@ -1,0 +1,236 @@
+﻿@model IEnumerable<SymViewModel.Payroll.SalaryStructureMatrixVM>
+
+@{
+    ViewBag.Title = "SalaryStructure";
+}
+
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BranchId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GradeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SalaryTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step1Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step2Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step3Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step4Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step5Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step6Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step7Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step8Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step9Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step10Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step11Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step12Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step13Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step14Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step15Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step16Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step17Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step18Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step19Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step20Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step21Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step22Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step23Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step24Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step25Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step26Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step27Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step28Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step29Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Step30Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsArchive)
+        </th>
+      
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BranchId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GradeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SalaryTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step1Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step2Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step3Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step4Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step5Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step6Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step7Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step8Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step9Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step10Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step11Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step12Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step13Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step14Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step15Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step16Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step17Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step18Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step19Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step20Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step21Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step22Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step23Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step24Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step25Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step26Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step27Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step28Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step29Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Step30Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsArchive)
+        </td>
+       
+ 
+    </tr>
+}
+
+</table>

@@ -1,0 +1,279 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<div class="row">
+    <div class="col-md-4">
+        <div class="thinbox">
+            <div class="th_thinbox">
+                <p>@Model.EmpName</p>
+            </div>
+            <div class="row">
+                @Html.HiddenFor(model => model.Id)
+                <div class="editor-label col-md-4 ">
+                    <label><b>Code</b> </label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "code form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Code)
+                </div>
+                <div class="editor-label col-md-4">
+                    @Html.LabelFor(model => model.JoinDate)
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.JoinDate)
+                </div>
+                <div class="editor-label col-md-4">
+                    @Html.LabelFor(model => model.Designation)
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Designation)
+                </div>
+                <div class="editor-label col-md-4">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Department)
+                </div>
+                <div class="editor-label col-md-4">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Section)
+                </div>
+                <div class="editor-label col-md-4">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field col-md-8">
+                    @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Project)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        @Html.Partial("_structure",Model.employeeSG)
+    </div>
+</div>
+
+@Html.HiddenFor(model => model.EmployeeSalaryStructureId)
+
+@Html.Partial("_employeeSalaryStructureMaster",Model)
+
+
+
+
+
+
+
+
+@*<div class="thinbox panel  StructureEarningDeductionDetail">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#Earning">Employee Structure Earning Detail</a></li>
+        <li><a data-toggle="tab" href="#Deduction">Employee Structure Deduction Detail</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="Earning" class="tab-pane fade in active">
+            @Html.Partial("_structureEarningDetail",Model)
+        </div>
+        <div id="Deduction" class="tab-pane fade">
+            @Html.Partial("_structureDeductionDetail",Model)
+        </div>
+    </div>
+</div>*@
+
+
+
+<div class="thinbox panel">
+    <div class="th_thinbox panel-actions">
+        <p class="row"><span style="float: left; padding-left: 13px;">Employee Loan Detail</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo2"></span></p>
+    </div>
+    <div class="row">
+        <div id="demo2">
+            <table id="myDataTable2" class="table table-responsive display">
+                <thead>
+                    <tr>
+                        <th>Loan Type</th>
+                        <th style="text-align: left!important">Principal Amount</th>
+                        <th>Fixed/Rate</th>
+                        <th style="text-align: left!important">Interest Rate</th>
+                        <th style="text-align: left!important">Interest Amount</th>
+                        <th style="text-align: left!important">Total Amount</th>
+                        <th style="text-align: left!important">Number Of Installment</th>
+                        <th>Approved Date</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Hold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="thinbox panel">
+    <div class="th_thinbox panel-actions">
+        <p class="row"><span style="float: left; padding-left: 13px;">Employee Provident Fund Detail</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo3"></span></p>
+    </div>
+    <div class="row">
+        <div>
+            <div id="demo3">
+                <table id="myDataTable3" class="display">
+                    <thead>
+                        <tr>
+                            <th>Provident Fund Name</th>
+                            <th style="text-align: left!important">Provident Fund Value</th>
+                            <th>Portion Salary Type</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="thinbox panel">
+    <div class="th_thinbox panel-actions">
+        <p class="row"><span style="float: left; padding-left: 13px;">Employee Tax Detail</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo4"></span></p>
+    </div>
+    <div class="row">
+        <div>
+            <div id="demo4">
+                <table id="myDataTable4" class="display">
+                    <thead>
+                        <tr>
+                            <th>Tax Name</th>
+                            <th style="text-align: left!important">Tax Value</th>
+                            <th>PortionSalaryType</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="thinbox panel">
+    <div class="th_thinbox panel-actions">
+       <p class="row"><span style="float:left;padding-left:13px;" > Employee Bonus Detail</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo5"></span> </p>
+    </div>
+<div class="row">
+        <div id="container">
+            <div id="demo5">
+                <table id="myDataTable5" class="display">
+                    <thead>
+                         <tr>
+                            <th>Bonus Name</th>
+                            <th style="text-align:left!important">Bonus Value</th>
+                            <th>PortionSalaryType</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+</div>*@
+<script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            if ('@Model.Code' == null || '@Model.Code' == "") {
+                $('.empId').val("");
+            }
+            else {
+                setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 300);
+             }
+            var id = $('#Id').val();
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+          @* $('#empId').val('@Model.Code');*@
+            var oTable2 = $('#myDataTable2').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/Structure/_employeeLoanStructuredetail?Id=" + '@Model.Id',
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                      { "sName": "LoanType", "sWidth": "10%" }
+                                , { "sName": "PrincipalAmount", "sClass": "right", "sWidth": "12%" }
+                                , { "sName": "Fixed", "sWidth": "6%" }
+                                , { "sName": "InterestRate", "sClass": "right", "sWidth": "8%" }
+                                , { "sName": "InterestAmount", "sClass": "right", "sWidth": "10%" }
+                                , { "sName": "TotalAmount", "sClass": "right", "sWidth": "10%" }
+                                , { "sName": "NumberOfInstallment", "sClass": "right", "sWidth": "10%" }
+                                , { "sName": "ApprovedDate", "sWidth": "10%" }
+                                , { "sName": "StartDate", "sWidth": "10%" }
+                                , { "sName": "EndDate", "sWidth": "10%" }
+                                , { "sName": "Hold", "sWidth": "6%" }
+                ]
+            });
+            var oTable3 = $('#myDataTable3').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/Structure/_employeePFStructuredetail?Id=" + '@Model.Id',
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                  { "sName": "PFName", "sWidth": "20%" }
+                                , { "sName": "PFValue", "sClass": "right", "sWidth": "20%" }
+                                , { "sName": "PortionSalaryType", "sWidth": "20%" }
+                                , { "sName": "Fixed", "sWidth": "20%" }
+                ]
+            });
+            var oTable4 = $('#myDataTable4').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/Structure/_employeeTAXStructuredetail?Id=" + '@Model.Id',
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                  { "sName": "TaxName", "sWidth": "20%" }
+                                , { "sName": "TaxValue", "sClass": "right", "sWidth": "20%" }
+                                , { "sName": "PortionSalaryType", "sWidth": "20%" }
+                                , { "sName": "Fixed", "sWidth": "20%" }
+                ]
+            });
+            var oTable5 = $('#myDataTable5').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/HRM/Structure/_employeeBonusStructuredetail?Id=" + '@Model.Id',
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                  { "sName": "BonusName", "sWidth": "20%" }
+                                , { "sName": "BonusValue", "sClass": "right", "sWidth": "20%" }
+                                , { "sName": "PortionSalaryType", "sWidth": "20%" }
+                                , { "sName": "Fixed", "sWidth": "20%" }
+                ]
+            });
+            $("#panel-fullscreen").click(function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                if ($this.children('i').hasClass('glyphicon-resize-full')) {
+                    $this.children('i').removeClass('glyphicon-resize-full');
+                    $this.children('i').addClass('glyphicon-resize-small');
+                }
+                else if ($this.children('i').hasClass('glyphicon-resize-small')) {
+                    $this.children('i').removeClass('glyphicon-resize-small');
+                    $this.children('i').addClass('glyphicon-resize-full');
+                }
+                $(this).closest('.panel').toggleClass('panel-fullscreen');
+            });
+        });
+ @*   $(function () {
+        $("#replaceArea").load('@Url.Action("Structure", "Structure", new { Id=Model.Id})');
+    });*@
+</script>

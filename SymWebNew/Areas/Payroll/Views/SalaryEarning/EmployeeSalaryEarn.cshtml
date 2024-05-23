@@ -1,0 +1,59 @@
+﻿ 
+
+<div class="headrow">
+ <label class="pull-right">Salary Earning > Edit > Details</label>
+     </div>  
+<div class="thinbox"> 
+    <p>
+ </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="chkAll" /> </th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th >Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+@* <div class="headrow">
+    </div> *@
+<script>
+    $(function () {
+        SelectAllForDelete();
+        $(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryEarning/_salaryEarningDetailsByEmployee?employeeId=@ViewBag.employeeId&PeriodId=@ViewBag.PeriodId",
+
+                "bProcessing": true,
+                "aoColumns": [
+
+                                  {
+                                      "sName": "ID",
+                                      "bSearchable": false,
+                                      "bSortable": false,
+                                      "sWidth": "12%",
+                                      "sClass": "center",
+                                      "fnRender": function (oObj) {
+
+
+                                          return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0].split("~")[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" href=\"/Payroll/SalaryEarning/SingleEarningEdit?Id=' + oObj.aData[0].split("~")[0] + '&' + 'employeeId=@ViewBag.employeeId&SalaryTypeId='+oObj.aData[0].split("~")[1] + '\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' //+
+
+                                          ;
+                                      }
+                                  }
+                              , { "sName": "SalaryType" }
+                              , { "sName": "Amount" }
+                              , { "sName": "Remarks" }
+                ]
+            });
+        });
+    });
+</script>

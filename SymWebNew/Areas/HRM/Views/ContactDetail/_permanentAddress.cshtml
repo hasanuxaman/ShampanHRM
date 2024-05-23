@@ -1,0 +1,231 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("PermanentAddress", "ContactDetail", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "afrmPersonaladdEdit" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.permanentAddress.Id)
+    @Html.HiddenFor(model => model.permanentAddress.EmployeeId)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Permanent Address</p>
+        </div>
+        <div class="permanentAddress">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Address)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.permanentAddress.Address, new { @placeholder = "Village/House & Road", @rows = "1", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.Address)
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.PostalCode)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.PostalCode, null, new { @placeholder = "Postal Code", @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.PostalCode)
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.PostOffice)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.PostOffice, null, new { @placeholder = "Post Office", @class = " form-control " })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.PostOffice)
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.City)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.City, null, new { @placeholder = "Police Station", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.City)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Country)
+                    </div>
+                    <div class="editor-field">
+                        <select id="permanentAddress.Country" name="permanentAddress.Country" data-val="@Model.permanentAddress.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Division)
+                    </div>
+                    <div class="editor-field">
+                        <select id="permanentAddress.Division" name="permanentAddress.Division" data-val="@Model.permanentAddress.Division"  data-url="/Config/DropDown/Division/"  class = " division form-control" ></select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.District)
+                    </div>
+                    <div class="editor-field">
+                        <select id="permanentAddress.District" name="permanentAddress.District" data-val="@Model.permanentAddress.District"  data-url="/Config/DropDown/District/"  class = " district form-control" ></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Phone)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.Phone, null, new { @placeholder = "Phone", @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.Phone)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Mobile)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.Mobile, null, new { @placeholder = "Mobile", @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.Mobile)
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Fax)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.permanentAddress.Fax, null, new { @placeholder = "Fax", @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.Fax)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.permanentAddress.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.permanentAddress.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.permanentAddress.Remarks)
+                    </div>
+                </div>
+            </div>
+
+
+            <br />
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {          <p class="actionButton_pAddress"></p>
+                <button type="button" title="Edit Data" id="editJSONperadd" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                <button type="button" title="Save Data" id="saveJSONperadd" class="Save sym-btn-save" hidden>&nbsp;Save</button>
+@*<button type="button" title="Same As Above" id="saveJSONAbove"  class="SaveAbove sym-btn-save" >&nbsp;Same As Above</button>*@
+                <button type="button" title="Cancel Data" id="cancelJSONperadd" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+            }
+        </div>
+    </div>
+}
+<script>
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        valiDation("afrmPersonaladdEdit");
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#cancelJSONperadd').click(function () {
+
+            if (isChange == true) {
+                Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                    isChange = false;
+                    window.location.reload();
+                })
+            }
+            else {
+                isChange = false;
+                window.location.reload();
+            }
+        });
+        $('#editJSONperadd').click(function () {
+            EditPermanentAddress();
+        });
+        $('#saveJSONperadd').click(function () {
+            var a = pageSubmitJSON('afrmPersonaladdEdit');
+            if (a != 0) {
+                return;
+            }
+            if (isChange == false) {
+                ShowResult("Success", "You have no changes for save");
+                return;
+            }
+            if (pageSubmitJSON('afrmPersonaladdEdit') == 0) {
+                var myData = $('#afrmPersonaladdEdit').serialize();
+                var url = "/HRM/ContactDetail/PermanentAddress";
+                submit(url, myData);
+                EditPermanentAddress();
+            }
+        })
+        var submit = function (url, mydata) {
+            $.ajax({
+                type: 'POST',
+                data: mydata, // #2
+                url: url,
+                success: function (result) {
+                    var msg1 = result.split('~')[0];
+                    var msg2 = result.split('~')[1];
+                    if (msg1 != "Fail") {
+                        ShowResult("Success", msg2);
+                    }
+                    else {
+                        ShowResult("Fail", msg2);
+                    }
+                }
+            });
+        }
+
+        EditPermanentAddress();
+
+        @* $('#saveJSONAbove').click(function () {
+            var url = "/HRM/ContactDetail/PermanentAddress?EmployeeId='@Model.permanentAddress.EmployeeId'";
+             alert(url);
+             $.ajax({
+                 type: 'POST',
+                 //data: mydata, // #2
+                 url: url,
+                 success: function (result) {
+                     var msg1 = result.split('~')[0];
+                     var msg2 = result.split('~')[1];
+                     if (msg1 != "Fail") {
+                         ShowResult("Success", msg2);
+                     }
+                     else {
+                         ShowResult("Fail", msg2);
+                     }
+                 }
+             });
+             EditPermanentAddress();
+         })*@
+    });
+
+
+
+</script>

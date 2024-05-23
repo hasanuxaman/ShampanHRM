@@ -1,0 +1,268 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "TravelLetter";
+}
+
+@using UIHelper.MVC
+@using (Html.BeginForm("TravelLetter", "EmployeeReport", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTravel", @target = "_blank" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Travel Letter</p>
+        </div>
+
+        <div class="row">
+            @if (identity.IsAdmin || identity.IsHRM)
+            {  
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Emp Code(From)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeF, "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control  selectDropdown" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Emp Code(To)</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.CodeT, "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="editor-label">
+                        <label>Multiple Emplyee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("MultiCode", "/Config/DropDown/EmployeeCodeName", new { @class = " form-control selectDropdown", @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.MultipleCode)
+                    
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Emp Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.HiddenFor(model => model.CodeF)
+                        @Html.SimpleDropDownFor(model => model.CodeF, "/Config/DropDown/EmployeeCodeName", new { @class = " codeFCom form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            @if (identity.IsAdmin || identity.IsHRM)
+            {   
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Designation</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DesignationId, "/Config/DropDown/Designation", new { @class = " form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <label>Join Date From</label>
+                    @Html.TextBoxFor(model => model.JoinDateFrom, null, new { @onchange = "DateCheck(this);", @placeholder = "Join Date From", @class = " cJoinDateFrom customDatePicker form-control" })
+                </div>
+
+                <div class="col-md-2">
+                    <label>Join Date To</label>
+                    @Html.TextBoxFor(model => model.JoinDateTo, null, new { @onchange = "DateCheck(this);", @placeholder = "Join Date To", @class = " cJoinDateTo customDatePicker form-control" })
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.SectionId, "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.ProjectId, "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                    </div>
+                </div>
+               
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Date From</label>
+                @Html.TextBoxFor(model => model.DateFrom, null, new { @onchange = "DateCheck(this);", @placeholder = "Date From", @class = " cDateFrom customDatePicker form-control" })
+            </div>
+
+            <div class="col-md-2">
+                <label>Date To</label>
+                @Html.TextBoxFor(model => model.DateTo, null, new { @onchange = "DateCheck(this);", @placeholder = "Date To", @class = " cDateTo customDatePicker form-control" })
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.Label("Reference Number")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.ReferenceNumber, "BESL-HR_", new { @placeholder = "Reference Number", @class = "  form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.Label("IssueDate")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.IssueDate, "", new { @placeholder = "Issue Date", @class = " customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Letter Name</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.LetterName, "/Config/DropDown/DropDownReport?ReportType=TravelLetter", new { @class = "required form-control " })
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.View)
+    
+    <div class="headrow">
+        <button type="button" title="Click to see the Letter" id="sendRpt" class="sym-btn-report">&nbsp;Letter</button>
+        &nbsp;
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+        }
+    </div>
+}
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation("frmTravel");
+
+        $('#sendRpt').click(function () {
+
+            var MultipleCode = $('#MultiCode').val();
+            $('#MultipleCode').val(MultipleCode);
+            $('#View').val("N");
+
+
+            pageSubmit('frmTravel')
+        });
+
+
+        $("#Clear").on('click', function () {
+            $(".thinbox :input").val("");
+            $(".Dropdown").select2("val", "");
+        });
+
+    });
+
+    function DateCheck(sender) {
+        var joinDateFrom = $(".cJoinDateFrom").val();
+        var joinDateTo = $(".cJoinDateTo").val();
+        var dateFrom = $(".cDateFrom").val();
+        var dateTo = $(".cDateTo").val();
+
+        if (joinDateFrom != null && joinDateTo != null) {
+
+            if (ParseDate(joinDateFrom) > ParseDate(joinDateTo)) {
+                ShowResult("Fail", "Join-Date From can't be prior to Join-Date To!");
+                $(sender).val("");
+            }
+        }
+        if (dateFrom != null && dateTo != null) {
+
+            if (ParseDate(dateFrom) > ParseDate(dateTo)) {
+                ShowResult("Fail", "Date From can't be prior to Date To!");
+                $(sender).val("");
+            }
+        }
+    }
+
+
+
+
+    //////    $('#sendRpt').click(function () {
+    //////        var url = $(this).attr("data-url");
+    //////        var CodeF = $("#CodeF").val();
+    //////        var CodeT = $("#CodeT").val();
+    //////        var DepartmentId = $("#DepartmentId").val();
+    //////        var SectionId = $("#SectionId").val();
+    //////        var ProjectId = $("#ProjectId").val();
+    //////        var DesignationId = $("#DesignationId").val();
+    //////        var dtjFrom = $("#dtjFrom").val();
+    //////        var dtjTo = $("#dtjTo").val();
+    //////        var dtFrom = $("#dtFrom").val();
+    //////        var dtTo = $("#dtTo").val();
+    //////        var LetterName = $("#LetterName").val();
+
+    //////        var empcodes = $('#MulitpleCode').val();
+
+    //////        var referenceNumber = $("#ReferenceNumber").val();
+    //////        var issueDate = $("#IssueDate").val();
+
+    //////        if (LetterName == "") {
+    //////            ShowResult('Fail', "Please Select The Letter Name");
+    //////            return false;
+    //////        }
+
+    //////        url = url + '?CodeF=' + CodeF
+    //////       + '&CodeT=' + CodeT
+    //////       + '&DepartmentId=' + DepartmentId
+    //////       + '&SectionId=' + SectionId
+    //////       + '&ProjectId=' + ProjectId
+    //////       + '&DesignationId=' + DesignationId
+    //////       + '&dtjFrom=' + dtjFrom
+    //////       + '&dtjTo=' + dtjTo
+    //////       + '&ReportNo=1'
+    //////       + '&LetterName=' + LetterName
+    //////       + '&empcodes=' + empcodes
+    //////       + '&referenceNumber=' + referenceNumber
+    //////       + '&issueDate=' + issueDate
+    //////       + '&dtFrom=' + dtFrom
+    //////       + '&dtTo=' + dtTo
+
+    //////        var win = window.open(url, '_blank');
+    //////    });
+    //////});
+
+
+
+
+</script>
+
+

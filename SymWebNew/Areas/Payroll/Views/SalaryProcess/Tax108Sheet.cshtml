@@ -1,0 +1,121 @@
+﻿@model SymViewModel.Payroll.SalarySheetVM
+@using UIHelper.MVC
+
+@using (Html.BeginForm("Tax108Sheet", "SalaryProcess", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSalarySheet", @target = "_blank" }))
+{
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Tax 108 Sheet</p>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("FiscalYear", @Session["SessionYear"] as string, new { @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+           
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Report Name</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.SheetName, "/Config/DropDown/DropDownReport?ReportType=108Sheet", new { @class = "required form-control " })
+                </div>
+            </div>
+
+
+        </div>
+       
+    </div>
+
+    @Html.HiddenFor(model => model.View)
+    @Html.HiddenFor(model => model.ReportType)
+
+    <div class="headrow">
+        @*@Html.ActionLink(" Report", "SalarySheet", null, new { title = "Click to Show Report", target = "_blank", id = "sendRpt", @class = "btn sym-btn-report" })*@
+
+        <button type="button" data-url="/Payroll/SalaryProcess/Tax108Sheet" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>
+        <button type="button" data-url="/Payroll/SalaryProcess/Tax108Sheet" id="" title="Click to Download the Report" class=" sendRpt1 sym-btn-Excel-Export">&nbsp;Download</button>
+
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            //$('.Dropdown').select2();
+            //$(".Dropdown").removeClass("form-control");
+            //////InitDropDowns();
+            InitDropdownsCommon();
+
+            //$("#FiscalYearDetailId").addClass("required");
+
+        });
+
+        $('.sendRpt').click(function () {
+            var fiscalyear = $(".fiscalyearCom").val();
+            var SheetName = $("#SheetName").val();
+
+            if (fiscalyear == null || fiscalyear == "" || fiscalyear == "0") {
+                ShowResult('Fail', "Please Select Year!");
+                    return false;
+            }
+            if (SheetName == "") {
+                ShowResult('Fail', "Please Select Report ");
+                return false;
+            }
+
+            $('#View').val("N");
+            $('#ReportType').val("PDF");
+
+
+
+            var url = $(this).attr("data-url");
+
+            //var url = '/VMS/SaleInvoice/ExportExcell';
+             $form = $('#frmSalarySheet');
+
+            $form.attr("action", url);
+            $form.submit();
+
+        });
+
+        $('.sendRpt1').click(function () {
+            var fiscalyear = $(".fiscalyearCom").val();
+            var SheetName = $("#SheetName").val();
+
+            if (fiscalyear == null || fiscalyear == "" || fiscalyear == "0") {
+                ShowResult('Fail', "Please Select Year!");
+                return false;
+            }
+            if (SheetName == "") {
+                ShowResult('Fail', "Please Select Report ");
+                return false;
+            }
+
+            $('#View').val("N");
+            $('#ReportType').val("EXCEL");
+
+
+
+            var url = $(this).attr("data-url");
+
+            //var url = '/VMS/SaleInvoice/ExportExcell';
+            $form = $('#frmSalarySheet');
+
+            $form.attr("action", url);
+            $form.submit();
+
+        });
+
+   
+    </script>
+
+
+
+}
+

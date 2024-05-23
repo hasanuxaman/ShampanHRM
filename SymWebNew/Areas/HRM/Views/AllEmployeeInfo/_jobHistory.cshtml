@@ -1,0 +1,154 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("JobHistory", "Qualification", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmJobHistory" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="jobHistory">
+        @Html.HiddenFor(model => model.jobHistoryVM.Id)
+        @Html.HiddenFor(model => model.jobHistoryVM.EmployeeId)
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.jobHistoryVM.Company)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.jobHistoryVM.Company, new { @placeholder = "Company", @class = "required form-control" })
+                    @Html.ValidationMessageFor(model => model.jobHistoryVM.Company)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.jobHistoryVM.JobTitle)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.jobHistoryVM.JobTitle, new { @placeholder = "Job Title", @class = "required form-control" })
+                    @Html.ValidationMessageFor(model => model.jobHistoryVM.JobTitle)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.jobHistoryVM.JobFrom)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.jobHistoryVM.JobFrom, new { @onchange = "FromToDate(this)", @placeholder = "Job From", @class = "required customDatePicker form-control" })
+                    @Html.ValidationMessageFor(model => model.jobHistoryVM.JobFrom)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.jobHistoryVM.JobTo)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.jobHistoryVM.JobTo, new { @onchange = "FromToDate(this)", @placeholder = "Job To", @class = "required customDatePicker form-control" })
+                    @Html.ValidationMessageFor(model => model.jobHistoryVM.JobTo)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.jobHistoryVM.ReasonForLeaving)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.jobHistoryVM.ReasonForLeaving, new { @placeholder = "Reason For Leaving", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.jobHistoryVM.ReasonForLeaving)
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.jobHistoryVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.jobHistoryVM.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.jobHistoryVM.Remarks)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.jobHistoryVM.FileName)
+                <input type="file" onchange="CheckFileSize(this);" name="JobHistoryF" id="JobHistoryF" style="width: 200px;" />
+            </div>
+            @if (Model.jobHistoryVM.FileName != null && Model.jobHistoryVM.FileName != "")
+            {
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="col-md-6">
+                        <a target="_blank" href="~/Files/JobHistory/@Model.jobHistoryVM.Id@Model.jobHistoryVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float: left;">
+                        <span onclick="FileDelete(this)"; data-id="@Model.jobHistoryVM.Id" data-table="3"  data-field="FileName" data-url="~/Files/JobHistory/@Model.jobHistoryVM.Id@Model.jobHistoryVM.FileName">
+                            <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" /></span>
+                    </div>
+                </div>
+            }
+        </div>
+        <p>
+            @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+            {
+                <button type="button" title="Click on for Save" onclick="pageSubmit('frmJobHistory');" class="Save sym-btn-save">&nbsp;Save</button>
+                <button type="button" title="Click on for Edit" onclick="EditJobHistory();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+            }
+            <button type="button" title="Click on for Cancel" id="cancelJSONJobEx" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </p>
+    </div>
+}
+<script>
+    $(function () {
+        $(".showHideJH").hide();
+        customToollip();
+        EditJobHistory();
+        valiDation("frmJobHistory");
+        InitDateTimePickers();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+
+        $('#saveJSONJobHistory').click(function () {
+            var isChange = false;
+            $('.form-control').change(function () {
+                isChange = true;
+            });
+            if (pageSubmitJSON('frmJobHistory') == 0) {
+                var myData = $('#frmJobHistory').serialize();
+                var url = "/HRM/Job/JobHistory";
+                submit(url, myData);
+                EditJobHistory();
+            }
+        });
+
+        $('#cancelJSONJobEx').click(function () {
+            if (isChange == true) {
+                Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                    isChange = false;
+                    $(".jobHistory").html('');
+                    $(".showHideJH").show();
+
+
+                })
+            }
+            else {
+                isChange = false;
+                $(".jobHistory").html('');
+                $(".showHideJH").show();
+            }
+        });
+
+    });
+</script>

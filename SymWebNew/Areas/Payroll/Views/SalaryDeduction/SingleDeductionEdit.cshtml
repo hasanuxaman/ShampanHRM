@@ -1,0 +1,70 @@
+﻿@model SymViewModel.Payroll.SalaryDeductionDetailVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("SingleDeductionEdit", "SalaryDeduction", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmGrade" }))
+{
+       <div class="headrow">
+             <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+            <button type="button" title="Back to Previous Page"  data-url="/Payroll/SalaryDeduction" onclick="BackToList(this)" class="sym-btn-back">&nbsp;Back</button>
+       <label class="pull-right">Salary Deduction > Edit > Single</label>
+    </div>
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+            <div class="th_thinbox">
+        <p>Employee Salary Deduction Edit </p>
+    </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, null, new {@placeholder = "Employee Name", @class =" form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>Deduction Value </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.DeductionAmount, null, new {@placeholder = "Deduction Amount", @class =" right  form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class =" form-control" })
+                </div>
+            </div>
+        </div>
+            <div>
+    </div>
+    </div>
+}
+<script>
+    $(function () {
+        if ('@ViewBag.result' != '') {
+            var dataAction = "";
+            if('@ViewBag.result'=='Success'){
+                dataAction = "redirect";
+            }
+            ShowResult('@ViewBag.result', '@ViewBag.msg', dataAction, '/Payroll/SalaryDeduction');
+        }
+    });
+</script>

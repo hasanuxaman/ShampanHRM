@@ -1,0 +1,175 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<script>
+    $(function () {
+        InitDateTimePickers();
+    });
+</script>
+<style>
+    .text-color {
+       margin:auto;
+    }
+    .text-color a {
+        color: #ff6a00!important;
+    }
+   .input-group .form-control{
+        padding-top:0px!important;
+        margin-top:0px!important;
+    }
+</style>
+ <div class="headrow">
+     <label class="pull-right">Employee Other Earning > Create</label>
+ </div>
+<div class="thinbox">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+          @if (true)
+    {
+                 <div class="input-group   col-lg-6  col-md-6  col-sm-12 col-xs-12 text-color" style="">
+
+                <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='first' id="first"><i class="fa fa-angle-double-left"></i>&nbsp;First</a>
+                <a class="input-group-addon btn btn-primary" data-pager-action='previous' id="precode"><i class="fa fa-angle-left"></i>&nbsp;Previous</a>
+                <input type="text" placeholder="Code" class="form-control" data-pager-action='pagenum'  id="empId" value="@Model.Code">
+
+                <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i></a>
+                <a class="input-group-addon btn btn-primary" data-pager-action='next' id="nextcode">Next <i class="fa  fa-angle-right"></i></a>
+                <a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='last' id="last">Last <i class="fa  fa-angle-double-right"></i></a>
+            </div>
+          }
+
+            <div class="input-group   col-lg-6  col-md-6  col-sm-12 col-xs-12 text-color" style="">
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                                <div class="col-md-4">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+        
+            <div class="editor-field">
+                <div > @Html.TextBox("fYear",   @Session["SessionYear"].ToString() , new {  @class = "fiscalyearCom form-control" }) </div>
+           </div> </div>
+        
+        <div class="col-md-8">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+        
+            <div class="editor-field">
+                 <div>
+                       @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year="+@Session["SessionYear"].ToString(), new { @id = "FiscalYearDetailId", @placeholder = "Fiscal Period", @class = "fpDetailsCom required form-control pull-left" })
+                       @*@Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year="+@Session["SessionYear"].ToString() , new { @id = "FiscalYearDetailId", @class = "fpDetailsCom form-control" })*@
+           </div> </div>
+        </div>
+                                                @*@Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new { @id = "FiscalYearDetailId", @placeholder = "Fiscal Period", @class = "eType required form-control pull-left" })*@
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <label>Earning Type</label>
+                        @Html.SimpleDropDownFor(model => model.EmployeeOtherEarningVM.EarningTypeId, "/Config/DropDown/EarningTypeDropDown", new { @id = "EarningTypeId1", @class = " eType required form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="detailsDiv"></div>
+
+@*<div class="headrow">
+    </div>*@
+
+<script>
+    $(function () {
+        InitDropDowns();
+        InitDropdownsCommon();
+        valiDation("frmEMREX");
+     
+    });
+
+
+    $(function () {
+        $('#empId').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $.get('@Url.Action("DetailCreate","EmployeeOtherEarning", new { empId = Model.Id } )', function (data) {
+            $('#detailsDiv').html(data);
+        });
+    });
+
+    InitDropDowns();
+    function otHide() {
+        //var data = $('.eType').select2('data')
+        //var data = $('.eType').select2('data')
+
+        var eTypeName = $('.eType').val();
+        //alert(eTypeName);
+        if (eTypeName != "2") {
+            $('#ot').hide()
+        }
+        else {
+            $('#ot').show();
+        }
+    }
+
+    $('.eType').change(function () {
+        var btn = 'current';
+        Searching(btn);
+    });
+
+    $('#FiscalYearDetailId').change(function () {
+        var btn = 'current';
+        Searching(btn);
+    });
+
+    $('#current').click(function () {
+        var btn = 'current';
+        Searching(btn);
+    });
+    $('#nextcode').click(function () {
+        var btn = 'next';
+        Searching(btn);
+    });
+    $('#precode').click(function () {
+        var btn = 'previous';
+        Searching(btn);
+    });
+    $('#first').click(function () {
+        var btn = 'first';
+        Searching(btn);
+    });
+    $('#last').click(function () {
+        var btn = 'last';
+        Searching(btn);
+    });
+
+    function Searching(btn) {
+        var empid = $('#empId').val();
+        var EarningTypeId = $('.eType').val();
+        var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+        if (EarningTypeId == "" || EarningTypeId == 0) {
+            ShowResult("Fail", "Please Select Earning Type!");
+            return;
+        }
+
+        if (FiscalYearDetailId == "") {
+            ShowResult("Fail", "Please Select Fiscal Year!");
+            return;
+        }
+        url = "/Payroll/EmployeeOtherEarning/DetailCreate?empcode=" + empid + '&btn='+btn+'&FiscalYearDetailId=' + FiscalYearDetailId + '&edType=' + EarningTypeId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $('#detailsDiv').html(data);
+                otHide();
+            },
+        });
+    }
+
+
+
+    </script>
+
+
+
+
+
+ 

@@ -1,0 +1,140 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM 
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Travel</p>   
+        </div>
+<div>
+    <div id="myTravel">
+    </div> 
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+        //<input type="button" id="btnDialogTR" class="btn btn-info showHideTR" value="Add" />
+       // <input type="button" style="width:65px;" data-url="/hrm/Travel/TravelDelete" onclick="deletedData(this, 'myDataTableTR');" id="" class=" showHideTR btn btn-info " value="Delete" />
+    <button type="button"  id="btnDialogTR" title="Add New Travel info" class=" sym-btn-add showHideTR">&nbsp;New</button>
+    <button type="button" title="Delete Checked Travel info" data-url="/hrm/Travel/TravelDelete" onclick="deletedData(this, 'myDataTableTR');" class="showHideTR sym-btn-remove">&nbsp;Delete</button>
+  
+    }
+
+
+</div>
+<p></p>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTableTR" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Travel Type</th>
+                            <th>Travel To Address</th>
+                            <th>From Date</th>
+                            <th>To Date</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        </div>
+ 
+<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableTR').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Travel/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="travelEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+                                   //org //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                }
+                            }
+
+                           @* {
+                                "sName": "TravelType",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+
+                                    //return '<input type="button" Onclick="travelEdit(this);" class="btn btn-info " data-EmployeeId="Model.Id" data-Id="' + oObj.aData[4] + '" value="Show"/>'
+                                    //return '<a  class=" btn btn-primary lnkEdit" href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[4] + '\">Show</a>'
+                                    return '<Lable Onclick="travelEdit(this);" class="innerListLink " data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                    ;
+                                }
+                            }*@
+
+                            , { "sName": "TravelType", "sWidth": "20%" }
+                            , { "sName": "TravelToAddress", "sWidth": "20%" }
+                            , { "sName": "FromDate", "sWidth": "15%" }
+                            , { "sName": "ToDate", "sWidth": "15%" }
+                            , { "sName": "Duration", "sWidth": "15%" }
+
+            ]
+        });
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    $('#btnDialogTR').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myTravel").load('@Url.Action("Travel", "Travel")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+     });
+     function travelEdit(sender) {
+         var EmployeeId = $(sender).attr('data-employeeId');
+         var Id = $(sender).attr('data-Id');
+         $("#myTravel").load('@Url.Action("Travel", "Travel")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+     }
+
+   
+   
+    var leftMenuActive = "Travel";
+    </script>

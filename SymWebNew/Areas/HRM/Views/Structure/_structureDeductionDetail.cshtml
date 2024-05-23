@@ -1,0 +1,84 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM  
+<div class="thinbox panel">
+    @*<div class="th_thinbox panel-actions">
+       <p class="row"><span style="float:left;padding-left:13px;" > Employee Structure Detail</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo1"></span> </p>
+    </div>*@
+        <button type="button" title="Add New Deduction" data-url="/HRM/Structure/AddEmpSStructure?st=D&eid=@Model.Id" id="D" value="D"class="btnCreate sym-btn-add "> New Deduction</button>
+<div class="row">
+            <div id="demo1" class="panel-collapse collapse in">
+                <table id="myDataTable1" class="display">
+                    <thead>
+                         <tr>
+                            <th class="center">Action</th>
+                            <th>Salary Name</th>
+                            <th>Amount</th>
+                            <th>Salary Type</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Salary Name</th>
+                            <th style="text-align:left!important">Amount</th>
+                            <th>Salary Type</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                    </thead>
+                     <tfoot style=" font-size:1.2em;">
+        <tr >
+      <td>&nbsp;</td>
+       <td  style="font-weight:bold!important;" >Total Deduction</td>
+      <td style="font-weight:bold!important;"class="right">@ViewBag.DeductionAmnt</td>
+    </tr>
+  </tfoot>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var id = $('#Id').val();
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable10 = $('#myDataTable1').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Structure/_employeeSalaryStructureDeductiondetail?Id=" + id,
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "12%",
+                    "sClass":"center",
+                    "fnRender": function (oObj) {
+                        //if (oObj.aData[3] == "Gross") {
+                        //    "Test"
+                        //}
+                        return '  <a title="Click on for Edit" style="text-decoration:none;"   href=\"/HRM/Structure/EditEmpSStructure?id=' + oObj.aData[0] + '&type=E\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' +
+                            ' <a title="Click on for Delete" style="text-decoration:none;"   href=\"/HRM/Structure/EditEmpSStructure?id=' + oObj.aData[0] + '&type=D\" id="lnkEdit1"  class="lnkEdit sym-btn-remove-row"></a> ';
+                    }
+                }
+                        , {"sName": "SalaryTypeName", "sWidth": "25%"}
+                        , { "sName": "Amount", "sWidth": "25%", "sClass": "right calc" }
+                        , { "sName": "SalaryType", "sWidth": "25%" }
+                        , { "sName": "Fixed", "sWidth": "10%" }
+            ]
+        });
+        oTable10.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                        null
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+				        , { type: "select", values: ["Fixed", "Rate"] }
+            ]
+        });
+    });
+</script>

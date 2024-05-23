@@ -1,0 +1,83 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+<div class="EditPlace">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="TransferOLD">
+    </div>
+        </div>
+         <div class="col-md-6">
+             <div id="TransferNEW">
+    </div>
+        </div>
+    </div>
+   
+</div>
+<script>
+
+    $(function () {
+       
+    })
+    function Transfer() {
+        for (var i = 0; i < $("[name='empId']").length; i++) {
+            if ($($("[name='empId']")[i]).is(':checked')) {
+                $("#transfer_EmployeeId").val($($("[name='empId']")[i]).val());
+                pageSubmit('frmTransfer');
+                break;
+            }
+        }
+        if ($("#transfer_EmployeeId").val() == "0") {
+            ShowResult("Fail", "Please select employee!");
+            return;
+        }
+    }
+
+    function CancleTransfer() {
+        // window.location.reload();
+        $(".EditPlace").hide();
+        $(".search").hide();
+    }
+    $(function () {
+
+        $.get('@Url.Action("TransferOLD","Transfer", new { EmployeeId = Model.Id } )', function (data) {
+            $('#TransferOLD').html(data);
+        });
+        $.get('@Url.Action("TransferNEW","Transfer", new { EmployeeId = Model.Id } )', function (data) {
+            $('#TransferNEW').html(data);
+        });
+    });
+    function jobjoin() {
+        if ($("#joinDate").val() == "") {
+            $("#TransferNEW").html('');
+        }
+    }
+    var topMenuActive = "Transfer";
+
+    function CheckTransferDate(sender) {
+        var url = "/HRM/Home/CheckTransferDate?employeeId=" + $("#transferVM_EmployeeId").val() + "&date=" + $(sender).val();
+        $.ajax({
+            type: "GET",
+            url: url,
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            error: function (xhr, status, error) {
+            },
+            success: function (response) {
+                if (!response) {
+                    $(sender).val('');
+                    ShowResult("Fail", "Transfer date can't be prior to join date/  last Transfer date!");
+                }
+            }
+        });
+    }
+
+    //function FromToDate(sender) {
+    //    var pastdate = ParseDate($(".pastdate").val());
+    //    var currentdate = ParseDate($(".CurrentDate").val());
+    //    alert(pastdate+" "+currentdate);
+    //    if (pastdate > currentdate) {
+    //        ShowResult("Fail", "Date can't be prior to Previous Transfer Date!");
+    //        $(sender).val("");
+    //    }
+    //}
+
+</script>

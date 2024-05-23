@@ -1,0 +1,103 @@
+﻿@model SymViewModel.Tax.TaxScheduleVM
+@using UIHelper.MVC
+@using (Html.BeginForm("Schedule2HousePropertyMonthlyCreateEdit", "TaxSchedule", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "afrmSchedule2HousePropertyMonthly" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    //@Html.HiddenFor(model => model.permanentAddress.Id)
+    // @Html.HiddenFor(model => model.permanentAddress.EmployeeId)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Schedule1 Salary Monthly</p>
+        </div>
+        <div class="Schedule2HousePropertyMonthly">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("Description")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line")
+                    </div>
+                </div>
+
+                @*<div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line B")
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line C")
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("Line Remarks")
+                    </div>
+                </div>*@
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description1", "Description 1", new { @placeholder = "Description1", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyMonthlyVM.Line1, new { @placeholder = "Line 1A", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyMonthlyVM.Line1)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description2", "Description 2", new { @placeholder = "Description2", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyMonthlyVM.Line2, new { @placeholder = "Line 2", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyMonthlyVM.Line2)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+                <button type="button" title="Save Data" id="saveJSONSchedule2HousePropertyMonthly" class="Save sym-btn-save">&nbsp;Save</button>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("afrmSchedule2HousePropertyMonthly");
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#saveJSONSchedule2HousePropertyMonthly').click(function () {
+            var a = pageSubmitJSON('afrmSchedule2HousePropertyMonthly');
+            if (a != 0) {
+                return;
+            }
+            if (isChange == false) {
+                ShowResult("Success", "You have no changes for save");
+                return;
+            }
+            if (pageSubmitJSON('afrmSchedule2HousePropertyMonthly') == 0) {
+                var myData = $('#afrmSchedule2HousePropertyMonthly').serialize();
+                var url = "/Tax/TaxSchedule/Schedule2HousePropertyMonthlyCreateEdit";
+                submit(url, myData);
+            }
+        });
+    });
+
+
+</script>

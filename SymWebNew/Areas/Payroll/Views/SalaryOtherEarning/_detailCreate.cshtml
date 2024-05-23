@@ -1,0 +1,180 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+    input[type='text'], input[type='password'], textarea {
+        margin: 0px!important;
+    }
+</style>
+@using (Html.BeginForm("Create", "SalaryOtherEarning", FormMethod.Post, new { @Id = "frmSalOtherEarning" }))
+{   
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>@Model.EmpName</p>
+                </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.FiscalYearDetailId)
+                    @Html.HiddenFor(model => model.SalaryOtherEarningVM.EarningTypeId)
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="thinbox">
+                  <div class="Earningdatail">
+                      <div class="row">
+                          <div class="col-md-3">
+                              <div class="editor-label">
+                                  @Html.LabelFor(model => model.SalaryOtherEarningVM.EarningAmount)
+                                  @Html.HiddenFor(model => model.SalaryOtherEarningVM.FiscalYearDetailId)
+                                  @Html.HiddenFor(model => model.SalaryOtherEarningVM.EmployeeId,new { @class = "empErid" })
+                              </div>
+                              <div class="editor-field">
+                                  @Html.TextBoxFor(model => model.SalaryOtherEarningVM.EarningAmount, new { @class = "EarningAmount  form-control" ,@readonly="disable"  })
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="editor-label">
+                                  @Html.LabelFor(model => model.SalaryOtherEarningVM.Remarks)
+                              </div>
+                              <div class="editor-field">
+                                  @Html.TextAreaFor(model => model.SalaryOtherEarningVM.Remarks, new { @class = "  form-control" ,@readonly="disable"  })
+                                  @Html.ValidationMessageFor(model => model.SalaryOtherEarningVM.Remarks)
+                              </div>
+                          </div>
+                      </div>
+                      
+                <br />
+               @* <div class="headrow">
+                     <button type="button" title="Save Data" id="SaveJSON" class=" Save sym-btn-save">&nbsp;Save</button>
+                      <button type="button" title="Save Data" id="UpdateJSON" class=" Save sym-btn-update"> Update</button>
+                    <button type="button" title="Delete Data" id="DeleteJSON" class=" Save sym-btn-remove">&nbsp;Delete</button>
+                </div>*@
+                      </div>
+                <div id="noearningempid">
+                   <h2> This Employee has no Eearning Structure assigned yet.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        checkvalues();
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+         }
+        //$('#empId').val('@Model.Code~@Model.EmpName');
+    });
+
+
+    //$('#DeleteJSON').click(function () {
+
+    //    var myData = $('#frmSalOtherEarning').serialize();
+    //    var url = "/Payroll/SalaryOtherEarning/Create?btn=delete";
+    //    submit(url, myData);
+    //    $('.EarningAmount').val('0');
+
+    //})
+
+    //$('#SaveJSON,#UpdateJSON').click(function () {
+    //    var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+    //    var EarningTypeId = $('.eType').val();
+    //    var Code = $('#Code').val();
+
+
+    //    if (Code == "") {
+    //        ShowResult("Fail", "Please Select Code!");
+    //        return;
+    //    }
+
+    //    if (EarningTypeId == "") {
+    //        ShowResult("Fail", "Please Select Earning Type!");
+    //        return;
+    //    }
+
+    //    if (FiscalYearDetailId == "") {
+    //        ShowResult("Fail", "Please Select Fiscal Year!");
+    //        return;
+    //    }
+
+    //    var myData = $('#frmSalOtherEarning').serialize();
+    //    //var url = "/Payroll/SalaryOtherEarning/Create";
+    //    var url = "/Payroll/SalaryOtherEarning/Create?btn=save";
+    //    submit(url, myData);
+    //});
+
+
+
+
+    function checkvalues() {
+        //var EarningAmount = $(".EarningAmount").val();
+        //if (EarningAmount == 0) {
+        //    $("#SaveJSON").show();
+        //    $("#UpdateJSON").hide();
+        //}
+        //else {
+        //    $("#SaveJSON").hide();
+        //    $("#UpdateJSON").show();
+        //}
+        var empErid = $(".empErid").val();
+      
+        if (typeof empErid == undefined || empErid == "" || empErid == null) {
+            $(".Earningdatail").hide("slow");
+            $("#noearningempid").show();
+        }
+        else {
+            $(".Earningdatail").show();
+            $("#noearningempid").hide();
+        }
+    }
+
+
+</script>

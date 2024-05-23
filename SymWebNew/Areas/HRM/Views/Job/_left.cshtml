@@ -1,0 +1,119 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("Left", "Job", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmLeft" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Left</p>   
+        </div>
+        <div class="left">
+            @Html.HiddenFor(model => model.leftInformation.EmployeeId)
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.LeftType_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.leftInformation.LeftType_E, "/Config/DropDown/LeftType", new { @placeholder = "LeftType", @class ="required form-control" })
+                    </div>
+                </div>
+                 <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.EntryLeftDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.leftInformation.EntryLeftDate, new { @placeholder = "Entry Date", @class ="required customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.LeftDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.leftInformation.LeftDate, new { @placeholder = "Left Date", @class ="required customDatePicker form-control" })
+                    </div>
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.leftInformation.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.leftInformation.Remarks, new { @placeholder = "Remarks",@rows="1", @class =" form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="file" onchange="CheckFileSize(this);" name="LeftInformationF" id="LeftInformationF" style="width: 200px;" />
+                </div>
+                @if (Model.leftInformation.FileName != null && Model.leftInformation.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/LeftInformation/@Model.leftInformation.Id@Model.leftInformation.FileName">
+                                <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)"; data-id="@Model.leftInformation.Id" data-table="4"  data-field="FileName" data-url="~/Files/LeftInformation/@Model.leftInformation.Id@Model.leftInformation.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                        </div>
+                    </div>
+                }
+            </div>
+             <p>
+                @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+                 {
+ 
+                    <button type="button" title="Click on for Save"  id="saveJSONJobleft"   class="Save sym-btn-save" >&nbsp;Save</button>
+                 }
+
+               <button type="button" title="Click on for Cancel" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+            </p>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        $(".btnNewLT").hide();
+        customToollip();
+        valiDation("frmLeft");
+        InitDateTimePickers();
+        InitDropDowns();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#saveJSONJobleft').click(function () {
+            if (isChange == false) {
+                ShowResult("Success", "You have no changes for save");
+                return;
+            }
+            if (pageSubmitJSON('frmLeft') == 0) {
+                var myData = $('#frmLeft').serialize();
+                var url = "/HRM/Job/Left";
+                submit(url, myData);
+               
+            }
+        })
+        
+    });
+</script>

@@ -1,0 +1,77 @@
+﻿@model SymViewModel.Payroll.SalaryOtherEarningVM
+<style>
+</style>
+<div class="thinbox"> 
+            <div class="th_thinbox">
+    </div>
+    <p>
+    </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th style="text-align:left!important">Basic</th>
+                            <th style="text-align:left!important">Gross</th>
+                            <th>Earning Type</th>
+                            <th style="text-align:left!important">Earning Amount</th>
+                        </tr>
+                       
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+    
+</div>
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryOtherEarning/_rptIndex?DepartmentId=@Model.DepartmentId&SectionId=@Model.SectionId&ProjectId=@Model.ProjectId&DesignationId=@Model.DesignationId&CodeF=@Model.CodeF&CodeT=@Model.CodeT&fid=@Model.FiscalYearDetailId&fidTo=@Model.fidTo&ETId=@Model.EarningTypeId&Orderby=@Model.Orderby",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "sDom": 'T<"clear">lfrtip', //initialize tableTools 
+            //"sDom": 'TC<"clear">lfrtip',    // enable colvis
+
+                "tableTools": {
+                    "sSwfPath": "/assets/swf/copy_csv_xls_pdf.swf",  // set swf path
+                    "sRowSelect": "multi",
+                    "aButtons": [
+                        "select_all",
+                        "select_none",
+                        {
+                            "sExtends": "collection",
+                            "sButtonText": "Export",
+                            "aButtons": ["copy", "csv", "xls", "pdf", "print"]
+                        }
+                    ]
+                },
+                "aoColumns": [
+                                 { "sName": "PeriodName", "sWidth": "6%" }
+                                , { "sName": "Code", "sWidth": "6%" }
+                                , { "sName": "EmpName",  "sWidth": "14%" }
+                                , { "sName": "Designation",  "sWidth": "10%" }
+                                , { "sName": "Department", "sWidth": "10%" }
+                                , { "sName": "Section",  "sWidth": "10%" }
+                                , { "sName": "Project", "sWidth": "10%" }
+                                , { "sName": "BasicSalary", "sClass": "right", "sWidth": "8%" }
+                                , { "sName": "GrossSalary", "sClass": "right", "sWidth": "8%" }
+                                , { "sName": "EarningType", "sWidth": "8%" }
+                                , { "sName": "EarningAmount", "sClass": "right", "sWidth": "8%" }
+                ]
+            });
+        });
+       
+</script>

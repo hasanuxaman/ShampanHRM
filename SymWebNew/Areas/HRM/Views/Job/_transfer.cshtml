@@ -1,0 +1,210 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Transfer", "Job", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTransfer" }))
+{
+    @Html.ValidationSummary(true)
+
+        <div class="transfer">
+            @Html.HiddenFor(model => model.transferVM.Id)
+            @Html.HiddenFor(model => model.transferVM.EmployeeId)
+            @Html.HiddenFor(model => model.transferVM.BranchId)
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.transferVM.ProjectId,"/Config/DropDown/Project", new { @placeholder = "Project", @class ="required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.transferVM.DepartmentId,"/Config/DropDown/Department", new { @placeholder = "Department", @class ="required form-control" })
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.transferVM.SectionId,"/Config/DropDown/Section", new { @placeholder = "Section", @class ="required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.transferVM.TransferDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.transferVM.TransferDate, new {@onchange="CheckTransferDate(this)", @placeholder = "Transfer Date", @class ="required customDatePicker form-control" })
+                    </div>
+                </div>
+                </div>
+            <div class="row">
+                @if (Session["LabelOther1"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.transferVM.Other1, new { @placeholder = @Session["LabelOther1"].ToString(), @class = "Other1 form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Other1)
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther2"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.transferVM.Other2, new { @placeholder = @Session["LabelOther2"].ToString(), @class = "Other2 form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Other2)
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther3"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.transferVM.Other3, new { @placeholder = @Session["LabelOther3"].ToString(), @class = "Other3 form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Other3)
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.transferVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.transferVM.Remarks, new { @placeholder = "Remarks",@rows="1", @class ="form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Transfer Order</label>
+                    <input type="file" onchange="CheckFileSize(this);" class="form-control" name="TransferF" id="TransferF" style="width: 200px;"  />
+                </div>
+                @if (Model.transferVM.FileName != null && Model.transferVM.FileName != "")
+                {
+                    <div class="col-md-1">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/Transfer/@Model.transferVM.Id@Model.transferVM.FileName">
+                                <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)"; data-id="@Model.transferVM.Id" data-table="6"  data-field="FileName" data-url="~/Files/Transfer/@Model.transferVM.Id@Model.transferVM.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                        </div>
+                    </div>
+                    }
+            </div>
+                <p>
+                    @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+                    {
+                        if (((Model.transferVM.Id != null && Model.transferVM.IsCurrent) || Model.transferVM.Id == null) && Model.IsActive)
+                        {
+                           // <input type="button" onclick="pageSubmit('frmTransfer');" value="Save" class="Save btn btn-info" />
+                           // <input type="button" value="Edit" onclick="EditTransfer();" class="Edit btn btn-info" />
+                            
+                       @*<button type="button" title="Save Data"  onclick="pageSubmit('frmTransfer');"  class="Save sym-btn-save" >&nbsp;Save</button>*@
+                        
+                         <button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>
+                        
+                                    <button type="button" title="Edit Data"   onclick="EditTransfer();" class="Edit sym-btn-edit" >&nbsp;Edit</button>
+                        }
+                    }
+                   <button type="button" title="Cancel Data"   onclick="CancleTransfer();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+                    @*<input type="button" value="Cancel" onclick="CancleTransfer();" class="Cancle btn btn-info" />*@
+                </p>
+
+        </div>
+}
+<script>
+    $(function () {
+        @* alert('@Model.transferVM.FileName')*@
+
+        $('#transferVM_Other1').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other1', minLength: 2 });
+        $('#transferVM_Other2').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other2', minLength: 2 });
+        $('#transferVM_Other3').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other3', minLength: 2 });
+
+        InitDropDowns();
+        $(".showHideTN").hide();
+        customToollip();
+        EditTransfer();
+        valiDation("frmTransfer");
+        InitDateTimePickers();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#saveJSOND').click(function () {
+            var url = "/HRM/Job/Transfer";
+
+            $form = $('#frmTransfer');
+
+            $form.attr("action", url);
+            $form.submit();
+
+        });
+
+        $('#saveTransfer').click(function () {
+            if (isChange == false) {
+                ShowResult("Success", "You have no changes for save");
+                return;
+            }
+            if (pageSubmitJSON('frmTransfer') == 0) {
+                var myData = $('#frmTransfer').serialize();
+                var data = new FormData();
+                var files = $("#TransferF").get(0).files;
+                if (files.length > 0) {
+                    data.append("FileNames", files[0]);
+                }
+                var url = "/HRM/Job/Transfer";
+                submit(url, myData);
+
+            }
+        });
+
+   
+        function CancleTransfer() {
+            if (isChange == true) {
+                Ask("<h3>You have some changes in this form.</br>Click No to Ignore the changes.</h3>", null, function () {
+                    isChange = false;
+                    window.location.reload();
+                })
+            }
+            else {
+                isChange = false;
+                window.location.reload();
+            }
+        };
+    });
+</script>

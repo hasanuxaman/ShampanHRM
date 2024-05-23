@@ -1,0 +1,86 @@
+﻿@model SymViewModel.Payroll.GLAccountVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("Create", "GLAccount", FormMethod.Post, new { @Id = "frmGLAccount" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+    
+                @Html.HiddenFor(model => model.Id)
+       
+         <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.ProjectId)
+            </label>
+            <div class="col-sm-9">
+                        @Html.SimpleDropDownFor(model => model.ProjectId,"/Config/DropDown/Project", new { @placeholder = "Project", @class ="required form-control" })
+            </div>
+        </div>
+          <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.VoucherType)
+            </label>
+            <div class="col-sm-9">
+                  @Html.SimpleDropDownFor(model => model.VoucherType,"/Config/DropDown/VoucherType", new { @placeholder = "VoucherType", @class ="required form-control" })
+            </div>
+        </div>
+           <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.GLAccountCode)
+            </label>
+            <div class="col-sm-9">
+                @Html.TextAreaFor(model => model.GLAccountCode, new { @placeholder = "GL Account Code", @class =" required form-control" })
+            </div>
+        </div>
+            <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.Description)
+            </label>
+            <div class="col-sm-9">
+                @Html.TextAreaFor(model => model.Description, new { @placeholder = "Description", @class =" required form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.OutstandingLiabilities)
+            </label>
+            <div class="col-sm-9">
+                @Html.CheckBoxFor(model => model.OutstandingLiabilities, new { @placeholder = "OutstandingLiabilities", @class =" required form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-9">
+                @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks",@rows="1", @class ="form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+              
+				  <button type="button" title="Save Data" onclick="pageSubmit('frmGLAccount');" class="sym-btn-save">&nbsp;Save</button>
+            </label>
+            <label class="col-sm-4">
+			 <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+               
+            </label>
+        </div>
+        </div>
+ 
+}
+  <script>
+
+      $(function () {
+          InitDropDowns();
+          valiDation("frmGLAccount");
+         @* $('.ac').autocomplete({ source: '@Url.Action("GLAccountGroup", "Autocomplete", new { area = "Config" })', minLength: 2 });*@
+      });
+ 
+  </script>

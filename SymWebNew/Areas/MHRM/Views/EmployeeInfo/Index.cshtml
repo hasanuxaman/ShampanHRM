@@ -1,0 +1,86 @@
+﻿    @{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/MHRM/Views/Shared/_Layout.cshtml";
+}
+<style>
+    a {
+        text-decoration:none;
+    }
+.content {
+background-color: #5f5656;
+}
+.content .box {
+padding-right: 0px!important;
+padding-left: 0px!important;
+border:2px solid #5f5656;
+        }
+    .child-box {
+padding:27.5px;
+color: inherit;
+background-color: #eee;
+border-collapse:collapse;
+border:1px solid #5f5656;
+width:100%;
+    }
+       .child-box:hover {
+border:1px solid #ff6a00;
+  -moz-box-shadow: rgba(0, 0, 0, 0.8) 5px 5px 55px inset;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.8) 5px 5px 55px inset;
+  box-shadow: rgba(0, 0, 0, 0.8) 5px 5px 55px inset;
+        }
+    .center {
+        text-align:center;
+    }
+    .heading {
+        background-color:#73e144;
+        padding-top: 40px;
+    }
+    .main {
+  background-color:#5f5656;
+    }
+</style>
+
+<div class="main">
+<div class=" content">
+    <div class="col-xs-7 box center">
+        <div class="child-box">
+        <i class="fa fa-home fa-5x center "></i>
+        <p class="center"><a href="/MHRM/Home/">HRM</a></p>
+        </div>
+    </div>
+    <div class="col-xs-5 box center">
+        <div class="child-box">
+        <i class="fa fa-area-chart fa-5x center"></i>
+        <p class="center"><a href="/MHRM/Leave/">Leave</a></p>
+    </div>
+    </div>
+    </div>
+<div class=" content">
+    <div class="col-xs-5 box center">
+           <div class="child-box">
+        <i class="fa fa-user fa-5x center"></i>
+          <p class="center">Profile</p>
+    </div>
+    </div>
+    <div class="col-xs-7 box center">
+        <div class="child-box">
+            <i class="fa fa-user fa-5x center"></i>
+            <p class="center"><a href="/MHRM/Attendence/">Attendence</a></p>
+        </div>
+    </div>
+    </div>
+<div class="content">
+    <div class="col-xs-6 box center">
+           <div class="child-box">
+        <i class="fa fa-user fa-5x center"></i>
+         <p class="center">Attendence</p>
+    </div>
+    </div>
+    <div class="col-xs-6 box center">
+           <div class="child-box">
+        <i class="fa fa-user fa-5x center"></i>
+         <p class="center">Attendence</p>
+    </div>
+    </div>
+    </div>
+    </div>

@@ -1,0 +1,85 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+@*   <div class="headrow">
+ <button type="submit" title="Save Data"  onclick="Promotion();"  class="sym-btn-update">&nbsp;Save</button>
+ <button type="button" title="Cancel Data" onclick="CanclePromotion();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+</div>*@
+@using (Html.BeginForm("Promotion", "Promotion", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmPromotion" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Promoted To</p>   
+        </div>
+        <div class="promotion">
+            @Html.HiddenFor(model => model.promotionVM.Id)
+            @Html.HiddenFor(model => model.promotionVM.EmployeeId)
+             <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+              @*  @Html.HiddenFor(model => model.transferVM.jobjoinDate)*@
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.DesignationName)
+                    </div>
+                    <div class="editor-field col-md-8">
+                         @Html.SimpleDropDownFor(model => model.promotionVM.DesignationId, "/Config/DropDown/Designation", new { @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.transferVM.DepartmentName)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.GradeId)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.SimpleDropDownFor(model => model.promotionVM.GradeId, "/Config/DropDown/Grade", new { @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.promotionVM.GradeId)
+                    </div>
+                     <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.IsPromotion)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.CheckBoxFor(model => model.promotionVM.IsPromotion, new {  @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.promotionVM.IsPromotion)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.PromotionDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.promotionVM.PromotionDate, new { @onchange = "CheckPromotionDate(this);",@placeholder ="Promotion Date", @class = "currentdate required customDatePicker form-control" })
+
+                        @*@Html.TextBoxFor(model => model.promotionVM.PromotionDate, new { @onchange="CheckPromotionDate(this) FromToDate(this)", @class = "currentdate form-control required customDatePicker" })*@
+                        @*@Html.TextBoxFor(model => model.promotionVM.PromotionDate, new { @class = "form-control required customDatePicker" })*@
+                         @*<input type="text" value="@Model.promotionVM.PromotionDate" @onchange="FromToDate(this)", class = " required customDatePicker form-control" />*@
+                        @Html.ValidationMessageFor(model => model.promotionVM.PromotionDate)
+                    </div>
+                    <div class="col-md-4 editor-label">
+                        @Html.LabelFor(model => model.promotionVM.Remarks)
+                    </div>
+                    <div class="col-md-8 editor-field">
+                        @Html.TextAreaFor(model => model.promotionVM.Remarks, new { @class = "form-control" })
+                    </div>
+                  <div class="col-md-4 editor-label">
+                    </div>
+                <div class="col-md-6">
+                    <input type="file" name="PromotionF" id="PromotionF" style="width: 200px;"  />
+                </div>
+       <div class="col-md-4 editor-label">
+                    </div>
+      
+        <div class="editor-field col-md-8">
+ <button type="button" title="Save Data"  onclick="pageSubmit('frmPromotion');" class="sym-btn-save">&nbsp;Save</button>
+ <button type="button" title="Cancel Data" onclick="CanclePromotion();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+</div> 
+            </div>
+
+              </div>
+    </div>  
+}
+<script>
+    InitDropDowns();
+    InitDateTimePickers();
+    fromWriteColor("promotion");
+    valiDation('frmPromotion');
+    jobjoin();
+      
+</script>

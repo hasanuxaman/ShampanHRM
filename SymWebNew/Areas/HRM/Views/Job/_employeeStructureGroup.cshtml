@@ -1,0 +1,104 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("EmployeeSG", "Job", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmpSG" }))
+{
+    @Html.HiddenFor(model => model.employeeSG.Id)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.employeeSG.EmployeeId)
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Structure Information</p>
+        </div>
+        <div class="employeeSG">
+            <div class="row">
+              
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeSG.Id)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeSG.Id, "/Config/DropDown/StructureGroup", new { @class ="required form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeSG.Id)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeSG.Year)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeSG.Year, "/Config/DropDown/Year", new { @class ="required form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeSG.Year)
+                    </div>
+                </div>
+            </div>
+           
+            <br />
+            @if (identity.IsAdmin || identity.IsHRM)
+{
+            <p class="actionButton_personalSG">
+            </p>
+                if (@Model.IsActive) {
+           // html = '<input type="button" value="Save" onclick="pageSubmit(\'frmEmpSG\');" class="Save btn btn-info" /><input type="button" value="Edit" onclick="EditEmployeeSG();" class="Edit btn btn-info" />&nbsp;<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+
+        <button type="button" id="saveJSONempGSjob"   class="Save sym-btn-save" >&nbsp;Save</button>
+              <button type="button" onclick="EditEmployeeSG();" class="Edit sym-btn-edit" >&nbsp;Edit</button>
+             <button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+        }
+        else {
+           <button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+        }
+            }
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        var html = "";
+       @* if ('@Model.IsActive' == 'True') {
+           // html = '<input type="button" value="Save" onclick="pageSubmit(\'frmEmpSG\');" class="Save btn btn-info" /><input type="button" value="Edit" onclick="EditEmployeeSG();" class="Edit btn btn-info" />&nbsp;<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+
+            html = '<button type="button" id="saveJSONempGSjob"   class="Save sym-btn-save" >&nbsp;Save</button>' +
+              '<button type="button" onclick="EditEmployeeSG();" class="Edit sym-btn-edit" >&nbsp;Edit</button>' +
+              '&nbsp;<button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+        }
+        else {
+            html = '<button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+        }*@
+            //$(".actionButton_personalSG").append(html);
+        EditEmployeeSG();
+        InitDatePickers();
+        valiDation("frmEmpSG");
+    });
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    $('#saveJSONempGSjob').click(function () {
+        if (isChange == false) {
+            ShowResult("Success", "You have no changes for save");
+            return;
+        }
+        if (pageSubmitJSON('frmEmpSG') == 0) {
+            var myData = $('#frmEmpSG').serialize();
+            var url = "/HRM/Job/EmployeeSG";
+            submit(url, myData);
+        }
+    })
+</script>

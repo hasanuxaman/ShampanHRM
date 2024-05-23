@@ -1,0 +1,178 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Employee Weekly Holiday" data-url="/Attendance/EmployeeWeeklyHoliday/Create" id="" class="btnCreate sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete Employee Weekly Holiday" data-url="/Attendance/EmployeeWeeklyHoliday/Delete" onclick="deletedDataNotReload(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+    <label class="pull-right">Employee Weekly Holiday </label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee Weekly Holiday List</p>
+    </div>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>Code</th>
+                <th>EmpName</th>
+                <th>Designation</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+                <th>@Session["LabelOther1"]</th>
+                <th>@Session["LabelOther2"]</th>
+                <th>@Session["LabelOther3"]</th>
+                <th>Daily Date</th>
+                <th>Day Of Week</th>
+            </tr>
+
+            <tr>
+                <th class="center">Actions</th>
+                <th>Code</th>
+                <th>EmpName</th>
+                <th>Designation</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+                <th>@Session["LabelOther1"]</th>
+                <th>@Session["LabelOther2"]</th>
+                <th>@Session["LabelOther3"]</th>
+                <th>Daily Date</th>
+                <th>Day Of Week</th>
+            </tr>
+
+
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<div class="headrow">
+    <button type="button" title="Add New Employee Weekly Holiday" data-url="/Attendance/EmployeeWeeklyHoliday/Create" id="" class="btnCreate sym-btn-add ">&nbsp;New</button>
+    <button type="button" title="Delete Employee Weekly Holiday" data-url="/Attendance/EmployeeWeeklyHoliday/Delete" onclick="deletedDataNotReload(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Attendance/EmployeeWeeklyHoliday/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        + '&nbsp; <a id=""  title="Click on for Edit" style="text-decoration:none;"    href=\"/Attendance/EmployeeWeeklyHoliday/Edit/' + oObj.aData[0] + '\" class=" lnkEdit sym-btn-edit-row"></a>'
+                                        + '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Attendance/EmployeeWeeklyHoliday/Delete" onclick="deletedDataNotReload(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>'
+                                    ;
+
+                                }
+                            }
+                            , { "sName": "Code", "sWidth": "5%" }
+                            , { "sName": "EmpName", "sWidth": "10%" }
+                            , { "sName": "Designation", "sWidth": "8%" }
+                            , { "sName": "Department", "sWidth": "8%" }
+                            , { "sName": "Project", "sWidth": "8%" }
+
+                            , { "sName": "Other1", "sWidth": "8%", "sClass": "Other1" }
+                            , { "sName": "Other2", "sWidth": "8%", "sClass": "Other2" }
+                            , { "sName": "Other3", "sWidth": "8%", "sClass": "Other3" }
+
+                            , { "sName": "DailyDate", "sWidth": "18%" }
+                            , { "sName": "DayOfWeek", "sWidth": "10%" }
+
+            ]
+        });
+
+        oTable.columnFilter
+    ({
+        sPlaceHolder: "head:after",
+        aoColumns:
+            [
+                { type: "checkbox", "sClass": "chkAll" }
+                , { type: "text" }          //01
+                , { type: "text" }          //02
+                , { type: "text" }          //03
+                , { type: "text" }          //04
+                , { type: "text" }          //05
+                , { type: "text" }          //06
+                , { type: "text" }          //07
+                , { type: "text" }          //08
+                , { type: "date-range" }    //09
+                , { type: "text" }          //10
+
+            ]
+    });
+
+        var table = $('#myDataTable').DataTable();
+
+        if ('@Session["LabelOther1"].ToString()' == "") {
+            table.fnSetColumnVis(6, false);
+        }
+        if ('@Session["LabelOther2"].ToString()' == "") {
+            table.fnSetColumnVis(7, false);
+        }
+        if ('@Session["LabelOther3"].ToString()' == "") {
+            table.fnSetColumnVis(8, false);
+        }
+
+    });
+
+</script>
+
+
+<script>
+    function deletedDataNotReload(sender, checkboxId, id) {
+        var deletedIds = "";
+        if (typeof id === 'undefined') {
+            var length = $("#" + checkboxId + " tbody input:checkbox").length;
+            for (var i = 0; i < length; i++) {
+                if ($($("#" + checkboxId + " tbody input:checkbox")[i]).is(":checked")) {
+                    deletedIds += $($("#" + checkboxId + " tbody input:checkbox")[i]).attr("data-Id") + "~";
+                }
+            }
+        }
+        else {
+            deletedIds = id + "~";
+        }
+
+        var url = $(sender).attr("data-url") + "?ids=" + deletedIds;
+        if (deletedIds == "") {
+            ShowResult("Fail", "Select first to Delete!");
+            return;
+        }
+        Ask("Are you sure to Delete!", function () {
+            $.getJSON(url, function (result, textStatus, jqXHR) {
+                if (result.indexOf("~") > -1) {
+                    ShowResult(result.split("~")[0], result.split("~")[1]);
+
+                    if (result.split("~")[0] == "Fail") {
+                        return;
+                    }
+
+                }
+                else {
+                    ShowResult("Success", result);
+                }
+
+                ////setTimeout(function () {
+                ////    location.reload();
+                ////}, 2000);
+            });
+        }, function () { })
+    }
+
+
+</script>
+
+

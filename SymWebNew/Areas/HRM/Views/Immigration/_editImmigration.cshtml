@@ -1,0 +1,198 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Immigration", "Immigration", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmImmigration" }))
+{
+    @Html.ValidationSummary(true)
+        <div class="immigration">
+            @Html.HiddenFor(model => model.immigrationVM.EmployeeId)
+            @Html.HiddenFor(model => model.immigrationVM.Id)
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.ImmigrationType_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.immigrationVM.ImmigrationType_E, "/Config/DropDown/ImmigrationType", new { @placeholder = "Immigration Type", @class ="required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.ImmigrationNumber)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.immigrationVM.ImmigrationNumber, new { @placeholder = "Immigration Number", @class ="required form-control" })
+                    </div>
+
+                </div>
+                                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.IssuedBy_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.immigrationVM.IssuedBy_E, "/Config/DropDown/CountryEN?isContact=false", new { @placeholder = "Country", @class ="required form-control" })
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.IssueDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.immigrationVM.IssueDate, new {@onchange="FromToDate(this)", @placeholder = "Issue Date", @class ="required customDatePicker form-control" })
+                    </div>
+
+                </div>
+                  <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.EligibleReviewDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.immigrationVM.EligibleReviewDate, new { @onchange="FromToDate(this)", @placeholder = "Eligible Review Date", @class ="customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.ExpireDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.immigrationVM.ExpireDate, new {@onchange="FromToDate(this)", @placeholder = "Expire Date", @class ="required customDatePicker form-control" })
+                    </div>
+
+                </div>
+              
+                </div>
+            <div class="row">
+
+                <div class="col-sm-7">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.immigrationVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.immigrationVM.Remarks, new { @placeholder = "Remarks", @class ="form-control" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.immigrationVM.FileName)
+                    <input type="file" onchange="CheckFileSize(this);" name="ImmigrationF" id="ImmigrationF" style="width: 200px;" />
+                </div>
+                @if (Model.immigrationVM.FileName != null && Model.immigrationVM.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/Immigration/@Model.immigrationVM.Id@Model.immigrationVM.FileName">
+                                <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" /></a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)"; data-id="@Model.immigrationVM.Id" data-table="10"  data-field="FileName" data-url="~/Files/Immigration/@Model.immigrationVM.Id@Model.immigrationVM.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" /></span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <p>
+                @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+                 @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+                {
+                       @*<button type="button" title="Click to Save" onclick="pageSubmit('frmImmigration');"  class="Save sym-btn-save">&nbsp;Save</button>*@
+                     <button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>
+                     
+                <button type="button" title="Click for Edit" onclick="Editimmigration();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                }
+            <button type="button" title="Click for Cancel" onclick="Cancleimmigration();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </div>
+}
+<script>
+    $(function () {
+        InitDateTimePickers();
+        $(".showHideIM").hide();///////Index page new btn
+        Editimmigration();
+        valiDation("frmImmigration");
+        InitDropDowns();
+    })
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+  
+    function Cancleimmigration() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                Cancleimmigration();
+            })
+        }
+        else {
+            isChange = false;
+            $("#myImmigration").html('');
+            $(".showHideIM").show();
+        }
+    }
+
+    $('#saveJSOND').click(function () {
+        var url = "/HRM/Immigration/Immigration";
+
+        $form = $('#frmImmigration');
+
+        $form.attr("action", url);
+        $form.submit();
+
+    });
+
+    //$('.Save').click(function () {
+    //    if (isChange == true) {
+    //        if (pageSubmitJSON('frmImmigration') == 0) {
+    //            var myData = $('#frmImmigration').serialize();
+    //            var url = "/HRM/Immigration/Immigration";
+    //            var res = submit(url, myData);
+    //            if (res == true) {
+    //                location.reload();
+    //            }
+    //            isChange = false;
+    //        }
+    //    }
+    //    else {
+    //        ShowResult("Success", "You have no changes for save");
+    //    }
+    //});
+    function FromToDate(sender) {
+        var issueDate = ParseDate($("#immigrationVM_IssueDate").val());
+        var expireDate = ParseDate($("#immigrationVM_ExpireDate").val());
+        var eligibleDate = ParseDate($("#immigrationVM_EligibleReviewDate").val());
+        if (issueDate > expireDate) {
+            ShowResult("Fail", "Expire Date can't be prior to Issue Date!");
+            $(sender).val("");
+        }
+        if (issueDate > eligibleDate) {
+            ShowResult("Fail", "Eligible Review Date can't be prior to Issue Date!");
+            $(sender).val("");
+        }
+        if (eligibleDate > expireDate) {
+            ShowResult("Fail", "Expire Date can't be prior to Eligible Review Date!");
+            $(sender).val("");
+        }
+
+    }
+</script>

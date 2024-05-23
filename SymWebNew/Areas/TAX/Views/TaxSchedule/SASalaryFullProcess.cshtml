@@ -1,0 +1,142 @@
+﻿@model SymViewModel.Tax.Schedule1SalaryVM
+@using UIHelper.MVC
+@Html.ValidationSummary(true)
+
+<div class="headrow">
+    <button type="button" title="Process Data" id="" class="processJSONSASalary sym-btn-save">&nbsp;Process</button>
+    <label class="pull-right">Schedule1 @Model.TransactionType @Model.ScheduleType > Process</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Schedule1 @Model.TransactionType @Model.ScheduleType Process</p>
+    </div>
+    <div class="BankBranch">
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBox("Year", @Session["SessionYear"].ToString(), new { @Id = "fYear", @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Fiscal Period</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @Id = "FiscalYearDetailId", @class = " fpDetailsCom required form-control" })
+                    </div>
+                </div>
+            </div>
+
+            @if (@Model.TransactionType == "YearlyTax")
+            {
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Fiscal Period(To)</label>
+                    </div>
+
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDownFor(model => model.FiscalYearDetailIdTo, "//", new { @class = "required fpDetailsComTo form-control  selectDropdown" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Process Data" id="" class="processJSONSASalary sym-btn-save">&nbsp;Process</button>
+</div>
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+    $('.processJSONSASalary').click(function () {
+        DataProcess("false~");
+
+        //var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+
+        //var fYear = $("#fYear").val();
+
+        //if (fYear == "") {
+        //    ShowResult("Fail", "Please Select the Fiscal Year");
+        //    return;
+        //}
+
+        //if (FiscalYearDetailId == "") {
+        //    ShowResult("Fail", "Please Select the Fiscal Period");
+        //    return;
+        //}
+
+        //var url = "/Common/FiscalYear/FiscalPeriodLockCheck?FiscalYearDetailId=" + FiscalYearDetailId;
+
+        //$.ajax({
+        //    url: url
+        //       , type: 'Post'
+        //       , traditional: true
+        //       , beforeSend: function () { $(".loading").show(); }
+        //       , success: DataProcess
+        //    , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+        //});
+
+
+    });
+
+    function DataProcess(result) {
+
+        var results = result.split("~");
+
+        if (results[0].toLowerCase() == 'true') {
+
+            ShowResult("Fail", results[1]);
+
+        }
+        else {
+
+            var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+
+            var fYear = $("#fYear").val();
+
+            var FiscalYearDetailIdTo = "";
+            if ($("#FiscalYearDetailIdTo")) {
+                FiscalYearDetailIdTo = $("#FiscalYearDetailIdTo").val();
+            }
+            else {
+                FiscalYearDetailIdTo = FiscalYearDetailId;
+            }
+
+
+            if (FiscalYearDetailIdTo == null || FiscalYearDetailIdTo == "" || FiscalYearDetailIdTo == "0") {
+                FiscalYearDetailIdTo = FiscalYearDetailId;
+            }
+
+            var url = "/Tax/TaxSchedule/SASalaryFullProcess"
+                + "?"
+                + "fydid=" + FiscalYearDetailId
+                + "&fydidTo=" + FiscalYearDetailIdTo
+                + "&fYear=" + fYear
+                + "&sType=" + '@Model.ScheduleType'
+                + "&tType=" + '@Model.TransactionType'
+
+            ;
+
+            submitProcess(url);
+
+        }
+
+    }
+
+
+</script>

@@ -1,0 +1,125 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<div class="EditPlace">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="thinbox">
+                <div class="empInfo">
+                    <div class="th_thinbox">
+                        <p>@Html.ValueFor(model => model.EmpName)</p>
+                    </div>
+                    <div class="row">
+                        @Html.HiddenFor(model => model.Id, new { @class = "empId" })
+                        @Html.HiddenFor(model => model.empleavevm.Id)
+                        @Html.HiddenFor(model => model.EmployeeId, new { @class = "EmployeeId" })
+
+
+                        <div class="editor-label col-md-4 ">
+                            <label><b>Code</b> </label>
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Code)
+                        </div>
+                        <div class="editor-label col-md-4">
+                            @Html.LabelFor(model => model.Designation)
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Designation)
+                        </div>
+                        <div class="editor-label col-md-4">
+                            <label>@Session["DepartmentLabel"]</label>
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Department)
+                        </div>
+                        <div class="editor-label col-md-4">
+                            <label>@Session["SectionLabel"]</label>
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Section)
+                        </div>
+                        <div class="editor-label col-md-4">
+                            <label>@Session["ProjectLabel"]</label>
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Project)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                fromReadColor("empInfo");
+                if ('@Model.Code' == null || '@Model.Code' == "") {
+                    $('#empId').val("");
+                }
+                else {
+                    setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+    }
+            </script>
+        </div>
+        <div class="col-md-6">
+            @Html.Partial("_leaveBalance", Model)
+        </div>
+    </div>
+
+    @Html.Partial("_leave", model: Model.empCompensatoryleavevm)
+</div>
+<script>
+    function totalDay() {
+        if ($("#IsHalfDay").is(':checked')) {
+            $("#ToDate").attr('disabled', true);
+            $("#ToDate").val($("#FromDate").val());
+            $("#TotalLeave").val('.5');
+            return;
+        }
+        else {
+            $("#ToDate").attr('disabled', false);
+        }
+        if ($("#ToDate").val() != "") {
+            //if ($("#FromDate").val() > $("#ToDate").val()) {
+            //    $("#ToDate").val('');
+            //    $("#TotalLeave").val('');
+            //    ShowResult("Fail", "From Date can't be prior to ToDate!");
+            //}
+            if (new Date($("#FromDate").val()).getTime() > new Date($("#ToDate").val()).getTime()) {
+                $("#ToDate").val('');
+                $("#TotalLeave").val('');
+                ShowResult("Fail", "From Date can't be prior to ToDate!");
+            }
+            else {
+                $("#TotalLeave").val(Math.round((ParseDate($("#ToDate").val()) - ParseDate($("#FromDate").val())) / (1000 * 60 * 60 * 24)) + 1);
+            }
+        }
+    }
+    $("#IsHalfDay").on('click', function () {
+        totalDay();
+    });
+
+    function Triger(sender) {
+        $(sender).closest('tr').find('td [name="empId"]').trigger("click");
+    }
+    function PassingYearLength(sender) {
+        if ($(sender).val().length < 4) {
+            $(sender).val("0000");
+            ShowResult("Fail", "Minimum 4 digit required!");
+        }
+    }
+
+
+
+    function CancleLeave() {
+        $(".EditPlace").hide();
+        $(".search").hide();
+    }
+
+    function CancleToIndex() {
+        window.location.href = '@Url.Action("Index", "EmployeeLeave")'
+    }
+    var topMenuActive = "Leave";
+
+</script>

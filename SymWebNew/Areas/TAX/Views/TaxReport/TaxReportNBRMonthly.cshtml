@@ -1,0 +1,66 @@
+﻿@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Tax Report NBR Monthly</p>
+    </div>
+    <div class="Product">
+         <div class="row">
+                <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+            <div class="editor-field">
+                <div>@Html.TextBox("fYear", @Session["SessionYear"] as string, new { @class = "fiscalyearCom form-control" }) </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period From</label>
+            </div>
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Click for Report" data-url="/Tax/TaxReport/TaxReportNBRMonthlyView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Report</button>
+    <button type="button" title="Click for Report" data-url="/Tax/TaxReport/TaxReportNBRMonthlyView" onclick="reportData1(this);" id="" class="sym-btn-Excel-Export">&nbsp;Download</button>
+</div>
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+    function reportData(sender) {
+        var url = $(sender).attr('data-url');
+        var fydIdFrom = $(".fpDetailsCom :selected").val();
+
+         
+        rptObj = new Object();
+        rptObj.fydIdFrom = fydIdFrom;
+
+        var rptParam = $.param(rptObj);
+        url = url + "?" + rptParam;
+        var win = window.open(url, '_blank');
+
+    }
+    function reportData1(sender) {
+        var url = $(sender).attr('data-url');
+        var fydIdFrom = $(".fpDetailsCom :selected").val();
+        var IsExcel = true;
+
+        rptObj = new Object();
+        rptObj.fydIdFrom = fydIdFrom;
+        rptObj.IsExcel = IsExcel;
+
+        var rptParam = $.param(rptObj);
+        url = url + "?" + rptParam;
+        var win = window.open(url, '_blank');
+
+    }
+</script>

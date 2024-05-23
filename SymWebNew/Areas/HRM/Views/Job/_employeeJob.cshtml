@@ -1,0 +1,598 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("EmployeeJob", "Job", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmpJob" }))
+{
+    @Html.HiddenFor(model => model.employeeJob.Id)
+    @Html.HiddenFor(model => model.employeeJob.EmployeeId)
+    @Html.HiddenFor(model => model.employeeJob.GradeId)
+    
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Job Information</p>
+        </div>
+        <div class="employeeJob">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.JoinDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.JoinDate, new { @onchange = "joinDate(this); ProbationDate();", @placeholder = "Join Date", @class = "joinDate  required customDatePicker form-control" })
+                        @*@Html.TextBoxFor(model => model.employeeJob.JoinDate, new { @placeholder = "Join Date", @class ="customDatePicker form-control" })*@
+                        @Html.ValidationMessageFor(model => model.employeeJob.JoinDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.ProbationMonth)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.ProbationMonth, new { @placeholder = "Probation Month", @class = "probMonth NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.ProbationMonth)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.ExtendedProbationMonth)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.ExtendedProbationMonth, new { @placeholder = "Extended Probation Month", @class = "probMonth NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.ExtendedProbationMonth)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.ProbationEnd)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.ProbationEnd, new { @onchange = "joinDate(this)", @placeholder = "Probation End", @class = "probEnd customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.ProbationEnd)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.EmpCategory)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.EmpCategory, "/Config/DropDown/EmpCategory", new { @placeholder = "Emp Category", @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.EmpJobType)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.EmpJobType, "/Config/DropDown/EMPType", new { @placeholder = "Emp Job Type", @class = "form-control " })
+                    </div>
+                </div>
+
+             
+
+
+               
+
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.EmploymentType_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.EmploymentType_E, "/Config/DropDown/EmploymentType", new { @placeholder = "Employment Type", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.EmploymentType_E)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.EmploymentStatus_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.EmploymentStatus_E, "/Config/DropDown/EmploymentStatus", new { @placeholder = "Employment Status", @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.EmploymentStatus_E)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.DesignationId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.DesignationId, "/Config/DropDown/Designation", new { @placeholder = "Designation", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        @Html.Label("Grade ")
+                    </div>
+                    <div class="editor-field">
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.employeeJob.GradeName, "/Config/DropDown/Grade", new { @placeholder = "Grade", @class = "required form-control" })
+                        </div>
+                    </div>
+                </div>
+
+             
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Supervisor)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.Supervisor, new { @placeholder = "Supervisor", @value = @Model.Code + "~" + @Model.EmpName, @class = "Supervisor form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Supervisor)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.DepartmentId, "/Config/DropDown/Department", new { @placeholder = "Department", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.SectionId, "/Config/DropDown/Section", new { @placeholder = "Section", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.ProjectId, "/Config/DropDown/Project", new { @placeholder = "Project", @class = "required form-control" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                @if (Session["LabelOther1"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther1"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.employeeJob.Other1, new { @placeholder = @Session["LabelOther1"].ToString(), @class = "Other1 form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Other1)
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther2"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther2"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.employeeJob.Other2, new { @placeholder = @Session["LabelOther2"].ToString(), @class = "Other2 form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Other2)
+                        </div>
+                    </div>
+                }
+                @if (Session["LabelOther3"].ToString() != "")
+                {
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            <label>@Session["LabelOther3"]</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.employeeJob.Other3, new { @placeholder = @Session["LabelOther3"].ToString(), @class = "Other3 form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Other3)
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.BankInfo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.BankInfo, "/Config/DropDown/Bank", new { @class = "required form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.BankInfo)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.BankAccountNo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.BankAccountNo, new { @placeholder = "Bank Account No", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.AccountType)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.AccountType, new { @placeholder = "Account Type", @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.BankAccountName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.BankAccountName, "", new { @placeholder = "Bank Account Name", @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Routing_No)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.Routing_No, "", new { @placeholder = "Routing No", @class = "form-control" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.FirstHoliday)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.FirstHoliday, "/Config/DropDown/DropDowDaysOfWeek", new { @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.FirstHoliday)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.SecondHoliday)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.SecondHoliday, "/Config/DropDown/DropDowDaysOfWeek", new { @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.SecondHoliday)
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.IsPermanent)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.employeeJob.IsPermanent, new { @placeholder = "Is it Permanent?", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.IsPermanent)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.DateOfPermanent)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.DateOfPermanent, new { @onchange = "joinDate(this)", @placeholder = "Date Of Permanent", @class = "customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.DateOfPermanent)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.IsGFApplicable)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.employeeJob.IsGFApplicable, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.IsGFApplicable)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.GFStartFrom)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.GFStartFrom, new { @placeholder = "GFStartFrom", @class = "customDatePicker form-control" })
+                        @*@Html.TextBoxFor(model => model.employeeJob.JoinDate, new { @placeholder = "Join Date", @class ="customDatePicker form-control" })*@
+                        @Html.ValidationMessageFor(model => model.employeeJob.GFStartFrom)
+                    </div>
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Force)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.Force, "/Config/DropDown/Force", new { @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Force)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Rank)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.Rank, new { @placeholder = "Rank", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Duration)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.Duration, new { @placeholder = "Duration", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.DotedLineReport)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.DotedLineReport, new { @placeholder = "DotedLineReport", @value = @Model.Code + "~" + @Model.EmpName, @class = "Supervisor form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Retirement)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.employeeJob.Retirement, "/Config/DropDown/Retirement", new { @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Retirement)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.RetirementDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.employeeJob.RetirementDate, new { @placeholder = "Date Of From", @rows = "1", @class = "customDatePicker form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.RetirementDate)
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.employeeJob.Force)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.employeeJob.Force, "/Config/DropDown/Force", new { @class = " form-control" })
+                    @Html.ValidationMessageFor(model => model.employeeJob.Force)
+                </div>
+            </div>*@
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.Extentionyn)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.employeeJob.Extentionyn, "/Config/DropDown/Retirement", new { @class = " form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.Extentionyn)
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.fristExDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.employeeJob.fristExDate, new { @placeholder = "Date Of From", @rows = "1", @class = "customDatePicker form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.fristExDate)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.secondExDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.employeeJob.secondExDate, new { @placeholder = "Date Of From", @rows = "1", @class = "customDatePicker form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.secondExDate)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.ContrExDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.employeeJob.ContrExDate, new { @placeholder = "Date Of From", @rows = "1", @class = "customDatePicker form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.ContrExDate)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.IsBuild)
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.employeeJob.IsBuild, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.IsBuild)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.IsTAXApplicable)
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.employeeJob.IsTAXApplicable, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.IsTAXApplicable)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.IsJobBefore)
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.employeeJob.IsJobBefore, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.IsJobBefore)
+                        </div>
+                    </div>  
+                    
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.IsPFApplicable)
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.employeeJob.IsPFApplicable, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeJob.IsPFApplicable)
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.IsInactive)
+                        </div>
+                        <div class="editor-field center">
+                            @Html.CheckBoxFor(model => model.employeeJob.IsInactive, new { @onclick = "IsInactive();", @placeholder = "Is it Inactive/Active?", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="IsInactive">
+                        <div class="col-md-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.employeeJob.FromDate)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.employeeJob.FromDate, new { @placeholder = "Date Of From", @rows = "1", @class = "customDatePicker form-control" })
+                                @Html.ValidationMessageFor(model => model.employeeJob.FromDate)
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.employeeJob.ToDate)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.employeeJob.ToDate, new { @placeholder = "Date Of To", @rows = "1", @class = "customDatePicker form-control" })
+                                @Html.ValidationMessageFor(model => model.employeeJob.FromDate)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.employeeJob.IsRebate)
+                        </div>
+                        <div class="editor-field center">
+                            @Html.CheckBoxFor(model => model.employeeJob.IsRebate, new { @onclick = "IsInactive();", @placeholder = "Is it Inactive/Active?", @class = "form-control" })
+                        </div>
+                    </div>
+                    
+                </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.employeeJob.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.employeeJob.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.employeeJob.Remarks)
+                    </div>
+                </div>
+            </div>
+            <br />
+            @if (identity.IsAdmin || identity.IsHRM)
+            {
+                if (Model.IsActive == true)
+                {
+                    //html = '<input type="button" value="Save" onclick="pageSubmit(\'frmEmpJob\');" class="Save btn btn-info" />'
+                    //    +'<input type="button" value="Edit" onclick="EditJobDetail();" class="Edit btn btn-info" />&nbsp;'+
+                    //    '<input type="button" value="Cancel" onclick="Cancle();" class="Cancle btn btn-info" />';
+
+                <button type="button" title="Save Data" id="saveJSONempjob" class="Save sym-btn-save">&nbsp;Save</button>
+                <button type="button" title="Edit Data" onclick="EditJobDetail();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+                }
+                else
+                {
+                <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+                }
+            }
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        ProbationDate();
+        IsInactive();
+    });
+    $('.probMonth').change(function () {
+        ProbationDate()
+        IsInactive();
+        EditemployeeJob();
+    });
+
+    function ProbationDate() {
+        var joinDate = $('.joinDate').val();
+        if (joinDate != "") {
+            var probMonth = $('.probMonth').val();
+            if (probMonth != "") {
+                var date = new Date(Date.parse(joinDate));
+                date.setMonth(date.getMonth() + parseInt(probMonth));
+                var probEndDate = FormatDate(date);
+                $(".probEnd").val(probEndDate);
+            }
+        }
+    }
+    function IsInactive() {
+        if ($("#employeeJob_IsInactive").is(":checked")) {
+            $(".IsInactive").show();
+        }
+        else {
+            $("#employeeJob_FromDate").val("");
+            $("#ToDate").val("");
+            $(".IsInactive").hide();
+        }
+    }
+
+
+
+</script>
+
+<script>
+
+
+    $(function () {
+
+        $('#employeeJob_Other1').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other1', minLength: 2 });
+        $('#employeeJob_Other2').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other2', minLength: 2 });
+        $('#employeeJob_Other3').autocomplete({ source: '@Url.Action("OtherInfo", "Autocomplete", new { area = "Config" })?infoType=Other3', minLength: 2 });
+
+        $('#employeeJob_Supervisor').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $('#employeeJob_DotedLineReport').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        
+        $('#employeeJob_GradeId').attr('disabled', true);
+        EditJobDetail();
+        InitDatePickers();
+        valiDation("frmEmpJob");
+@*        $('.Supervisor').autocomplete({ source: '@Url.Action("Supervisor", "Autocomplete", new { area = "Config" })', minLength: 2 });*@
+
+    });
+    $("#saveJSONempjob").click(function () {
+
+        if (pageSubmitJSON('frmEmpJob') == 0) {
+            var myData = $('#frmEmpJob').serialize();
+            var url = "/HRM/Job/EmployeeJob";
+
+            $.when(submit(url, myData)).done(function (result) {
+                var EmployeeId = '@Model.employeeJob.EmployeeId';
+                window.location = "/HRM/Job/Index/" + EmployeeId;
+            });
+            }
+    })
+
+
+
+
+</script>

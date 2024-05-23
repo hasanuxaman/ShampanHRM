@@ -1,0 +1,410 @@
+﻿@model SymViewModel.Tax.TaxScheduleVM
+@using UIHelper.MVC
+@using (Html.BeginForm("SBHousePropertyCreateEdit", "TaxSchedule", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "afrmSchedule2HouseProperty" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.Id)
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.EmployeeId)
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.ProjectId)
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.DepartmentId)
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.SectionId)
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.DesignationId)
+   // @Html.HiddenFor(model => model.schedule2HousePropertyVM.TaxSlabId)
+   
+    @Html.HiddenFor(model => model.schedule2HousePropertyVM.FiscalYearId)
+    @Html.HiddenFor(model => model.Operation)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Schedule2 House Property Monthly</p>
+        </div>
+        <div class="Schedule2HouseProperty">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("","Description")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("","Amount")
+                    </div>
+                </div>
+
+                @*<div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line B")
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line C")
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("Line Remarks")
+                    </div>
+                </div>*@
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description1", "1. Annual Rental Income", new { @placeholder = "Annual Rental Income", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line1, new { @placeholder = "Line 1", @class = "line1 right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line1)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description2", "2. Claimed Expense", new { @placeholder = "Claimed Expense", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line2, new { @placeholder = "Line 2", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line2)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description3", "3. Repair & Maintenance 25% / 30%", new { @placeholder = "Repair & Maintenance 25% / 30%", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line3, new { @placeholder = "Line 3", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line3)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description4", "4. Municipal Local Tax", new { @placeholder = "Municipal Local Tax", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line4, new { @placeholder = "Line 4", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line4)
+                    </div>
+                </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description5", "5. Land Revenue", new { @placeholder = "Land Revenue", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line5, new { @placeholder = "Line 5", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line5)
+                    </div>
+                </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description6", "6. Interest on Loan/Mortgage/Capital Charge", new { @placeholder = "Interest on Loan/Mortgage/Capital Charge", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line6, new { @placeholder = "Line 6", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line6)
+                    </div>
+                </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description7", "7. Insurance Premium", new { @placeholder = "Insurance Premium", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line7, new { @placeholder = "Line 7", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line7)
+                    </div>
+                </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description8", "8. Vacancy Allowance", new { @placeholder = "Vacancy Allowance", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line8, new { @placeholder = "Line 8", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line8)
+                    </div>
+                </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description9", "9. Other, if any", new { @placeholder = "Other, if any", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.Line9, new { @placeholder = "Line 9", @class = "lineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.Line9)
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("OtherTotal", "10. Other Total (Summation of 2 to 9)", new { @placeholder = "Other Total", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        <b>@Html.TextBoxFor(model => model.schedule2HousePropertyVM.OtherTotal, new { @placeholder = "Other Total", @class = "otherTotal right NumberCheck form-control" })</b>
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.OtherTotal)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Net Income", "Net Income (Difference Between 1 and 10)", new { @placeholder = "Net Income", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-field">
+                        <b>@Html.TextBoxFor(model => model.schedule2HousePropertyVM.NetIncome, new { @placeholder = "Net Income", @class = "netIncome  right NumberCheck form-control" })</b>
+                        @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.NetIncome)
+                    </div>
+                </div>
+            </div>
+
+                <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Employee Schedule2 Tax Slab Details</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Slab Name")
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Ceiling Amount")
+                </div>
+            </div>
+             <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Monthly Ceiling")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Actual Amount")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Rest Amount")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Ratio (%)")
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Tax Amount")
+                </div>
+            </div>
+        </div>
+
+        @for (int i = 0; i < Model.EmployeeSchedule2TaxSlabCount; i++)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].SlabName, new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].Ceiling, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].MonthlyCeiling, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].ActualAmount, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].RestAmount, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].Ratio, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule2HousePropertyVM.employeeSchedule2TaxSlabDetailVMs[i].TaxAmount, new { @class = " TaxNotPayTk  NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBox("TotalTaxNotPayAmount", "Total Tax Not Pay Amount", new { @class = " form-control", @readonly = "readonly" })</b>
+                </div>
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule2HousePropertyVM.TotalTaxNotPayAmount, new { @class = " NumberCheck right TotalTaxNotPayAmount form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule2HousePropertyVM.TotalTaxNotPayAmount)
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+            <br />
+                <button type="button" title="Save Data" id="saveJSONSchedule2HouseProperty" class="Save sym-btn-save">&nbsp;Save</button>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("afrmSchedule2HouseProperty");
+
+        $('.lineVal, .line1').change(function () {
+            SetValue();
+        });
+
+        var SetValue = function () {
+
+            var otherTotal = 0;
+            var lineVal = 0;
+
+            $(".lineVal").each(function () {
+                lineVal = lineVal + parseFloat($(this).val());
+            });
+
+            var otherTotal = lineVal;
+            var line1Value = parseFloat($('.line1').val());
+            var netIncome = line1Value - otherTotal;
+
+            
+            $('.otherTotal').val(otherTotal)
+            $('.netIncome').val(netIncome)
+        }
+
+
+        
+
+
+        $(".NumberCheck").each(function () {
+            this.value = parseFloat(this.value).toFixed(2);
+        });
+
+        var TotalTaxNotPayAmount = 0;
+
+        $(".TaxNotPayTk").each(function () {
+            TotalTaxNotPayAmount = parseFloat(TotalTaxNotPayAmount) + parseFloat(this.value);
+        });
+
+
+        $(".TotalTaxNotPayAmount").val(TotalTaxNotPayAmount);
+
+
+
+
+
+
+
+
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#saveJSONSchedule2HouseProperty').click(function () {
+            var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+            var fYear = $("#fYear").val();
+            if (FiscalPeriodDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period");
+                return;
+            }
+
+
+            var a = pageSubmitJSON('afrmSchedule2HouseProperty');
+            if (a != 0) {
+                return;
+            }
+            //if (isChange == false) {
+            //    ShowResult("Success", "You have no changes for save");
+            //    return;
+            //}
+            if (pageSubmitJSON('afrmSchedule2HouseProperty') == 0) {
+                var myData = $('#afrmSchedule2HouseProperty').serialize();
+                var url = "/Tax/TaxSchedule/SBHousePropertyCreateEdit?fydid=" + FiscalPeriodDetailId + "&fYear=" + fYear;
+                submit(url, myData);
+                window.location.reload();
+                $("#FinalTaxAmount").focus();
+            }
+            
+        });
+    });
+
+
+</script>

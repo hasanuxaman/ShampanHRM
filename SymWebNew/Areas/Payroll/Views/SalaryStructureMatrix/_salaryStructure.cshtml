@@ -1,0 +1,189 @@
+﻿@model SymViewModel.Payroll.SalaryStructureMatrixVM
+@using UIHelper.MVC
+@using (Html.BeginForm("Edit", "SalaryStructureMatrix", FormMethod.Post))
+{
+   using (Html.BeginCollectionItem("SalaryStructureMatrixVM"))
+    {
+          <tr class="GridView">
+              <td>
+                  <button class="btn-sm sym-btn-update update"   type="button">&nbsp;Update</button>
+              </td>
+        <td>
+            @Html.DisplayFor(model => model.SalaryTypeName, new { @class = "SalaryTypeName" })
+             @Html.HiddenFor(model => model.SalaryTypeName, new { @class = "SalaryTypeName" })
+             @Html.HiddenFor(model => model.Id, new { @class = "Id" })
+        </td>
+                <td>
+            @Html.SimpleDropDownFor(model => model.DesignationGroupId, "/Config/DropDown/DesignationGroup", new { @class = "form-control DesignationGroupId" })
+        </td>
+              
+              <td>
+            @Html.SimpleDropDownFor(model => model.GradeId, "/Config/DropDown/Grade", new { @class = "form-control GradeId" })
+        </td>
+      
+              <td>@Html.TextBoxFor(model => model.Step1Amount, new { @class = "Step1Amount" })</td>
+              <td>@Html.TextBoxFor(model => model.Step1_5Amount, new { @class = "Step1_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step2Amount, new { @class = "Step2Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step2_5Amount, new { @class = "Step2_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step3Amount, new { @class = "Step3Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step3_5Amount, new { @class = "Step3_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step4Amount, new { @class = "Step4Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step4_5Amount, new { @class = "Step4_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step5Amount, new { @class = "Step5Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step5_5Amount, new { @class = "Step5_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step6Amount, new { @class = "Step6Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step6_5Amount, new { @class = "Step6_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step7Amount, new { @class = "Step7Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step7_5Amount, new { @class = "Step7_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step8Amount, new { @class = "Step8Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step8_5Amount, new { @class = "Step8_5Amount" })</td>
+
+              <td>@Html.TextBoxFor(model => model.Step9Amount, new { @class = "Step9Amount" })
+
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step9_5Amount, new { @class = "Step9_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step10Amount, new { @class = "Step10Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step10_5Amount, new { @class = "Step10_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step11Amount, new { @class = "Step11Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step11_5Amount, new { @class = "Step11_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step12Amount, new { @class = "Step12Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step12_5Amount, new { @class = "Step12_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step13Amount, new { @class = "Step13Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step13_5Amount, new { @class = "Step13_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step14Amount, new { @class = "Step14Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step14_5Amount ,new { @class = "Step14_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step15Amount, new { @class = "Step15Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step15_5Amount, new { @class = "Step15_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step16Amount, new { @class = "Step16Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step16_5Amount, new { @class = "Step16_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step17Amount, new { @class = "Step17Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step17_5Amount, new { @class = "Step1Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step18Amount, new { @class = "Step18Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step18_5Amount, new { @class = "Step18_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step19Amount, new { @class = "Step19Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step19_5Amount, new { @class = "Step19_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step20Amount, new { @class = "Step20Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step20_5Amount, new { @class = "Step20_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step21Amount, new { @class = "Step21Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step21_5Amount, new { @class = "Step21_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step22Amount, new { @class = "Step22Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step22_5Amount, new { @class = "Step22_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step23Amount, new { @class = "Step23Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step23_5Amount, new { @class = "Step23_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step24Amount, new { @class = "Step24Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step24_5Amount, new { @class = "Step24_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step25Amount, new { @class = "Step25Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step25_5Amount, new { @class = "Step25_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step26Amount, new { @class = "Step26Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step26_5Amount, new { @class = "Step26_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step27Amount, new { @class = "Step27Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step27_5Amount, new { @class = "Step27_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step28Amount, new { @class = "Step28Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step28_5Amount, new { @class = "Step28_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step29Amount, new { @class = "Step29Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step29_5Amount, new { @class = "Step29_5Amount" })</td>
+
+              <td>
+                  @Html.TextBoxFor(model => model.Step30Amount, new { @class = "Step30Amount" })
+              </td>
+              <td>@Html.TextBoxFor(model => model.Step30_5Amount, new { @class = "Step30_5Amount" })</td>
+
+        <td>
+            @Html.TextBoxFor(model => model.Remarks, new { @class = "Remarks" })
+        </td>
+              <td>
+                  <button class="sym-btn-update update"   type="button">&nbsp;Update</button>
+              </td>
+    </tr>
+    }
+}
+
+<script>
+    $(function () {
+       
+        InitDropDowns();
+    });
+   
+   
+</script>

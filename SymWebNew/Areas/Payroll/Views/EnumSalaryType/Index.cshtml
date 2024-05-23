@@ -1,0 +1,123 @@
+﻿<style>
+
+        .nav-tabs > li > a{
+        border-right: 1px solid #94c78a;
+        background-color: #94c78a;
+        font-size: 14px;
+         padding: 5px 7px!important;
+    }
+        .nav-tabs > li > a:hover {
+            background-color: #45a441 !important;
+            border: medium none;
+            -moz-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            color: #fff;
+        }
+
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background-color: #45a441 !important;
+          font-size: 15px;
+    }
+
+</style>
+<div class="thinbox panel">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#SalaryHead">Salary Head</a></li>
+        <li><a data-toggle="tab" href="#SalaryHeadprinciple">Salary Head (Principle)</a></li>
+        <li><a data-toggle="tab" href="#SalaryHeadOther">Salary Head (Other)</a></li>
+        <li><a data-toggle="tab" href="#LoanHead">Loan Head</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="SalaryHead" class="tab-pane fade in active">
+            @Html.Partial("_salaryHead")
+        </div>
+        <div id="SalaryHeadprinciple" class="tab-pane fade">
+            @Html.Partial("_salaryHeadPrinciple")
+        </div>
+        <div id="SalaryHeadOther" class="tab-pane fade">
+            @Html.Partial("_salaryHeadOther")
+        </div>
+        <div id="LoanHead" class="tab-pane fade">
+            @Html.Partial("_loanHead")
+        </div>
+    </div>
+</div>
+
+ 
+<script>
+    function UpdatePrinciple(sender,id) {
+        //}
+
+        Ask("Do you want to Update the GL Account Code?", function () {
+            var gLAccountCode = $(sender).closest('tr').find('.glac').val();
+            //alert(id);
+            //alert(loanDetailsId);
+
+            var url = "/Payroll/EnumSalaryType/EditPrinciple";
+            var val = {
+                'Id': id,
+                'GLAccountCode': gLAccountCode
+            };
+            $.ajax({
+                //type: "GET",
+                url: url,
+                data: val,
+                success: function (response) {
+                    ShowResult(response[0], response[1]);
+
+                }
+            });
+        });
+    }
+
+
+    function UpdateOther(sender, id) {
+        //}
+
+        Ask("Do you want to Update the GL Account Code?", function () {
+            var gLAccountCode = $(sender).closest('tr').find('.glac').val();
+            //alert(id);
+            //alert(loanDetailsId);
+
+            var url = "/Payroll/EnumSalaryType/EditOther";
+            var val = {
+                'Id': id,
+                'GLAccountCode': gLAccountCode
+            };
+            $.ajax({
+                //type: "GET",
+                url: url,
+                data: val,
+                success: function (response) {
+                    ShowResult(response[0], response[1]);
+                }
+            });
+        });
+    }
+
+    function UpdateLoan(sender, id) {
+
+        Ask("Do you want to Update the GL Account Code?", function () {
+            var gLAccountCode = $(sender).closest('tr').find('.glac').val();
+            //alert(id);
+            //alert(loanDetailsId);
+
+            var url = "/Payroll/EnumLoanType/EditLoan";
+            var val = {
+                'Id': id,
+                'GLAccountCode': gLAccountCode
+            };
+            $.ajax({
+                //type: "GET",
+                url: url,
+                data: val,
+                success: function (response) {
+                    ShowResult(response[0], response[1]);
+                }
+            });
+        });
+    }
+    </script>
+
+

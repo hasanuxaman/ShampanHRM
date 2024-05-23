@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SymViewModel.HRM.EmployeeInfoVM>
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index";
+                //Layout = null;
+}
+<div class="headrow">
+    <button type="button" title="Add New Employee Information" id="btnDialogEMP" class="sym-btn-add ">&nbsp;New</button>
+
+    @*<button type="button" title="Delete Employee Information" data-url="/hrm/employeeinfo/EmployeeDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove ">&nbsp;Delete</button>*@
+    <label class="pull-right">Employee</label>
+
+</div>
+<div>
+    <div id="myEmployee">
+    </div>
+</div>
+<p></p>
+
+<div class="thinbox">
+    <div class=" row th_thinbox">
+        <p>Employee List</p>
+    </div>
+    <div class="row">
+        <div id="myPartialContainer">
+            @if (Model.FirstOrDefault().ClientEmployeeIndex == "KajolEmployeeIndex")
+            {
+                @Html.Partial("_indexKajol")     
+            }
+            else
+            {
+                @Html.Partial("_index")     
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    $(function () {
+        InitDateTimePickers();
+        //SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+              var msg = '@ViewBag.mgs';
+              msg = msg.split("~");
+              ShowResult(msg[0], msg[1]);
+          }
+      });
+      $('#btnDialogEMP').click(function () {
+          // var code = 1;// $('#Id').val();
+          $("#myEmployee").load('@Url.Action("Create", "EmployeeInfo")');
+
+        });
+        function Cancle() {
+            $("#myEmployee").html('');
+            $(".btnNew").show();
+        }
+
+        var topMenuActive = "Employee";
+
+</script>
+

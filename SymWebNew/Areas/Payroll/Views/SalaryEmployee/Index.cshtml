@@ -1,0 +1,257 @@
+﻿@model SymViewModel.Payroll.SalaryEmployeeVM
+@using UIHelper.MVC
+@using (Html.BeginForm("_index", "SalaryEmployee", FormMethod.Post, new { @Id = "frmSalaryEmployeeSearch" }))
+{
+    <div class="headrow">
+        <label class="pull-right">Salary Hold</label>
+        &nbsp;
+    <button type="button" title="Click to Show Employee List" id="searchBtn" class="btn sym-btn-search">&nbsp;Search</button>
+    </div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Salary Hold</p>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <div class="editor-label">
+                    <label>Year</label>
+                </div>
+                <div class="editor-field">
+                    <div>@Html.TextBoxFor(model => model.FiscalYear, @Session["SessionYear"] as string, new { @class = "fiscalyearCom form-control" }) </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Fiscal Period</label>
+                </div>
+                <div class="editor-field">
+                    <div>
+                        @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Emp Code(From)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.CodeF, "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Emp Code(To)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.CodeT, "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.DepartmentId, "/Config/DropDown/Department", new { @class = "departmentsCom form-control selectDropdown" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.SectionId, "/Config/DropDown/Section", new { @class = "sectionsCom form-control selectDropdown" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.ProjectId, "/Config/DropDown/Project", new { @class = "projectsCom form-control selectDropdown" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Designation</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.DesignationId, "/Config/DropDown/Designation", new { @class = " form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="headrow" hidden="hidden">
+        <button type="button" title="Update Data" id="" class="saveJSON sym-btn-update">&nbsp;Update</button>
+    </div>
+    <div id="detailsDiv">
+    </div>
+    <div class="headrow" hidden="hidden">
+        <button type="button" title="Update Data" id="" class="saveJSON sym-btn-update">&nbsp;Update</button>
+    </div>
+}
+
+ <script>
+     $(function () {
+         InitDropdownsCommon();
+     });
+</script>
+
+ <script>
+     $('#searchBtn').click(function () {
+        Searching();
+    });
+
+
+    function Searching() {
+        //////if (pageSubmitJSON('frmSalaryEmployeeSearch') == 0) {
+            var myData = $('#frmSalaryEmployeeSearch').serialize();
+
+
+            var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+
+
+            if (FiscalYearDetailId == "") {
+                ShowResult('Fail', "Please Select Fiscal Period");
+                return;
+            }
+
+            var url = "/Common/FiscalYear/FiscalPeriodLockCheck?FiscalYearDetailId=" + FiscalYearDetailId;
+
+            $.ajax({
+                url: url
+                   , type: 'Post'
+                   , traditional: true
+                   , beforeSend: function () { $(".loading").show(); }
+                   , success: function (result) {
+                     url = "/Payroll/SalaryEmployee/_index";
+
+                    var results = result.split("~");
+                    if (results[0].toLowerCase() == 'true') {
+
+                        ShowResult("Fail", results[1]);
+                    }
+                    else {
+
+                        $.ajax({
+                            url: url,
+                            data: myData,
+                            type: 'GET',
+                            beforeSend: function () { $(".loading").show(); },
+                            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                            success: function (data) {
+                                $(' #detailsDiv').html(data);
+
+                                $(".saveJSON").show();
+                                $(".headrow").show();
+                                //ShowResult("Info", " Data load Complete");
+                            }
+                        });
+
+                    }
+
+                }
+                , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+            });
+
+
+            ////$.ajax({
+            ////    url: url,
+            ////    data: myData,
+            ////    type: 'GET',
+            ////    beforeSend: function () { $(".loading").show(); },
+            ////    complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            ////    success: function (data) {
+            ////        $(' #detailsDiv').html(data);
+
+            ////        $(".saveJSON").show();
+            ////        $(".headrow").show();
+            ////        //ShowResult("Info", " Data load Complete");
+            ////    },
+            ////});
+
+        //////}
+    }
+
+    //function SearchingData(result) {
+    //    var results = result.split("~");
+    //    if (results[0].toLowerCase() == 'true') {
+
+    //        ShowResult("Fail", results[1]);
+
+    //    }
+    //    else {
+
+    //        $.ajax({
+    //            url: url,
+    //            data: myData,
+    //            type: 'GET',
+    //            beforeSend: function () { $(".loading").show(); },
+    //            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+    //            success: function (data) {
+    //                $(' #detailsDiv').html(data);
+
+    //                $(".saveJSON").show();
+    //                $(".headrow").show();
+    //                //ShowResult("Info", " Data load Complete");
+    //            },
+    //        });
+
+    //    }
+
+    //}
+
+
+</script>
+
+<script>
+    $('.saveJSON').click(function () {
+        var selectedEmployee =$('.selectChk:checkbox:checked').length;
+
+        if (selectedEmployee == 0) {
+            ShowResult('Fail', "Please Select Employee First");
+            return;
+        }
+
+        if (pageSubmitJSON('frmSalaryEmployee') == 0) {
+            var myData = $('#frmSalaryEmployee').serialize();
+            var url = "/Payroll/SalaryEmployee/Create";
+
+            //////submit(url, myData);
+
+            $.ajax({
+                type: 'POST',
+                data: myData, // #2
+                url: url,
+                beforeSend: function () { $(".loading").show(); },
+                success: function (result) {
+                    var msg1 = result.split('~')[0];
+                    var msg2 = result.split('~')[1];
+                    if (msg1 != "Fail") {
+                        ShowResult("Success", msg2);
+                    }
+                    else {
+                        ShowResult("Fail", msg2);
+                    }
+
+                    $(".saveJSON").hide();
+                    Searching();
+
+                },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") }
+
+            });
+
+          
+        }
+    });
+
+
+</script>

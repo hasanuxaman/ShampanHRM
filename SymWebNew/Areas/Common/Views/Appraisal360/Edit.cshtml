@@ -1,0 +1,241 @@
+﻿@model SymViewModel.Common.Appraisal360VM
+@using UIHelper.MVC
+
+@{
+    ViewBag.Title = "Edit";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @*@Html.HiddenFor(model => model.CompanyId)
+        @Html.HiddenFor(model => model.Id)*@
+
+    <div class="headrow">
+        <button type="submit" title="Update Data" class="sym-btn-update">&nbsp;Update</button>
+        <button type="button" title="Add New Appraisal Questions" data-url="/Common/Appraisal360/Create" onclick="GoTo(this)" id="" class=" sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Index Appraisal Questions" data-url="/Common/Appraisal360/Index" onclick="GoTo(this)" id="" class=" sym-btn-back "> &nbsp;Index</button>
+        <label class="pull-right"> Appraisal Mark Setups > Edit</label>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Appraisal Mark Setups</p>
+        </div>
+        <div class="branch">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepartmentId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.DepartmentId, "/Config/DropDown/Department", new { @class = " cDepartmentId required form-control " })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.UserId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.UserId, "/Config/DropDown/User", new { @class = " cUserId required form-control " })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FeedBackUserId)
+                    </div>
+                    <div class="editor-field">
+                        @*<select id="DepartmentId" name="DepartmentId" data-val="" data-url="/Config/DropDown/Department/" class=" country form-control"></select>*@
+                        @Html.SimpleDropDownFor(m => m.FeedBackUserId, "/Config/DropDown/User", new { @class = " cFeedBackUserId required form-control " })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.Label("", "Feedback Date")
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("FeedbackDate", null, new { @placeholder = "FeedbackDate", @class = "required customDatePicker form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("FeedBackYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDownFor(m => m.FeedBackMonthId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "  cFeedBackMonthId required form-control selectDropdown " })
+                            @* @Html.SimpleDropDown("FeedBackMonthId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control selectDropdown" })*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsFeedbackCompeted)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsFeedbackCompeted, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsFeedbackCompeted)
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsUser)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsUser, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsUser)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsSupervisor)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsSupervisor, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsSupervisor)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsDepartmentHead)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsDepartmentHead, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsDepartmentHead)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsManagement)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsManagement, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsManagement)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsHR)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsHR, new { @class = "form-check-input" })
+                        @Html.ValidationMessageFor(model => model.IsHR)
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*  <p>
+                <input class="btn btn-info" type="submit" value="Save" />
+                <input type="button" class="btn btn-info" data-url="/Common/Branch" onclick="BackToList(this)" value="Back" />
+            </p>*@
+
+    </div>
+    <div class="headrow">
+        <button type="submit" title="Update Data" class="sym-btn-update">&nbsp;Update</button>
+    </div>
+}
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            Country();
+            Division();
+            District();
+            //valiDation("frmDependent");
+            fromWriteColor("branch");
+
+            $('.cFeedBackMonthId').select2('data', { id: '@Model.FeedBackMonthId', text: '@Model.PeriodName' });
+        });
+
+
+        $('.saveJSON').click(function () {
+            var FeedbackDate = $("#FeedbackDate").val();
+            if (FeedbackDate == "") {
+                ShowResult("Fail", "Please Select Feedback Date First!");
+                return;
+            }
+
+            if (pageSubmitJSON('frmEmpDailyOvertime') == 0) {
+                var myData = $('#frmEmpDailyOvertime').serialize();
+                var url = "/Common/EmployeeDailyOvertime/Create?FeedbackDate=" + FeedbackDate;
+                //if (submit(url, myData) == true) {
+
+                //}
+
+                $.ajax({
+                    type: 'POST',
+                    data: myData,
+                    url: url,
+                    beforeSend: function () { $(".loading").show(); },
+                    success: function (result) {
+                        var msg1 = result.split('~')[0];
+                        var msg2 = result.split('~')[1];
+                        ShowResult(msg1, msg2);
+
+                        $(".saveJSON").hide();
+                        Searching();
+
+                    },
+                    complete: function () { $(".loading").fadeOut(200).hide("slow") }
+
+                });
+            }
+        });
+        $('#Clear').click(function () {
+            location.reload()
+        });
+        $(function () {
+            InitDatePickers();
+            InitDropdownsCommon();
+        });
+
+        $("#Searchbtn").click(function () {
+            var FeedbackDate = $("#FeedbackDate").val();
+            if (FeedbackDate == "") {
+                ShowResult("Fail", "Please Select Feedback Date First!");
+                return;
+            }
+            Searching();
+        });
+        function Searching() {
+
+            var ProjectId = $("#ProjectId").val();
+            var DepartmentId = $("#DepartmentId").val();
+            var SectionId = $("#SectionId").val();
+            var date = $("#FeedbackDate").val();
+
+            var url = '/Common/EmployeeDailyOvertime/_indexPartial?ProjectId=' + ProjectId
+              + '&DepartmentId=' + DepartmentId
+              + '&SectionId=' + SectionId
+              + '&date=' + date
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (data) {
+                    $(' #detailsDiv').html(data);
+                    $(".saveJSON").show();
+                    $(".headrow").show();
+                },
+            });
+        }
+    </script>
+}

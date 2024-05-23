@@ -1,0 +1,101 @@
+﻿@model SymViewModel.Tax.TaxSlabVM
+@using UIHelper.MVC
+@using (Html.BeginForm("CreateEdit", "TaxSlab", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTaxSlab" }))
+{   
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Operation)
+    <div class="headrow">
+        @if (Model.Operation == "update")
+        {
+            <button type="button" title="Update Data" onclick="pageSubmit('frmTaxSlab')" class="sym-btn-update">&nbsp;Update</button>
+            <label class="pull-right">TaxSlab > Edit</label>
+        }
+        else if (Model.Operation == "add")
+        {
+            <button type="button" title="Save Data" onclick="pageSubmit('frmTaxSlab')" class="sym-btn-save">&nbsp;Save</button>
+            <label class="pull-right">TaxSlab > Create</label>
+        }
+        <button type="button" title="Go To Index" data-url="/TAX/TaxSlab" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New Tax Slab" data-url="/TAX/TaxSlab/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Tax Slab</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name", @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.MinimumTAX)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.MinimumTAX, new { @placeholder = "Minimum TAX", @class = "right NumberCheck form-control" })
+                    @Html.ValidationMessageFor(model => model.MinimumTAX)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = " form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Tax Slab Detail</p>
+        </div>
+        <div id="editorItemRows5">
+
+            @if (Model.taxSlabDetailVMs != null)
+            {
+                <table class=" table-responsive ">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Slab Name</th>
+                            <th style="width: 15%;">Ceiling</th>
+                            <th style="width: 15%;">Ratio (%)</th>
+                            <th style="width: 20%;">Remarks</th>
+                            @*//SlabName
+        //Ceiling
+        //Ratio   *@
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.taxSlabDetailVMs)
+                        {
+                            Html.RenderPartial("_detail", item);
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+    
+    <div class="headrow">
+        @if (Model.Operation == "update")
+        {
+            <button type="button" title="Update Data" onclick="pageSubmit('frmTaxSlab')" class="sym-btn-update">&nbsp;Update</button>
+        }
+        else if (Model.Operation == "add")
+        {
+            <button type="button" title="Save Data" onclick="pageSubmit('frmTaxSlab')" class="sym-btn-save">&nbsp;Save</button>
+        }
+        <button type="button" title="Go To Index" data-url="/TAX/TaxSlab" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New Tax Slab" data-url="/TAX/TaxSlab/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    </div>
+}

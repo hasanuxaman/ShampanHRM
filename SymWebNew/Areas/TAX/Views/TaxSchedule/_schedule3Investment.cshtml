@@ -1,0 +1,458 @@
+﻿@model SymViewModel.Tax.TaxScheduleVM
+@using UIHelper.MVC
+@using (Html.BeginForm("SCInvestmentCreateEdit", "TaxSchedule", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "afrmSchedule3Investment" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.Id)
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.EmployeeId)
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.ProjectId)
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.DepartmentId)
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.SectionId)
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.DesignationId)
+    // @Html.HiddenFor(model => model.schedule3InvestmentVM.TaxSlabId)
+   
+    @Html.HiddenFor(model => model.schedule3InvestmentVM.FiscalYearId)
+    @Html.HiddenFor(model => model.Operation)
+    <div class="headrow">
+        <button type="button" title="Save Data" id="" class="saveJSONSchedule3Investment  Save sym-btn-save">&nbsp;Save</button>
+        <label class="pull-right">Schedule3 Investment Monthly</label>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Schedule3 Investment Monthly</p>
+        </div>
+        <div class="Schedule3Investment">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("", "Description")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("", "Amount")
+                    </div>
+                </div>
+
+                @*<div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line B")
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.Label("Line C")
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.Label("Line Remarks")
+                    </div>
+                </div>*@
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description1", "1. Life Insurance Premium", new { @placeholder = "Description1", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line1, new { @placeholder = "Line 1", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line1)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description2", "2. Contribution to deferred annuity", new { @placeholder = "Description2", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line2, new { @placeholder = "Line 2", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line2)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description3", "3. Contribution to provident fund to which provident fund act 1925 applies", new { @placeholder = "Description3", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line3, new { @placeholder = "Line 3", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line3)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description4", "4. Self contribution and employer's contribution to Recognized Provident Fund", new { @placeholder = "Description4", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line4, new { @placeholder = "Line 4", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line4)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description5", "5. Contribution to Super Annuation Fund", new { @placeholder = "Description5", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line5, new { @placeholder = "Line 5", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line5)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description6", "6. Investment in approved debenture or debenture stock, Stock or Shares", new { @placeholder = "Description6", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line6, new { @placeholder = "Line 6", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line6)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description7", "7. Contribution to any Deposit Pension Scheme (DPS)", new { @placeholder = "Description7", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line7, new { @placeholder = "Line 7", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line7)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description8", "8. Contribution to Benevolent Fund and Group Insurance Premium", new { @placeholder = "Description8", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line8, new { @placeholder = "Line 8", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line8)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description9", "9. Contribution to Zakat Fund (Invest in Share)", new { @placeholder = "Description9", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line9, new { @placeholder = "Line 9", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line9)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description10", "10. Others, if any (give details) computer", new { @placeholder = "Description10", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule3InvestmentVM.Line10, new { @placeholder = "Line 10", @class = "invLineVal right NumberCheck form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.Line10)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Total", "Total Investment Amount", new { @placeholder = "Total Investment Amount", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        <b>@Html.TextBoxFor(model => model.schedule3InvestmentVM.TotalInvestmentAmount, new { @placeholder = "Total Investment Amount", @class = "totalInvestmentAmount right NumberCheck form-control" })</b>
+                        @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.TotalInvestmentAmount)
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>Employee Schedule3 Tax Slab Details</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="editor-field">
+                            @Html.Label("TotalTaxableAmount", "Total Taxable Amount [Schedule1 Column C]")
+                        </div>
+
+                        <div class="editor-field">
+                            <b>@Html.TextBoxFor(model => model.schedule3InvestmentVM.TotalTaxableAmount, new { @placeholder = "Total Taxable Amount", @class = " right form-control", @readonly = "readonly" })</b>
+                            @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.TotalTaxableAmount)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="editor-field">
+                            @Html.Label("TotalInvestmentAmount", "Total Investment Amount")
+                        </div>
+
+                        <div class="editor-field">
+                            <b>@Html.TextBoxFor(model => model.schedule3InvestmentVM.TotalInvestmentAmount, new { @placeholder = "Total Investment Amount", @class = " right form-control", @readonly = "readonly" })</b>
+                            @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.TotalInvestmentAmount)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="editor-field">
+                            @Html.Label("NetIncomeAmount25P", "25% of (Net Income - PF) Amount [Schedule1 Column A]")
+                        </div>
+
+                        <div class="editor-field">
+                            <b>@Html.TextBoxFor(model => model.schedule3InvestmentVM.NetIncomeAmount25P, new { @placeholder = "Net Income Amount 25 Percent", @class = " right form-control", @readonly = "readonly" })</b>
+                            @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.NetIncomeAmount25P)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="editor-field">
+                            @Html.Label("MaximumInvestmentAmountMonthly", "Maximum Investment Amount Monthly")
+                        </div>
+
+                        <div class="editor-field">
+                            <b>@Html.TextBoxFor(model => model.schedule3InvestmentVM.MaximumInvestmentAmountMonthly, new { @placeholder = "Maximum Investment Amount Monthly", @class = " right form-control", @readonly = "readonly" })</b>
+                            @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.MaximumInvestmentAmountMonthly)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    @*<div class="col-md-1">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Yearly Earning Ceiling (Min)")
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Yearly Earning Ceiling (Max)")
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Yearly Ceiling")
+                        </div>
+                    </div>*@
+
+                    <div class="col-md-2">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Monthly Earning Ceiling (Min)")
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Monthly Earning Ceiling (Max)")
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Monthly Ceiling")
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Actual Amount")
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Rest Amount")
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Ratio (%)")
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label" style="white-space: pre-line">
+                            @Html.Label("", "Tax Rebate Amount")
+                        </div>
+                    </div>
+                </div>
+
+                @for (int i = 0; i < Model.EmployeeSchedule3TaxSlabCount; i++)
+                {
+                    <div class="row">
+                        @Html.HiddenFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].EarningCeilingMin, new { @class = " NoDecimal right form-control", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].EarningCeilingMax, new { @class = " NoDecimal right form-control", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].Ceiling, new { @class = " NoDecimal right form-control", @readonly = "readonly" })
+
+                        <div class="col-md-2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].MonthlyEarningCeilingMin, new { @class = " TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].MonthlyEarningCeilingMax, new { @class = " TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].MonthlyCeiling, new { @class = " TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-1">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].ActualAmount, new { @class = " TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].RestAmount, new { @class = " TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].Ratio, new { @class = " TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="editor-field">
+                                @Html.TextBoxFor(model => model.schedule3InvestmentVM.employeeSchedule3TaxSlabDetailVMs[i].TaxAmount, new { @class = " InvTaxNotPayTk  TwoDecimal right form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="editor-field">
+                            <b>@Html.TextBox("TotalTaxNotPayAmount", "Total Tax Not Pay Amount (Total Rebate Amount)", new { @class = " form-control", @readonly = "readonly" })</b>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        &nbsp;
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <div class="editor-field">
+                            <b>@Html.TextBoxFor(model => model.schedule3InvestmentVM.InvestmentTotalTaxNotPayAmount, new { @class = " TwoDecimal right InvTotalTaxNotPayAmount form-control", @readonly = "readonly" })</b>
+                            @Html.ValidationMessageFor(model => model.schedule3InvestmentVM.InvestmentTotalTaxNotPayAmount)
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <div class="headrow">
+        <button type="button" title="Save Data" id="" class="saveJSONSchedule3Investment  Save sym-btn-save">&nbsp;Save</button>
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("afrmSchedule3Investment");
+
+        $('.invLineVal').change(function () {
+            SetValue();
+        });
+
+        var SetValue = function () {
+
+            var otherTotal = 0;
+            var invLineVal = 0;
+
+            $(".invLineVal").each(function () {
+                invLineVal = invLineVal + parseFloat($(this).val());
+            });
+
+            var totalInvestmentAmount = invLineVal;
+
+            $('.totalInvestmentAmount').val(totalInvestmentAmount)
+
+        }
+
+
+
+
+        $(".TwoDecimal").each(function () {
+            this.value = parseFloat(this.value).toFixed(2);
+        });
+
+        $(".NoDecimal").each(function () {
+            this.value = parseFloat(this.value).toFixed(0);
+        });
+
+        var InvTotalTaxNotPayAmount = 0;
+
+        $(".InvTaxNotPayTk").each(function () {
+            InvTotalTaxNotPayAmount = parseFloat(InvTotalTaxNotPayAmount) + parseFloat(this.value);
+        });
+
+
+        $(".InvTotalTaxNotPayAmount").val(InvTotalTaxNotPayAmount);
+
+
+
+
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('.saveJSONSchedule3Investment').click(function () {
+            var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+            var fYear = $("#fYear").val();
+            if (FiscalPeriodDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period");
+                return;
+            }
+
+
+            var a = pageSubmitJSON('afrmSchedule3Investment');
+            if (a != 0) {
+                return;
+            }
+            //if (isChange == false) {
+            //    ShowResult("Success", "You have no changes for save");
+            //    return;
+            //}
+            if (pageSubmitJSON('afrmSchedule3Investment') == 0) {
+                var myData = $('#afrmSchedule3Investment').serialize();
+                var url = "/Tax/TaxSchedule/SCInvestmentCreateEdit?fydid=" + FiscalPeriodDetailId + "&fYear=" + fYear;
+                submit(url, myData);
+                window.location.reload();
+                $("#FinalTaxAmount").focus();
+            }
+
+        });
+    });
+
+
+</script>

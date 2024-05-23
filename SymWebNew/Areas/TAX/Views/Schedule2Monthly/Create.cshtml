@@ -1,0 +1,53 @@
+﻿@*@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+
+
+
+
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+</script>
+
+<script>
+    $(function () {
+      
+
+        $('#EmployeeCode').change(function () {
+            LoadEmployeeDetails();
+        });
+
+        var LoadEmployeeDetails = function () {
+            $('#EmployeeName, #Designation, #Department, #Section, #Project').removeAttr("readonly");
+
+
+            var EmployeeCode = $('#EmployeeCode :selected').val();
+            var url = "/Tax/TaxSchedule/SelectEmployeeDetails/?EmployeeCode=" + EmployeeCode;
+
+            $.getJSON(url, function (data) {
+                var EmployeeName = data.split('~')[0];
+                var Designation = data.split('~')[1];
+
+                var Department = data.split('~')[2];
+                var Section = data.split('~')[3];
+                var Project = data.split('~')[4];
+
+                $('#EmployeeName').val(EmployeeName);
+                $('#Designation').val(Designation);
+                $('#Department').val(Department);
+                $('#Section').val(Section);
+                $('#Project').val(Project);
+            });
+
+            $('#EmployeeName, #Designation, #Department, #Section, #Project').prop("readonly", true);
+        }
+
+    });
+</script>*@

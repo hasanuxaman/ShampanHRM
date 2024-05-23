@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SymViewModel.Payroll.SalaryEmployeeVM>
+@using UIHelper.MVC
+@using (Html.BeginForm("Create", "SalaryEmployee", FormMethod.Post, new { @Id = "frmSalaryEmployee" }))
+{
+    
+    @Html.Hidden("updatedList", Model)
+    <div style="overflow-x: auto;">
+        <div class="thinbox">
+            <div class="th_thinbox">
+                <p>
+                    Employee List
+                </p>
+            </div>
+
+
+            <div id="container" class=" table-responsive">
+                <table id="myDataTable" class=" display">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center">
+                                Select
+                                <input type="checkbox" class="chkAllThis" />
+                                </th>
+                             <th style="text-align: center">
+                                Hold
+                                <input type="checkbox" class="chkAllHold" />
+                                </th>
+                            <th>Month</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>@Session["SectionLabel"]</th>
+                            <th>@Session["ProjectLabel"]</th>
+
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                           
+                            <tr>
+                                <th style="text-align: center">@Html.CheckBoxFor(model => Model.ToList()[i].IsEmployeeChecked, new { @class = " selectChk " })</th>
+                                <th style="text-align: center">@Html.CheckBoxFor(model => Model.ToList()[i].IsHold, new { @class = " selectHold " })</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].PeriodName)</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].EmpCode)</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].EmpName)</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].Designation)</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].Department)</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].Section)</th>
+                                <th>&nbsp;@Html.DisplayFor(model => Model.ToList()[i].Project)</th>
+                                <th>&nbsp;@Html.TextAreaFor(model => Model.ToList()[i].Remarks, new { @placeholder = "Remarks", @class = " col-sm-12  tm  " })</th>
+
+                                @Html.HiddenFor(model => Model.ToList()[i].EmployeeId)
+                                @Html.HiddenFor(model => Model.ToList()[i].Id)
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="2">&nbsp;Total Records: @Model.Count()</td>
+                            <td  colspan="8"></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        InitDatePickers();
+        InitDropdownsCommon();
+    });
+
+
+</script>
+<script>
+    $(".chkAllThis").on("click", function () {
+        $('input.selectChk:checkbox').not(this).prop('checked', this.checked);
+    });
+
+    $(".chkAllHold").on("click", function () {
+        $('input.selectHold:checkbox').not(this).prop('checked', this.checked);
+    });
+
+    //////$(".chkAllThis").on("click", function () {
+    //////    if ($(this).is(":checked")) {
+    //////        $(this).closest("table").find("tbody input.selectChk").attr("checked", true);
+    //////    }
+    //////    else {
+    //////        $(this).closest("table").find("tbody input.selectChk").attr("checked", false);
+    //////    }
+    //////});
+
+</script>
+
+<style>
+    .tm {
+        margin-top: -10px;
+        font-size: 1em!important;
+    }
+</style>

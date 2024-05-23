@@ -1,0 +1,231 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("Education", "Qualification", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEducation" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="education">
+        @Html.HiddenFor(model => model.educationVM.EmployeeId)
+        @Html.HiddenFor(model => model.educationVM.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Degree_E)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.educationVM.Degree_E, "/Config/DropDown/Degree", new { @placeholder = "Degree", @class ="required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Major)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.Major, new { @placeholder = "Major", @class ="form-control" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Institute)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.Institute, new { @placeholder = "Institute", @class ="form-control" })
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Result)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.educationVM.Result, "/Config/DropDown/Result", new { @onchange = "ResultCheck('');", @placeholder = "Result", @class ="educationVMResult required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2 marks">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Marks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.Marks, new { @onchange = "NumberCheck(this);", @placeholder = "Marks", @class ="form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2 cgpa">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Scale)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.Scale, new { @onchange = "NumberCheck(this);CGPAANDScale(this);", @placeholder = "Scale", @class ="form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2 cgpa">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.CGPA)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.CGPA, new { @onchange = "NumberCheck(this);CGPAANDScale(this);", @placeholder = "CGPA", @class ="form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.YearOfPassing)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.YearOfPassing, new { @onchange = "NumberCheck(this);PassingYearLength(this);", @maxlength = "4", @placeholder = "Year Of Passing", @class ="form-control" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.TotalYear)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.educationVM.TotalYear, new { @onchange = "NumberCheck(this);", @placeholder = "Total Year", @class ="form-control" })
+                </div>
+            </div>
+             <div class="col-sm-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.IsLast)
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.educationVM.IsLast, new { @class ="form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-5">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.educationVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.educationVM.Remarks, new { @placeholder = "Remarks",@rows="1", @class ="form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.educationVM.FileName)
+                <input type="file" onchange="CheckFileSize(this);" name="EducationF" id="EducationF" style="width: 200px;" />
+            </div>
+            @if (Model.educationVM.FileName != null && Model.educationVM.FileName != "")
+            {
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="col-md-6">
+                        <a target="_blank" href="~/Files/Education/@Model.educationVM.Id@Model.educationVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float: left;">
+                        <span onclick="FileDelete(this)"; data-id="@Model.educationVM.Id" data-table="7"  data-field="FileName" data-url="~/Files/Education/@Model.educationVM.Id@Model.educationVM.FileName">
+                            <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                    </div>
+                </div>
+            }
+        </div>
+        <p>
+            @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                // <input type="button" value="Save" onclick="pageSubmit('frmEducation');" class="Save btn btn-info" />
+                // <input type="button" value="Edit" onclick="EditEducation();" class="Edit btn btn-info" />  
+                
+                @*<button type="button"  title="Click on for Save"  onclick="pageSubmit('frmEducation');" class="Save sym-btn-save">&nbsp;Save</button>*@
+                @*<button type="button" title="Click on for Edit"  onclick="EditEducation();" class="Edit sym-btn-edit">&nbsp;Edit</button>*@
+                
+                
+              @*<button type="button" title="Click on for Edit" onclick="pageSubmit('frmEducation');"  class="Save sym-btn-save" >&nbsp;Save</button>*@
+                <button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>
+              <button type="button" title="Click on for Save" id="editJSONEducation"  class="Edit sym-btn-edit" >&nbsp;Edit</button>
+            
+            }
+
+            <button type="button" title="Click on for Cancel" id="cancelJSONEducation"  class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>
+
+            @*<input type="button" value="Cancel" onclick="CancleEducation();" class="Cancle btn btn-info" />*@
+        </p>
+    </div>
+}
+<script>
+    $(function () {
+        ResultCheck('@Model.educationVM.Result');
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        EditEducation();
+        InitDateTimePickers();
+
+        $(".showHideED").hide();///////Index page new btn
+        valiDation('frmEducation');
+        InitDropDowns();
+
+        $('#cancelJSONEducation').click(function () {
+            if (isChange == true) {
+                Ask("<h6>You have some changes in this form.</br>Click No to Ignore the changes.</h6>", null, function () {
+                    isChange = false;
+                    CancleEducation(isChange);
+                })
+            }
+            else {
+                CancleEducation(isChange);
+            }
+    });
+
+    $('#editJSONEducation').click(function () {
+        EditEducation();
+    });
+
+
+    //$('#saveJSONEducation').click(function () {
+    //    if (isChange == false) {
+    //        ShowResult("Success", "You have no changes for save");
+    //        return;
+    //    }
+    //    if (pageSubmitJSON('frmEducation') == 0) {
+    //        var myData = $('#frmEducation').serialize();
+    //        var url = "/HRM/Qualification/Education";
+    //        submit(url, myData);
+           
+    //    }
+        //});
+
+    $('#saveJSOND').click(function () {
+        var url = "/HRM/Qualification/Education";
+
+        $form = $('#frmEducation');
+
+        $form.attr("action", url);
+        $form.submit();
+
+    });
+
+    });
+
+
+
+
+      function FromToDate(sender) {
+          var from = ParseDate($("#educationVM_StartDate").val());
+          var to = ParseDate($("#educationVM_EndDate").val());
+          if (from > to) {
+              $(sender).val("");
+              ShowResult("Fail", "To date can't be prior to From date!");
+          }
+      }
+
+</script>

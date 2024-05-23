@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "SalaryInformation";
+}
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>salary Information</p>
+    </div>
+     <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                @*@Html.SimpleDropDown("FiscalPeriodDetailsId", "/Config/DropDown/DropDownPeriodByYear", new {  @onchange = "DDLChech('FiscalPeriodDetailsId')",@class = "required form-control" })*@
+                @Html.SimpleDropDown("FiscalPeriodDetailsId", "/Config/DropDown/FiscalPeriod", new { @class = "load required form-control" })
+                <label id="erFiscalPeriodDetailsId" style="color: red; display: none;">Please select fiscal period</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new {   @class = " load required form-control" })
+                <label id="erDepartmentId" style="color: red; display: none;">Please select department</label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "//", new { @class = " load required form-control" })
+                <label id="erSectionId" style="color: red; display: none;">Please select section</label>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "//", new {   @class = " load required form-control" })
+                <label id="erProjectId" style="color: red; display: none;">Please select project</label>
+            </div>
+        </div>
+    </div>
+    </div>
+ <div id="myPartialViewContainer">
+     @Html.Partial("_salaryInformation")
+ </div>
+<script>
+    $('.load').change(function () {
+        $("#myPartialViewContainer").load('@Url.Action("_salaryInfomationLoad", "SalaryProcess")')
+    });
+    $(function () {
+        datatabless();
+        $('#DepartmentId').click(function () {
+            $('#ProjectId').html("");
+            $('#SectionId').html("");
+            var sections = "";
+            var pid = $('#ProjectId').val();
+            var did = $('#DepartmentId').val();
+            var url1 = "/Config/DropDown/SectionByDepartment/?projectId=" + pid + "&departmentId=" + did;
+            sections += "<option value=0>Select</option>";
+            sections += "<option value=0_0>=ALL=</option>";
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    sections += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#SectionId').html(sections);
+            });
+        });
+        $('#SectionId').click(function () {
+            $('#ProjectId').html("");
+            var projects = "";
+            var sid = $('#SectionId').val();
+            var did = $('#DepartmentId').val();
+            //oTable.fnFilter($(this).val(sid))
+            //oTable.fnFilter($(this).val(did))
+            var url1 = "/Config/DropDown/ProjectByDepartment/?departmentId=" + did + "&sectionId=" + sid;
+            projects += "<option value=0>Select</option>";
+            projects += "<option value=0_0>=ALL=</option>";
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    projects += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#ProjectId').html(projects);
+            });
+        });
+    })
+    $('.tar').change(function () {
+        ////alert(("test");
+        //datatabless();
+        //var pid = $('#ProjectId').val();
+        //var did = $('#DepartmentId').val();
+        var ProjectId = $('#ProjectId').val();
+        var DemapartmentId = $('#DepartmentId').val();
+        var url1 = "/SalaryProcess/_salaryInfomation?ProjectId=" + ProjectId + " &DemapartmentId=" + DemapartmentId + "";
+        //location.href = url1;
+      @*  $.ajax({
+            type: "POST",
+            url: '@Url.Action("ListItemChanged", "Controller")',
+                data: { "Value": $(this).val() }
+         });*@
+        //$.ajax({
+        //    url: url1,
+        //    data: { id: id }
+        //}).done(function () {
+        //    //alert(('Added');
+        //});
+        //datatabless();
+    })
+    var datatabless = function () {
+        //function datatabless() {
+        //$('#FiscalPeriodDetailsId').change(function () {
+        //    oTable.search($(this).val()).draw();
+        //});
+    };
+    function DDLChech(val) {
+        $("#er" + val).hide();
+        if ($("#" + val).val() == "") {
+            $("#er" + val).show();
+        }
+    }
+    function EmployeeSalaryProcess() {
+        if ($('#DepartmentId').val() == "0") {
+            ShowResult("Fail", "Please Select Department.");
+            return;
+        }
+        if ($('#SectionId').val() == "0") {
+            ShowResult("Fail", "Please Select Section.");
+            return;
+        }
+        var error = 0;
+        $("#erFiscalPeriodDetailsId").hide();
+        $("#erProjectId").hide();
+        $("#erDepartmentId").hide();
+        $("#erSectionId").hide();
+        if ($("#FiscalPeriodDetailsId").val() == "") {
+            $("#erFiscalPeriodDetailsId").show();
+            error++;
+        }
+        if ($("#ProjectId").val() == "") {
+            $("#erProjectId").show();
+            error++;
+        }
+        if ($("#DepartmentId").val() == "") {
+            $("#erDepartmentId").show();
+            error++;
+        }
+        if ($("#SectionId").val() == "") {
+            $("#erSectionId").show();
+            error++;
+        }
+        if (error > 0) {
+            return;
+        }
+        Ask("Are you sure to process salary!", function () {
+            var Id = $("#Id").val();
+            var url = "/Payroll/SalaryProcess/SalaryPreProces?FiscalPeriodDetailsId=" + $("#FiscalPeriodDetailsId").val() + "&ProjectId=" + $("#ProjectId").val() + "&DepartmentId=" + $("#DepartmentId").val() + "&SectionId=" + $("#SectionId").val();
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    var dataAction = "";
+                    if (response[0] != 'Fail') {
+                        dataAction = "redirect";
+                    }
+                    ShowResult(response[0], response[1], dataAction, './')
+                }
+            });
+        }, function () { })
+    }
+    </script>

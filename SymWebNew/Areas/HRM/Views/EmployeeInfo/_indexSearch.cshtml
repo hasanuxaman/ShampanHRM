@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SymViewModel.HRM.EmployeeInfoVM>
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+<!DOCTYPE html>
+<html>
+    <body>
+        <div  id="container">
+            <div id="demo">
+                <table id="myDataTableS" class="display">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Salutation</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
+ 
+ 
+<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableS').dataTable({
+            "bServerSide": true,
+            "lengthMenu": [[10, 25, 50, 500, -1], [10, 25, 50, 500, "All"]],
+            "sAjaxSource": "/HRM/EmployeeInfo/_indexSearch",
+            "bProcessing": true,
+            "aoColumns": [
+                             
+                            { "sName": "Code" },
+                            { "sName": "Salutation" },
+                            { "sName": "First Name" },
+                            { "sName": "Last Name" },
+
+                            {
+                                "sName": "ID",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return '<a  class=" btn btn-info " href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[4] + '\">Show</a>'
+                                    ;
+                                }
+                            }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" },
+                        { type: "text" },
+                        { type: "text" },
+                        { type: "text" },
+                        { type: "text" }]
+        });
+    });
+
+
+    </script>

@@ -1,0 +1,237 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("Reference", "ContactDetail", FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmReference" }))
+{
+    @Html.ValidationSummary(true)
+
+
+    <div class="reference">
+        @Html.HiddenFor(model => model.referenceVM.Id)
+        @Html.HiddenFor(model => model.referenceVM.EmployeeId)
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.Name, new { @placeholder = "Reference Name", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Designation)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.Designation, new { @placeholder = "Designation", @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.WorkAddress)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.WorkAddress, new { @placeholder = "Work Address", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Relation)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.Relation, new { @placeholder = "Relation", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Address)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.Address, new { @placeholder = "Village/House & Road", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.PostalCode)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.PostalCode, new { @placeholder = "Post Office & Postal Code", @class = "form-control NumberCheck" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.City)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.City, new { @placeholder = "Police Station", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Country)
+                </div>
+                <div class="editor-field">
+                    <select id="referenceVM.Country" name="referenceVM.Country" data-val="@Model.referenceVM.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Division)
+                </div>
+                <div class="editor-field">
+                    <select id="referenceVM.Division" name="referenceVM.Division" data-val="@Model.referenceVM.Division"  data-url="/Config/DropDown/Division/"  class = " division form-control" ></select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.District)
+                </div>
+                <div class="editor-field">
+                    <select id="referenceVM.District" name="referenceVM.District" data-val="@Model.referenceVM.District"  data-url="/Config/DropDown/District/"  class = " district form-control" ></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Phone)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.Phone, new { @placeholder = "Phone", @class = "form-control NumberCheck" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Mobile)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.Mobile, new { @placeholder = "Mobile", @class = "form-control " })
+                </div>
+            </div>
+             <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.YearOfAcquaintance)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.referenceVM.YearOfAcquaintance, new { @placeholder = "Year Of Acquaintance", @class = " required form-control NumberCheck" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.referenceVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.referenceVM.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        @*            <div class="row">
+                <div class="col-md-10">
+                    <input type="file" name="ReferenceF" id="ReferenceF" style="width: 200px;" />
+                </div>
+                @if (Model.referenceVM.FileName != null && Model.referenceVM.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <a target="_blank" href="~/Files/Reference/@Model.referenceVM.Id@Model.referenceVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" /></a>
+                    </div>
+                    }
+            </div>*@
+        <br />
+        <p>
+            @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                <button type="button" title="Save Data" id="saveJSONreferadd" class="Save sym-btn-save">Save </button>                    
+                <button type="button" title="Edit Data" onclick="Editrefe();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+               
+@*  <button type="Submit"  title="Save Data"  onclick="pageSubmit('frmReference');" class="Save sym-btn-save" >&nbsp;Save</button>
+            <button type="button"  title="Edit Data"  onclick="Editrefe();" class="Edit sym-btn-edit" >&nbsp;Edit</button>*@
+                    
+            }
+@*<input type="button" value="Cancel" onclick="Cancletravel();" class="Cancle btn btn-info" />*@
+@*<button type="button" title="Cancel Data"   onclick="Cancletravel();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>*@
+            <button type="button" title="Cancel Data" onclick="Cancletravel();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+
+        </p>
+    </div>
+}
+<script>
+
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        InitDropDowns();
+        Editrefe();
+        Country();
+        Division();
+        District();
+        valiDation("frmReference");
+        $(".showHideRF").hide()
+
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+        $('#saveJSONreferadd').click(function () {
+            var a = pageSubmitJSON('frmReference');
+            if (a != 0) {
+                return;
+            }
+            if (isChange == false) {
+                ShowResult("Success", "You have no changes for save");
+                return;
+            }
+            if (pageSubmitJSON('frmReference') == 0) {
+                var myData = $('#frmReference').serialize();
+                var url = "/HRM/ContactDetail/Reference";
+                submit(url, myData);
+            }
+        });
+
+
+        var submit = function (url, mydata) {
+            $.ajax({
+                type: 'POST',
+                data: mydata, // #2
+                url: url,
+                success: function (result) {
+                    var msg1 = result.split('~')[0];
+                    var msg2 = result.split('~')[1];
+                    if (msg1 != "Fail") {
+                        ShowResult("Success", msg2);
+                        location.reload();
+                    }
+                    else {
+                        ShowResult("Fail", msg2);
+                        $(".showHideRF").hide()
+
+                    }
+                }
+            });
+        }
+
+    });
+</script>
+
+

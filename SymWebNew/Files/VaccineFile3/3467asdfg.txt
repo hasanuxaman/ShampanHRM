@@ -1,0 +1,120 @@
+var SizeController = function (SizeService) { 
+    var configTable = getTableConfig();
+    var dataTable = $("#users").DataTable(configTable);
+
+    var init = function () {
+        $('.btnSave').click(function () {
+            save();
+        });
+        
+         
+        
+    }
+    
+    function configList() {
+
+
+        return {
+            serverSide: true,
+            ajax: {
+                url: '/Size/_index',
+                type: 'POST',
+                data: function (payLoad) {
+                    return $.extend({},
+                        payLoad,
+                        {
+                            "ÏsArchive": $("#ÏsArchive option:selected").text(),
+
+                        });
+                }
+            },
+
+            columns: [
+                {
+                    data: "SizeId",
+                    render: function (data) {
+
+                        return "<a href= /Size/Edit/" + data + " class='edit' ><i class='material-icons' data-toggle='tooltip' title='' data-original-title='Edit'></i></a> " +
+                            " &nbsp;  <a href=# id='tab1'  name='tab'  class='Delete js-delete' data-value='" + data + "' ><i class='material-icons' data-toggle='tooltip' title='' data-original-title='Delete'>&#xE872;</i></a> ";
+
+                    },
+                    "width": "7%",
+                    "orderable": false
+                },
+                {
+                    data: "sizeName",
+                    name: "sizeName"
+                    //"width": "20%"
+                }
+                ,
+                {
+                    data: "sizeCode",
+                    name: "sizeCode"
+                    //"width": "20%"
+                }
+                
+
+            ],
+            order: [1, "asc"],
+            "processing": true
+        }
+    }
+
+
+    function CheckValidity() {
+        var validator = $("#frm_Size").validate();
+        var result = validator.form();
+        return result; // todo check with paritosh
+    }
+    function save() {
+        debugger
+
+        if (CheckValidity()) {
+            var masterObj = $("#frm_Size").serialize();
+            masterObj = queryStringToObj(masterObj);
+
+            var isChecked = false;
+            $('input[type=checkbox]').each(function () {
+                if (!this.checked) {
+                    isChecked = false;
+                } else {
+                    isChecked = true;
+                }
+            });
+            masterObj.IsActive = isChecked;
+
+            SizeService.save(masterObj, saveDone, saveFail);
+
+        }
+    }
+
+    function saveDone(result) {
+        debugger
+        if (result.status == "200") {
+            if (result.data.operation == "add") {
+                ShowNotification(1, result.message);
+                $(".btnSave").html('Update');
+                $("#SizeId").val(result.data.SizeId);
+                result.data.operation = "update";
+                $("#Operation").val(result.data.operation);
+
+            } else {
+                ShowNotification(1, result.message);
+            }
+        }
+        else if (result.status == "199") {
+            ShowNotification(3, result.message);
+        }
+        else if (result.status == "400") {
+            ShowNotification(3, "Something gone wrong");
+        }
+    }
+    function saveFail(result) {
+        console.log(result);
+        ShowNotification(3, "Something gone wrong");
+    }
+
+return {
+    init: init
+    }
+}(SizeService);

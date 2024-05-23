@@ -1,0 +1,200 @@
+﻿
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+<div class="content white menuheight">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <ul class="nav col-xs-4 visible-xs">
+                <li class="dropdown1" style="padding-top: 4px">
+                    <a href="#" class=" btn btn-warning">Payroll </a>
+                </li>
+            </ul>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <!--/.navbar-header-->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+ 
+                    <li class="Home dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @if (identity.IsAdmin)
+                            {
+                                <li><a class="btn btn-info" href="/Common/Home/">Admin</a></li>
+                            }
+                            @if (identity.IsESS)
+                            {
+                                <li><a class="btn btn-info" href="/hrm/employeeinfo/Edit/@identity.EmployeeId">ESS </a></li>
+                            }
+                            @if (identity.IsAdmin || identity.IsHRM)
+                            {
+                                <li><a class="btn btn-info" href="/HRM/Home/">HRM</a></li>
+                            }
+                            @if (identity.IsAdmin || identity.IsPayroll)
+                            {
+                                <li><a class="btn btn-info" href="/Payroll/Home/">Payroll </a></li>
+                            }
+                            @if (identity.IsAdmin || identity.IsTAX)
+                            {
+                                <li><a class="btn btn-info" href="/TAX/Home/">TAX</a></li>
+                            }
+                            @if (identity.IsAdmin || identity.IsPF)
+                            {
+                                <li><a class="btn btn-info" href="/PF/Home/">PF</a></li>
+                            }
+                            @if (identity.IsAdmin || identity.IsGF)
+                            {
+                                <li><a class="btn btn-info" href="/GF/Home/">GF</a></li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown Structure">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setup<b class="caret"></b></a>
+                        <ul class="dropdown-menu multi-column columns-1">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <ul class="multi-column-dropdown">
+                                        <li class="dropdown"><a href="/TAX/SchedulePolicy" class="btn btn-info">Schedule Policy</a></li>
+
+
+                                        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Tax Slabs</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown "><a href="/TAX/TaxSlab" class="btn btn-info">Schedule1 Tax Slab</a></li>
+                                                <li class="dropdown "><a href="/TAX/Schedule2TaxSlab" class="btn btn-info">Schedule2 Tax Slab</a></li>
+                                                <li class="dropdown "><a href="/TAX/Schedule3TaxSlab" class="btn btn-info">Schedule3 Tax Slab</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown "><a href="/TAX/EmloyeeTAXSlab" class="btn btn-info">Emloyee TAX Slab</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                    <li class="dropdown Structure">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tax Schedule <b class="caret"></b></a>
+                        <ul class="dropdown-menu multi-column columns-1">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <ul class="multi-column-dropdown">
+                                        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Process</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown"><a href="/Tax/TaxSchedule/SASalaryFullProcess?sType=Monthly&tType=Salary" class="btn btn-info">Monthly Salary Tax</a>  </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">View Monthly Salary Tax</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule?tType=Salary" class="btn btn-info">Employee -> Fiscal Period</a>  </li>
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule/IndexFiscalPeriod?tType=Salary" class="btn btn-info">Fiscal Period -> Employee</a>  </li>
+                                            </ul>
+                                        </li>
+
+
+                                        <li class="dropdown dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">More Process</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule/SASalaryFullProcess?tType=YearlyTax" class="btn btn-info">Yearly Tax</a>  </li>
+                                                <li class="dropdown"><a href="/Tax/TaxSchedule/SASalaryFullProcess?sType=Monthly&tType=Bonus" class="btn btn-info">Monthly Bonus Tax</a>  </li>
+
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown "><a href="/Tax/TaxScheduleYearly/IndexFiscalYear" class="btn btn-info">View Yearly Tax</a></li>
+                                        
+                                        <li class="dropdown dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">View Monthly Bonus Tax</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule?tType=Bonus" class="btn btn-info">Employee -> Fiscal Period</a>  </li>
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule/IndexFiscalPeriod?tType=Bonus" class="btn btn-info">Fiscal Period -> Employee</a>  </li>
+                                            </ul>
+                                        </li>
+
+
+
+                                        
+                                        <li class="dropdown dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle btn btn-info" data-toggle="dropdown">Send Back to Payroll</a>
+                                            <ul class="dropdown-menu">
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule/UpdateSalaryTaxDetail?tType=Salary" class="btn btn-info">Salary Tax </a></li>
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule/UpdateSalaryTaxDetail?tType=Salary&advanceTax=Y" class="btn btn-info">Advance Tax </a></li>
+                                                <li class="dropdown "><a href="/Tax/TaxSchedule/UpdateSalaryTaxDetail?tType=Bonus" class="btn btn-info">Bonus Tax </a></li>
+                                            </ul>
+                                        </li>
+
+                                        
+                                        
+                                        <li class="dropdown "><a href="/Tax/TaxDeposit" class="btn btn-info">Tax Deposit</a>  </li>
+                                        <li class="dropdown "><a href="/Tax/TaxSchedule/IndexFiscalYears?fyear=@Session["SessionYear"]" class="btn btn-info">New Yearly Tax Process</a>  </li>
+                                        <li class="dropdown "><a href="/Tax/AdvanceTax" class="btn btn-info">Advance Tax</a>  </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown Reports">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
+                        <ul class="dropdown-menu columns-1">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <ul class="multi-column-dropdown">
+                                        <li class="dropdown"><a href="/Tax/TaxReport/TaxCertificateReport" class="btn btn-info">Tax Certificate </a></li>
+                                        <li class="dropdown"><a href="/Tax/TaxReport/TaxSchedule1MonthlyReport" class="btn btn-info">Tax Schedule1 Monthly Report </a></li>
+                                        <li class="dropdown"><a href="/Tax/TaxReport/TaxSchedule1YearlyReport" class="btn btn-info">Tax Schedule1 Yearly Report </a></li>
+                                        <li class="dropdown"><a href="/Tax/TaxReport/TaxReportNBRMonthly" class="btn btn-info">Tax Report NBR Monthly </a></li>
+                                        <li class="dropdown"><a href="/Tax/TaxReport/InvestmentTaxReport" class="btn btn-info">Investment Tax Report</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </ul>
+                    </li>
+                    
+                    
+                     
+
+
+
+            </ul>
+
+
+
+            <ul class="nav navbar-nav navbar-right" style="border-left: 5px solid #fff">
+                <li class="dropdown1">
+                    <a href="#" class="dropdown-toggle sym-btn-back" title="Go Back" onclick="goBack()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">&nbsp;Back</a>
+                </li>
+                <li class="dropdown1">
+                    <a href="#" class="dropdown-toggle btn btn-warning" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Payroll </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<style>
+    .navbar-default .navbar-nav > li.dropdown:hover > a,
+    .navbar-default .navbar-nav > li.dropdown:hover > a:hover,
+    .navbar-default .navbar-nav > li.dropdown:hover > a:focus {
+        /*background-color: rgb(231, 231, 231);*/
+        color: rgb(85, 85, 85);
+    }
+
+    li.dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+</style>

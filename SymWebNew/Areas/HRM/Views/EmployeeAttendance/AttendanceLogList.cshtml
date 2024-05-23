@@ -1,0 +1,129 @@
+﻿@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Attendance log</p>
+    </div>
+    <div class="row">
+        <button type="button" title="Click to Add New" data-url="/HRM/EmployeeAttendance/AttendanceLog" onclick="GoTo(this)" id="" class=" sym-btn-add">&nbsp;New</button>
+        @*<input type="button" style="width:65px;" data-url="/HRM/EmployeeAttendance/AttendanceLog" onclick="GoTo(this)"   id="" class=" btn btn-info  " value="New " />*@
+        @if (identity.IsAdmin || identity.IsHRM)
+        {
+            <button type="button" title="Delete Data" data-url="/HRM/EmployeeAttendance/AttendanceLogDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" sym-btn-remove">&nbsp;Delete</button>
+@*<input type="button" style="width:65px;" data-url="/HRM/EmployeeAttendance/AttendanceLogDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />*@
+        }
+    </div>
+    <p></p>
+    <div class="row">
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center">Show Detail</th>
+                            <th>Punch Date</th>
+                            <th>Punch Time</th>
+                            <th>Emp Code</th>
+                            <th>Emp Name</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Action</th>
+                            <th>Punch Date</th>
+                            <th>Punch Time</th>
+                            <th>Emp Code</th>
+                            <th>Emp Name</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeAttendance/_indexAttendanceLogList",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "SLNo",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "bVisible": false,
+
+                    "sWidth": "12%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+                        if ('@identity.IsAdmin'.toLowerCase() == "true" || '@identity.IsHRM'.toLowerCase() == "true") {
+                            return ' <a title="Click for Detail" style="text-decoration:none;" name="empId" href=\"/HRM/EmployeeAttendance/AttendanceLogEdit/' + +oObj.aData[0] + '" class="sym-btn-detail-row"></a>';
+                        }
+                        else {
+                            return ' <a title="Click for Detail" style="text-decoration:none;" name="empId" href=\"/HRM/EmployeeAttendance/AttendanceLogEdit/' + +oObj.aData[0] + '" class="sym-btn-detail-row"></a>';
+                        }
+                    }
+                },
+                           
+                           { "sName": "PunchDate", "sWidth": "14%" }
+                           , { "sName": "Punch Time", "sWidth": "10%" }
+                           , { "sName": "Code", "sWidth": "8%" }
+                           , { "sName": "EmpName", "sWidth": "10%" }
+                           , { "sName": "Department", "sWidth": "10%" }
+                           , { "sName": "Designation", "sWidth": "8%" }
+                           , { "sName": "JoinDate", "sWidth": "14%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                        null
+                        , { type: "date-range" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "date-range" }
+            ]
+        });
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    setTimeout(function () {
+        if ('@identity.IsAdmin'.toLowerCase() == "true" || '@identity.IsHRM'.toLowerCase() == "true") {
+            //$("table th:first").remove();
+            //$('table tr th:first-child').remove();
+        }
+        else {
+        }
+    }, 250);
+</script>

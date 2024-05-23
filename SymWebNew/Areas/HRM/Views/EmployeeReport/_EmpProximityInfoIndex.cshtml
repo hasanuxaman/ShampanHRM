@@ -1,0 +1,78 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+<style>
+</style>
+<div class="thinbox">
+    <div class="th_thinbox">
+    </div>
+    <p>
+    </p>
+    <div id="container">
+        <table id="myDataTable" class="display">
+            <thead>
+                <tr>
+                    <th>Code 			         </th>
+                    <th>Full Name                      </th>
+                    <th>Designation	   	    </th>
+                    <th>@Session["DepartmentLabel"]</th>
+                    <th>@Session["SectionLabel"]</th>
+                    <th>@Session["ProjectLabel"]</th>
+
+                    <th>Join Date                  </th>
+                    <th>Employment Type        </th>
+                    <th>Proxymity ID           </th>
+                    <th>Mobile                 </th>
+                    <th>Address          </th>
+                </tr>
+                <!-- #region Comments -->
+                @*  
+                      Code 			  
+                      FullName             
+                      Designation	    	
+                      Department          	
+                      Section              
+                      Project              
+                      JoinDate             
+                      EmploymentType_E     
+                      AttnUserId         
+                      Mobile             
+                      Address         
+                        *@
+                <!-- #endregion -->
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br />
+</div>
+<table>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeReport/_EmpProximityInfoIndex?CodeF=@Model.CodeF&CodeT=@Model.CodeT&DepartmentId=@Model.DepartmentId&SectionId=@Model.SectionId&ProjectId=@Model.ProjectId&DesignationId=@Model.DesignationId&dtpFrom=@Model.DOJFrom&dtpTo=@Model.DOJTo",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": true,
+            "aoColumns": [
+                              { "sName": "Code 			  ", "sWidth": "8%" }
+                            , { "sName": "FullName         ", "sWidth": "10%" }
+                            , { "sName": "Designation	  ", "sWidth": "12%" }
+                            , { "sName": "Department      ", "sWidth": "12%" }
+                            , { "sName": "Section         ", "sWidth": "10%" }
+                            , { "sName": "Project         ", "sWidth": "10%" }
+                            , { "sName": "JoinDate        ", "sWidth": "8%" }
+                            , { "sName": "EmploymentType_E ", "sWidth": "8%" }
+                            , { "sName": "AttnUserId      ", "sWidth": "6%" }
+                            , { "sName": "Mobile          ", "sWidth": "8%" }
+                            , { "sName": "Address         ", "sWidth": "8%" }
+            ]
+        });
+    });
+</script>

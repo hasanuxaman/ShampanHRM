@@ -1,0 +1,321 @@
+﻿@model SymViewModel.Payroll.EmployeeStructureGroupVM
+@using UIHelper.MVC
+@Html.ValidationSummary(true)
+@{
+    string CompanyName = System.Configuration.ConfigurationManager.AppSettings["CompanyName"];
+}
+@using (Html.BeginForm("UpdateEmployeeStructure", "Structure", FormMethod.Post, new { @Id = "employeeStructure" }))
+{
+    @Html.HiddenFor(model => model.EmployeeId)
+    <div class="thinbox panel">
+        <div class="th_thinbox">
+            <p >Salary Structure</p>
+        </div>
+        <div>
+            @Html.HiddenFor(model => model.EmployeeId)
+            <div class="row">
+                <label class="col-sm-3">
+                    <label>Salary Structure</label>
+                </label>
+                <div class="col-sm-4">
+                    @Html.SimpleDropDownFor(model => model.SalaryStructureId, "/Config/DropDown/SalaryStructureList", new { @class = "required form-control" })
+                </div>
+                <label class="right col-sm-1">
+                    <label id="isGrossL">Basic</label>
+                </label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(model => model.salaryInput, null, new { @placeholder = "salary Input", @class = "NumberCheck salaryInput right  required form-control" })
+                </div>
+                <div class="col-sm-1">
+                    @Html.CheckBoxFor(model => model.IsGross, new { @class = " isGross required form-control" })G/B
+                </div>
+
+            </div> 
+                <div class="row">
+                   
+                    <label class="col-sm-3">
+                        <label>Bank Pay</label>
+                    </label>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.BankPayAmount, new { @class = " required form-control" })
+                        @Html.ValidationMessageFor(model => model.BankPayAmount)
+                    </div>
+
+                    <label class="col-sm-1">
+                        <label>Basic%</label>
+                    </label>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.BasicPercentage, new { @class = "  form-control" })
+                    </div>
+                    <label class="col-sm-2">
+                        <label>Basic</label>
+                    </label>
+                    <label class="col-sm-2">                     
+                        @Html.TextBoxFor(model => model.basic, null, new { @placeholder = "Medical", @disabled = "disabled", @class = "NumberCheck Medical  form-control" })
+                    </label>
+                </div>
+
+            <div class="row">
+                <label class=" col-sm-3">
+                    <label id="isGrossL">HRent</label>
+                </label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.Housing, null, new { @placeholder = "HRent", @class = "NumberCheck HRent   required form-control" })
+                </div>
+
+                <label class=" col-sm-1">
+                    <label id="isGrossL">TA</label>
+                    @*<label id="isGrossL">S.Allow</label>*@
+
+                </label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.TA, null, new { @placeholder = "Conveyance", @class = "NumberCheck Conveyance   required form-control" })
+                </div>
+
+                <label class=" col-sm-2">
+                    <label id="isGrossL">Medical</label>
+                </label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.Medical, null, new { @placeholder = "Medical", @class = "NumberCheck Medical   required form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3">
+                    <label>Grade</label>
+                </label>
+                <div class="col-sm-4">
+                    @Html.SimpleDropDownFor(model => model.GradeId, "/Config/DropDown/Grade", new { @class = "grade  form-control" })
+                    @Html.ValidationMessageFor(model => model.GradeId)
+                </div>
+                <label class="right col-sm-1">
+                    <label>Step</label>
+                </label>
+                <div class="col-sm-3">
+
+                    @Html.SimpleDropDownFor(model => model.StepId, "/Config/DropDown/Step", new { @class = "step required form-control" })
+
+                </div>
+            </div>
+
+
+            <div class="row">
+
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>&nbsp;</label>
+                    </div>
+                    <div class="editor-field">
+                        <button type="button" title="Save Data" id="saveJSON" class="sym-btn-save">&nbsp;Save</button>
+
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>&nbsp;</label>
+                    </div>
+                    <div class="editor-field">
+                        <button type="button" title="Save Data" id="LoadSalaryDetails" class=" sym-btn-search"> Load </button>
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("FiscalYear", DateTime.Now.ToString("yyyy"), new { @class = "fiscalyearCom form-control" }) </div>
+                    </div>
+                </div>
+                @*<button type="button" title="Save Data" id="LoadSalaryDetails" class=" btn-primary"> Load </button>*@
+
+            </div>
+
+
+        </div>
+    </div>
+}
+@using (Html.BeginForm("UpdateEmployeeStructure", "Structure", FormMethod.Post, new { @Id = "employeeStructureOther" }))
+
+{
+    @Html.HiddenFor(model => model.EmployeeId)
+
+    <div class="thinbox panel">
+        <div class="th_thinbox">
+            <p>Other Structure</p>
+        </div>
+        <div>
+            <div class="row">
+                <label class="col-sm-3">
+                    <label>PF Structure</label>
+                </label>
+                <div class="col-sm-6">
+                    @Html.SimpleDropDownFor(model => model.PFStructureId, "/Config/DropDown/PFStructureList", new { @placeholder = "PF Structure", @class = "required form-control" })
+                </div>
+            </div>
+        
+            <div class="row">
+                <label class="col-sm-3">
+                    <label>Tax Structure</label>
+                </label>
+                <div class="col-sm-6">
+                    @Html.SimpleDropDownFor(model => model.TaxStructureId, "/Config/DropDown/TaxStructureList", new { @placeholder = "Code", @class = "required form-control" })
+                </div>
+            </div>          
+            <div class="row">
+                <label class="col-sm-3">
+                    <label>Project Expence Allocation</label>
+                </label>
+                <div class="col-sm-6">
+                    @Html.SimpleDropDownFor(model => model.ProjectAllocationId, "/Config/DropDown/ProjectAllocationList", new { @placeholder = "Code", @class = "required form-control" })
+                </div>
+            </div>
+           
+            <button type="button" title="Save Data" id="saveOtherJSON" class=" sym-btn-save"> Save </button>
+        </div>
+    </div>
+}
+<script>
+    $(function() {
+
+        valiDation("employeeStructure");
+        valiDation("employeeStructureOther");
+        InitDateTimePickers();
+        InitDropDowns();
+
+    });
+    var isgross = function() {
+        var res = $('.isGross').prop('checked');
+        if (res == true) {
+            $("#isGrossL").text("Gross")
+        } else {
+            $("#isGrossL").text("Basic")
+        }
+    }
+    $('.isGross').click(function() {
+        isgross();
+        //alert(v);
+    });
+    $('#LoadSalaryDetails').click(function() {
+
+        GradeStep();
+    });
+
+
+    var GradeStep = function() {
+        var grade = '0';
+        var step = '0';
+        var fiscalyearCom = "";
+
+        grade = $(".grade").val();
+        step = $(".step").val();
+
+        fiscalyearCom = $(".fiscalyearCom").val();
+        ////alert((grade);
+        ////alert((step);
+
+
+
+        $(".basic").val("0");
+        if (grade != '0' && step != '0' && fiscalyearCom !="") {
+            console.log(fiscalyearCom)
+
+            var url = '/Payroll/SalaryStructureMatrix/BasicAmount?grade=' + grade + '&step=' + step + '&year=' + fiscalyearCom;
+            $.ajax({
+                url: url,
+                dataType: "json",
+                type: 'GET',
+                success: function(data) {
+                    //alert(data);
+                    $(".HRent").val(0);
+                    $(".Medical").val(0);
+                    $(".Conveyance").val(0);
+                    $(".salaryInput").val(0);
+
+                    var arra = data.split('~');
+                    $(".salaryInput").val(arra[0]);
+
+                    if (arra.length > 1) {
+                        $(".HRent").val(arra[1]);
+                        $(".Medical").val(arra[2]);
+                        $(".Conveyance").val(arra[3]);
+                    }
+
+                    //$("#VATRate").val(data.split('~')[1]);
+
+                }
+            });
+        }
+    }
+
+    $(".grade").change(function() {
+        GradeStep();
+    });
+
+    $(".step").change(function() {
+        GradeStep();
+    });
+
+
+    $('#saveJSON').click(function () {
+        debugger;
+        var empId = '@Model.EmployeeId';
+        valiDation("employeeStructure");
+        if (pageSubmitJSON('employeeStructure') == 0) {
+            var myData = $('#employeeStructure').serialize();
+            var url = "/Payroll/Structure/UpdateEmployeeStructure?structureType=SalaryStructure";
+            submit(url, myData);          
+        }
+    })
+
+    
+    $('#saveOtherJSON').click(function () {
+        debugger;
+        var empId = '@Model.EmployeeId';       
+        valiDation("employeeStructureOther");
+        if (pageSubmitJSON('employeeStructureOther') == 0) {
+            var myData = $('#employeeStructureOther').serialize();
+            var url = "/Payroll/Structure/UpdateEmployeeStructure?structureType=Other";
+            submit(url, myData);
+            debugger;
+            SearchingReload(empId);
+        }
+    })
+
+    var submit = function(url, mydata) {
+        $.ajax({
+            //type: 'POST',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                debugger;
+                SearchingReload('@Model.EmployeeId');
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                } else {
+                    ShowResult("Fail", msg2);
+                }                
+            }
+        });
+    }
+
+    function SearchingReload(empId) {
+        debugger;
+        url = "/Payroll/Structure/StructureEmployee?Id=" + empId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function() { $(".loading").show(); },
+            complete: function() { $(".loading").fadeOut(200).hide("slow") },
+            success: function(data) {
+                $('#detailsDiv').html(data);
+                isgross();
+                //GradeStep();
+            },
+        });
+    }
+
+</script>

@@ -1,0 +1,80 @@
+﻿@model SymViewModel.Payroll.EmployeeAreerVM
+@using UIHelper.MVC
+
+@{
+    Layout = null;
+}
+
+<script>
+    $(function () {
+        InitDateTimePickers();
+    });
+</script>
+@using (Html.BeginForm("AreerCreate", "SingleEmployee", FormMethod.Post, new { @Id = "frmareer" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        @Html.HiddenFor(model => model.EmployeeId)
+
+        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.EmpName)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextAreaFor(model => model.EmpName, new { @placeholder = "Employee Name",@rows="1", @class = "required form-control", @readonly="readonly" })
+                @Html.ValidationMessageFor(model => model.EmpName)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.AreerAmount)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.AreerAmount, null, new { @placeholder = "Arrear Amount", @class = " right required form-control" })
+                @Html.ValidationMessageFor(model => model.AreerAmount)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-4 ">
+                <label>Fiscal Period</label>
+            </label>
+            <div class="col-sm-8">
+                @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new {@placeholder = "Fiscal Period", @class = "required form-control" })
+            </div>
+        </div>
+       @* <div class="row">
+            <label class="col-sm-4 ">
+                @Html.LabelFor(model => model.AreerDate)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.AreerDate, null, new { @placeholder = "Areer Date", @class = "customDatePicker required form-control" })
+                @Html.ValidationMessageFor(model => model.AreerDate)
+            </div>
+        </div>*@
+
+        <div class="row">
+            <label class="col-sm-4">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.Remarks, null, new { @placeholder = "Remarks",@rows="1", @class = " form-control" })
+                @Html.ValidationMessageFor(model => model.Remarks)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+               <button type="button" title="Save Data"  onclick="pageSubmit('frmareer');" class="sym-btn-save">&nbsp;Save</button>
+            </div>
+            <div class="col-sm-4">
+               <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        valiDation("frmareer");
+    });
+
+</script>

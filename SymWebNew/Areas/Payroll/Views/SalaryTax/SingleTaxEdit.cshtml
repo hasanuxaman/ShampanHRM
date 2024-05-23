@@ -1,0 +1,134 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<script>
+    $(function () {
+        InitDateTimePickers();
+    });
+</script>
+<style>
+    .text-color {
+       margin:auto;
+    }
+    .text-color a {
+        color: #ff6a00!important;
+    }
+   .input-group .form-control{
+        padding-top:0px!important;
+        margin-top:0px!important;
+    }
+</style>
+  <div class="headrow">
+                    <label class="pull-right">Single Salary Tax</label>
+                </div>
+
+          @if (true)
+    { <div class="thinbox">
+<div class="row">
+    <div  class="col-sm-12 col-md-12" >
+ <div class="input-group   col-lg-8  col-md-8  col-sm-8 col-xs-12 text-color" style="">
+ 
+										<a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='first' id="first"><i class="fa fa-angle-double-left"></i> First</a>
+										<a class="input-group-addon btn btn-primary" data-pager-action='previous' id="precode"><i class="fa fa-angle-left"></i> Previous</a>
+											@*<input type="text" placeholder="Code" class="form-control" data-pager-action='pagenum'  id="empId" value="@Model.Code~@Model.EmpName">*@ 
+                                              @Html.SimpleDropDownFor(model => model.Code, "/Config/DropDown/EmployeeCodeName", new {  @class = "form-control selectDropdown empId" })
+      <div style="float:left;width:30%">
+                <div > @Html.TextBox("fYear",   @Session["SessionYear"].ToString() , new {  @class = "fiscalyearCom form-control" }) </div>
+
+                </div>
+                 <div style="float:left;width:70%">
+                       @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYearLockPayroll?year=" + @Session["SessionYear"].ToString(), new { @id = "FiscalYearDetailId", @placeholder = "Fiscal Period", @class = "fpDetailsCom required form-control pull-left" })
+                       </div>
+                                         <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i> </a>
+											<a class="input-group-addon btn btn-primary" data-pager-action='next'  id="nextcode">Next <i class="fa  fa-angle-right"></i></a>
+											<a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='last' id="last">Last <i class="fa  fa-angle-double-right"></i>  </a>
+										</div>
+</div>
+     </div>
+</div>
+}
+<div id="detailsDiv"></div>
+<script>
+    $(function () {
+        valiDation("frmEMREX");
+        InitDropDowns();
+        InitDropdownsCommon();
+
+    });
+    $(function () {
+        $('#empId').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $.get('@Url.Action("DetailCreate","SalaryTax", new { taxDetailsId = Model.salaryTaxDetail.Id } )', function (data) {
+            $('#detailsDiv').html(data);
+        });
+        var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+    });
+    $(function () {
+        $("#notaxempid").hide();
+        $('.eType').change(function () {
+            var btn = 'current';
+            searching(btn);
+        });
+       
+        $('#current').click(function () {
+            var btn = 'current';
+            searching(btn);
+        });
+        $('#nextcode').click(function () {
+            var btn = 'next';
+            searching(btn);
+        });
+        $('#precode').click(function () {
+            var btn = 'previous';
+            searching(btn);
+        });
+        $('#first').click(function () {
+            var btn = 'first';
+            searching(btn);
+        });
+         
+     
+        $('#last').click(function () {
+            var btn = 'last';
+            searching(btn);
+        });
+            function searching(btn) {
+                var empid = $('.selectDropdown  :selected').text();
+                empid = empid.split('~')[0];
+                var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+                if (FiscalYearDetailId == "") {
+                    ShowResult("Fail", "Please Select fiscal year");
+                    return;
+                }
+           //     $.get("/Payroll/SalaryTax/DetailCreate?empcode=" + empid + '&btn='+btn+'&FiscalYearDetailId=' + FiscalYearDetailId,
+           //function (data) {
+           //    $('#detailsDiv').html(data);
+           //    checktaxvalues();
+           //});
+
+                url = "/Payroll/SalaryTax/DetailCreate?empcode=" + empid + '&btn=' + btn + '&FiscalYearDetailId=' + FiscalYearDetailId;
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    beforeSend: function () { $(".loading").show(); },
+                    complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                    success: function (data) {
+                        $('#detailsDiv').html(data);
+                        checktaxvalues();
+                    },
+                });
+            }
+            function checktaxvalues() {
+                var emptaxid = $('.emptaxid').val();
+                if (typeof emptaxid == undefined || emptaxid == "" || emptaxid == null) {
+                    $(".taxdatail").hide("slow");
+                    $("#notaxempid").show();
+                }
+                else {
+                    $(".taxdatail").show();
+                    $("#notaxempid").hide();
+                }
+
+            }
+    });
+
+</script>
+ 

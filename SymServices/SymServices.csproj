@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D45367B5-20CB-40F0-8B22-3730F0BACBF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SymServices</RootNamespace>
+    <AssemblyName>SymServices</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>..\packages\ExcelDataReader.2.1.2.3\lib\net45\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MicrosoftSQL\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MicrosoftSQL\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MicrosoftSQL\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Blend\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SymphonySofttech.Utilities">
+      <HintPath>..\..\CustomAsset\packages\Utilities\SymphonySofttech.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attendance\AttendanceDailyDAL.cs" />
+    <Compile Include="Attendance\AttendanceMigrationDAL.cs" />
+    <Compile Include="Attendance\AttendanceRosterAllDAL.cs" />
+    <Compile Include="Attendance\AbsentDeductionStructureDAL.cs" />
+    <Compile Include="Attendance\EmployeeWeeklyHolidayDAL.cs" />
+    <Compile Include="Attendance\DailyAttendanceProcessDAL.cs" />
+    <Compile Include="Attendance\EarningDeductionStructureDAL.cs" />
+    <Compile Include="Attendance\DownloadDataDAL.cs" />
+    <Compile Include="Attendance\EmployeeDailyAbsenceDAL.cs" />
+    <Compile Include="Attendance\EmployeeDailyOvertimeDAL.cs" />
+    <Compile Include="Attendance\EmployeeMonthlyAbsenceDAL.cs" />
+    <Compile Include="Attendance\EmployeeMonthlyOvertimeDAL.cs" />
+    <Compile Include="Attendance\MonthlyAttendanceDAL.cs" />
+    <Compile Include="Common\Appraisal360DAL.cs" />
+    <Compile Include="Common\Appraisal360DetailsDAL.cs" />
+    <Compile Include="Common\Appraisal360UserFeedbackDAL.cs" />
+    <Compile Include="Common\AppraisalMarkSetupsDAL.cs" />
+    <Compile Include="Common\AppraisalQuestionsDAL.cs" />
+    <Compile Include="Common\ELProcessDAL.cs" />
+    <Compile Include="Common\EmployeeEarnLeaveEncashmentDAL.cs" />
+    <Compile Include="Common\ExportImportDAL.cs" />
+    <Compile Include="Common\LeaveTypeDAL.cs" />
+    <Compile Include="Common\SymUserAppraisal360DAL .cs" />
+    <Compile Include="Enum\EnumEMPTypeDAL.cs" />
+    <Compile Include="Enum\EnumEMPTypeRepo.cs" />
+    <Compile Include="Enum\EnumForceDAL.cs" />
+    <Compile Include="Enum\EnumProfessionalDegreeDAL.cs" />
+    <Compile Include="GF\GFEmployeeBreakMonthDAL.cs" />
+    <Compile Include="GF\GFEmployeeForfeitureDAL.cs" />
+    <Compile Include="GF\GFEmployeeOpeinigDAL.cs" />
+    <Compile Include="GF\GFEmployeePaymentDAL.cs" />
+    <Compile Include="Common\DatabaseTableDAL.cs" />
+    <Compile Include="Common\BlockEmployerDAL.cs" />
+    <Compile Include="Common\BlockJobSeekerDAL.cs" />
+    <Compile Include="Common\AssetDAL.cs" />
+    <Compile Include="Common\DesignationGroupDAL.cs" />
+    <Compile Include="Common\OtherInfoDAL.cs" />
+    <Compile Include="Common\PreEmployementInformationDAL.cs" />
+    <Compile Include="Common\PublicApplicantDAL.cs" />
+    <Compile Include="Common\JobCircularDAL.cs" />
+    <Compile Include="Common\DataMigrationDAL.cs" />
+    <Compile Include="Common\DBUpdateDAL.cs" />
+    <Compile Include="Common\EmailSenderDAL.cs" />
+    <Compile Include="Common\EMJobOfferDAL.cs" />
+    <Compile Include="Common\EMJobDAL.cs" />
+    <Compile Include="Common\EmployeeStructureGroupRepo.cs" />
+    <Compile Include="Common\GroupDAL.cs" />
+    <Compile Include="Attendance\AttendanceStructureDAL.cs" />
+    <Compile Include="Common\BankDAL.cs" />
+    <Compile Include="Common\InfoAgentDAL.cs" />
+    <Compile Include="Common\InfoEmployerDAL.cs" />
+    <Compile Include="Common\InfoJobSeekerDAL.cs" />
+    <Compile Include="Common\JSProfileViewDAL.cs" />
+    <Compile Include="Common\SampleDAL.cs" />
+    <Compile Include="Common\SMSSenderDAL.cs" />
+    <Compile Include="Common\SymUserRollDAL.cs" />
+    <Compile Include="Common\UserGroupDAL.cs" />
+    <Compile Include="Enum\EnumColumnListDAL.cs" />
+    <Compile Include="Enum\EnumReportDAL.cs" />
+    <Compile Include="Enum\EnumVoucherTypeDAL.cs" />
+    <Compile Include="Enum\EnumOderByDAL.cs" />
+    <Compile Include="Enum\EnumSalaryStepDAL.cs" />
+    <Compile Include="Enum\EnumSalaryPortionDAL.cs" />
+    <Compile Include="Enum\EnumDAL.cs" />
+    <Compile Include="GF\GFEmployeeProvisionDAL.cs" />
+    <Compile Include="GF\EmployeeSettlementDAL.cs" />
+    <Compile Include="GF\GFPolicyDAL.cs" />
+    <Compile Include="HRM\EmployeeFilesDAL.cs" />
+    <Compile Include="HRM\EmployeeProfessionalDegreeDAL.cs" />
+    <Compile Include="HRM\HttpRequestHelper.cs" />
+    <Compile Include="HRM\EmployeeAssetDAL.cs" />
+    <Compile Include="HRM\HomeDAL.cs" />
+    <Compile Include="HRM\SetUpDAL.cs" />
+    <Compile Include="Leave\EmployeeCompensatoryLeaveDAL.cs" />
+    <Compile Include="Leave\EmployeeLeaveDAL.cs" />
+    <Compile Include="Loan\EmployeeLoanDAL.cs" />
+    <Compile Include="Loan\SalaryLoanDAL.cs" />
+    <Compile Include="Payroll\BonusNameDAL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Payroll\BonusProcessDAL.cs" />
+    <Compile Include="Payroll\BonusStructureDAL.cs" />
+    <Compile Include="Common\CompanyDAL.cs" />
+    <Compile Include="Attendance\HoliDayDAL.cs" />
+    <Compile Include="Payroll\EarningDeductionTypeDAL.cs" />
+    <Compile Include="Payroll\EmployeeEarningLeaveDAL.cs" />
+    <Compile Include="Payroll\EmployeeOtherDeductionDAL.cs" />
+    <Compile Include="Payroll\EmployeeOtherEarningDAL.cs" />
+    <Compile Include="Payroll\EmployeeSalaryIncrementDAL.cs" />
+    <Compile Include="Payroll\EmployeeSalaryOtherIncreamentDAL.cs" />
+    <Compile Include="Payroll\EmployeeStructureDAL.cs" />
+    <Compile Include="Payroll\GLAccountDAL.cs" />
+    <Compile Include="Payroll\SalaryEmployeeDAL.cs" />
+    <Compile Include="Payroll\MultipleSalaryStructureDAL.cs" />
+    <Compile Include="Payroll\ProjectAllocationDAL.cs" />
+    <Compile Include="Payroll\ProjectAllocationDetailDAL.cs" />
+    <Compile Include="Payroll\SalaryOtherDeductionDAL.cs" />
+    <Compile Include="Payroll\SalaryOtherEarningDAL.cs" />
+    <Compile Include="Payroll\EmployeeBonusDAL.cs" />
+    <Compile Include="Payroll\SalaryEarningDAL.cs" />
+    <Compile Include="Payroll\SalaryProcessDAL_.cs" />
+    <Compile Include="Payroll\SalaryProcessDAL.cs" />
+    <Compile Include="Payroll\SalaryStructureMatrixDAL.cs" />
+    <Compile Include="Payroll\SingleEmployeeDAL.cs" />
+    <Compile Include="Payroll\TAX108ADAL.cs" />
+    <Compile Include="PF\EmployeePFDAL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PF\EmployeePFPaymentDAL.cs" />
+    <Compile Include="PF\InvestmentAccruedDAL.cs" />
+    <Compile Include="PF\LoanDAL.cs" />
+    <Compile Include="PF\COAGroupDAL.cs" />
+    <Compile Include="PF\EmployeeForfeitureDAL.cs" />
+    <Compile Include="PF\EmployeeBreakMonthPFDAL.cs" />
+    <Compile Include="PF\EnumJournalTypeDAL.cs" />
+    <Compile Include="PF\GLJournalDAL.cs" />
+    <Compile Include="PF\COADAL.cs" />
+    <Compile Include="PF\EmployeePFOpeinigDAL.cs" />
+    <Compile Include="PF\BankChargeDAL.cs" />
+    <Compile Include="PF\InvestmentRenewDAL.cs" />
+    <Compile Include="PF\PFReportDAL.cs" />
+    <Compile Include="PF\PFStructureDAL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PF\ProfitDistributionNewDAL.cs" />
+    <Compile Include="PF\LoanSattlementDAL.cs" />
+    <Compile Include="PF\LoanRepaymentToBankDAL.cs" />
+    <Compile Include="PF\LoanMonthlyPaymentDAL.cs" />
+    <Compile Include="PF\PFSettlementDetailDAL.cs" />
+    <Compile Include="PF\SalaryPFDAL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PF\BankBranchDAL.cs" />
+    <Compile Include="PF\TransactionMediaDAL.cs" />
+    <Compile Include="PF\InvestmentNameDAL.cs" />
+    <Compile Include="PF\BankNameDAL.cs" />
+    <Compile Include="PF\PFSettlementDAL.cs" />
+    <Compile Include="PF\PFBankDepositDAL.cs" />
+    <Compile Include="PF\PFDetailDAL.cs" />
+    <Compile Include="PF\PreDistributionFundDAL.cs" />
+    <Compile Include="PF\ReturnOnBankInterestDAL.cs" />
+    <Compile Include="PF\EnumInvestmentTypeDAL.cs" />
+    <Compile Include="PF\InvestmentDAL.cs" />
+    <Compile Include="PF\SettlementPolicyDAL.cs" />
+    <Compile Include="Common\StructureGroupDAL.cs" />
+    <Compile Include="Payroll\GradeDAL.cs" />
+    <Compile Include="Common\DepartmentDAL.cs" />
+    <Compile Include="Common\ProjectDAL.cs" />
+    <Compile Include="Common\RoleDAL.cs" />
+    <Compile Include="PF\WithdrawDAL.cs" />
+    <Compile Include="Tax\AdvanceTaxDAL.cs" />
+    <Compile Include="Tax\EmloyeeTAXSlabDAL.cs" />
+    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailMonthlyDAL.cs" />
+    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailYearlyDAL.cs" />
+    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailMonthlyDAL.cs" />
+    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailYearlyDAL.cs" />
+    <Compile Include="Tax\EmployeeTaxDAL.cs" />
+    <Compile Include="Tax\EmployeeTaxSlabDetailMonthlyDAL.cs" />
+    <Compile Include="Tax\EmployeeTaxSlabDetailYearlyDAL.cs" />
+    <Compile Include="Tax\Schedule1SalaryMonthlyDAL.cs" />
+    <Compile Include="Tax\Schedule1SalaryYearlyDAL.cs" />
+    <Compile Include="Tax\Schedule2HousePropertyMonthlyDAL.cs" />
+    <Compile Include="Tax\Schedule2HousePropertyYearlyDAL.cs" />
+    <Compile Include="Tax\Schedule2TaxSlabDAL.cs" />
+    <Compile Include="Tax\Schedule2TaxSlabDetailDAL.cs" />
+    <Compile Include="Tax\Schedule3InvestmentMonthlyDAL.cs" />
+    <Compile Include="Tax\Schedule3InvestmentYearlyDAL.cs" />
+    <Compile Include="Tax\Schedule3TaxSlabDAL.cs" />
+    <Compile Include="Tax\Schedule3TaxSlabDetailDAL.cs" />
+    <Compile Include="Tax\ScheduleForm10BBMonthlyDAL.cs" />
+    <Compile Include="Tax\ScheduleForm10BBYearlyDAL.cs" />
+    <Compile Include="Tax\SchedulePolicyDAL.cs" />
+    <Compile Include="Tax\TaxDepositDAL.cs" />
+    <Compile Include="Tax\TaxSetupDAL.cs" />
+    <Compile Include="Tax\SalaryTaxDAL.cs" />
+    <Compile Include="Tax\TaxSlabDAL.cs" />
+    <Compile Include="Tax\TaxSlabDetailDAL.cs" />
+    <Compile Include="Tax\TaxStructureDAL.cs" />
+    <Compile Include="Common\UserRoleDAL.cs" />
+    <Compile Include="Enum\EnumLoanTypeDAL.cs" />
+    <Compile Include="Enum\EnumResultDAL.cs" />
+    <Compile Include="Enum\EnumSkillQualityDAL.cs" />
+    <Compile Include="Enum\EnumTrainingCourseDAL.cs" />
+    <Compile Include="Enum\EnumDistrictDAL.cs" />
+    <Compile Include="Enum\EnumDivisionDAL.cs" />
+    <Compile Include="Enum\EnumTrainingPlaceDAL.cs" />
+    <Compile Include="Enum\EnumNationalityDAL.cs" />
+    <Compile Include="Enum\EnumLanguageFluencyDAL.cs" />
+    <Compile Include="Enum\EnumLanguageCompetencyDAL.cs" />
+    <Compile Include="Enum\EnumImmigrationTypeDAL.cs" />
+    <Compile Include="Enum\EnumBloodGroupDAL.cs" />
+    <Compile Include="Enum\EnumCountryDAL.cs" />
+    <Compile Include="Enum\EnumDegreeDAL.cs" />
+    <Compile Include="Enum\EnumEmploymentStatusDAL.cs" />
+    <Compile Include="Enum\EnumEmploymentTypeDAL.cs" />
+    <Compile Include="Enum\EnumGenderDAL.cs" />
+    <Compile Include="Enum\EnumLanguageDAL.cs" />
+    <Compile Include="Enum\EnumLeaveApproveStatusDAL.cs" />
+    <Compile Include="Enum\EnumLeaveTypeDAL.cs" />
+    <Compile Include="Enum\EnumLeftTypeDAL.cs" />
+    <Compile Include="Enum\EnumMeritalStatusDAL.cs" />
+    <Compile Include="Enum\EnumReligionDAL.cs" />
+    <Compile Include="Enum\EnumSalaryPayModeDAL.cs" />
+    <Compile Include="Enum\EnumSalutationDAL.cs" />
+    <Compile Include="Enum\EnumTrainingStatusDAL.cs" />
+    <Compile Include="Enum\EnumTravelTypeDAL.cs" />
+    <Compile Include="Enum\EnumYearDAL.cs" />
+    <Compile Include="Common\BranchDAL.cs" />
+    <Compile Include="Attendance\AttLogsDAL.cs" />
+    <Compile Include="HRM\EmployeeStructureGroupDAL.cs" />
+    <Compile Include="HRM\EmployeeJobDAL.cs" />
+    <Compile Include="Leave\EmployeeLeaveDetailDAL.cs" />
+    <Compile Include="HRM\EmployeeImmigrationDAL.cs" />
+    <Compile Include="HRM\EmployeeDependentDAL.cs" />
+    <Compile Include="HRM\EmployeeEducationDAL.cs" />
+    <Compile Include="HRM\EmployeeEmergencyContactDAL.cs" />
+    <Compile Include="HRM\EmployeeExtraCurriculumActivityDAL.cs" />
+    <Compile Include="HRM\EmployeeInfoDAL.cs" />
+    <Compile Include="HRM\EmployeeJobHistoryDAL.cs" />
+    <Compile Include="HRM\EmployeeLanguageDAL.cs" />
+    <Compile Include="Leave\EmployeeLeaveStructureDAL.cs" />
+    <Compile Include="Leave\EmployeeLeaveStructureGroupDAL.cs" />
+    <Compile Include="HRM\EmployeeLeftInformationDAL.cs" />
+    <Compile Include="HRM\EmployeeNomineeDAL.cs" />
+    <Compile Include="HRM\EmployeePermanentAddressBanglaDAL.cs" />
+    <Compile Include="HRM\EmployeePermanentAddressDAL.cs" />
+    <Compile Include="HRM\EmployeePersonalDetailDAL.cs" />
+    <Compile Include="HRM\EmployeePresentAddressBanglaDAL.cs" />
+    <Compile Include="HRM\EmployeePresentAddressDAL.cs" />
+    <Compile Include="HRM\EmployeePromotionDAL.cs" />
+    <Compile Include="HRM\EmployeeReferenceDAL.cs" />
+    <Compile Include="HRM\EmployeeTrainingDAL.cs" />
+    <Compile Include="HRM\EmployeeTransferDAL.cs" />
+    <Compile Include="HRM\EmployeeTravelDAL.cs" />
+    <Compile Include="Leave\LeaveOpeningBalanceDAL.cs" />
+    <Compile Include="Leave\LeaveStructureDAL.cs" />
+    <Compile Include="Payroll\SalaryStructureDAL.cs" />
+    <Compile Include="Enum\EnumSalaryTypeDAL.cs" />
+    <Compile Include="Common\SectionDAL.cs" />
+    <Compile Include="Common\CodeDAL.cs" />
+    <Compile Include="Common\CommonDAL.cs" />
+    <Compile Include="Common\CommonImport.cs" />
+    <Compile Include="Common\CompanyprofileDAL.cs" />
+    <Compile Include="Common\FiscalYearDAL.cs" />
+    <Compile Include="Common\SettingDAL.cs" />
+    <Compile Include="Common\SettingRoleDAL.cs" />
+    <Compile Include="Common\SetupDAL.cs" />
+    <Compile Include="Common\UserInformationDAL.cs" />
+    <Compile Include="HRM\DesignationDAL.cs" />
+    <Compile Include="HRM\EmployeeDAL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SymOrdinary\SymOrdinary.csproj">
+      <Project>{83e8e9ad-89c0-4a1b-b554-c25c84d4db25}</Project>
+      <Name>SymOrdinary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SymViewModel\SymViewModel.csproj">
+      <Project>{b98cc664-34bd-4405-b815-ce6f1d9d7b66}</Project>
+      <Name>SymViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="MSScriptControl">
+      <Guid>{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

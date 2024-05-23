@@ -1,0 +1,95 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Employee Tax Shchedule" data-url="/Tax/TaxScheduleYearly/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <label class="pull-right">Employee List</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p class="thinHead">Employee List</p>
+    </div>
+    <p>
+    </p>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>@Session["SectionLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+
+                <th>Join Date</th>
+            </tr>
+            <tr>
+                <th style="text-align: center">Actions</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>@Session["DepartmentLabel"]</th>
+                <th>@Session["SectionLabel"]</th>
+                <th>@Session["ProjectLabel"]</th>
+
+                <th>Join Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        customToollip();
+        InitDateTimePickers();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Tax/TaxScheduleYearly/_index?EmployeeId=@ViewBag.EmployeeId&fYear=@ViewBag.fYear",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return '  <a title="Click on for Details" style="text-decoration:none;"    href=\"/Tax/TaxScheduleYearly/Edit?EmployeeId=' + oObj.aData[0] + '&fYear=@ViewBag.fYear' + '\"  class="sym-btn-detail-row"></a>';
+                                    ;
+                                }
+                            }
+                            , { "sName": "Code", "sWidth": "8%" }
+                    , { "sName": "EmpName", "sWidth": "12%" }
+                    , { "sName": "Designation", "sWidth": "12%" }
+                    , { "sName": "Department ", "sWidth": "12%" }
+                    , { "sName": "Section", "sWidth": "12%" }
+                    , { "sName": "Project", "sWidth": "12%" }
+                    , { "sName": "JoinDate", "sWidth": "18%" }
+            ]
+        });
+
+
+        oTable.columnFilter
+            ({
+                sPlaceHolder: "head:after",
+                aoColumns:
+                    [
+                        { type: "checkbox", "sClass": "chkAll" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "date-range" }
+                    ]
+            });
+    });
+
+</script>

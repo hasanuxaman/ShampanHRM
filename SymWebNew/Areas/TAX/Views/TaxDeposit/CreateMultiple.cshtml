@@ -1,0 +1,306 @@
+﻿@model SymViewModel.Tax.TaxDepositVM
+@using UIHelper.MVC
+@{
+    if (Model.Id > 0)
+    {
+        ViewBag.Title = "Edit";
+    }
+    else
+    {
+        ViewBag.Title = "Create";
+    }
+}
+
+@*@using (Html.BeginForm("CreateEditMultiple", "TaxDeposit", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTaxDepositMultiple" }))
+{*@
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.EmployeeId)
+    @Html.HiddenFor(model => model.Operation)
+
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p class="thinHead">Tax Deposit</p>
+        </div>
+        <div class="TaxDeposit">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmployeeCode)
+                    </div>
+                    <div class="editor-field">
+
+                        @Html.SimpleDropDownFor(model => model.EmployeeCode, "/Config/DropDown/EmployeeCodeName", new { @class = " form-control selectDropdown" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EmployeeCodeTo)
+                    </div>
+                    <div class="editor-field">
+
+                        @Html.SimpleDropDownFor(model => model.EmployeeCodeTo, "/Config/DropDown/EmployeeCodeName", new { @class = " form-control selectDropdown" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ChallanNo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ChallanNo, new { @placeholder = "Challan No", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.ChallanNo)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.BankInformation)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.BankInformation, new { @placeholder = "BankInformation", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.BankInformation)
+                    </div>
+                </div>
+                @*<div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.DepositAmount)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.DepositAmount, new { @placeholder = "Deposit Amount", @class = " form-control" })
+                            @Html.ValidationMessageFor(model => model.DepositAmount)
+                        </div>
+                    </div>*@
+
+
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+
+                    <div class="editor-field">
+                        <div>@Html.TextBoxFor(model => model.Year, @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" })</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-2">
+
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = " fpDetailsCom required form-control " })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Particular</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownListFor(model => model.Particular, new List<SelectListItem>
+                        {
+                            new SelectListItem
+                            {
+                                Text = "Select", Value = ""
+                            },
+                            new SelectListItem
+                            {
+                                Text = "Salary", Value = "SALARY"
+                            },
+                            new SelectListItem
+                            {
+                                Text = "Bonus", Value = "BONUS"
+                            }
+                        }, new { @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.DepositDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.DepositDate, new {@placeholder = "Deposit Date", @class = "dpDate customDatePicker required form-control"})
+                        @Html.ValidationMessageFor(model => model.DepositDate)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks", @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="headrow">
+        <button title="Click to Show Employee List" id="Searchbtn" class="btn sym-btn-search">&nbsp;Search</button>
+
+        <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save" hidden="hidden">&nbsp;Save</button>
+
+        @*<button type="button" name="btnName" value="Save" title="Save Data" class="sym-btn-save">&nbsp;Save</button>*@  @*onclick="pageSubmit('frmTaxDepositMultiple')"*@
+        <label class="pull-right">Multiple Tax Deposit > Create</label>
+
+        <button type="button" title="Go To Index" data-url="/Tax/TaxDeposit" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New TaxDeposit" data-url="/Tax/TaxDeposit/CreateMultiple" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+    </div>
+    
+    <div id="detailsDiv">
+
+    </div>
+
+    <div class="headrow" hidden="hidden">
+
+        <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save" hidden="hidden" >&nbsp;Save</button>
+
+        @*<button type="button" name="btnName" value="Save" title="Save Data" onclick="pageSubmit('frmTaxDepositMultiple')" class="sym-btn-save">&nbsp;Save</button>*@
+    </div>
+@*}*@
+
+<script>
+    //function UpdateData() {
+    //    pageSubmit('frmTaxDepositMultiple');
+    //}
+
+    $(function () {
+        InitDropdownsCommon();
+    });
+</script>
+
+<script>
+
+    $('.saveJSON').click(function () {
+        if (pageSubmitJSON('frmEmloyeeTAXDeposit') == 0) {
+            ////var taxSlabId = $(".taxSlabId :selected").val();
+            ////if (taxSlabId == "") {
+            ////    ShowResult("Fail", "Please Select Tax Slab First!");
+            ////    return;
+            ////}
+
+            var EmployeeCode = $("#EmployeeCode").val();
+            var EmployeeCodeTo = $("#EmployeeCodeTo").val();
+            var Year = $("#Year").val();
+            var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+            var Particular = $("#Particular").val();
+            var DepositDate = $("#DepositDate").val();
+
+          
+            if (FiscalYearDetailId == "") {
+                ShowResult("Fail", "Please Select Fiscal Period First!");
+                return;
+            }
+            if (Particular == "") {
+                ShowResult("Fail", "Please Select Particular First!");
+                return;
+            }
+            if (DepositDate == "") {
+                ShowResult("Fail", "Please Select Deposit Date!");
+                return;
+            }
+
+            var ChallanNo = $("#ChallanNo").val();
+            var BankInformation = $("#BankInformation").val();
+            var Remarks = $("#Remarks").val();
+
+
+
+            obj = new Object();
+            obj.EmployeeCode = EmployeeCode;
+            obj.EmployeeCodeTo = EmployeeCodeTo;
+            obj.Year = Year;
+            obj.FiscalYearDetailId = FiscalYearDetailId;
+            obj.Particular = Particular;
+            obj.DepositDate = DepositDate;
+            obj.ChallanNo = ChallanNo;
+            obj.BankInformation = BankInformation;
+            obj.Remarks = Remarks;
+
+            var myData = $('#frmEmloyeeTAXDeposit').serialize();
+            var url = "/TAX/TaxDeposit/CreateTaxDeposit";
+
+            console.log(myData);
+
+            var param = $.param(obj);
+            url = url + "?" + param;
+
+            submit(url, myData);
+            $(".saveJSON").hide();
+            //$(".taxSlabId").val("");
+            Searching();
+        }
+    });
+
+
+    $("#Searchbtn").click(function () {
+        Searching();
+    });
+
+    function Searching() {
+        var url = '/TAX/TaxDeposit/_indexTaxDeposit';
+
+        var EmployeeCode = $("#EmployeeCode").val();
+        var EmployeeCodeTo = $("#EmployeeCodeTo").val();
+        var Year = $("#Year").val();
+        var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+        var Particular = $("#Particular").val();
+
+        if (EmployeeCode == "") {
+            ShowResult("Fail", "Please Select Employee Code First!");
+            return;
+        }
+        if (EmployeeCodeTo == "") {
+            ShowResult("Fail", "Please Select Employee Code To First!");
+            return;
+        }
+        if (FiscalYearDetailId == "") {
+            ShowResult("Fail", "Please Select Fiscal Period First!");
+            return;
+        }
+        if (Particular == "") {
+            ShowResult("Fail", "Please Select Particular First!");
+            return;
+        }
+
+        obj = new Object();
+
+        obj.EmployeeCode = EmployeeCode;
+        obj.EmployeeCodeTo = EmployeeCodeTo;
+
+        obj.Year = Year;
+        obj.FiscalYearDetailId = FiscalYearDetailId;
+        obj.Particular = Particular;
+        
+        var param = $.param(obj);
+        url = url + "?" + param;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $(' #detailsDiv').html(data);
+
+                $(".saveJSON").show();
+                $(".headrow").show();
+                //ShowResult("Info", " Data load Complete");
+            },
+        });
+    }
+
+
+</script>
+

@@ -1,0 +1,61 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Employee Tax Shchedule" data-url="/Tax/Schedule2Monthly/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+    <label class="pull-right">Fiscal Period</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p class="thinHead">Fiscal Period List</p>
+    </div>
+    <p>
+    </p>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">
+                    <input type="checkbox" class="chkAll" />Select All</th>
+                <th>Fiscal Period</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        InitDateTimePickers();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Tax/Schedule2Monthly/_indexFiscalPeriod?EmployeeId=@ViewBag.EmployeeId&fydid=@ViewBag.fydid",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    if ('@ViewBag.EmployeeId' != "") {
+                                        return '  <a title="Click on for Details" style="text-decoration:none;"    href=\"/Tax/Schedule2Monthly/Edit?fydid=' + oObj.aData[0] + '&EmployeeId=@ViewBag.EmployeeId' + '\"  class="sym-btn-detail-row"></a>';
+                                    }
+                                    else {
+                                        return '  <a title="Click on for Details" style="text-decoration:none;"    href=\"/Tax/Schedule2Monthly?fydid=' + oObj.aData[0] + '\"  class="sym-btn-detail-row"></a>';
+                                        ;
+
+                                    }
+                                }
+                            }
+                            , { "sName": "FiscalPeriod", "sWidth": "20%" }
+            ]
+        });
+
+    });
+
+</script>

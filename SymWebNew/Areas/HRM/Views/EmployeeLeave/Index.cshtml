@@ -1,0 +1,188 @@
+﻿@*@model List<SymViewModel.Leave.EmployeeLeaveVM>*@
+@model SymViewModel.Leave.EmployeeLeaveVM
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="headrow">
+    <label class="pull-right">Employee Leave</label>
+</div>
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee Leave</p>
+    </div>
+    <p></p>
+
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+                <th class="center">Action</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Leave Type</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Day Type</th>
+                <th>Approve</th>
+            </tr>
+            <tr>
+                <th class="center">Action</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Leave Type</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Day Type</th>
+                <th>Approve</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<script>
+    $(function () {      
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var daytype = "";
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeLeave/_index/?status=" + $("#status").val(),
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,     
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "22%",
+                    "sClass": "center",
+                    "fnRender": function (oObj) {
+
+                       
+                        if ('@identity.IsAdmin'.toLowerCase() == "true" || '@identity.IsHRM'.toLowerCase() == "true") {
+                            return ' <a title="Click to Approve"  class="approve sym-btn-approve-row" href=\"/HRM/EmployeeLeave/LeaveApprove/?parm=' + oObj.aData[0].split('~')[2] + '~' + 'Approve' + '~' + oObj.aData[0].split('~')[1] + '~' + oObj.aData[0].split('~')[0] + '&Code=' + oObj.aData[1] + '&Id=' + oObj.aData[0].split('~')[2] + '\"></a>'
+                                + ' <a title="Click to Reject" onclick=" RejectButton();"    class="reject sym-btn-reject-row" value="abc" href=\"/HRM/EmployeeLeave/LeaveApprove/?parm=' + oObj.aData[0].split('~')[2] + '~' + 'Reject' + '~' + oObj.aData[0].split('~')[1] + '~' + oObj.aData[0].split('~')[0] + '&Code=' + oObj.aData[1] + '&Id=' + oObj.aData[0].split('~')[2] + '\"></a>'
+                                + '<a title="Click for Details"  href=\"/HRM/EmployeeLeave/_leaveDetails/?parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + '\" class="sym-btn-detail-row"></a>'
+                                + '<a title="Click to Edit" style="text-decoration:none" class="sym-btn-edit-row"  onclick="editLeave(this)"  data-url=\"/HRM/EmployeeLeave/LeaveEdit"\ data-parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + ' data-reject=' + oObj.aData[0].split('~')[1] + '></a>'
+                                + '<a title="Click for Report" target="_blank"  class="sym-btn-report-row" href=\"/HRM/EmployeeReport/LAF/?LId=' + oObj.aData[0].split('~')[2] + '&Statement=y' + '&ReportNo=4' + '\"></a>'
+                                + '<a title="Click To Send Email" target="_blank"  class="sym-btn-mail-row" href=\"/HRM/EmployeeLeave/LeaveEmail/?Code=' + oObj.aData[1] + '&Id=' + oObj.aData[0].split('~')[2] + '\"></a>'
+                            ;
+
+                        }
+                        else if ('@identity.IsESS'.toLowerCase() == "true") {
+                            return '<a title="Click for Details"  style="text-decoration:none; font-size: 1.3em!important;"  href=\"/HRM/EmployeeLeave/_leaveDetails/?parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + '\"     class="sym-btn-detail-row"></a>'
+                                + '<a title="Click to Edit" style="text-decoration:none" class="sym-btn-edit-row"  onclick="editLeave(this)"  data-url=\"/HRM/EmployeeLeave/LeaveEdit"\ data-parm=' + oObj.aData[0].split('~')[2] + '~' + oObj.aData[0].split('~')[0] + ' data-reject=' + oObj.aData[0].split('~')[1] + '></a>'
+                                + '<a title="Click to Delete" style="text-decoration:none" class="sym-btn-remove-row" onclick="deleteLeave(this)" data-url=\"/HRM/EmployeeLeave/Delete?id=' + oObj.aData[0].split('~')[2] + '\" data-approve=' + oObj.aData[0].split('~')[0] + ' data-reject=' + oObj.aData[0].split('~')[1] + '></a>'
+                                + '<a title="Click for Report" target="_blank"  class="sym-btn-report-row" href=\"/HRM/EmployeeReport/LAF/?LId=' + oObj.aData[0].split('~')[2] + '&Statement=y' + '&ReportNo=4' + '\"></a>'
+                            ;
+                        }
+                    }
+                }
+                  , { "sName": "EmpCode", "sWidth": "8%" }
+                  , { "sName": "EmpName", "sWidth": "12%" }
+                  , { "sName": "LeaveType_E", "sWidth": "10%" }
+                  , { "sName": "FromDate", "sWidth": "18%" }
+                  , { "sName": "ToDate", "sWidth": "18%" }
+                  , { "sName": "DayType", "sWidth": "8%" }
+                  , { "sName": "Approval", "bSortable": false, "sWidth": "8%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                          null
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "date-range" }
+                        , { type: "date-range" }
+                        , { type: "text" }
+                        , { type: "select", values: ["Approved", "Pending"] }
+
+            ]
+        });
+        $(".number_filter").addClass("customDatePicker");
+
+    });
+
+
+</script>
+<script>
+    function deleteLeave(sender) {
+        var url = $(sender).attr('data-url');
+        var approve = $(sender).attr('data-approve');
+        var reject = $(sender).attr('data-reject');
+
+        if (approve.toLowerCase() == "true") {
+            ShowResult("Fail", "This Leave Already Approved! Can't Delete!");
+            return;
+        }
+        if (reject.toLowerCase() == "true") {
+            ShowResult("Fail", "This Leave Already Rejected! Can't Delete!");
+            return;
+        }
+
+
+        Ask("Are you sure to Delete!", function () {
+            $.getJSON(url, function (result) {
+                if (result.indexOf("~") > -1) {
+                    ShowResult(result.split("~")[0], result.split("~")[1]);
+
+                    if (result.split("~")[0] == "Fail") {
+                        return;
+                    }
+
+                }
+                else {
+                    ShowResult("Success", result);
+                }
+
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            });
+        }, function () { })
+    }
+    
+</script>
+<script>
+    function editLeave(sender) {
+        var url = $(sender).attr('data-url');
+        var parm = $(sender).attr('data-parm');
+        var approve = parm.split('~')[1];    
+        if (approve.toLowerCase() == "true") {
+            ShowResult("Fail", "This Leave Already Approved! Can't Edit!");
+            return;
+        }
+        url = url + "?parm=" + parm;
+
+        window.location = url;
+    }
+</script>
+

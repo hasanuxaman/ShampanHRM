@@ -1,0 +1,237 @@
+﻿@*@{
+    ViewBag.Title = "SageIntegration";
+}
+
+<h2>SageIntegration</h2>*@
+
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Sage Integration</p>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+            <div class="editor-field">
+                <div>@Html.TextBox("fYear", @Session["SessionYear"] as string, new { @class = "fiscalyearCom form-control" }) </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalYearDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "fpDetailsCom required form-control " })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Posting Date</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBox("PostingDate", null, new { @placeholder = "Posting Date", @class = "required customDatePicker form-control" })
+            </div>
+        </div>
+         <div class="col-md-1">
+            <div class="editor-label">
+                <label>Reverse</label>
+            </div>
+            <div class="">
+                <input id="Reverse" type="checkbox" />
+            </div>
+        </div>
+       
+    </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-5">
+              <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Department</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Section</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        <label>Project</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>&nbsp;</label>
+            </div>
+            <div class="">
+                <span id="rightA"><< </span>
+                <input id="byCode" type="checkbox" />
+                <span id="leftA"></span>
+            </div>
+        </div>
+           <div class="col-md-5">
+           <div class="col-md-12">
+               <div class="editor-label">
+                <label>Multiple Employee Code</label>
+            </div>
+            <div class="editor-field">
+
+                @Html.SimpleDropDown("MulitpleCode", "/Config/DropDown/EmployeeCode", new { @class = "mulitpleCode form-control selectDropdown", @multiple = "multiple" })
+            </div>
+            </div>
+            </div>
+    </div>
+</div>
+<div class="headrow">
+        <button type="button" title="Click to Post" id="saveJSON" class=" sym-btn-save">&nbsp;Post</button>&nbsp;
+        <button type="button" title="Click to See Old Journal"  Id="oldJournal" class=" sym-btn-report">&nbsp;Posted Journal</button>&nbsp;
+        <button type="button" title="Click to See Current Journal"  Id="currentJournal" class=" sym-btn-report">&nbsp;Current Journal</button>
+   @* <div class="col-md-1">
+        <button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+    </div>*@
+</div>
+<div id="detailsDiv">
+</div>
+<style>
+    span {
+     font-size:large;
+    }
+
+</style>
+<script>
+    $(function () {
+  $('.mulitpleCode').attr("disabled","disabled");
+
+
+        InitDropdownsCommon();
+        InitDropDowns();
+        $('#saveJSON').click(function () {
+            var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+            var PostingDate = $("#PostingDate").val();
+            if (FiscalYearDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period");
+                return;
+            }
+            if (PostingDate == "") {
+                ShowResult("Fail", "Please Select the Posting Date");
+                return;
+            }
+            var DepartmentId = $("#DepartmentId").val();
+            var SectionId = $("#SectionId").val();
+            var ProjectId = $("#ProjectId").val();
+            var empcodes = $('#MulitpleCode').val();
+            var isReverse = $("#Reverse").is(':checked');
+
+            var askingMsg = "";
+            if(isReverse == false)
+                askingMsg = "Are you sure to Post!";
+            else if(isReverse == true)
+                askingMsg = "Are you sure to Reverse the Post!";
+
+            Ask(askingMsg, function () {
+                var url = "/Payroll/SalaryProcess/SageIntegration?FiscalYearDetailId=" + FiscalYearDetailId
+                               + "&PostingDate=" + PostingDate
+                 + '&DepartmentId=' + DepartmentId
+                 + '&SectionId=' + SectionId
+                 + '&ProjectId=' + ProjectId
+                 + '&empcodes=' + empcodes
+                + "&isReverse=" + isReverse
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    error: function (xhr, status, error) {
+                    },
+                    success: function (response) {
+                        var dataAction = "";
+                        //if (response[0] != 'Fail') {
+                        //    dataAction = "redirect";
+                        //}
+                        ShowResult(response.split("~")[0], response.split("~")[1])
+                    }
+                });
+            }, function () { })
+        });
+    });
+
+   
+      
+    $("#oldJournal, #currentJournal").click(function () {
+        var FiscalYearDetailId = $("#FiscalYearDetailId").val();
+        var PostingDate = $("#PostingDate").val();
+        var DepartmentId = $("#DepartmentId").val();
+        var SectionId       = $("#SectionId").val();
+        var ProjectId       = $("#ProjectId").val();
+        var empcodes        = $('#MulitpleCode').val();
+
+        if (FiscalYearDetailId == "") {
+            ShowResult("Fail", "Please Select the Fiscal Period!");
+            return;
+        }
+
+        var htmlId = $(this).attr("Id");
+
+        var url = '/Payroll/SalaryProcess/_sageIndexPartial?FiscalYearDetailId=' + FiscalYearDetailId
+                 + '&PostingDate=' + PostingDate 
+                 + '&DepartmentId=' + DepartmentId 
+                 + '&SectionId=' + SectionId    
+                 + '&ProjectId=' + ProjectId    
+                 + '&empcodes=' + empcodes     
+                 + '&htmlId=' + htmlId
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $('#detailsDiv').html(data);
+            },
+        });
+    });
+
+      $("#byCode").click(function () {
+          if ($('#byCode').is(':checked')) {
+              $('.departmentsCom').val("");
+              $('.sectionsCom').val("");
+              $('.projectsCom').val("");
+             
+              $('.departmentsCom').attr("disabled","disabled");
+              $('.sectionsCom').attr("disabled","disabled");
+              $('.projectsCom').attr("disabled","disabled");
+             
+              $('.mulitpleCode').removeAttr('disabled');
+              $("#leftA").text(" >>");
+              $("#rightA").text("");
+          } else {
+                $("#rightA").text(" <<");
+              $("#leftA").text("");
+              $(".mulitpleCode").select2("val", "");
+              $('.mulitpleCode').attr("disabled","disabled");
+
+              $('.departmentsCom').removeAttr('disabled');
+              $('.sectionsCom').removeAttr('disabled');
+              $('.projectsCom').removeAttr('disabled');
+          }
+      });
+
+
+</script>

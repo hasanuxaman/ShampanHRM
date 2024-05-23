@@ -1,0 +1,142 @@
+﻿@model IEnumerable<SymViewModel.HRM.EmployeeInfoVM>
+@{
+    ViewBag.Title = "Employee List";
+    ViewBag.Location = "Employee List"; 
+}
+<!-- #region Script -->
+@section head{
+    <script  type="text/javascript">
+        $(document).ready(function () {
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/EmployeeAreer/_EmployeeInfoForAreer",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "12%",
+                                    "sClass": "center",
+                                    "fnRender": function (oObj) {
+                                        return '   <a  title="Click for Entry" style="text-decoration:none;"   href=\"/Payroll/EmployeeAreer/Create/?empId=' + oObj.aData[0] + '\" class="btn btn-warning btn-xs "><i class="fa fa-check-square-o"></i></a>' //+;
+                                    }
+                                }
+                                , { "sName": "Code", "sWidth": "15%" }
+                                , { "sName": "EmpName", "sWidth": "20%" }
+                                , { "sName": "Department", "sWidth": "17%" }
+                                , { "sName": "Designation", "sWidth": "17%" }
+                                , { "sName": "JoinDate", "sWidth": "17%" }
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "date-range" }
+                ]
+            });
+        });
+    </script>
+
+}
+<!-- #endregion Script -->
+
+
+<!DOCTYPE html>
+<html>
+  
+    <body>
+        <div class="headrow">
+            <a href="@Url.Action("Index")" style="text-decoration:none" class="btn sym-btn-back"  title="Back to Index">&nbsp;Back< /a>
+            <label class="pull-right">Employee Arrear > New</label>
+       @*<button type="button"   title="Back to Index"   data-url="/Payroll/EmployeeAreer"  class="sym-btn-back" >&nbsp;Back</button>*@
+        </div>
+        <p></p>
+            <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Employee List for Arrear Entry</p>   
+        </div>
+       
+        <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                         <tr>
+                            <th class="center">Select</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                        </tr>
+
+                        <tr>
+                            <th class="center">Actions</th>
+                           <th>Code</th>
+                            <th>EmpName</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+ </div>
+    </body>
+</html>
+ 
+  <div class="headrow">
+       @*<button type="button"   title="Back to Index"   data-url="/Payroll/EmployeeAreer"  class="sym-btn-back" >&nbsp;Back</button>*@
+            <a href="@Url.Action("Index")" style="text-decoration:none" class="btn sym-btn-back"  title="Back to Index">&nbsp;Back< /a>
+
+        </div>
+@*<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@TempData["msg"]' != "") {
+            var tt = '@TempData["msg"]';
+            var tt1 = tt.split("~");
+            // $(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/EmployeeAreer/_EmployeeInfoForAreer",
+            "bProcessing": true,
+            "aoColumns": [
+          {
+              "sName": "Code",
+              "bSearchable": false,
+              "bSortable": false,
+              "fnRender": function (oObj) {
+
+                  return '<a  class="lnkEdit innerListLink"  href=\"/Payroll/EmployeeAreer/Create/?empId=' + oObj.aData[0].split('~')[1] + '\">' + oObj.aData[0].split('~')[0] + '</a>'
+                  ;
+              }
+          },
+                            { "sName": "Salutation" },
+                            { "sName": "First Name" },
+                            { "sName": "Last Name" } 
+            ]
+        });
+
+    });
+
+    </script>*@

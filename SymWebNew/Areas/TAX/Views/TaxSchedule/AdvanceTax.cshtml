@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SymViewModel.Tax.YearlyTAXVM>
+
+
+@{
+    ViewBag.Title = "AdvanceTax";
+}
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        @if (Model.Any())
+        {
+            <p>@Model.FirstOrDefault().EmployeeName</p>
+            <p>@Model.FirstOrDefault().FiscalYearName</p>
+        }
+        
+
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period Name </label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Tax Value</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Advance Tax Value</label>
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model)
+    {
+        @Html.Partial("_TaxDetails", item);
+    }
+</div>
+

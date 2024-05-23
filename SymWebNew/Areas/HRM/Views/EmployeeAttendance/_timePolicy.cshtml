@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+    }
+
+@model SymViewModel.HRM.EmployeeInfoVM
+  @Html.HiddenFor(model => model.attvm.Id)
+ <div class="thinbox">
+            <div class="tPolicy">
+                <div class="th_thinbox">
+                    <p>Time Policy</p>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="editor-label col-md-4">
+                            @Html.LabelFor(model => model.attvm.InTime)
+                        </div>
+                        <div class="editor-label col-md-8">
+                            @Html.TextBoxFor(model => model.attvm.InTime, new { readOnly = "readOnly", @placeholder = "Code", @class = "customTimePicker  form-control" })
+                        </div>
+
+                        <div class="editor-label col-md-4">
+                            @Html.LabelFor(model => model.attvm.OutTime)
+                        </div>
+                        <div class="editor-label col-md-8">
+                            @Html.TextBoxFor(model => model.attvm.OutTime, new { readOnly = "readOnly", @placeholder = "Code", @class = "customTimePicker  form-control" })
+                        </div>
+
+                        <div class="editor-label col-md-4">
+                            @Html.LabelFor(model => model.attvm.InGrace)
+                        </div>
+                        <div class="editor-label col-md-8">
+                            @Html.TextBoxFor(model => model.attvm.InGrace, new { readOnly = "readOnly", @placeholder = "Code", @class = " form-control" })
+                        </div>
+                        <div class="editor-label col-md-4">
+                            @Html.LabelFor(model => model.attvm.LunchTime)
+                        </div>
+                        <div class="editor-label col-md-8">
+                            @Html.TextBoxFor(model => model.attvm.LunchTime, new { readOnly = "readOnly", @placeholder = "Lunch Time", @class = "customTimePicker  form-control" })
+                        </div>
+                        <div class="editor-label col-md-4">
+                            @Html.LabelFor(model => model.attvm.LunchBreak)
+                        </div>
+                        <div class="editor-label col-md-8">
+                            @Html.TextBoxFor(model => model.attvm.LunchBreak, new { readOnly = "readOnly", @placeholder = "Lunch Break", @class = "  form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+
+   
+</script>
+

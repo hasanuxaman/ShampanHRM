@@ -1,0 +1,73 @@
+﻿@model SymViewModel.Payroll.SalaryReimbursableExpenseDetailVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("SingleReimbursableExpenseEdit", "SalaryReimbursableExpense", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmGrade" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+            <div class="th_thinbox">
+        <p> Salary Reimbursable Expense Edit </p>
+    </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, null, new {@placeholder = "Employee Name", @class =" form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>ReimbursableExpense Value </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.ReimbursableExpenseAmount, null, new {@placeholder = "Reimbursable Expense", @class =" right  form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class =" form-control" })
+                </div>
+            </div>
+        </div>
+            <div>
+                
+                <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+            <button type="button" title="Back to Index"  data-url="/Payroll/SalaryReimbursableExpense" onclick="BackToList(this)" class="sym-btn-back">&nbsp;Back</button>
+        
+
+      @*  <input style="margin-top: 19px;" class="btn btn-info" type="submit" value="Save" />
+        &nbsp;
+            <input style="margin-top: 19px;" type="button" class="btn btn-info" data-url="/Payroll/SalaryReimbursableExpense" onclick="BackToList(this)" value="Back to list" />
+    *@</div>
+    </div>
+}
+<script>
+    $(function () {
+        if ('@ViewBag.result' != '') {
+            var dataAction = "";
+            if('@ViewBag.result'=='Success'){
+                dataAction = "redirect";
+            }
+            ShowResult('@ViewBag.result', '@ViewBag.msg', dataAction, '/Payroll/SalaryReimbursableExpense');
+        }
+    });
+</script>

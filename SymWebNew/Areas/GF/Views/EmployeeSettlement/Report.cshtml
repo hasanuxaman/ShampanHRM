@@ -1,0 +1,80 @@
+﻿@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Tax Certificate</p>
+    </div>
+    <div class="Product">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Left Employee Code</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeF", "/Config/DropDown/ExEmployeeCodeName", new { @class = " form-control selectDropdown" })
+                </div>
+            </div>
+            @* <div class="col-md-3">
+            <div class="editor-label">
+                <label>Emp Code(To)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeT", "/Config/DropDown/ExEmployeeCodeName", new { @class = " form-control selectDropdown" })
+            </div>
+        </div>*@
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Settlement Date From</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("SettlementDateFrom", "", new { @placeholder = "Date From", @class = "stDateFrom customDatePicker form-control" })
+                </div>
+            </div>
+             <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Settlement Date To</label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("SettlementDateTo", "", new { @placeholder = "Date To", @class = "stDateTo customDatePicker form-control" })
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<div class="headrow">
+    <button type="button" title="Click for Report" name="Detail" data-url="/GF/EmployeeSettlement/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Detail</button>
+    <button type="button" title="Click for Report" name="Summary" data-url="/GF/EmployeeSettlement/ReportView" onclick="reportData(this);" id="" class="sym-btn-report">&nbsp;Summary</button>
+</div>
+<script>
+    $(function () {
+        InitDropdownsCommon();
+    });
+
+    function reportData(sender) {
+        var url = $(sender).attr('data-url');
+        var reportType = $(sender).attr('name');
+        var empCodeFrom = $("#CodeF :selected").val();
+        //var empCodeTo = $("#CodeT :selected").val();
+        var dtFrom = $(".stDateFrom").val();
+        var dtTo = $(".stDateTo").val();
+
+
+        rptObj = new Object();
+        rptObj.empCodeFrom = empCodeFrom;
+        //rptObj.empCodeTo = empCodeTo;
+        rptObj.reportType = reportType;
+        rptObj.dtFrom = dtFrom;
+        rptObj.dtTo = dtTo;
+
+
+
+        var rptParam = $.param(rptObj);
+        url = url + "?" + rptParam;
+        var win = window.open(url, '_blank');
+    }
+</script>

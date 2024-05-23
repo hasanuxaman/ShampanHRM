@@ -1,0 +1,297 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("PersonalDetail", "EmployeeInfo", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmpPersonalD" }))
+{
+    @Html.HiddenFor(model => model.personalDetail.Id)
+    @Html.HiddenFor(model => model.personalDetail.EmployeeId)
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Personal Details</p>   
+        </div>
+        <div class="personalDetail">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.OtherId)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.OtherId, new { @placeholder = "Personal Detail Id", @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.NickName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.NickName, new { @placeholder = "Nick Name", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.DateOfBirth)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.DateOfBirth, new { @onchange = "DateOfBirth(this)", @placeholder = "Date Of Birth", @class = "required customDatePicker form-control " })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-md-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.Religion)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.Religion, "/Config/DropDown/Religion", new { @placeholder = "Religion", @class = "required form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.BloodGroup_E)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.BloodGroup_E, "/Config/DropDown/BloodGroup", new { @placeholder = "Blood Group", @class = "required form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Gender_E)
+                    </div>
+                    <div class="editor-field"> 
+                        @Html.SimpleDropDownFor(model => model.personalDetail.Gender_E, "/Config/DropDown/Gender", new { @placeholder = "Gender", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.MaritalStatus_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.personalDetail.MaritalStatus_E, "/Config/DropDown/MeritalStatus", new { @placeholder = "Marital Status", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Nationality_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.personalDetail.Nationality_E, "/Config/DropDown/Nationality", new { @placeholder = "Nationality", @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Email)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.Email, new { @placeholder = "Email", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Smoker)
+                    </div>
+                        <div class="editor-field center">
+                            @Html.CheckBoxFor(model => model.personalDetail.Smoker, new { @placeholder = "Smoker", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.personalDetail.Smoker)
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.PassportNumber)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.PassportNumber, new { @placeholder = "Passport Number", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.ExpiryDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.ExpiryDate, new { @onchange = "PersonalDate(this);", @placeholder = "Expiry Date", @class = "customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Passport File</label>
+                    <input type="file" onchange="CheckFileSize(this);" name="PassportFile" id="PassportFile" style="width: 200px;" />
+                </div>
+                @if (Model.personalDetail.PassportFile != null && Model.personalDetail.PassportFile != "")
+                {    
+                     <div  class="col-md-2">
+                       <label>Passport File</label>
+                     <div class="col-md-6"> <a target="_blank" href="~/Files/PassportFile/@Model.personalDetail.Id@Model.personalDetail.PassportFile">
+                           <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                     </div>  
+                    <div class="col-md-6" style="float:left;" > 
+                        <span onclick="FileDelete(this)"; data-id="@Model.personalDetail.Id" data-table="1"  data-field="PassportFile" data-url="~/Files/PassportFile/@Model.personalDetail.Id@Model.personalDetail.PassportFile">
+                        <img class="attachment" src="~/assets/Images/document_delete.png" width="25"  alt="File" title="File" /></span>
+                    </div>  
+                       
+                   </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.TIN)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.TIN, new { @placeholder = "TIN", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.NID)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.NID, new { @placeholder = "NID", @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>NID File</label>
+                    <input type="file" onchange="CheckFileSize(this);" name="NIDF" id="NIDF" style="width: 200px;" />
+                </div>
+                @if (Model.personalDetail.NIDFile != null && Model.personalDetail.NIDFile != "")
+                {
+                    <div  class="col-md-2">
+                        @Html.LabelFor(model => model.personalDetail.NID, new { @placeholder = "Code", @class = "attachment" })
+                        <div class="col-md-6"><a class="" target="_blank" href="~/Files/NID/@Model.personalDetail.Id@Model.personalDetail.NIDFile">
+                            <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float:left;" > 
+                        <span onclick="FileDelete(this)"; data-id="@Model.personalDetail.Id" data-table="1"  data-field="NIDFile" data-url="~/Files/NID/@Model.personalDetail.Id@Model.personalDetail.NIDFile">
+                        <img class="attachment" src="~/assets/Images/document_delete.png" width="25"  alt="File" title="File" /></span>
+                    </div>  
+                   </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.IsDisable)
+                    </div>
+                    <div class="editor-field center">
+                        @Html.CheckBoxFor(model => model.personalDetail.IsDisable, new { @onclick = "IsDisabled();", @placeholder = "Is he Disabled?", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="IsDisabled">
+                    <div class="col-md-4">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.KindsOfDisability)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.personalDetail.KindsOfDisability, new { @placeholder = "Kinds Of Disability",@rows="1", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.personalDetail.DisabilityFile)
+                        <input type="file" onchange="CheckFileSize(this);" name="DisabilityFile" id="DisabilityFile" style="width: 200px;" />
+                    </div>
+                    @if (Model.personalDetail.DisabilityFile != null && Model.personalDetail.DisabilityFile != "")
+                    {
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.personalDetail.DisabilityFile)
+                            <div class="col-md-6">
+                                <a target="_blank" href="~/Files/DisabilityFile/@Model.personalDetail.Id@Model.personalDetail.DisabilityFile">
+                                    <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                            </div>
+                            <div class="col-md-6" style="float: left;">
+                                <span onclick="FileDelete(this)"; data-id="@Model.personalDetail.Id" data-table="1"  data-field="DisabilityFile" data-url="~/Files/DisabilityFile/@Model.personalDetail.Id@Model.personalDetail.DisabilityFile">
+                                    <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.personalDetail.Remarks, new { @placeholder = "Remarks",@rows="1", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            @*(identity.IsAdmin || identity.IsHRM)*@
+             @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+{
+                <p class="actionButton_personal">
+                </p>
+             }
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        var html = "";
+        if ('@Model.IsActive' == 'True') {
+            html = '<button type="button"  title="Save Data"  onclick="pageSubmit(\'frmEmpPersonalD\');" class="Save sym-btn-save" >&nbsp;Save</button><button type="button" title="Edit Data"   onclick="EditpersonalDetail();" class=" Edit sym-btn-edit" >&nbsp;Edit</button> &nbsp;<button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>'
+            //html = '<button type="button"  onclick="pageSubmit(\'frmEmpPersonalD\');" class="Save sym-btn-update" >&nbsp;Update</button><button type="button" onclick="EditpersonalDetail();" class=" Edit btn btn-warning fa fa-pencil-square-o btnHover" >&nbsp;Edit</button> &nbsp;<button type="button" onclick="Cancle();" class="Cancle btn btn-warning fa fa-refresh btnHover" >&nbsp;Cancel</button>'
+            //html = '<button type="button"  onclick="pageSubmit(\'frmEmpPersonalD\');" class="Save btn btn-info fa fa-floppy-o btnHover" >&nbsp;Update</button><button type="button" onclick="EditpersonalDetail();" class=" Edit btn btn-warning fa fa-pencil-square-o btnHover" >&nbsp;Edit</button> &nbsp;<button type="button" onclick="Cancle();" class="Cancle btn btn-warning fa fa-refresh btnHover" >&nbsp;Cancel</button>'
+        }
+        else {
+            html = '<button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+            //html = '<button type="button" onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>';
+        }
+        $(".actionButton_personal").append(html);
+        IsDisabled();
+        EditpersonalDetail();
+        InitDatePickers();
+        valiDation("frmEmpPersonalD");
+    });
+    function DateOfBirth(sender) {
+        var selectedDate = ParseDate($(sender).val());
+        var today = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay());
+        if (selectedDate >= today) {
+            $(sender).val("");
+            ShowResult('Fail', "Minimum age should be 18");
+        }
+    }
+    function IsDisabled() {
+        if ($("#personalDetail_IsDisable").is(":checked")) {
+            $(".IsDisabled").show();
+        }
+        else {
+            $("#personalDetail_KindsOfDisability").val("");
+            $("#DisabilityFile").val("");
+            $(".IsDisabled").hide();
+        }
+    }
+
+
+    function PersonalDate(sender) {
+        var birthDate = ParseDate($("#personalDetail_DateOfBirth").val());
+        var expiryDate = ParseDate($("#personalDetail_ExpiryDate").val());
+
+        if (birthDate > expiryDate) {
+            ShowResult("Fail", "Birth Date can't be prior to Expiry Date!");
+            $(sender).val("");
+        }
+    }
+</script>

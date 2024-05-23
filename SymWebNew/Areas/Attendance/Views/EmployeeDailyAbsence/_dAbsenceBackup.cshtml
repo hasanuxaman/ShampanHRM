@@ -1,0 +1,28 @@
+﻿@model SymViewModel.Attendance.EmpDailyAbsenceDVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+@using (Html.BeginCollectionItem("dVM"))
+{
+<tr>
+
+                             <td>@Html.CheckBoxFor(model => model.IsAbsent, new {@class = "absent " })</td>
+                             <td>@Html.DisplayFor(model => model.Code)</td>
+                             <td>@Html.DisplayFor(model => model.EmpName)</td>
+                             <td>@Html.DisplayFor(model => model.Designation)</td>
+                             <td>@Html.DisplayFor(model => model.Department)</td>
+                             <td>@Html.DisplayFor(model => model.Section)</td>
+                             <td>@Html.DisplayFor(model => model.Project)</td>
+
+                             <td>@Html.HiddenFor(model => model.EmployeeId)</td>
+                             <td>@Html.HiddenFor(model => model.DesignationId)</td>
+                             <td>@Html.HiddenFor(model => model.DepartmentId)</td>
+                             <td>@Html.HiddenFor(model => model.SectionId)</td>
+                             <td>@Html.HiddenFor(model => model.ProjectId)</td>
+                        </tr>
+}
+
+<script>
+
+</script>

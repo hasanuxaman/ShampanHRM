@@ -1,0 +1,60 @@
+﻿@model SymViewModel.Payroll.EmployeeSalaryStructureVM
+@using UIHelper.MVC
+@Html.ValidationSummary(true)
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("MatrixEffectSave", "SalaryStructureMatrix", FormMethod.Post, new { @Id = "frmMatrixEffectSave" }))
+{
+    @Html.ValidationSummary(true)
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Increment Process</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.CurrentYear)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.CurrentYear, null, new { @placeholder = "Bonus Type Code", @class = "required form-control", @readonly="readonly" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                  <label>Effect Date</label>
+
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.IncrementDate, null, new { @placeholder = "Effect Date", @class = "required customDatePicker form-control" })
+                </div>
+            </div>
+ 
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                <button type="button" title="Save Data" onclick="pageSubmit('frmMatrixEffectSave');" class="sym-btn-save">&nbsp;Save</button>
+            </label>
+            <label class="col-sm-4">
+                <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+            </label>
+        </div>
+       
+        
+    </div>
+
+
+}
+<script src="~/assets/javascripts/custom.js"></script>
+
+<script>
+
+    $(function () {
+        valiDation("frmMatrixEffectSave");
+
+    });
+
+</script>

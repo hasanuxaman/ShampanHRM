@@ -1,0 +1,75 @@
+﻿@using UIHelper.MVC
+@{
+    ViewBag.Title = "Index";
+}
+<div class="headrow">
+    <button type="button" title="Add New TAX 108A" data-url="/Payroll/TAX108A/SingleEmployeeGFOpeinigEdit" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/Payroll/TAX108A/ImportTAX108A" onclick="GoTo(this)">&nbsp;Import/Export</button>
+
+    <label class="pull-right">TAX 108A</label>
+</div>
+<div class="thinbox">
+
+    <div id="container">
+        <table id="myDataTable" class="display">
+            <thead>
+                <tr>
+                    <th class="center">Actions</th>
+                    <th class="center">Code</th>
+                    <th class="center">Name</th>
+                    <th class="center">Submit Serial No</th>
+                    <th class="center">Submit Year</th>
+                    <th class="center">Date</th>
+                    <th class="center">Post</th>
+
+                </tr>
+
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <br />
+</div>
+<div class="headrow">
+    <button type="button" title="Add New TAX 108A" data-url="/Payroll/TAX108A/SingleEmployeeGFOpeinigEdit" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    <button type="button" title=" Import/Export" id="" class="sym-btn-ExportImport" data-url="/Payroll/TAX108A/ImportTAX108A" onclick="GoTo(this)">&nbsp;Import/Export</button>
+
+</div>
+<script>
+    $(function () {
+
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/TAX108A/_index",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                     {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         "sClass": "center",
+                         "fnRender": function (oObj) {
+                             return '  &nbsp;  <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="otherearningEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                                 + '&nbsp; <a title="Click on for Post" style="text-decoration:none;" data-url="/Payroll/TAX108A/MultiplePost" onclick="postedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-post-row"></a>'
+                             ;
+                         }
+                     }
+                      , { "sName": "Code", "sWidth": "10%" }
+                                , { "sName": "Name", "sWidth": "14%" }
+                                , { "sName": "SubmitSerialNo", "sWidth": "10%", "sType": "numeric" }
+                                , { "sName": "SubmitYear", "sWidth": "10%", "sType": "numeric" }
+                                , { "sName": "SubmitDate", "sClass": "center", "sWidth": "10%" }
+                                , { "sName": "Post", "sClass": "right", "sWidth": "18%" }
+                ]
+            });
+
+        });
+        function otherearningEdit(sender) {
+            window.location = "/Payroll/TAX108A/SingleEmployeeGFOpeinigEdit?Id=" + $(sender).attr('data-Id');
+        }
+</script>

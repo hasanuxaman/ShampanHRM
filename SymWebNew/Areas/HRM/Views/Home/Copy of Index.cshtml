@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<script>
+			$(function () {
+			    var dataPoints = [];
+			    $.ajax({
+			        url: "@Url.Action("TotalEmployeeGender","Home",  new { area="HRM"})",
+			        type: 'GET',
+			        beforeSend: function () { $(".loading").show(); },
+			        complete: function () { $(".loading").fadeOut(200).hide("slow") },
+			        success: function (data) {
+			            //data= JSON.stringify(data);
+			            //alert(JSON.stringify(data));
+
+			           
+			            $.each(data, function (index, value) {
+			                    dataPoints.push({
+			                        name: value.Gender,
+			                        y: value.Person,
+
+			                        indexLabel: value.Gender + '-' + parseInt(value.Person) + 'Person',
+			                        legendText: value.Gender,
+			                    });
+
+			            });
+
+			        },
+			    });
+			    //{ y: totalRevenue, name: "Product A", indexLabel: "Product A - 41%", legendText: "Product A" },
+				//CanvasJS pie chart to show product wise annual revenue for 2015
+				var productsRevenuePieChart = new CanvasJS.Chart("products-revenue-pie-chart", {
+					animationEnabled: true,
+					theme: "theme2",
+					legend: {
+						fontSize: 14
+					},
+					toolTip: {
+						borderThickness: 0,
+						content: "<span style='\"'color: {color};'\"'>{name}</span>: ${y} (#percent%)",
+						cornerRadius: 0
+					},
+					data: [
+						{       
+							indexLabelFontColor: "#676464",
+							indexLabelFontSize: 14,
+							legendMarkerType: "square",
+							legendText: "{indexLabel}",
+							showInLegend: true,
+							startAngle:  90,
+							type: "pie",
+							dataPoints: dataPoints
+						}
+					]
+				});
+				
+				productsRevenuePieChart.render();
+
+
+
+
+
+
+
+				var ctx = document.getElementById("myChart").getContext('2d');
+				var myChart = new Chart(ctx, {
+				    type: 'pie',
+				    data: {
+				        labels: ["M", "T"],
+				        datasets: [{
+				            backgroundColor: [
+                              "#2ecc71",
+                              "#3498db",
+                              "#95a5a6",
+                              "#9b59b6",
+                              "#f1c40f",
+                              "#e74c3c",
+                              "#34495e"
+				            ],
+				            data: [12, 19, 3, 17, 28, 24, 7]
+				        }]
+				    }
+				});
+				
+			});
+		</script>
+<div class="container">
+			<h2 id="header">
+				<strong>Total Employee  </strong>
+				<small class="text-muted"></small>
+			</h2>
+			<div class="row m-b-1">
+				<div class="col-lg-6">
+					<div class="card shadow">
+						<h4 class="card-header">Total Employee Wise Gender</h4>
+						<div class="card-block">
+							<div id="products-revenue-pie-chart"></div>
+						</div>
+					</div>
+				</div>
+
+				
+			</div> <!-- row -->
+		</div>
+<style>
+    /*#header {
+				border-bottom: 5px solid #37474F;
+				color: #37474F;
+				margin-bottom: 1.5rem;
+				padding: 1rem 0;
+			}*/
+			
+			#revenue-tag {
+				font-weight: inherit !important;
+				border-radius: 0px !important;
+			}
+			
+			.card {
+				border: 0rem;
+				border-radius: 0rem;
+			}
+			
+			.card-header {
+				background-color: #37474F;
+				border-radius: 0 !important;
+				color:	white;
+				margin-bottom: 0;
+				padding:	1rem;
+			}
+			
+			.card-block {
+				border: 1px solid #cccccc;	
+			}
+			
+			.shadow {
+				box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+										0 1px 18px 0 rgba(0, 0, 0, 0.12),
+										0 3px 5px -1px rgba(0, 0, 0, 0.2);
+			}
+			
+			#revenue-column-chart, #products-revenue-pie-chart, #orders-spline-chart {
+				height: 300px;
+				width: 100%;
+			}			
+		</style>

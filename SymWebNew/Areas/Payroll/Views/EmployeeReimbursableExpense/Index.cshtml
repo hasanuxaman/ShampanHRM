@@ -1,0 +1,133 @@
+﻿
+<!-- #region Script -->
+@section head{
+    <script language="javascript" type="text/javascript">
+
+        //$.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+        //$.datepicker.setDefaults($.datepicker.regional['']);
+
+        $(document).ready(function () {
+
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/EmployeeReimbursableExpense/_index",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "12%",
+                                    "sClass":"center",
+                                    "fnRender": function (oObj) {
+                                        return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Common/EmployeeReimbursableExpense/Edit/' + oObj.aData[0] + '\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' +
+                                 '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Common/EmployeeReimbursableExpense/EmployeeReimbursableExpenseDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+
+
+                                        //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a id="lnkEdit1"  title="Click on for edit" style="text-decoration:none;"   href=\"/Common/EmployeeReimbursableExpense/Edit/' + oObj.aData[0] + '\" class=" lnkEdit btn btn-warning btn-xs lnkEdit"><i class="glyphicon glyphicon-edit"></i></a>' //+
+                                        ////'&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Common/EmployeeReimbursableExpense/EmployeeReimbursableExpenseDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                                    }
+                                }
+                                , { "sName": "Code", "sWidth": "12%" }
+                                , { "sName": "EmpName", "sWidth": "15%" }
+                                , { "sName": "Department", "sWidth": "14%" }
+                                , { "sName": "Designation", "sWidth": "14%" }
+                                , { "sName": "ReimbursableExpenseAmount", "sClass": "right", "sWidth": "15%" }
+                                , { "sName": "PeriodName", "sWidth": "14%" }
+                                //, { "sName": "ReimbursableExpenseDate", "sWidth": "18%" }
+
+                                //Code
+                                //EmpName 
+                                //Department 
+                                //Designation
+                                //ReimbursableExpenseAmount
+                                //ReimbursableExpenseDate  
+
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           , { type: "text" }
+                           //, { type: "date-range" }
+
+                ]
+
+            });
+
+        });
+
+    </script>
+
+}
+<!-- #endregion Script -->
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Common=>EmployeeReimbursableExpense=>Index"; 
+}
+<div class="headrow">
+    <button type="button" title="Add New Employee Reimbursable Expense" data-url="/Payroll/EmployeeReimbursableExpense/EmployeeInfoForReimbursableExpense" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    <button type="button" title="Delete Checked Employee Reimbursable Expense" data-url="/Payroll/EmployeeReimbursableExpense/EmployeeReimbursableExpenseDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+     <label class="pull-right">Employee Reimbursable Expense</label>
+</div>
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Reimbursable Expense List</p>   
+        </div>
+       
+         @*@Html.ActionLink("New", "EmployeeInfoForReimbursableExpense", null, new  {  @class=" btn btn-info"   })*@
+    @*<input type="button" style="width:65px;" data-url="/Common/EmployeeReimbursableExpense/EmployeeInfoForReimbursableExpense"  id="" class="btnCreate btn btn-info  " value="Add" />*@
+    @*<input type="button" style="width:65px;" data-url="/Common/EmployeeReimbursableExpense/EmployeeReimbursableExpenseDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />*@
+
+<p></p>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                         <tr>
+                            <th style="text-align:center" >
+                                <input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Expense Amount</th>
+                            <th>Expense Period</th>
+                            @*<th>Remarks</th>*@
+                        </tr>
+
+                        <tr>
+                            <th style="text-align:center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Expense Amount</th>
+                            <th>Expense Period</th>
+                            @*<th>Remarks</th>*@
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        </div>
+<div class="headrow">
+    <button type="button" title="Add New Employee Reimbursable Expense" data-url="/Payroll/EmployeeReimbursableExpense/EmployeeInfoForReimbursableExpense" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+    <button type="button" title="Delete Checked Employee Reimbursable Expense" data-url="/Payroll/EmployeeReimbursableExpense/EmployeeReimbursableExpenseDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+</div>

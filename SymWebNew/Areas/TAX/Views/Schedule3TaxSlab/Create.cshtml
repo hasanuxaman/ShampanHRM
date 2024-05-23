@@ -1,0 +1,104 @@
+﻿@model SymViewModel.Tax.Schedule3TaxSlabVM
+@using UIHelper.MVC
+@using (Html.BeginForm("CreateEdit", "Schedule3TaxSlab", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSchedule3TaxSlab" }))
+{   
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Operation)
+    <div class="headrow">
+        @if (Model.Operation == "update")
+        {
+            <button type="button" title="Update Data" onclick="pageSubmit('frmSchedule3TaxSlab')" class="sym-btn-update">&nbsp;Update</button>
+            <label class="pull-right">Schedule3 TaxSlab > Edit</label>
+        }
+        else if (Model.Operation == "add")
+        {
+            <button type="button" title="Save Data" onclick="pageSubmit('frmSchedule3TaxSlab')" class="sym-btn-save">&nbsp;Save</button>
+            <label class="pull-right">Schedule3 TaxSlab > Create</label>
+        }
+        <button type="button" title="Go To Index" data-url="/TAX/Schedule3TaxSlab" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New Tax Slab" data-url="/TAX/Schedule3TaxSlab/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Schedule3 Tax Slab</p>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name, new { @placeholder = "Name", @class = " required form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.MaximumInvestment)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.MaximumInvestment, new { @placeholder = "Maximum Investment", @class = "right NumberCheck form-control" })
+                    @Html.ValidationMessageFor(model => model.MaximumInvestment)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = " form-control" })
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Tax Slab Detail</p>
+        </div>
+        <div id="editorItemRows5">
+
+            @if (Model.schedule3TaxSlabDetailVMs != null)
+            {
+                <table class=" table-responsive ">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Slab Name</th>
+                            <th style="width: 15%;">Earning Ceiling (Min)</th>
+                            <th style="width: 15%;">Earning Ceiling (Max)</th>
+                            <th style="width: 15%;">Ceiling (Min)</th>
+                            <th style="width: 15%;">Ceiling (Max)</th>
+                            <th style="width: 15%;">Ratio (%)</th>
+                            <th style="width: 20%;">Remarks</th>
+                            @*//SlabName
+        //Ceiling
+        //Ratio   *@
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.schedule3TaxSlabDetailVMs)
+                        {
+                            Html.RenderPartial("_detail", item);
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+    
+    <div class="headrow">
+        @if (Model.Operation == "update")
+        {
+            <button type="button" title="Update Data" onclick="pageSubmit('frmSchedule3TaxSlab')" class="sym-btn-update">&nbsp;Update</button>
+        }
+        else if (Model.Operation == "add")
+        {
+            <button type="button" title="Save Data" onclick="pageSubmit('frmSchedule3TaxSlab')" class="sym-btn-save">&nbsp;Save</button>
+        }
+        <button type="button" title="Go To Index" data-url="/TAX/Schedule3TaxSlab" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+        <button type="button" title="Add New Tax Slab" data-url="/TAX/Schedule3TaxSlab/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+    </div>
+}

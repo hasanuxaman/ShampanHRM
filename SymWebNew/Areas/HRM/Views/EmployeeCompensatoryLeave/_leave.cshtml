@@ -1,0 +1,185 @@
+﻿@model SymViewModel.Leave.EmployeeCompensatoryLeaveVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("CompensatoryLeave", "EmployeeCompensatoryLeave", FormMethod.Post, new { @Id = "frmCompensatoryLeave" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+ 
+    @Html.HiddenFor(model => model.EmployeeId)
+    @Html.HiddenFor(model => model.IsApprove)
+    @Html.HiddenFor(model => model.SaveType)
+    @Html.HiddenFor(model => model.RedirectPage)
+
+    
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Apply Compensatory Leave</p>
+        </div>
+        <div class="leave">
+            <div class="row">
+                @* <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LeaveYear)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LeaveYear, new { @onchange="NumberCheck(this);PassingYearLength(this);", @maxlength="4", @placeholder = "Code", @class = "required form-control"})
+                        @Html.ValidationMessageFor(model => model.LeaveYear)
+                    </div>
+                </div>*@
+               
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FromDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FromDate, new { @onchange = "totalDay();", @placeholder = "From Date", @class = "required customDatePicker form-control" })
+                        @*@Html.ValidationMessageFor(model => model.FromDate)*@
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ToDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ToDate, new { @onchange = "totalDay();", @placeholder = "To Date", @class = "required customDatePicker form-control" })
+                        @*@Html.ValidationMessageFor(model => model.ToDate)*@
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TotalLeave)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.TotalLeave, new { @onchange = "totalDay();", @readonly = "readonly", @placeholder = "Total Leave", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TotalLeave)
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsHalfDay)
+                    </div>
+                    <div class="editor-field center">
+                        @Html.CheckBoxFor(model => model.IsHalfDay, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsHalfDay)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @rows = "1", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p>
+            <button type="button" title="Save Data" onclick="Leave(this);" value="save" class="Appr sym-btn-save">&nbsp;Save</button>
+            <button type="button" title="Save Data" onclick="Leave(this);" value="email" class="Appr sym-btn-save">&nbsp;Save & Email</button>
+            @if (identity.IsAdmin || identity.IsHRM)
+            {
+                <button type="button" title="Approve Data" onclick="Leave(this);" value="approve" class="Appr sym-btn-save">&nbsp;Approve</button>
+            }
+            <button type="button" title="Cancel Data" onclick="CancleToIndex();" class="  sym-btn-cancel">&nbsp;Cancel</button>
+            @if (Model.Id > 0)
+            {
+                if (identity.IsAdmin || identity.IsHRM)
+                {
+                <button type="button" title="Cancel Data" data-url="/HRM/EmployeeCompensatoryLeave/Delete" onclick="DeleteLeave(this);" class="  sym-btn-remove">&nbsp;Delete</button>
+                }
+                else
+                {
+                <button type="button" title="Cancel Data" data-url="/HRM/EmployeeCompensatoryLeave/DeleteDirect" onclick="DeleteLeave(this);" class="  sym-btn-remove">&nbsp;Delete</button>
+                }
+            }
+
+        </p>
+    </div>
+             
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        valiDation('frmCompensatoryLeave');
+        InitDateTimePickers();
+    });
+    function DeleteLeave(sender) {
+
+        Ask("Are you sure to Delete!", function () {
+
+            var url = $(sender).attr('data-url');
+            url = url + "?id=" + '@Session["empleaveId"].ToString()';
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (data) {
+                    ShowResult(data.split('~')[0], data.split('~')[1])
+                    setTimeout(function () {
+                        window.location = "/HRM/EmployeeCompensatoryLeave/Index";
+                    }, 3000);
+
+                }
+
+            });
+
+        }, function () { })
+
+
+    }
+    function Leave(sender) {
+        var app = $(sender).attr('value');
+        if (app == "approve") {
+            $("#IsApprove").val(true);
+        }
+        else if (app == "save") {
+            $("#IsApprove").val(false);
+        }
+        else if (app == "email") {
+            $("#SaveType").val(app);
+        }
+        var FromDate = $("#FromDate").val();
+        var ToDate = $("#ToDate").val();
+
+       
+        if (FromDate == '') {
+            ShowResult("Fail", "Please Select From Date!");
+            return;
+        }
+        if (ToDate == '') {
+            ShowResult("Fail", "Please Select To Date!");
+            return;
+        }
+        var empid = $(".empId").val().split("~")[0]
+        $("#EmployeeId").val(empid);
+
+      
+
+        if ($("#leftInformation_EmployeeId").val() == "0") {
+            ShowResult("Fail", "Please select employee!");
+            return;
+        }
+        pageSubmit('frmCompensatoryLeave');
+
+    }
+
+   
+
+</script>

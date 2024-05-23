@@ -1,0 +1,173 @@
+﻿@using UIHelper.MVC
+
+
+<div class="headrow">
+    <button type="button" title="Save Data" class="sym-btn-save" onclick="EmployeeSalaryConvence();">&nbsp;Save</button>
+    <button type="button" title="Back to Index" data-url="/Payroll/SalaryConvence" onclick="BackToList(this)" class="sym-btn-back"> Back </button>
+ <label class="pull-right">Salary Conveyance > Create</label>
+</div>
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Conveyance</p>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("FiscalPeriodDetailsId", "/Config/DropDown/FiscalPeriod", new {  @onchange = "DDLChech('FiscalPeriodDetailsId')",@class = "required form-control" })
+                <label id="erFiscalPeriodDetailsId" style="color: red; display: none;">Please select fiscal period</label>
+            </div>
+        </div>
+       
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Department</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @onchange = "DDLChech('DepartmentId')", @class = "required form-control" })
+                <label id="erDepartmentId" style="color: red; display: none;">Please select department</label>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Section</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "//", new { @onchange = "DDLChech('SectionId')", @class = "required form-control" })
+                <label id="erSectionId" style="color: red; display: none;">Please select section</label>
+            </div>
+        </div>
+         <div class="col-md-3">
+            <div class="editor-label">
+                <label>Project</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "//", new { @onchange = "DDLChech('ProjectId')", @class = "required form-control" })
+                <label id="erProjectId" style="color: red; display: none;">Please select project</label>
+            </div>
+        </div>
+    </div>
+	
+	
+	
+	
+	
+@*    <div class="col-md-2">
+        <input style="margin-top: 19px;" class="btn btn-info" onclick="EmployeeSalaryConvence();" type="button" value="Save" />
+        &nbsp;
+            <input style="margin-top: 19px;" type="button" class="btn btn-info" data-url="/Payroll/SalaryConvence" onclick="BackToList(this)" value="Back" />
+    </div>*@
+</div>
+
+
+<div class="headrow">
+    <button type="button" title="Save Data" class="sym-btn-save" onclick="EmployeeSalaryConvence();">&nbsp;Save</button>
+    <button type="button" title="Back to Index" data-url="/Payroll/SalaryConvence" onclick="BackToList(this)" class="sym-btn-back"> Back </button>
+</div>
+
+
+<script>
+
+    $(function () {
+        $('#DepartmentId').click(function () {
+            $('#ProjectId').html("");
+            $('#SectionId').html("");
+            var sections = "";
+            var pid = $('#ProjectId').val();
+            var did = $('#DepartmentId').val();
+            var url1 = "/Config/DropDown/SectionByDepartment/?projectId=" + pid + "&departmentId=" + did;
+            sections += "<option value=0>Select</option>";
+            sections += "<option value=0_0>=ALL=</option>";
+
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    sections += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#SectionId').html(sections);
+            });
+        });
+
+        $('#SectionId').click(function () {
+            $('#ProjectId').html("");
+            var projects = "";
+            var sid = $('#SectionId').val();
+            var did = $('#DepartmentId').val();
+            var url1 = "/Config/DropDown/ProjectByDepartment/?departmentId=" + did + "&sectionId=" + sid;
+            projects += "<option value=0>Select</option>";
+            projects += "<option value=0_0>=ALL=</option>";
+
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    projects += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#ProjectId').html(projects);
+            });
+        });
+    })
+    function DDLChech(val) {
+        $("#er" + val).hide();
+        if ($("#" + val).val() == "") {
+            $("#er" + val).show();
+        }
+    }
+
+    function EmployeeSalaryConvence() {
+
+        if ($('#DepartmentId').val() == "0") {
+            ShowResult("failure", "Please Select Department.");
+            return;
+        }
+        if ($('#SectionId').val() == "0") {
+            ShowResult("failure", "Please Select Section.");
+            return;
+        }
+        var error = 0;
+        $("#erFiscalPeriodDetailsId").hide();
+        $("#erProjectId").hide();
+        $("#erDepartmentId").hide();
+        $("#erSectionId").hide();
+
+        if ($("#FiscalPeriodDetailsId").val() == "") {
+            $("#erFiscalPeriodDetailsId").show();
+            error++;
+        }
+        if ($("#ProjectId").val() == "") {
+            $("#erProjectId").show();
+            error++;
+        }
+        if ($("#DepartmentId").val() == "") {
+            $("#erDepartmentId").show();
+            error++;
+        }
+        if ($("#SectionId").val() == "") {
+            $("#erSectionId").show();
+            error++;
+        }
+
+        if (error > 0) {
+            return;
+        }
+        Ask("Are you sure to process Salary Conveyance!", function () {
+            var Id = $("#Id").val();
+            var url = "/Payroll/SalaryConvence/SalaryConvenceProces?FiscalPeriodDetailsId=" + $("#FiscalPeriodDetailsId").val() + "&ProjectId=" + $("#ProjectId").val() + "&DepartmentId=" + $("#DepartmentId").val() + "&SectionId=" + $("#SectionId").val();
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    var dataAction = "";
+                    if (response[0] != 'Fail') {
+                        dataAction = "redirect";
+                    }
+                    ShowResult(response[0], response[1], dataAction, './')
+                }
+            });
+        }, function () { })
+    }
+</script>

@@ -1,0 +1,556 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+ .nav-pills {
+        border-right: 1px solid #94c78a;
+        background-color: #94c78a;
+        font-size: 14px;
+    }
+ .tab-content {
+        color: #161616;
+        padding: 5px;
+    }
+.nav-pills li {
+        border: 1px solid #b6ff00;
+    }
+ .nav-pills > li > a {
+        padding: 5px 7px!important;
+    }
+ .nav-pills > li > a:hover {
+            background-color: #45a441 !important;
+            border: medium none;
+            border-radius: 0;
+            color: #fff;
+        }
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        background-color: #45a441 !important;
+    }
+</style>
+@using (Html.BeginForm("singleEmployee", "SingleEmployee", FormMethod.Post, new { @Id = "afrmEmployeeEdit" }))
+{
+    <div class="thinbox">
+    <div class="th_thinbox">
+        <p>@Model.EmpName</p>
+    </div>
+    <div class="row">@Html.HiddenFor(model => model.Id)
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Code)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Code)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.JoinDate)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.JoinDate)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Designation)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Designation)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Department)
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Section)
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Project)
+            </div>
+        </div>
+        </div>
+          @* <div class="row">
+         <div class="col-md-3">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.FiscalYearDetailId)
+            </div>
+            <div class="editor-field">
+              @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new {@placeholder = "Fiscal Period", @class = "required form-control" })
+                @Html.ValidationMessageFor(model => model.FiscalYearDetailId)
+            </div>
+        </div>
+    </div>*@
+         </div>
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked" id="myTab">
+                 <li><a href="#Multiple" class="active">Multiple Salary Entry</a></li>
+                <li>@*<a href="#Earning" >Earning</a>*@</li>
+                <li>@*<a href="#Areer">Arrear</a>*@</li>
+                @*<li><a href="#Ot">Overtime </a></li>*@
+                <li>@*<a href="#Con">Conveyance</a>*@</li>
+                @*<li><a href="#Re">Reimbursable Expense</a></li>*@
+                @*<li><a href="#Deduction">Other Deduction</a></li>*@
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="tab-content">
+                 <div id="Multiple" class="tab-pane fade in active">
+                <table class="table-responsive display">
+                    <thead>
+                        <tr> <th>Name</th>
+                            <th>Value</th>
+                            <th>Editable</th>
+                        </tr>
+                    </thead>
+              <tbody>
+                @foreach (var item in Model.SingleEmployeeSalaryStructureVM)
+                {
+                    Html.RenderPartial("_singleEmployeeSalaryStructure", item);
+                }
+              </tbody>
+                    <tfoot>
+                        <tr><td>
+       <button type="submit" title="Delete Employee Information" data-url="/Payroll/SingleEmployee/singleEmployee" id="empEdit" class="sym-btn-save ">&nbsp;Save</button>
+                            </td> </tr>
+                    </tfoot>
+                </table>
+
+                </div>
+            
+                <div id="Earning" class="tab-pane fade">
+                    <div class="Earning">
+                        <table id="earnningDataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <td colspan="3" style="text-align: center; font-size: 18px!important;">Employee Salary Earning</td>
+                                </tr>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Salary Type</th>
+                                    <th style="text-align: left!important">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+                <div id="Areer" class="tab-pane fade">
+                    <div class="Areer">
+                        <div class="headrow">
+                            <a  title="Add New Arrear"  href="/Payroll/SingleEmployee/AreerCreate/?empId=@Model.Id" id="lnkEdit1" class=" lnkEdit sym-btn-add ">New</a>
+                            <button type="button" title="Delete Checked EmployeeBonus" data-url="/Payroll/EmployeeBonus/BonusDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">Delete</button>
+                        </div>
+                        <table id="areerDataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; font-size: 18px!important;">Employee Salary Arrear</td>
+                                    <tr>
+                                        <th class="center">Actions</th>
+                                        <th>Period</th>
+                                        <th style="text-align: left!important">Arrear Value</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+                <div id="Ot" class="tab-pane fade">
+                    <div class="Overtime">
+                        <div class="headrow">
+                            <a  title="Add New Arrear"  href="/Payroll/SingleEmployee/AreerCreate/?empId=@Model.Id" id="lnkEdit1" class=" lnkEdit sym-btn-add ">New</a>
+                            <button type="button" title="Delete Checked EmployeeBonus" data-url="/Payroll/EmployeeBonus/BonusDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">Delete</button>
+                        </div>
+                        <table id="overtimeDataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; font-size: 18px!important;">Employee Salary Overtime</td>
+                                    <tr>
+                                        <th class="center">Actions</th>
+                                        <th>Period Name</th>
+                                        <th style="text-align: left!important">Overtime Value</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+                <div id="Con" class="tab-pane fade">
+                    <div class="Convence">
+                        <div class="headrow">
+                            <a  title="Add New Areer"  href="/Payroll/SingleEmployee/AreerCreate/?empId=@Model.Id" id="lnkEdit1" class=" lnkEdit sym-btn-add ">New</a>
+                            <button type="button" title="Delete Checked EmployeeBonus" data-url="/Payroll/EmployeeBonus/BonusDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">Delete</button>
+                        </div>
+                        <table id="ConvenceDataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; font-size: 18px!important;">Employee Salary Conveyance</td>
+                                    <tr>
+                                        <th class="center">Actions</th>
+                                        <th>Period Name</th>
+                                        <th style="text-align: left!important">Conveyance Value</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+                <div id="Re" class="tab-pane fade">
+                    <div class="ReimburasabeExpense">
+                        <div class="headrow">
+                            <a  title="Add New Areer"  href="/Payroll/SingleEmployee/AreerCreate/?empId=@Model.Id" id="lnkEdit1" class=" lnkEdit sym-btn-add ">New</a>
+                            <button type="button" title="Delete Checked EmployeeBonus" data-url="/Payroll/EmployeeBonus/BonusDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">Delete</button>
+                        </div>
+                        <table id="ReimburasableDataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; font-size: 18px!important;">Employee Salary Reimburasable Expense</td>
+                                    <tr>
+                                        <th class="center">Actions</th>
+                                        <th>Period</th>
+                                        <th style="text-align: left!important">Reimburasable Expense Value</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+              
+              
+                <div id="Deduction" class="tab-pane fade">
+                    <div class="Deduction">
+                        <table id="deductionDataTable" class="display">
+                            <thead>
+                                <tr>
+                                    <td colspan="4" style="text-align: center; font-size: 18px!important;">Employee Salary Deduction</td>
+                                </tr>
+                                <tr>
+                                    <th>Actions</th>
+                                    <th>Period Name</th>
+                                    <th style="text-align: left!important">Deduction Value</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+    <script>
+        $(function () {
+            
+            $('#empId').val($('#Code').val());
+            $(".nav-pills a").click(function () {
+                $(this).tab('show');
+            });
+            var s = $("#myTab").load($('li.active a[data-toggle="tab"]').attr('href'));
+            $("ul.nav-pills > li > a").on("shown.bs.tab", function (e) {
+                var id = $(e.target).attr("href").substr(1);
+                window.location.hash = id;
+            });
+
+            // on load of the page: switch to the currently selected tab
+            var hash = window.location.hash;
+            $('#myTab a[href="' + hash + '"]').tab('show');
+
+            $('a[data-toggle="tab"]').on('shown', function () {
+                //save the latest tab; use cookies if you like 'em better:
+                localStorage.setItem('lastTab', $(this).attr('href'));
+            });
+
+            //go to the latest tab, if it exists:
+            var lastTab = localStorage.getItem('lastTab');
+            if (lastTab) {
+                $('a[href=' + lastTab + ']').tab('show');
+            }
+            else {
+                // Set the first tab if cookie do not exist
+                $('a[data-toggle="tab"]:first').tab('show');
+            }
+            var oTable9 = $('#ReimburasableDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SingleEmployee/_EmployeeReimbursableExpense?empID=@Model.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                                {
+                                    "sName": "Id",
+                                    "bSearchable": false,
+                                    "bSortable": false,
+                                    "sWidth": "12%",
+                                    "sClass": "center",
+                                    "fnRender": function (oObj) {
+                                        return ' <a id="lnkEdit1"Onclick="ReimbursableExpenseEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                                    }
+                                }
+                              , { "sName": "PeriodName", "sWidth": "35%" }
+                             , { "sName": "ConvenceAmount", "sClass": "right", "sWidth": "24%" }
+                             , { "sName": "Remarks", "sWidth": "24%" }
+                ]
+            });
+            var oTable10 = $('#ConvenceDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SingleEmployee/_EmployeeCovence?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <a id="lnkEdit1"Onclick="CovenceEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                                }
+                            }
+                         , { "sName": "PeriodName", "sWidth": "35%" }
+                         , { "sName": "ConvenceAmount", "sClass": "right", "sWidth": "24%" }
+                         , { "sName": "Remarks", "sWidth": "24%" }
+            ]
+        });
+            var oTable7 = $('#overtimeDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SingleEmployee/_EmployeeOverTime?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    return ' <a id="lnkEdit1"Onclick="OverTimeEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                                }
+                            }
+                           , { "sName": "PeriodName", "sWidth": "35%" }
+                 , { "sName": "OverTimeAmount", "sClass": "right", "sWidth": "24%" }
+                 , { "sName": "Remarks", "sWidth": "24%" }
+            ]
+        });
+            var oTable = $('#pfDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/SingleEmployee/_EmployeePF?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                 {
+                     "sName": "Id",
+                     "bSearchable": false,
+                     "bSortable": false,
+                     "sWidth": "12%",
+                     "fnRender": function (oObj) {
+                         return ' <a id="lnkEdit1" Onclick="PFEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'; //+
+                         //'&nbsp; <a title="Click on for Edit" style="text-decoration:none;" data-url="/Payroll/Loan/LoanDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                     }
+                 }
+            , { "sName": "FiscalPeriod", "sWidth": "15%" }
+            , { "sName": "Basic", "sClass": "right", "sWidth": "24%" }
+            , { "sName": "Gross", "sClass": "right", "sWidth": "24%" }
+            , { "sName": "PF", "sClass": "right", "sWidth": "24%" }
+            ]
+        });
+
+            var oTable2 = $('#taxDataTable').dataTable({
+                "bServerSide": true,
+
+                "sAjaxSource": "/SingleEmployee/_EmployeeTax?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                             {
+                                 "sName": "Id",
+                                 "bSearchable": false,
+                                 "bSortable": false,
+                                 "sWidth": "12%",
+                                 "fnRender": function (oObj) {
+                                     return ' <a id="lnkEdit1" Onclick="TaxEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                                 }
+                             }
+                               , { "sName": "FiscalPeriod", "sWidth": "15%" }
+                               , { "sName": "Basic", "sClass": "right", "sWidth": "24%" }
+                               , { "sName": "Gross", "sClass": "right", "sWidth": "24%" }
+                               , { "sName": "Tax", "sClass": "right", "sWidth": "24%" }
+            ]
+        });
+
+            var oTable3 = $('#earnningDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/SingleEmployee/_EmployeeEarning?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+            { "sName": "Period", "sWidth": "24%" }
+            , { "sName": "SalaryType", "sWidth": "24%" }
+            , { "sName": "Amount", "sClass": "right", "sWidth": "24%" }
+            ]
+        });
+
+            var oTable4 = $('#areerDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/SingleEmployee/EmployeeInfoForAreer?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                 {
+                     "sName": "Id",
+                     "bSearchable": false,
+                     "bSortable": false,
+                     "sWidth": "12%",
+                     "sClass": "center",
+                     "fnRender": function (oObj) {
+                         return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;"    href=\"/Payroll/EmployeeAreer/Edit/' + oObj.aData[0] + '\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' +
+                         '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/EmployeeAreer/EmployeeAreerDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+                     }
+                 }
+                              , { "sName": "PeriodName", "sWidth": "24%" }
+                 , { "sName": "AreerAmount", "sClass": "right", "sWidth": "24%" }
+                 , { "sName": "Remarks", "sWidth": "24%" }
+
+                             //, { "sName": "AreerDate", "sWidth": "18%" }
+
+            ]
+        });
+
+            var oTable5 = $('#deductionDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/SingleEmployee/_EmployeeDeduction?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                 {
+                     "sName": "Id",
+                     "bSearchable": false,
+                     "bSortable": false,
+                     "sWidth": "12%",
+                     "fnRender": function (oObj) {
+                         return ' <a id="lnkEdit1"Onclick="DeductionEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>' //+
+                     }
+                 },
+                    { "sName": "PeriodName", "sWidth": "24%" }
+                 , { "sName": "DeductionAmount", "sClass": "right", "sWidth": "24%" }
+                 , { "sName": "Remarks", "sWidth": "24%" }
+            ]
+        });
+
+      @*  var oTable40 = $('#deductionDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/SalaryProcess/_EmployeeDeduction?empID=@ViewBag.empID",
+            "bProcessing": true, "aoColumns": [
+                  {
+                      "sName": "Id",
+                      "bSearchable": false,
+                      "bSortable": false,
+                      "sWidth": "10%",
+                      "fnRender": function (oObj) {
+                          return '<a title="Click on for Edit" style="text-decoration:none" Onclick="DeductionEdit(this);"  data-Id="' + oObj.aData[0] + '\" class="  btn btn-warning btn-xs "><i class="fa fa-check-square-o"></i></a>'
+
+                          //return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0].split('~')[1] + '">'
+                          ;
+                      }
+                  },
+                  { "sName": "FiscalPeriod" }, { "sName": "DeductionAmount" }]
+        });
+        oTable40.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                { type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "number-range" }
+            ]
+        });*@
+            var oTable6 = $('#loanDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/SingleEmployee/_EmployeeLoan?empID=@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+            { "sName": "Period", "sWidth": "24%" }
+            , { "sName": "AreerAmount", "sClass": "right", "sWidth": "24%" }
+            , { "sName": "Remarks", "sWidth": "24%" }
+            ]
+        });
+
+        });
+    function PFEdit(sender) {
+        window.location = "/Payroll/SalaryPF/SinglePFEdit?pfDetailsId=" + $(sender).attr('data-Id');
+    }
+    function TaxEdit(sender) {
+        window.location = "/Payroll/SalaryTax/SingleTaxEdit?taxDetailsId=" + $(sender).attr('data-Id');
+    }
+    function AreerEdit(sender) {
+        window.location = "/Payroll/SalaryAreer/SingleAreerEdit?AreerDetailsId=" + $(sender).attr('data-Id');
+    }
+    function DeductionEdit(sender) {
+        window.location = "/Payroll/SalaryDeduction/SingleDeductionEdit?DeductionDetailsId=" + $(sender).attr('data-Id');
+    }
+    function ConvenceEdit(sender) {
+        window.location = "/Payroll/SalaryDeduction/SingleDeductionEdit?DeductionDetailsId=" + $(sender).attr('data-Id');
+    }
+    function OverTimeEdit(sender) {
+        window.location = "/Payroll/SalaryDeduction/SingleDeductionEdit?DeductionDetailsId=" + $(sender).attr('data-Id');
+    }
+    function DeductionEdit(sender) {
+        window.location = "/Payroll/SalaryDeduction/SingleDeductionEdit?DeductionDetailsId=" + $(sender).attr('data-Id');
+    }
+    </script>

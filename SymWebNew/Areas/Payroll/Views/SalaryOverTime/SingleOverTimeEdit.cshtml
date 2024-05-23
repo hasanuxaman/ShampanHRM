@@ -1,0 +1,86 @@
+﻿@model SymViewModel.Payroll.SalaryOverTimeDetailVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+
+
+@using (Html.BeginForm("SingleOverTimeEdit", "SalaryOverTime", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmGrade" }))
+{
+    <div class="headrow">
+        @if (Model.Id > 0)
+        {
+            <button type="submit" title="Update Data" class="sym-btn-update">Update</button>
+        }
+        else
+        {
+            <button type="submit" title="Save Data" class="sym-btn-save">Save</button>
+        }
+        <button type="button" title="Back to Previous Page" data-url="/Payroll/SalaryOverTime" onclick="BackToList(this)" class="sym-btn-back">Back</button>
+        <label class="pull-right">Salary Overtime > Edit > Single </label>
+    </div>
+
+    
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+            <div class="th_thinbox">
+        <p>Employee Salary Overtime Edit </p>
+    </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.EmployeeName, null, new {@placeholder = "Employee Name", @class =" form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.FiscalYearDetailId, "/Config/DropDown/DropDownPeriodByYear", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="editor-label">
+                    <label>Overtime Value </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.OverTimeAmount, null, new {@placeholder = "Overtime Amount", @class =" right  form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Employee </label>
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Remarks, new {@placeholder = "Remarks",@rows="1", @class =" form-control" })
+                </div>
+            </div>
+        </div>
+            <div>
+          
+
+@*        <input style="margin-top: 19px;" class="btn btn-info" type="submit" value="Save" />
+        &nbsp;
+            <input style="margin-top: 19px;" type="button" class="btn btn-info" data-url="/Payroll/SalaryOverTime" onclick="BackToList(this)" value="Back to list" />
+    *@</div>
+    </div>
+}
+<script>
+    $(function () {
+        if ('@ViewBag.result' != '') {
+            var dataAction = "";
+            if('@ViewBag.result'=='Success'){
+                dataAction = "redirect";
+            }
+            ShowResult('@ViewBag.result', '@ViewBag.msg', dataAction, '/Payroll/SalaryOverTime');
+        }
+    });
+</script>

@@ -1,0 +1,100 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM 
+<div class="thinbox panel">
+    @*<div class="th_thinbox panel-actions">
+       <p class="row"><span style="float:left;padding-left:13px;" > Employee Structure Detail</span> 	<span class=" clickable" data-parent="#accordion" data-toggle="collapse" data-target="#demo1"></span> </p>
+    </div>*@
+    <button type="button" title="Add New Earning" data-url="/Payroll/Structure/AddEmpSStructure?st=E&eid=@Model.Id" class="btnCreate sym-btn-add ">New Earning</button>
+    <div class="row">
+        <div id="demo1" class="panel-collapse collapse in">
+            <table id="myDataTable6" class="display">
+                <thead>
+                    <tr>
+                        <th class="center">Action</th>
+                        <th>Salary Name</th>
+                        <th>Amount</th>
+                        <th>Fixed/Rate</th>
+                    </tr>
+                    <tr>
+                        <th class="center">Actions</th>
+                        <th>Salary Name</th>
+                        <th style="text-align: left!important">Amount</th>
+                        <th>Fixed/Rate</th>
+                    </tr>
+                </thead>
+                <tfoot style="font-size: 1.2em;">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td style="font-weight: bold!important;">Total Earning</td>
+                        <td style="font-weight: bold!important;" class="right totalEarning"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var id = $('#Id').val();
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable1 = $('#myDataTable6').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/Structure/_employeeSalaryStructureEarningdetail"
+                +"?Id=" + '@Model.Id' + "&EmployeeSalaryStructureId="+'@Model.EmployeeSalaryStructureId',
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                {
+                    "sName": "Id",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "sWidth": "12%",
+                    "sClass":"center",
+                    "fnRender": function (oObj) {
+                        return '  <a title="Click on for Edit" style="text-decoration:none;"   href=\"/Payroll/Structure/EditEmpSStructure?id=' + oObj.aData[0] + '&type=E\" id="lnkEdit1"  class=" lnkEdit sym-btn-edit-row"></a>' +
+                            ' <a title="Click on for Delete" style="text-decoration:none;"   href=\"/Payroll/Structure/EditEmpSStructure?id=' + oObj.aData[0] + '&type=D\" id="lnkEdit1"  class=" lnkEdit sym-btn-remove-row"></a> ';
+                    }
+                }
+                        , {"sName": "SalaryTypeName", "sWidth": "25%"}
+                        , { "sName": "Amount", "sWidth": "25%", "sClass": "right calc" }
+                        , { "sName": "Fixed", "sWidth": "10%" }
+            ]
+        });
+        oTable1.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [
+                        null
+                        , { type: "text" }
+                        , { type: "text" }
+                        , { type: "select", values: ["Fixed", "Rate"] }
+            ]
+        });
+
+       
+
+    });
+
+    $(window).load(function () {
+
+        TotalEarning();
+
+        function TotalEarning() {
+            var EarningAmount = 0;
+            $(".calc").each(function () {
+                var amount = parseFloat($(this).text());
+                if ($.isNumeric(amount)) {
+                    EarningAmount += amount;
+                }
+            });
+
+            $(".totalEarning").text(EarningAmount);
+        }
+
+    });
+</script>

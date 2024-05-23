@@ -1,0 +1,90 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+ @* <div class="headrow">
+  <button type="button" title="Add New " onclick="Transfer();" id="" class="sym-btn-add ">&nbsp;New</button>
+ <button type="button" title="Cancel Data" onclick="CanclePromotion();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+</div> *@
+
+@using (Html.BeginForm("Transfer", "Transfer", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmTransfer" }))
+{
+          
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Transfer To</p>   
+        </div>
+        <div class="transfer">
+            @Html.HiddenFor(model => model.transferVM.Id)
+            @Html.HiddenFor(model => model.transferVM.EmployeeId)
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        
+<label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.transferVM.ProjectId,"/Config/DropDown/Project", new {@class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+<label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                         @Html.SimpleDropDownFor(model => model.transferVM.DepartmentId,"/Config/DropDown/Department", new {@class = "required form-control" })
+                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.transferVM.SectionId,"/Config/DropDown/Section", new { @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.transferVM.TransferDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.transferVM.TransferDate, new {@onchange="CheckTransferDate(this)", @placeholder ="Transfer Date", @class = "required customDatePicker form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.transferVM.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.transferVM.Remarks, new { @class = "form-control",@rows="1" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="file" name="TransferF" id="TransferF" style="width: 200px;"  />
+                </div>
+            </div>
+                <p> 
+   
+                   @* <input type="button" onclick="Transfer();" value="Save" class="Save btn btn-primary" />
+                    <input type="button" value="Cancel" onclick="CancleTransfer();" class="Cancle btn btn-primary" />*@
+
+                </p>
+        </div>
+                <div>
+  <button type="button" title="Add New " onclick="Transfer();" id="" class="sym-btn-add ">&nbsp;New</button>
+ <button type="button" title="Cancel Data" onclick="CancleTransfer();" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+</div> 
+    </div>
+
+
+}
+<script>
+    InitDropDowns();
+    InitDateTimePickers();
+    fromWriteColor("transfer");
+    valiDation('frmTransfer');
+    jobjoin();
+</script>

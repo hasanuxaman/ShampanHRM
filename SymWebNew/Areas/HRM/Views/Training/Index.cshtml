@@ -1,0 +1,185 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM 
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+
+        <div class="thinbox">
+            <div class="th_thinbox">
+            <p>Training</p>   
+            </div>
+<div>
+    <div id="myTraining">
+    </div> 
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+    <button type="button"  id="btnDialogTR" title="Add New Training info" class=" sym-btn-add showHideTR">&nbsp;New</button>
+    <button type="button" title="Delete Checked Training info" data-url="/hrm/Training/Delete" onclick="deletedData(this, 'myDataTableTR');" class="showHideTR sym-btn-remove">&nbsp;Delete</button>
+    }
+
+
+</div>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTableTR" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Topics</th>
+                            <th>Achievement</th>
+                            <th>Training Place</th>
+                            <th>Location</th>
+                            <th>Duration(Day)</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <br />
+        </div>
+ 
+<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+
+        SelectAllForDelete();
+        $('#myDataTableTR').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Training/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">'
+                                        +'&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="TrainingEdit(this);"'
+                                        +' data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+
+                                 
+                                }
+                            }
+                         
+
+                           , { "sName": "Topics", "sWidth": "20%" }
+                           , { "sName": "Achievement", "sWidth": "20%" }
+                           , { "sName": "TrainingPlace", "sWidth": "15%" }
+                           , { "sName": "Location", "sWidth": "15%" }
+                           , { "sName": "DurationDay", "sWidth": "15%" }
+            ]
+        });
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+
+    $('#btnDialogTR').click(function () {
+        $("#myTraining").load('@Url.Action("Training", "Training")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+    });
+
+     function TrainingEdit(sender) {
+         var EmployeeId = $(sender).attr('data-employeeId');
+         var Id = $(sender).attr('data-Id');
+         $("#myTraining").load('@Url.Action("Training", "Training")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+     }
+
+    function Edittraining() {
+        if ($(".training #trainingVM_Id").val() <= 0) { $(".training .Edit").hide(); fromWriteColor("training"); return; }
+        fnReadOnly("training");
+        if ($(".training").hasClass("readOnly")) {
+            $(".training .Save").hide();
+            $(".training .Edit").show();
+        }
+        else {
+            $(".training .Save").show();
+            $(".training .Edit").hide();
+        }
+    }
+
+  
+
+    function traningStatus(valu, sender) {
+        $(".traningStatus").hide();
+        var val = "";
+        if (valu == "") {
+            val = $(sender).val();
+        }
+        else {
+            val = valu;
+        }
+        if (val == "Schedule") {
+            $("#TrainingF").val('');
+            $("#trainingVM_Achievement").val('');
+            $(".traningStatus").hide();
+        }
+        else {
+            $(".traningStatus").show();
+
+        }
+    }
+
+    function DateFromToCheck(sender) {
+        if (ParseDate($("#trainingVM_DateFrom").val()) > ParseDate($("#trainingVM_DateTo").val())) {
+            ShowResult("Fail", "DateTo can't be prior to  DateFrom");
+            $(sender).val('');
+            $("#trainingVM_DurationDay").val(0);
+        }
+        else {
+            CheckDuration();
+        }
+    }
+
+    function CheckDuration() {
+
+        var a = Math.round((ParseDate($("#trainingVM_DateTo").val()) - ParseDate($("#trainingVM_DateFrom").val())) / (1000 * 60 * 60 * 24)) + 1;
+
+        if (a >= 0) {
+            $("#trainingVM_DurationDay").val(a);
+        }
+
+
+        if (parseFloat($("#trainingVM_DurationDay").val()) > parseFloat(a)) {
+            ShowResult("Fail", "Duration day can't be greater then two date difference!");
+        }
+    }
+
+    var leftMenuActive = "Training";
+   </script>

@@ -1,0 +1,382 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("Dependent", "DependentNominee", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmDependent" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="dependent">
+        @Html.HiddenFor(model => model.dependentVM.EmployeeId)
+        @Html.HiddenFor(model => model.dependentVM.Id)
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.Name, new { @placeholder = "Dependent Name", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Relation)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.Relation, new { @placeholder = "Relation", @class = "required  form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.DateofBirth)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.DateofBirth, new { @onchange = "DateOfBirth(this)", @placeholder = "Date of Birth", @class = "required  customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.BirthCertificateNo)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.BirthCertificateNo, new { @placeholder = "Birth Certificate", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.NID)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.NID, new { @placeholder = "NID No.", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.BloodGroup)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.dependentVM.BloodGroup, "/Config/DropDown/BloodGroup", new { @class = " form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Gender)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.dependentVM.Gender, "/Config/DropDown/Gender", new { @placeholder = "Gender", @class = "required form-control " })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.EducationQualification)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.dependentVM.EducationQualification, new { @placeholder = "Education Qualification", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Address)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.dependentVM.Address, new { @placeholder = "Village/House & Road", @rows = "1", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.PostalCode)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.PostalCode, new { @placeholder = "Postal Code", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.PostOffice)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.PostOffice, new { @placeholder = "Post Office", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.City)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.City, new { @placeholder = "Police Station", @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Country)
+                </div>
+                <div class="editor-field">
+                    <select id="dependentVM.Country" name="dependentVM.Country" data-val="@Model.dependentVM.Country"  data-url="/Config/DropDown/CountryEN/"  class = " country form-control" ></select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Division)
+                </div>
+                <div class="editor-field">
+                    <select id="dependentVM.Division" name="dependentVM.Division" data-val="@Model.dependentVM.Division"  data-url="/Config/DropDown/Division/"  class = " division form-control" ></select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.District)
+                </div>
+                <div class="editor-field">
+                    <select id="dependentVM.District" name="dependentVM.District" data-val="@Model.dependentVM.District"  data-url="/Config/DropDown/District/"  class = " district form-control" ></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Phone)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.Phone, new { @placeholder = "Phone", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Mobile)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.Mobile, new { @placeholder = "Mobile", @class = "required form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.Fax)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.Fax, new { @placeholder = "Fax", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.dependentVM.IsDependentAllowance)
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.dependentVM.IsDependentAllowance, new { @placeholder = "Dependent Allowance", @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Vaccine1 Complete</label>
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.dependentVM.IsVaccineDose1Complete, new { @placeholder = "IsVaccineDose1Complete", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Vaccine1 Date</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.VaccineDose1Date, new { @placeholder = "Vaccine1 Date", @class = " customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Vaccine1 Name</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.VaccineDose1Name, new { @placeholder = "Vaccine1 Name", @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Vaccine2 Complete</label>
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.dependentVM.IsVaccineDose2Complete, new { @placeholder = "IsVaccineDose2Complete", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Vaccine2 Date</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.VaccineDose2Date, new { @placeholder = "Vaccine2 Date", @class = " customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Vaccine2 Name</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.VaccineDose2Name, new { @placeholder = "Vaccine2 Name", @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Vaccine3 Complete</label>
+                </div>
+                <div class="editor-field">
+                    @Html.CheckBoxFor(model => model.dependentVM.IsVaccineDose3Complete, new { @placeholder = "IsVaccineDose3Complete", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Vaccine3 Date</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.VaccineDose3Date, new { @placeholder = "Vaccine3 Date", @class = " customDatePicker form-control" })
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="editor-label">
+                    <label>Vaccine3 Name</label>
+
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.dependentVM.VaccineDose3Name, new { @placeholder = "Vaccine3 Name", @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.dependentVM.FileName)
+                <input type="file" onchange="CheckImageSize(this);" name="DependentF" id="DependentF" style="width: 200px;" />
+            </div>
+            @if (Model.dependentVM.FileName != null && Model.dependentVM.FileName != "")
+            {
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="col-md-6">
+                        <a target="_blank" href="~/Files/Dependent/@Model.dependentVM.Id@Model.dependentVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float: left;">
+                        <span onclick="FileDelete(this)"; data-id="@Model.dependentVM.Id" data-table="13"  data-field="FileName" data-url="~/Files/Dependent/@Model.dependentVM.Id@Model.dependentVM.FileName">
+                            <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" /></span>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+
+        <br />
+        <p>
+             @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                // <input type="button" value="Save" onclick="pageSubmit('frmDependent');" class="Save btn btn-info" />
+                // <input type="button" value="Edit" onclick="Editdependent();" class="Edit btn btn-info" />  
+                    
+                <button type="button" title="Click to Save" onclick="pageSubmit('frmDependent');" class="Save sym-btn-save">&nbsp;Save</button>
+                <button type="button" title="Click for Edit" onclick="Editdependent();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+            }
+            <button type="button" title="Click for Cancel" onclick="Cancledependent();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+
+            @* <input type="button" value="Cancel" onclick="Cancledependent();" class="Cancle btn btn-info" />*@
+        </p>
+    </div>
+}
+<script>
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        InitDropDowns();
+        InitDateTimePickers();
+        Editdependent();
+        Country();
+        Division();
+        District();
+        $(".showHideDP").hide();//index page new btn
+        valiDation("frmDependent");
+    });
+    function DateOfBirth(sender) {
+        var selectedDate = ParseDate($(sender).val());
+        var today = new Date();
+        if (selectedDate > today) {
+            $(sender).val("");
+            ShowResult("Fail", "Date of birth can't be prior to today!");
+        }
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    $('#saveJSON').click(function () {
+        if (isChange == true) {
+            if (pageSubmitJSON('frmDependent') == 0) {
+                var myData = $('#frmDependent').serialize();
+                var url = "/HRM/DependentNominee/Dependent";
+                var res = submit(url, myData);
+                if (res == true) {
+                    location.reload();
+                }
+                isChange = false;
+            }
+        }
+        else {
+            ShowResult("Success", "You have no changes for save");
+        }
+    });
+
+    function Cancledependent() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                Cancledependent();
+            })
+        }
+        else {
+            isChange = false;
+            $("#myDependent").html('');
+            $(".showHideDP").show();
+        }
+
+    }
+</script>

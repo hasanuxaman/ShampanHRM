@@ -1,0 +1,670 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@using (Html.BeginForm("Edit", "EmployeeFile", FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmergency" }))
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.employeeFiles.EmployeeId)
+    @Html.HiddenFor(model => model.employeeFiles.Id)
+    @Html.HiddenFor(model => model.Id)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Emergency Contact</p>
+        </div>
+        <div class="emergencyContact">
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_NIDFile)
+                    <input type="file" onchange="CheckFileSize(this);" name="NIDFile" id="NIDFile" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_NIDFile != null && Model.employeeFiles.EmployeePersonalDetail_NIDFile != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_NIDFile)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/NIDFile/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_NIDFile">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_Fingerprint" data-url="~/Files/NIDFile/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_NIDFile">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_Fingerprint)
+                    <input type="file" onchange="CheckFileSize(this);" name="EmployeePersonalDetail_Fingerprint" id="EmployeePersonalDetail_Fingerprint" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_Fingerprint != null && Model.employeeFiles.EmployeePersonalDetail_Fingerprint != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_Fingerprint)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/EmployeePersonalDetail_Fingerprint/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_Fingerprint">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_Fingerprint" data-url="~/Files/EmployeePersonalDetail_Fingerprint/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_Fingerprint">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_PassportFile)
+                    <input type="file" onchange="CheckFileSize(this);" name="PassportFile" id="PassportFile" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_PassportFile != null && Model.employeeFiles.EmployeePersonalDetail_PassportFile != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_PassportFile)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/PassportFile/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_PassportFile">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_PassportFile" data-url="~/Files/PassportFile/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_PassportFile">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+
+         
+
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_VaccineFile1)
+                    <input type="file" onchange="CheckFileSize(this);" name="VaccineFile1" id="VaccineFile1" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_VaccineFile1 != null && Model.employeeFiles.EmployeePersonalDetail_VaccineFile1 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_VaccineFile1)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/VaccineFile1/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_VaccineFile1">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_VaccineFile1" data-url="~/Files/VaccineFile1/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_VaccineFile1">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_VaccineFiles2)
+                    <input type="file" onchange="CheckFileSize(this);" name="VaccineFiles2" id="VaccineFiles2" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_VaccineFiles2 != null && Model.employeeFiles.EmployeePersonalDetail_VaccineFiles2 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_VaccineFiles2)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/VaccineFiles2/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_VaccineFiles2">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_VaccineFiles2" data-url="~/Files/VaccineFiles2/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile2">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_VaccineFile3)
+                    <input type="file" onchange="CheckFileSize(this);" name="VaccineFile3" id="VaccineFile3" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_VaccineFile3 != null && Model.employeeFiles.EmployeePersonalDetail_VaccineFile3 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_VaccineFile3)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/VaccineFile3/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_VaccineFile3">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_VaccineFiles2" data-url="~/Files/VaccineFile3/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_VaccineFile3">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_DisabilityFile)
+                    <input type="file" onchange="CheckFileSize(this);" name="DisabilityFile" id="DisabilityFile" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeePersonalDetail_DisabilityFile != null && Model.employeeFiles.EmployeePersonalDetail_DisabilityFile != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeePersonalDetail_DisabilityFile)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/DisabilityFile/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_DisabilityFile">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeePersonalDetail_DisabilityFile" data-url="~/Files/DisabilityFile/@Model.employeeFiles.Id@Model.employeeFiles.EmployeePersonalDetail_DisabilityFile">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.SignatureFiles)
+                    <input type="file" onchange="CheckFileSize(this);" name="SignatureFiles" id="SignatureFiles" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.SignatureFiles != null && Model.employeeFiles.SignatureFiles != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.SignatureFiles)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/SignatureFiles/@Model.employeeFiles.Id@Model.employeeFiles.SignatureFiles">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="SignatureFiles" data-url="~/Files/SignatureFiles/@Model.employeeFiles.Id@Model.employeeFiles.SignatureFiles">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+           
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Emergency Contact</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Emergency Contact Attachment</label>
+                    <input type="file" onchange="CheckImageSize(this);" name="EmergencyContactF" id="EmergencyContactF" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.FileName != null && Model.employeeFiles.FileName != "")
+                {
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/EmergencyContactF/@Model.employeeFiles.Id@Model.employeeFiles.FileName">
+                                <img src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="FileName" data-url="~/Files/EmergencyContactF/@Model.employeeFiles.Id@Model.employeeFiles.FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+           
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Nominee</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeeNominee_VaccineFile1)
+                    <input type="file" onchange="CheckFileSize(this);" name="N_VaccineFile1" id="N_VaccineFile1" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeeNominee_VaccineFile1 != null && Model.employeeFiles.EmployeeNominee_VaccineFile1 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeeNominee_VaccineFile1)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/N_VaccineFile1/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile1">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeeNominee_VaccineFile1" data-url="~/Files/N_VaccineFile1/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile1">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    <label>N.VaccineFile 2</label>
+                    <input type="file" onchange="CheckFileSize(this);" name="EmployeeNominee_VaccineFile2" id="EmployeeNominee_VaccineFile2" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeeNominee_VaccineFile2 != null && Model.employeeFiles.EmployeeNominee_VaccineFile2 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeeNominee_VaccineFile2, new { @class = "attachment" })
+
+                        <div class="col-md-6">
+                            <a class="" target="_blank" href="~/Files/EmployeeNominee_VaccineFile2/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile2">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeeNominee_VaccineFile2" data-url="~/Files/EmployeeNominee_VaccineFile2/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile2">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.EmployeeNominee_VaccineFile3)
+                    <input type="file" onchange="CheckFileSize(this);" name="N_VaccineFile3" id="N_VaccineFile3" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.EmployeeNominee_VaccineFile3 != null && Model.employeeFiles.EmployeeNominee_VaccineFile3 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.EmployeeNominee_VaccineFile3)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/N_VaccineFile3/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile3">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="EmployeeNominee_VaccineFile3" data-url="~/Files/N_VaccineFile3/@Model.employeeFiles.Id@Model.employeeFiles.EmployeeNominee_VaccineFile3">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Dependent</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.Employeedependent_VaccineFile1)
+                    <input type="file" onchange="CheckFileSize(this);" name="D_VaccineFile1" id="D_VaccineFile1" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.Employeedependent_VaccineFile1 != null && Model.employeeFiles.Employeedependent_VaccineFile1 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.Employeedependent_VaccineFile1)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/D_VaccineFile1/@Model.employeeFiles.Id@Model.employeeFiles.Employeedependent_VaccineFile1">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="Employeedependent_VaccineFile1" data-url="~/Files/D_VaccineFile1/@Model.employeeFiles.Id@Model.employeeFiles.Employeedependent_VaccineFile1">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.Employeedependent_VaccineFile2)
+                    <input type="file" onchange="CheckFileSize(this);" name="D_VaccineFile2" id="D_VaccineFile2" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.Employeedependent_VaccineFile2 != null && Model.employeeFiles.Employeedependent_VaccineFile2 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.Employeedependent_VaccineFile2)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/D_VaccineFile2/@Model.employeeFiles.Id@Model.employeeFiles.Employeedependent_VaccineFile2">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="Employeedependent_VaccineFile2" data-url="~/Files/D_VaccineFile2/@Model.employeeFiles.Id@Model.employeeFiles.Employeedependent_VaccineFile2">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.Employeedependent_VaccineFile3)
+                    <input type="file" onchange="CheckFileSize(this);" name="D_VaccineFile3" id="D_VaccineFile3" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.Employeedependent_VaccineFile3 != null && Model.employeeFiles.Employeedependent_VaccineFile3 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.Employeedependent_VaccineFile3)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/D_VaccineFile3/@Model.employeeFiles.Id@Model.employeeFiles.Employeedependent_VaccineFile3">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="Employeedependent_VaccineFile3" data-url="~/Files/D_VaccineFile3/@Model.employeeFiles.Id@Model.employeeFiles.Employeedependent_VaccineFile3">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+           
+
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Education</p>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.edu_Certificate)
+                    <input type="file" onchange="CheckFileSize(this);" name="edu_Certificate" id="edu_Certificate" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.edu_Certificate != null && Model.employeeFiles.edu_Certificate != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.edu_Certificate)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/edu_Certificate/@Model.employeeFiles.Id@Model.employeeFiles.edu_Certificate">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="edu_Certificate" data-url="~/Files/edu_Certificate/@Model.employeeFiles.Id@Model.employeeFiles.edu_Certificate">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Extra Curriculum Activity</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.Extra_FileName)
+                    <input type="file" onchange="CheckFileSize(this);" name="Extra_FileName" id="Extra_FileName" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.Extra_FileName != null && Model.employeeFiles.Extra_FileName != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.Extra_FileName)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/Extra_FileName/@Model.employeeFiles.Id@Model.employeeFiles.Extra_FileName">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="Extra_FileName" data-url="~/Files/Extra_FileName/@Model.employeeFiles.Id@Model.employeeFiles.Extra_FileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p> File Attachment Immigration </p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.PassportVisa)
+                    <input type="file" onchange="CheckFileSize(this);" name="PassportVisa" id="PassportVisa" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.PassportVisa != null && Model.employeeFiles.PassportVisa != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.PassportVisa)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/PassportVisa/@Model.employeeFiles.Id@Model.employeeFiles.PassportVisa">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="PassportVisa" data-url="~/Files/PassportVisa/@Model.employeeFiles.Id@Model.employeeFiles.PassportVisa">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Training</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.Certificate)
+                    <input type="file" onchange="CheckFileSize(this);" name="Certificate" id="Certificate" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.Certificate != null && Model.employeeFiles.Certificate != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.Certificate)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/Certificate/@Model.employeeFiles.Id@Model.employeeFiles.Certificate">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="Certificate" data-url="~/Files/Certificate/@Model.employeeFiles.Id@Model.employeeFiles.Certificate">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p> File Attachment Travel</p>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.BillVoucher)
+                    <input type="file" onchange="CheckFileSize(this);" name="BillVoucher" id="BillVoucher" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.BillVoucher != null && Model.employeeFiles.BillVoucher != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.BillVoucher)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/BillVoucher/@Model.employeeFiles.Id@Model.employeeFiles.BillVoucher">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="BillVoucher" data-url="~/Files/BillVoucher/@Model.employeeFiles.Id@Model.employeeFiles.BillVoucher">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <br />
+            <div class="th_thinbox">
+                <p>File Attachment Asset</p>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.employeeFiles.AssetFileName)
+                    <input type="file" onchange="CheckFileSize(this);" name="AssetFileName" id="AssetFileName" style="width: 200px;" />
+                </div>
+                @if (Model.employeeFiles.AssetFileName != null && Model.employeeFiles.AssetFileName != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.employeeFiles.AssetFileName)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/AssetFileName/@Model.employeeFiles.Id@Model.employeeFiles.AssetFileName">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.employeeFiles.Id" data-table="15" data-field="AssetFileName" data-url="~/Files/AssetFileName/@Model.employeeFiles.Id@Model.employeeFiles.AssetFileName">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+         
+
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {            <p class="actionButton_EC">
+            </p>
+                if (@Model.IsActive)
+                {
+
+                    <button type="button" title="Save Data" onclick="pageSubmit('frmEmergency');" class="Save sym-btn-save">&nbsp;Save</button>
+
+                    @*<button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>*@
+                    <button type="button" title="Edit Data" onclick="EditEmergencyContact();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                    <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+                }
+                else
+                {
+
+                    <button type="button" title="Cancel Data" onclick="Cancle();" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+                }
+            }
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+
+    });
+
+    var url = "";
+    var urlDivision = "";
+    var urlDistrict = "";
+    $(function () {
+        valiDation("frmEmergency");
+        Country();
+        Division();
+        District();
+
+        EditEmergencyContact();
+
+
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+                     msg = msg.split("~");
+                     ShowResult(msg[0], msg[1]);
+                 }
+    });
+    function EditEmergencyContact() {
+        fnReadOnly("emergencyContact");
+        if ($(".emergencyContact").hasClass("readOnly")) {
+            $(".emergencyContact .Save").hide();
+            $(".emergencyContact .Cancle").hide();
+            $(".emergencyContact .Edit").show();
+        }
+        else {
+            $(".emergencyContact .Cancle").show();
+            $(".emergencyContact .Save").show();
+            $(".emergencyContact .Edit").hide();
+        }
+    }
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+    });
+    function Cancle() {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                window.location.reload();
+            })
+        }
+        else {
+            isChange = false;
+            window.location.reload();
+        }
+    }
+    var leftMenuActive = "EmergencyContact";
+
+
+    $('#editJSONEmergency').click(function () {
+        var a = pageSubmitJSON('frmEmergency');
+        if (a != 0) {
+            return;
+        }
+        if (isChange == false) {
+            ShowResult("Success", "You have no changes for save");
+            return;
+        }
+        if (pageSubmitJSON('frmEmergency') == 0) {
+            var myData = $('#frmEmergency').serialize();
+            var url = "/HRM/EmployeeFile/Edit";
+            submit(url, myData);
+        }
+    })
+
+    $('#saveJSOND').click(function () {
+        var url = "/HRM//EmployeeFile/Edit";
+
+        $form = $('#frmEmergency');
+
+        $form.attr("action", url);
+        $form.submit();
+
+    });
+
+    //var submit = function (url, mydata) {
+    //    $.ajax({
+    //        type: 'POST',
+    //        data: mydata, // #2
+    //        url: url,
+    //        success: function (result) {
+    //            var msg1 = result.split('~')[0];
+    //            var msg2 = result.split('~')[1];
+    //            if (msg1 != "Fail") {
+    //                ShowResult("Success", msg2);
+    //                EditEmergencyContact()
+    //                location.reload();
+    //            }
+    //            else {
+    //                ShowResult("Fail", msg2);
+    //            }
+    //        }
+    //    });
+
+</script>
+<style>
+
+
+</style>

@@ -1,0 +1,118 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "";
+}
+    <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Nominee</p>   
+        </div>
+<div id="myNomineeIndex">
+    <div id="myNominee">
+    </div> 
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+   // <input type="button" id="btnDialogNO" class="btn btn-info showHideNM" value="Add" />
+   // <input type="button" style="width:65px;" data-url="/hrm/DependentNominee/NomineeDelete" onclick="deletedData(this, 'myDataTableDependent');" id="" class=" showHideNM btn btn-info  " value="Delete" />
+    <button type="button"  id="btnDialogNO" title="Add New Nominee info" class=" sym-btn-add showHideNM">&nbsp;New</button>
+    <button type="button" id="btnDownload" title="Click to Download Employee Nominee information" class="sym-btn-Excel-Export">&nbsp;Download</button>
+    <button type="button" title="Delete Checked Nominee info"  data-url="/hrm/DependentNominee/NomineeDelete" onclick="deletedData(this, 'myDataTableNominee');" class="showHideNM sym-btn-remove">&nbsp;Delete</button>
+    }
+    @Html.Partial("_nominee", Model)
+</div><br />
+</div>
+<hr />
+    <div class="thinbox">
+        <div class="th_thinbox">
+         <p>Dependent</p>   
+        </div>
+<div id="myDependentIndex">
+    <div id="myDependent">
+    </div> 
+ @if (identity.IsAdmin || identity.IsHRM)
+{
+       <button type="button"  id="btnDialogDP" title="Add New Nominee info" class=" sym-btn-add showHideDP">&nbsp;New</button>
+    <button type="button" title="Delete Checked Dependent info"  data-url="/hrm/DependentNominee/DependentDelete" onclick="deletedData(this, 'myDataTableDependent');" class="showHideDP sym-btn-remove">&nbsp;Delete</button>
+            //<input type="button" id="btnDialogDP" class="btn btn-info showHideDP" value="Add" />
+   // <input type="button" style="width:65px;" data-url="/hrm/DependentNominee/DependentDelete" onclick="deletedData(this, 'myDataTableNominee');" id="" class=" showHideDP btn btn-info  " value="Delete" />
+ }
+    @Html.Partial("_dependent", Model)
+</div>
+        <br />
+</div>
+<script>
+    $(function () {
+        InitDropDowns();
+        SelectAllForDelete();
+    });
+    $('#btnDownload').click(function () {
+        debugger;
+        var InvoiceNo = $("#InvoiceNo").val();
+        var url = '/DependentNominee/Export?InvoiceNo=' + InvoiceNo;
+        var win = window.open(url, '_blank');
+    });
+    $('#btnDialogNO').click(function () {
+        debugger;
+       // var code = 1;// $('#Id').val();
+        $("#myNominee").load('@Url.Action("Nominee", "DependentNominee")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+    });
+    function NomineeEdit(sender) {
+        debugger;
+        var EmployeeId = $(sender).attr('data-employeeId');
+        var Id = $(sender).attr('data-Id');
+        $("#myNominee").load('@Url.Action("Nominee", "DependentNominee")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function Editnominee() {
+        debugger;
+        if ($(".nominee #nomineeVM_Id").val() <= 0) { $(".nominee .Edit").hide(); fromWriteColor("nominee"); return; }
+        fnReadOnly("nominee");
+        if ($(".nominee").hasClass("readOnly")) {
+            $(".nominee .Save").hide();
+            $(".nominee .Edit").show();
+        }
+        else {
+            $(".nominee .Save").show();
+            $(".nominee .Edit").hide();
+        }
+    }
+    /////////////............................
+    $('#btnDialogDP').click(function () {
+        debugger;
+        // var code = 1;// $('#Id').val();
+        $("#myDependent").load('@Url.Action("Dependent", "DependentNominee")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+     });
+    function DependentEdit(sender) {
+        debugger;
+         var EmployeeId = $(sender).attr('data-employeeId');
+         var Id = $(sender).attr('data-Id');
+         $("#myDependent").load('@Url.Action("Dependent", "DependentNominee")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+    }
+    function Editdependent() {
+        debugger;
+        if ($(".dependent #dependentVM_Id").val() <= 0) { $(".dependent .Edit").hide(); fromWriteColor("dependent"); return; }
+        fnReadOnly("dependent");
+        if ($(".dependent").hasClass("readOnly")) {
+            $(".dependent .Save").hide();
+            $(".dependent .Edit").show();
+        }
+        else {
+            $(".dependent .Save").show();
+            $(".dependent .Edit").hide();
+        }
+    }
+    var leftMenuActive = "DependentNominee";
+</script>

@@ -1,0 +1,176 @@
+﻿@model SymViewModel.Payroll.EmployeeBonusVM
+@using UIHelper.MVC
+@Html.ValidationSummary(true)
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Bonus</p>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.BranchId)
+                @Html.LabelFor(model => model.Code)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Code, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Name, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.BonusValue)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.BonusValue, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.IsFixed)
+            </div>
+            <div class="editor-field center">
+                @Html.CheckBoxFor(model => model.IsFixed, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PortionSalaryType)
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryPortion", new { @class = "PortionSalaryTypeId form-control", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Remarks)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+@* <p>
+        <input type="button" style="width: 65px;" data-url="/Payroll/EmployeeBonus/BonusNew?employeeBonusId=@Model.Id" onclick="GoTo(this)" id="" class=" btn btn-info  " value="Add" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/EmployeeBonus/BonusDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class=" btn btn-info  " value="Delete" />
+        <input type="button" style="width: 65px;" data-url="/Payroll/EmployeeBonus" class="btn btn-info" onclick="BackToList(this)" value="Back" />
+ </p>*@
+    </div>
+    <div class="headrow">
+        <button type="button" title="Add New Employee Bonus" data-url="/Payroll/EmployeeBonus/BonusNew?employeeBonusId=@Model.Id" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+        <button type="button" title="Delete Checked EmployeeBonus" data-url="/Payroll/EmployeeBonus/BonusDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+        <label class="pull-right">Employee Bonus > Edit</label>
+    </div>
+<br />
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" />Select All </th>
+                            <th>Name</th>
+                            <th>Basic</th>
+                            <th>Gross</th>
+                            <th>Bonus</th>
+                        </tr>
+                           <tr>
+                          <th  class="center" >Actions</th>
+                            <th>Name</th>
+                            <th>Basic</th>
+                            <th>Gross</th>
+                            <th>Bonus</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+@*<script>
+    $(function () {
+        SelectAllForDelete();
+        valiDation("frmBonusStructure");
+        InitDropDowns();
+        InitDatePickers();
+        $(function () {
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/EmployeeBonus/_employeeBonusDetails?employeeBonusId=@Model.Id",
+                "bProcessing": true,
+                "aoColumns": [
+                                  {
+                                      "sName": "ID",
+                                      "bSearchable": false,
+                                      "bSortable": false,
+                                      "fnRender": function (oObj) {
+                                          return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                          ;
+                                      }
+                                  },
+                                  {
+                                      "sName": "Code",
+                                      "bSearchable": true,
+                                      "bSortable": false,
+                                      "fnRender": function (oObj) {
+                                          return '<a  class="innerListLink" href=\"/Payroll/EmployeeBonus/BonusEdit?bonusDetailId=' + oObj.aData[1].split('~')[1] + '\">' + oObj.aData[1].split('~')[0] + '</a>'
+                                          ;
+                                      }
+                                  },
+                                { "sName": "Basic" },
+                                { "sName": "Gross" },
+                                { "sName": "Bonus" },
+                                { "sName": "Remarks" }
+                ]
+            });
+        });
+    });
+</script>*@
+ <script language="javascript" type="text/javascript">
+     $(document).ready(function () {
+         SelectAllForDelete();
+         $.datepicker.regional[""].dateFormat = 'dd/M/y';
+         $.datepicker.setDefaults($.datepicker.regional['']);
+         var oTable = $('#myDataTable').dataTable({
+             "bServerSide": true,
+             "sAjaxSource": "/Payroll/EmployeeBonus/_employeeBonusDetails?employeeBonusId=@Model.Id",
+             "bProcessing": true,
+             "aLengthMenu": tablelength(),
+             "bJqueryUI": true,
+             "bAutoWidth": false,
+             "aoColumns": [
+                             {
+                                 "sName": "Id",
+                                 "bSearchable": false,
+                                 "bSortable": false,
+                                 "sWidth": "12%",
+                                 "sClass": "center",
+                                 "fnRender": function (oObj) {
+                                     return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp;' +
+                                         '<a title="Click on for Edit" style="text-decoration:none;"    href=\"/Payroll/EmployeeBonus/BonusEdit?bonusDetailId=' + oObj.aData[0] + '\" class="sym-btn-edit-row"></a>';
+                                 }
+                             }
+                             , { "sName": "EmployeeName", "sWidth": "20%" }
+                                ,{ "sName": "Basic" },
+                                { "sName": "Gross" },
+                                { "sName": "Bonus" }
+             ]
+         });
+         oTable.columnFilter({
+             sPlaceHolder: "head:after",
+             aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                        , { type: "text" }
+                        , { type: "number-range" }
+                       , { type: "number-range" }
+                        , { type: "number-range" }
+             ]
+         });
+     });
+    </script>

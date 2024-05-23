@@ -1,0 +1,122 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM 
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+
+        <div class="thinbox">
+            <div class="th_thinbox">
+            <p>Employee Asset</p>   
+            </div>
+<div>
+    <div id="myEmployeeAsset">
+    </div> 
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+    <button type="button"  id="btnDialogAsset" title="Add New Employee Asset" class=" sym-btn-add">&nbsp;New</button>
+    <button type="button" title="Delete Checked Employee Asset" data-url="/hrm/EmployeeAsset/Delete" onclick="deletedData(this, 'myDataTableAsset');" class=" sym-btn-remove">&nbsp;Delete</button>
+    }
+</div>
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTableAsset" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Asset Name</th>
+                            <th>Issue Date</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <br />
+        </div>
+<script>
+    $(document).ready(function () {
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            alert(tt);
+            var tt1 = tt.split("~");
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+
+        SelectAllForDelete();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+
+        $('#myDataTableAsset').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeAsset/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                            {
+                                "sName": "Id",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="EmployeeAssetEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                }
+                            }
+                           , { "sName": "AssetName", "sWidth": "20%" }
+                           , { "sName": "IssueDate", "sWidth": "20%" }
+                           , { "sName": "Remark", "sWidth": "15%" }
+            ]
+        });
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+
+    $('#btnDialogAsset').click(function () {
+        $("#myEmployeeAsset").load('@Url.Action("Asset", "EmployeeAsset")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+    });
+    function EmployeeAssetEdit(sender) {
+         var EmployeeId = $(sender).attr('data-employeeId');
+         var Id = $(sender).attr('data-Id');
+         $("#myEmployeeAsset").load('@Url.Action("Asset", "EmployeeAsset")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+     }
+    function AssetEdit() {
+        if ($(".Asset #AssetVM_Id").val() <= 0) { $(".Asset .Edit").hide(); fromWriteColor("frmAsset"); return; }
+        fnReadOnly("frmAsset");
+        if ($(".Asset").hasClass("readOnly")) {
+            $(".Save").hide();
+            $(".Edit").show();
+        }
+        else {
+            $(".Save").show();
+            $(".Edit").hide();
+        }
+    }
+
+
+   </script>

@@ -1,0 +1,312 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+    input[type='text'], input[type='password'], textarea {
+        margin: 0px!important;
+    }
+</style>
+@using (Html.BeginForm("Create", "EmployeeOtherDeduction", FormMethod.Post, new { @Id = "afrmEmployeeEdit" }))
+{   
+    <div class="row ">
+        <div class="col-md-4">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>@Model.EmpName</p>
+                </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.FiscalYearDetailId)
+                    @Html.HiddenFor(model => model.EmployeeOtherDeductionVM.DeductionTypeId)
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                    <br />
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <br />
+                    <div class="editor-label col-md-4">
+                        <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee "+@Session["DepartmentLabel"], @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <br />
+                    <div class="editor-label col-md-4">
+                        <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee "+@Session["SectionLabel"], @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                    <br />
+                    <div class="editor-label col-md-4">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee "+@Session["ProjectLabel"], @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="thinbox formDesign">
+                <div class="row " id="PunishmentDiv" hidden="hidden">
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Punishment Days</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeOtherDeductionVM.Days, new { @class = "days right NumberCheck  form-control" })
+                            @Html.ValidationMessageFor(model => model.EmployeeOtherDeductionVM.Days)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.EmployeeOtherDeductionVM.GrossSalary)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.GrossSalary, new { @class = "grossSalary right NumberCheck    form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EmployeeOtherDeductionVM.GrossSalary)
+                            @Html.HiddenFor(model => model.EmployeeOtherDeductionVM.GrossSalary, new { @class = "grossSalarySave  form-control" })
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.EmployeeOtherDeductionVM.BasicSalary)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.BasicSalary, new { @class = "basicSalary right NumberCheck   form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EmployeeOtherDeductionVM.BasicSalary)
+                            @Html.HiddenFor(model => model.EmployeeOtherDeductionVM.BasicSalary, new { @class = "basicSalarySave  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            <label>From Basic (Settings)</label>
+                        </div>
+                        <div class="editor-field ">
+                            @Html.TextBoxFor(model => model.EmployeeOtherDeductionVM.PunishmentFromBasic, new { @class = " punishmentFromBasic  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Days Of Month</label>
+                        </div>
+                        <div class="editor-field ">
+                            @Html.TextBoxFor(model => model.EmployeeOtherDeductionVM.DaysOfMonth,  new { @class = " daysOfMonth  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.EmployeeOtherDeductionVM.DeductionAmount)
+                            @Html.HiddenFor(model => model.EmployeeOtherDeductionVM.FiscalYearDetailId)
+                            @Html.HiddenFor(model => model.EmployeeOtherDeductionVM.EmployeeId)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.EmployeeOtherDeductionVM.DeductionAmount, new { @class = "DeductionAmount NumberCheck NumberCheck required  form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.EmployeeOtherDeductionVM.Remarks)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.EmployeeOtherDeductionVM.Remarks, new { @class = "  form-control" })
+                            @Html.ValidationMessageFor(model => model.EmployeeOtherDeductionVM.Remarks)
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <button type="button" title="Save Data" id="SaveJSON" class=" Save sym-btn-save">&nbsp;Save</button>
+                    <button type="button" title="Save Data" id="UpdateJSON" class=" Save sym-btn-update">Update</button>
+                    @*<button type="button" title="Delete Data" id="DeleteJSON" class=" Save sym-btn-remove">&nbsp;Delete</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        checkvalue();
+        //$('#empId').val('@Model.Code~@Model.EmpName');
+
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+        }
+
+    });
+    $('#DeleteJSON').click(function () {
+        var myData = $('#afrmEmployeeEdit').serialize();
+        var url = "/Payroll/EmployeeOtherDeduction/Create?btn=delete";
+        submit(url, myData);
+        $('.DeductionAmount').val('0');
+
+    })
+    function checkvalue() {
+        var EarningAmount = $(".DeductionAmount").val();
+        if (EarningAmount == 0) {
+            $("#SaveJSON").show();
+            $("#UpdateJSON").hide();
+        }
+        else {
+            $("#SaveJSON").hide();
+            $("#UpdateJSON").show();
+        }
+    }
+    $('#SaveJSON,#UpdateJSON').click(function () {
+        var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+
+        var url = "/Common/FiscalYear/FiscalPeriodLockCheck?FiscalYearDetailId=" + FiscalYearDetailId;
+
+        $.ajax({
+            url: url
+               , type: 'Post'
+               , traditional: true
+               , beforeSend: function () { $(".loading").show(); }
+               , success: SaveUpdateData
+            , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+        });
+
+
+        
+    });
+
+    function SaveUpdateData(result) {
+        var results = result.split("~");
+        if (results[0].toLowerCase() == 'true') {
+
+            ShowResult("Fail", results[1]);
+
+        }
+        else {
+
+            var DeductionTypeId = $('.dType').val();
+            var Code = $('#Code').val();
+            if (Code == "") {
+                ShowResult("Fail", "Please Select Code!");
+                return;
+            }
+            if (DeductionTypeId == "") {
+                ShowResult("Fail", "Please Select Deduction Type!");
+                return;
+            }
+            if (FiscalYearDetailId == "") {
+                ShowResult("Fail", "Please Select Fiscal Year!");
+                return;
+            }
+            var myData = $('#afrmEmployeeEdit').serialize();
+            var url = "/Payroll/EmployeeOtherDeduction/Create?btn=save";
+            submit(url, myData);
+
+
+        }
+
+    }
+
+
+</script>
+
+<script>
+    function PunishmentAmount() {
+        var Code = $('#Code').val();
+        if (Code == "") {
+            $(".days").val(0);
+            ShowResult("Fail", "Please Select Code!");
+            return;
+        }
+
+        var Days = parseFloat($(".days").val());
+        var GrossSalary = parseFloat($(".grossSalary").val());
+        var BasicSalary = parseFloat($(".basicSalary").val());
+
+        $(".grossSalarySave").val(GrossSalary)
+        $(".basicSalarySave").val(BasicSalary)
+
+        var fydId = $("#FiscalYearDetailId").val();
+
+        var DeductionAmount = 0;
+
+        var PunishmentFromBasic = $(".punishmentFromBasic").val();
+        var DaysOfMonth = parseFloat($(".daysOfMonth").val());
+
+        if (PunishmentFromBasic == "Y") {
+            DeductionAmount = Days * (BasicSalary / DaysOfMonth);
+        }
+        else {
+            DeductionAmount = Days * (GrossSalary / DaysOfMonth);
+        }
+
+        $(".DeductionAmount").val(DeductionAmount.toFixed(2));
+        $(".punishmentFromBasic").val(PunishmentFromBasic);
+        $(".daysOfMonth").val(DaysOfMonth);
+
+
+
+
+
+        //$(".EarningAmount").val("0");
+        //if (Days > 0) {
+        //    var url = '/Payroll/EmployeeOtherDeduction/PunishmentAmount?fydId=' + fydId;
+        //    $.ajax({
+        //        url: url,
+        //        //dataType: "json",
+        //        type: 'GET',
+        //        success: function (data) {
+        //            var DeductionAmount = 0;
+
+        //            var PunishmentFromBasic = data.split('~')[0];
+        //            var DaysOfMonth = parseFloat(data.split('~')[1]);
+
+        //            if (PunishmentFromBasic == "Y") {
+        //                DeductionAmount = Days * (BasicSalary / DaysOfMonth);
+        //            }
+        //            else {
+        //                DeductionAmount = Days * (GrossSalary / DaysOfMonth);
+        //            }
+
+        //            $(".DeductionAmount").val(DeductionAmount.toFixed(2));
+        //            $(".punishmentFromBasic").val(PunishmentFromBasic);
+        //            $(".daysOfMonth").val(DaysOfMonth);
+
+
+        //        }
+        //    });
+        //}
+    }
+
+
+    $(".days").change(function () {
+        PunishmentAmount();
+    });
+
+</script>

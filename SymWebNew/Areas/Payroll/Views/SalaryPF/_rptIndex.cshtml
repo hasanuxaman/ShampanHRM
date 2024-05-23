@@ -1,0 +1,160 @@
+﻿@model SymViewModel.PF.SalaryPFDetailVM
+<style>
+
+</style>
+@*<link href="~/assets/swf/dataTables.tableTools.css" rel="stylesheet" />*@
+<div class="thinbox">
+    <div class="th_thinbox">
+    </div>
+    <p>
+    </p>
+    <div id="container">
+        <table id="myDataTable" class="display">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>@Session["DepartmentLabel"]</th>
+                    <th>@Session["ProjectLabel"]</th>
+                    <th>@Session["ProjectLabel"]</th>
+                    <th style="text-align: left!important">Basic</th>
+                    <th style="text-align: left!important">Gross</th>
+                    <th style="text-align: left!important">PF Amount</th>
+                </tr>
+            </thead>
+     
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br />
+
+</div>
+
+<script>
+    $(function () {
+
+
+        var oTable = $('#myDataTable').dataTable({
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(7)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Total over this page
+                pageTotal = api
+                    .column(7, { page: 'current' })
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(7).footer()).html(
+                    '$' + pageTotal + ' ( $' + total + ' total)'
+                );
+            },
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryPF/_rptIndex?DepartmentId=@Model.DepartmentId&SectionId=@Model.SectionId&ProjectId=@Model.ProjectId&DesignationId=@Model.DesignationId&CodeF=@Model.CodeF&CodeT=@Model.CodeT&fid=@Model.FiscalYearDetailId&fidTo=@Model.fidTo&Orderby=@Model.Orderby",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "sDom": 'T<"clear">lfrtip', //initialize tableTools 
+            //"sDom": 'TC<"clear">lfrtip',    // enable colvis
+
+            "tableTools": {
+                "sSwfPath": "/assets/swf/copy_csv_xls_pdf.swf",  // set swf path
+                "sRowSelect": "multi",
+                "aButtons": [
+                    "select_all",
+                    "select_none",
+                    {
+                        "sExtends": "collection",
+                        "sButtonText": "Export",
+                        "aButtons": ["copy", "csv", "xls", "pdf", "print"]
+                    }
+                ]
+            },
+            "aoColumns": [
+                             { "sName": "PeriodName", "sWidth": "6%" }
+                            , { "sName": "Code", "sWidth": "8%" }
+                            , { "sName": "EmpName", "sWidth": "14%" }
+                            , { "sName": "Designation", "sWidth": "12%" }
+                            , { "sName": "Department", "sWidth": "12%" }
+                            , { "sName": "Section", "sWidth": "12%" }
+                            , { "sName": "Project", "sWidth": "12%" }
+                            , { "sName": "BasicSalary", "sClass": "right  Basic", "sWidth": "8%" }
+                            , { "sName": "GrossSalary", "sClass": "right  Gross", "sWidth": "8%" }
+                            , { "sName": "PFValue", "sClass": "right  PFAmount", "sWidth": "8%" }
+            ]
+
+        });
+        calculateSum();
+    });
+    $("#myDataTable_length").change(function () {
+        //calculateSum();
+        //alert("test");
+    });
+
+    $("#myDataTable").ajaxComplete(function () {
+
+        //alert("load test");
+        //calculateSum();
+
+    });
+
+    function calculateSum() {
+        var sum = 0;
+        $('#BasicResult').val(0);
+        // iterate through each td based on class and add the values
+
+        setTimeout(function () {
+            $(".Basic").each(function () {
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+            });
+            //$('#BasicResult').text(sum);
+            sum = 0;
+            $(".Gross").each(function () {
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                }
+            });
+            $('#GrossResult').text(sum);
+
+            sum = 0;
+            $(".PFAmount").each(function () {
+                var value = $(this).text();
+                // add only if the value is number
+                if (!isNaN(value) && value.length != 0) {
+                    sum += parseFloat(value);
+                    //alert(value);
+                }
+            });
+            $('#PFAmountResult').text(sum);
+        }, 1500);
+    }
+
+</script>

@@ -1,0 +1,65 @@
+﻿<div class="headrow">
+    <button type="button" title="Add New Employee Payroll Shchedule" data-url="/Payroll/SalaryStructureMatrix/Create" onclick="GoTo(this)" id="" class="sym-btn-add ">&nbsp;New</button>
+
+    <label class="pull-right">Fiscal Period</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p class="thinHead">Fiscal Period List</p>
+    </div>
+    <p>
+    </p>
+    <table id="myDataTable" class="display">
+        <thead>
+            <tr>
+ 
+                <th>Action</th>
+                <th>Fiscal Period</th>
+                <th>Current Year Part</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br />
+</div>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        InitDateTimePickers();
+        $.datepicker.regional[""].dateFormat = 'dd/M/y';
+        $.datepicker.setDefaults($.datepicker.regional['']);
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryStructureMatrix/_indexFiscalYears",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "CurrentYear",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "5%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+                                    console.log(oObj)
+                                    return '  <a title="Click on for Details" style="text-decoration:none;"    href=\"/Payroll/SalaryStructureMatrix/index?currentYear=' + oObj.aData[0] +"&currentYearPart=" + oObj.aData[2] + '\"  class="sym-btn-detail-row"></a>'
+                                    + '&nbsp; <a title="Click on for Details" style="text-decoration:none;"    href=\"/Payroll/SalaryStructureMatrix/SalaryStructureDownload?currentYear=' + oObj.aData[0] + "&currentYearPart=" + oObj.aData[2] + '\"  class="sym-btn-download-row"></a>'
+                                       + '&nbsp; <a title="Click on for"  href=\"/Payroll/SalaryStructureMatrix/MatrixEffectCreate?fYear=' + oObj.aData[0] + "&currentYearPart=" + oObj.aData[2] + '\" class="sym-btn-add-row"></a>'
+                                    ;
+
+
+                                }
+                            }
+                            ,
+                            { "sName": "CurrentYear", "sWidth": "20%" },
+                            { "sName": "CurrentYearPart", "sWidth": "20%" }
+
+            ]
+        });
+
+    });
+
+</script>

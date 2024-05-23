@@ -1,0 +1,46 @@
+@model SymViewModel.HRM.EmployeeInfoVM
+@{
+    Layout = "~/Areas/Payroll/Views/Shared/_HomeLayout.cshtml";
+}
+@RenderSection("head", false)
+
+          @if (true)
+    {<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="input-group   col-lg-6  col-md-6  col-sm-6 col-xs-12">
+            <a class="input-group-addon btn btn-primary" data-pager-action='first'><i class="fa fa-angle-left"></i>First</a>
+            <a class="input-group-addon btn btn-primary" data-pager-action='previous' id="precode"><i class="fa fa-angle-double-left"></i>Previous</a>
+            <input type="text" placeholder="Code" class="form-control" data-pager-action='pagenum' id="empId">
+            <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i></a>
+            <a class="input-group-addon btn btn-primary" data-pager-action='next' id="nextcode"><i class="fa  fa-angle-double-right"></i>Next</a>
+            <a class="input-group-addon btn btn-primary" data-pager-action='last'><i class="fa  fa-angle-right"></i>Last</a>
+        </div>
+    </div>
+</div>
+}
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        @RenderBody()
+    </div>
+</div>
+<div id="footer">&nbsp;</div>
+<script>
+    $(function () {
+        $('#current').click(function () {
+            var empid = $('#empId').val();
+            this.href = "/Payroll/SingleEmployee/SingleEmployeeSalary?empcode=" + empid + '&btn=current';
+        });
+        $('#nextcode').click(function () {
+            var empid = $('#empId').val();
+            this.href = "/Payroll/SingleEmployee/SingleEmployeeSalary?empcode=" + empid + '&btn=next';
+        });
+        $('#precode').click(function () {
+            var empid = $('#empId').val();
+            this.href = "/Payroll/SingleEmployee/SingleEmployeeSalary?empcode=" + empid + '&btn=previous';
+        });
+        $('#vempId').click(function () {
+            var empid = $('#empId').val();
+            this.href = "/Payroll/SingleEmployee/SingleEmployeeSalary?empcode=" + empid;
+        });
+    });
+</script>

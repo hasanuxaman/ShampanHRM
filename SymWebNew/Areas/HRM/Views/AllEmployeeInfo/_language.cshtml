@@ -1,0 +1,75 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM 
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTableLanguage1" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" />Select All</th>
+                            <th>Language</th>
+                            <th>Skill</th>
+                            <th>Fluency</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+<script>
+
+    $(document).ready(function () {
+        //InitCustomDialog();
+
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableLanguage1').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Qualification/_indexLanguage/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "Language",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass":"center",
+                                "fnRender": function (oObj) {
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="LanguageEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                    //org//return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                }
+                            }
+               @*             {
+                                "sName": "Language",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+
+                                    //return '<input type="button" Onclick="LanguageEdit(this);" class="btn btn-info btnEducationEdit" data-EmployeeId="Model.Id" data-Id="' + oObj.aData[3] + '" value="Show"/>'
+                                    return '<Lable title="Click on for Edit" Onclick="LanguageEdit(this);" class="innerListLink" data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                    ;
+                                }
+                            }*@
+
+                           , { "sName": "Language", "sWidth": "30%" }
+                           , { "sName": "Competency", "sWidth": "30%" }
+                           , { "sName": "Fluency", "sWidth": "25%" }
+            ]
+        });
+    });
+
+
+    </script>

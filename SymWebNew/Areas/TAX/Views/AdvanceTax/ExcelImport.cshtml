@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Excel Import";
+}
+@using UIHelper.MVC
+<div class="headrow">
+    <label class="pull-right">Advance Tax > Excel Import/Export</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Advance Tax</p>
+    </div>
+    <div class="row">
+        <div class="thinbox col-md-12">
+            <div class="th_thinbox">
+                <p>Advance Tax Import </p>
+            </div>
+            @using (Html.BeginForm("ImportExcel", "AdvanceTax", FormMethod.Post, new { enctype = "multipart/form-data", id = "ImportExcel", target = "_blank" }))
+            {
+                <div class="col-md-6">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <label>File</label>
+                        <input type="file" accept=".xlsx" name="file" id="FileUpload" style="width: 200px;" class="required" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>&nbsp;</label>
+                    <button type="button" onclick="pageSubmit('ImportExcel');" class="sym-btn-file-upload" value="Upload" style="width: 50%; text-align: center;">&nbsp;Upload</button>
+                </div>
+            }
+        </div>
+        <div class="thinbox col-md-12">
+            <div class="th_thinbox">
+                <p>Advance Tax Export</p>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        <label>Year</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Fiscal Period</label>
+                    </div>
+                    <div class="editor-field">
+                        <div>
+                            @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "required fpDetailsCom form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Order By</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("Orderby", "/Config/DropDown/EnumOrderBy?Module=Salary", new { @class = "required form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        <label>Particular</label>
+                    </div>
+                    <div class="editor-field">
+                      @Html.DropDownList("Particular", new List<SelectListItem>
+                      {
+                          new SelectListItem
+                          {
+                              Text = "Select", Value = "",Selected = true
+                          },
+                          new SelectListItem
+                          {
+                              Text = "Salary", Value = "Salary"
+                          },
+                          new SelectListItem
+                          {
+                              Text = "Bonus", Value = "Bonus"
+                          }
+                      }, new { @class = "required form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-1 mr-15">
+                    <label>&nbsp;</label>
+                    <button id="btnSearch" class="sym-btn-Excel-Export" type="button">&nbsp;Download</button>
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button id="btnSelf" class="sym-btn-Excel-Export" type="button">&nbsp;Self Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        InitDropdownsCommon();
+        valiDation('ImportExcel');
+    });
+
+    $('#btnSearch').click(function () {
+
+        var fid = $("#FiscalPeriodDetailId").val();
+        var Orderby = $("#Orderby").val();
+        var particular = $("#Particular").val();
+
+        if (!validation()) {
+            return;
+        }
+
+        var url = '@Url.Action("DownloadExcel", "AdvanceTax")' +
+            '?fid=' +
+            fid +
+            '&orderBy=' +
+            Orderby +
+            '&particular=' +
+            particular;
+
+        window.open(url);
+
+    });
+
+
+    $("#btnSelf").on("click",
+        function() {
+
+            var fid = $("#FiscalPeriodDetailId").val();
+            var Orderby = $("#Orderby").val();
+            var particular = $("#Particular").val();
+
+            if (!validation()) {
+                return;
+            }
+
+            var url = '@Url.Action("DownloadSelfExcel", "AdvanceTax")' +
+                '?fid=' +
+                fid +
+                '&orderBy=' +
+                Orderby +
+                '&particular=' +
+                particular;
+
+
+            window.open(url);
+
+
+        });
+
+
+
+
+    function validation() {
+
+        var fid = $("#FiscalPeriodDetailId").val();
+        var Orderby = $("#Orderby").val();
+        var particular = $("#Particular").val();
+
+        if (fid == "") {
+            ShowResult('Fail', "Please Select Fiscal year");
+            return false;
+        }
+        if (Orderby == "") {
+            ShowResult('Fail', "Please Select Order By ");
+            return false;
+        }
+
+        if (!particular) {
+            ShowResult('Fail', "Please Select Particular ");
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+
+

@@ -1,0 +1,86 @@
+﻿<div class="headrow">
+    <button type="button" title="Delete Checked" data-url="/Payroll/SalaryPF/SalaryPFDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+ <label class="pull-right">Salary Provident Fund > Edit</label>
+</div>
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+    <p>
+    </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" /> Select All </th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Basic</th>
+                            <th>Gross</th>
+                            <th>PF Amount</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th style="text-align:left!important">Basic</th>
+                            <th style="text-align:left!important">Gross</th>
+                            <th style="text-align:left!important">PF Amount</th>
+                      
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+</div>
+<div class="headrow">
+    <button type="button" title="Delete Checked" data-url="/Payroll/SalaryPF/SalaryPFDetailsDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+<script>
+        $(function () {
+            SelectAllForDelete();
+            var oTable = $('#myDataTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": "/Payroll/SalaryPF/_salaryPFDetails?FID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                     {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         "sClass": "center",
+                         "fnRender": function (oObj) {
+                             return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="PFEdit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                                 + '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryPF/SalaryPFDetailsDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>'
+                             ;
+                         }
+                     }
+                                , { "sName": "Code", "sWidth": "10%" }
+                                , { "sName": "Name", "sWidth": "14%" }
+                                , { "sName": "Basic", "sClass": "right", "sWidth": "18%" }
+                                , { "sName": "Gross", "sClass": "right", "sWidth": "18%" }
+                                , { "sName": "PF"   , "sClass": "right", "sWidth": "18%" }
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "number-range" }
+                           , { type: "number-range" }
+                           , { type: "number-range" }
+                ]
+
+            });
+        });
+    function PFEdit(sender) {
+        window.location = "/Payroll/SalaryPF/SinglePFEdit?pfDetailsId=" + $(sender).attr('data-Id');
+    }
+</script>

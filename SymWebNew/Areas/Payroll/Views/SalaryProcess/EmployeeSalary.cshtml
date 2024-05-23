@@ -1,0 +1,89 @@
+﻿<div class="headrow">
+        <label class="pull-right">Employee Salary</label>
+</div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Employee List</p>   
+        </div>
+        <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                     <thead>
+                         <tr>
+                            <th class="center"> Select All</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th >Designation</th>
+                            <th >Join Date</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+<script>
+    $(document).ready(function () {
+        //InitCustomDialog();
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            // $(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+    var oTable = $('#myDataTable').dataTable({
+        "bServerSide": true,
+        "sAjaxSource": "/Payroll/SalaryProcess/_EmployeeInfo",
+        "bProcessing": true,
+        "aLengthMenu": tablelength(),
+        "bJqueryUI": true,
+        "bAutoWidth": false,
+        "aoColumns": [
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "sWidth": "12%",
+                            "sClass": "center",
+                            //"sClass": "actionColumn",
+                            "fnRender": function (oObj) {
+                                //return '<a  class="lnkEdit innerListLink"  href=\"/Payroll/EmployeeAreer/Create/?empId=' + oObj.aData[0].split('~')[1] + '\">' + oObj.aData[0].split('~')[0] + '</a>'
+                                return ' <a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none"  class=" sym-btn-edit-row"   href=\"/Payroll/SalaryProcess/EmployeeSalaryTab?employeeID=' + oObj.aData[0] + '\"></a>';
+                                //'&nbsp; <a title="Click on for Edit" style="text-decoration:none;" data-url="/Payroll/EmployeeAreer/EmployeeAreerDelete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                            }
+                        }
+                                , { "sName": "Code", "sWidth": "15%" }
+                                , { "sName": "EmpName", "sWidth": "20%" }
+                                , { "sName": "Department", "sWidth": "15%" }
+                                , { "sName": "Designation", "sWidth": "15%" }
+                                , { "sName": "JoinDate", "sWidth": "20%" }
+        //Code
+        //EmpName 
+        //Department 
+        //Designation
+        //JoinDate
+        ]
+    });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "date-range" }
+            ]
+    });
+    });
+    </script>

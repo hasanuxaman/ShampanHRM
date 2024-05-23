@@ -1,0 +1,128 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+<style>
+    input[type='text'], input[type='password'], textarea {
+        margin: 0px!important;
+    }
+</style>
+@using (Html.BeginForm("Create", "EmployeeAreer", FormMethod.Post, new { @Id = "afrmEmployeeEdit" }))
+{   
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thinbox">
+                <div class="th_thinbox">
+                    <p>@Model.EmpName</p>
+                </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.JoinDate, new { @placeholder = "Employee Join Date", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.JoinDate)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Designation)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Designation, new { @placeholder = "Employee Designation", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Designation)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Department)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Department, new { @placeholder = "Employee Department", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Department)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Section)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Section, new { @placeholder = "Employee Section", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Section)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.Project)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Project, new { @placeholder = "Employee Project", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Project)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="thinbox">
+                <div class="headrow">
+                    
+<button type="button" title="Save Data" id="empEditJSON"  class=" Save sym-btn-save" >&nbsp;Save</button>
+                    <label class="pull-right">Arrear</label>
+                </div>
+                  <div class="col-md-3">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.arrearVM.AreerAmount)
+                @Html.HiddenFor(model => model.arrearVM.FiscalYearDetailId)
+                @Html.HiddenFor(model => model.arrearVM.EmployeeId)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.arrearVM.AreerAmount, new { @class = " required  form-control" })
+            </div>
+        </div>
+                <div class="col-md-9">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.arrearVM.Remarks)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.arrearVM.Remarks, new { @class = "  form-control" })
+            </div>
+        </div>
+                &nbsp;
+                <div class="headrow">
+                    @*<button type="submit" title="Delete Employee Information" data-url="/Payroll/SingleEmployee/singleEmployee" id="empEdit" class="sym-btn-update ">&nbsp;Save</button>*@
+<button type="button" title="Save Data" id="empEditJSON"  class=" Save sym-btn-save" >&nbsp;Save</button>
+                    <label class="pull-right">Arrear</label>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        $('#empId').val($('#Code').val());
+    });
+
+    $('#empEditJSON').click(function () {
+        var myData = $('#afrmEmployeeEdit').serialize();
+        var url = "/Payroll/EmployeeAreer/Create";
+        submit(url, myData);
+    })
+    var submit = function (url, mydata) {
+        $.ajax({
+            type: 'POST',
+            data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                    EditempInfo();
+                    EditpersonalDetail();
+                }
+                else {
+                    ShowResult("Fail",msg2);
+                }
+            }
+        });
+    }
+
+</script>

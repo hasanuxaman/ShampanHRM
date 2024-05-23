@@ -1,0 +1,81 @@
+﻿<div class="EditPlace">
+    <div id="EmployeeInfo">
+    </div>
+    <div id="Payroll">
+    </div>
+ </div>
+    <table id="myDataTable"  class="display">
+                    <thead>
+                        <tr>
+                            <th class="ActionWidth">Select</th>
+                            <th class="col-sm-2">Code</th>
+                            <th>Salutation</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+<script>
+    $(function () {
+        $(".EditPlace").hide();
+        customToollip();
+        valiDation("frmLeft");
+        InitDateTimePickers();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Home/_index",
+            "bProcessing": true,
+            "aoColumns": [
+                                                        {
+                                                            "sName": "ID",
+                                                            "bSearchable": false,
+                                                            "bSortable": false,
+                                                            "sWidth": "12%",
+                                                            "sClass": "center",
+                                                            "fnRender": function (oObj) {
+                                                                return ' <input type="radio" class="ActionWidth" onclick="SelectEmployee(this);" name="empId" value="' + oObj.aData[0] + '">'
+                                                                ;
+                                                            }
+                                                        },
+                                                         //{
+                                                         //    "sName": "Code",
+                                                         //    "bSearchable": false,
+                                                         //    "bSortable": false,
+                                                         //    "fnRender": function (oObj) {
+                                                         //        return ' <lable class="ActionWidth">' + oObj.aData[1] + '</lable>'
+                                                         //        ;
+                                                         //    }
+                                                         //},
+                            { "sName": "Code", },
+                            { "sName": "Salutation" },
+                            { "sName": "First Name" },
+                            { "sName": "Last Name" }
+            ]
+        });
+    });
+    function Left() {
+        for (var i = 0; i < $("[name='empId']").length; i++) {
+            if ($($("[name='empId']")[i]).is(':checked')) {
+                $("#leftInformation_EmployeeId").val($($("[name='empId']")[i]).val());
+                pageSubmit('frmLeft');
+                break;
+            }
+        }
+        if ($("#leftInformation_EmployeeId").val() == "0") {
+            ShowResult("Fail", "Please select employee!");
+            return;
+        }
+    }
+    function CancleLeft() {
+       // window.location.reload();
+        $(".EditPlace").hide();
+    }
+    function SelectEmployee(sender) {
+        var EmployeeId = $(sender).val();
+        $("#EmployeeInfo").load('@Url.Action("EmployeeInfo", "Home")' + '?Id=' + EmployeeId);
+        $(".EditPlace").show();
+    }
+    var topMenuActive = "Left";
+    </script>

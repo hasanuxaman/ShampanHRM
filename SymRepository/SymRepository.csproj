@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F6A7A269-8DCF-4FE3-83DA-DB8B0E389EE0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SymRepository</RootNamespace>
+    <AssemblyName>SymRepository</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attendance\AttendanceDailyRepo.cs" />
+    <Compile Include="Attendance\AttendanceMigrationRepo.cs" />
+    <Compile Include="Attendance\AttendanceRosterAllRepo.cs" />
+    <Compile Include="Attendance\EmployeeWeeklyHolidayRepo.cs" />
+    <Compile Include="Attendance\DailyAttendanceProcessRepo.cs" />
+    <Compile Include="Attendance\EarningDeductionStructureRepo.cs" />
+    <Compile Include="Attendance\DownloadDataRepo.cs" />
+    <Compile Include="Attendance\EmployeeDailyAbsenceRepo.cs" />
+    <Compile Include="Attendance\EmployeeDailyOvertimeRepo.cs" />
+    <Compile Include="Attendance\EmployeeMonthlyAbsenceRepo.cs" />
+    <Compile Include="Attendance\EmployeeMonthlyOvertimeRepo.cs" />
+    <Compile Include="Attendance\MonthlyAttendanceRepo.cs" />
+    <Compile Include="Common\Appraisal360DetailsRepo.cs" />
+    <Compile Include="Common\Appraisal360Repo.cs" />
+    <Compile Include="Common\Appraisal360UserFeedbackRepo.cs" />
+    <Compile Include="Common\AppraisalMarkSetupsRepo.cs" />
+    <Compile Include="Common\AppraisalQuestionsRepo.cs" />
+    <Compile Include="Common\ELProcessRepo.cs" />
+    <Compile Include="Common\EmployeeEarnLeaveEncashmentRepo.cs" />
+    <Compile Include="Common\ExportImportRepo.cs" />
+    <Compile Include="Common\LeaveTypeRepo.cs" />
+    <Compile Include="Common\SymUserAppraisal360repo .cs" />
+    <Compile Include="Enum\EnumEMPTypeRepo.cs" />
+    <Compile Include="Enum\EnumForceRepo.cs" />
+    <Compile Include="Enum\EnumProfessionalDegreeRepo.cs" />
+    <Compile Include="GF\EmployeeBreakMonthGFRepo.cs" />
+    <Compile Include="GF\EmployeeGFForfeitureRepo.cs" />
+    <Compile Include="GF\EmployeeGFOpeinigRepo.cs" />
+    <Compile Include="GF\EmployeeGFPaymentRepo.cs" />
+    <Compile Include="Common\DatabaseTableRepo.cs" />
+    <Compile Include="Common\BlockEmployerRepo.cs" />
+    <Compile Include="Common\BlockJobSeekerRepo.cs" />
+    <Compile Include="Common\AssetRepo.cs" />
+    <Compile Include="Common\DesignationGroupRepo.cs" />
+    <Compile Include="Common\OtherInfoRepo.cs" />
+    <Compile Include="Common\PreEmployementInformationRepo.cs" />
+    <Compile Include="Common\PublicApplicantRepo.cs" />
+    <Compile Include="Common\JobCircularRepo.cs" />
+    <Compile Include="Common\DataMigrationRepo.cs" />
+    <Compile Include="Common\DBUpdateRepo.cs" />
+    <Compile Include="Common\EmailSenderRepo.cs" />
+    <Compile Include="Common\EMJobOfferRepo.cs" />
+    <Compile Include="Common\EMJobRepo.cs" />
+    <Compile Include="Common\GroupRepo.cs" />
+    <Compile Include="Attendance\AttendanceStructureRepo.cs" />
+    <Compile Include="Common\InfoAgentRepo.cs" />
+    <Compile Include="Common\InfoEmployerRepo.cs" />
+    <Compile Include="Common\InfoJobSeekerRepo.cs" />
+    <Compile Include="Common\JSProfileViewRepo.cs" />
+    <Compile Include="Common\SageRepo.cs" />
+    <Compile Include="Common\SMSSenderRepo.cs" />
+    <Compile Include="Common\SymUserRoleRepo.cs" />
+    <Compile Include="Common\UserGroupRepo.cs" />
+    <Compile Include="Enum\EnumColumnListRepo.cs" />
+    <Compile Include="Enum\EnumReportRepo.cs" />
+    <Compile Include="Enum\EnumVoucherTypeRepo.cs" />
+    <Compile Include="Enum\EnumOderByRepo.cs" />
+    <Compile Include="Enum\EnumSalaryStepRepo.cs" />
+    <Compile Include="Enum\EnumSalaryPortionRepo.cs" />
+    <Compile Include="Enum\EnumRepo.cs" />
+    <Compile Include="GF\GFEmployeeProvisionRepo.cs" />
+    <Compile Include="GF\EmployeeSettlementRepo.cs" />
+    <Compile Include="GF\GFPolicyRepo.cs" />
+    <Compile Include="HRM\EmployeeAssetRepo.cs" />
+    <Compile Include="HRM\EmployeeFilesRepo.cs" />
+    <Compile Include="HRM\EmployeeProfessionalDegreeRepo.cs" />
+    <Compile Include="HRM\HomeRepo.cs" />
+    <Compile Include="HRM\SetUpRepo.cs" />
+    <Compile Include="Leave\EmployeeCompensatoryLeaveRepo.cs" />
+    <Compile Include="Loan\EmployeeLoanRepo.cs" />
+    <Compile Include="Loan\SalaryLoanRepo.cs" />
+    <Compile Include="Payroll\BonusStructureRepo.cs" />
+    <Compile Include="Common\BranchRepo.cs" />
+    <Compile Include="Common\CodeRepo.cs" />
+    <Compile Include="Common\CommonRepo.cs" />
+    <Compile Include="Common\CompanyprofileRepo.cs" />
+    <Compile Include="Common\CompanyRepo.cs" />
+    <Compile Include="Common\BankRepo.cs" />
+    <Compile Include="Attendance\HoliDayRepo.cs" />
+    <Compile Include="Payroll\BonusNameRepo.cs" />
+    <Compile Include="Payroll\BonusProcessRepo.cs" />
+    <Compile Include="Payroll\EarningDeductionTypeRepo.cs" />
+    <Compile Include="Payroll\EmployeeEarningLeaveRepo.cs" />
+    <Compile Include="Payroll\EmployeeOtherDeductionRepo.cs" />
+    <Compile Include="Payroll\EmployeeOtherEarningRepo.cs" />
+    <Compile Include="Payroll\EmployeeSalaryIncrementRepo.cs" />
+    <Compile Include="Payroll\EmployeeSalaryOtherIncreamentRepo.cs" />
+    <Compile Include="Payroll\EmployeeStructureRepo.cs" />
+    <Compile Include="Payroll\GLAccountRepo.cs" />
+    <Compile Include="Payroll\MultipleSalaryStructureRepo.cs" />
+    <Compile Include="Payroll\ProjectAllocationDetailRepo.cs" />
+    <Compile Include="Payroll\ProjectAllocationRepo.cs" />
+    <Compile Include="Payroll\SalaryEmployeeRepo.cs" />
+    <Compile Include="Payroll\SalaryOtherDeductionRepo.cs" />
+    <Compile Include="Payroll\SalaryOtherEarningRepo.cs" />
+    <Compile Include="Payroll\EmployeeBonusRepo.cs" />
+    <Compile Include="Payroll\SalaryEarningRepo.cs" />
+    <Compile Include="Payroll\SalaryProcessRepo.cs" />
+    <Compile Include="Payroll\SalaryStructureMatrixRepo.cs" />
+    <Compile Include="Payroll\SingleEmployeeRepo.cs" />
+    <Compile Include="Payroll\TAX108ARepo.cs" />
+    <Compile Include="PF\EmployeePFPaymentRepo.cs" />
+    <Compile Include="PF\EmployeePFRepo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PF\InvestmentAccruedRepo.cs" />
+    <Compile Include="PF\LoanSattlementRepo.cs" />
+    <Compile Include="PF\LoanRepaymentToBankRepo.cs" />
+    <Compile Include="PF\LoanMonthlyPaymentRepo.cs" />
+    <Compile Include="PF\LoanRepo.cs" />
+    <Compile Include="PF\EmployeeForfeitureRepo.cs" />
+    <Compile Include="PF\EmployeeBreakMonthPFRepo.cs" />
+    <Compile Include="PF\EnumJournalTypeRepo.cs" />
+    <Compile Include="PF\COAGroupRepo.cs" />
+    <Compile Include="PF\COARepo.cs" />
+    <Compile Include="PF\EmployeePFOpeinigRepo.cs" />
+    <Compile Include="PF\GLJournalRepo.cs" />
+    <Compile Include="PF\BankChargeRepo.cs" />
+    <Compile Include="PF\InvestmentRenewRepo.cs" />
+    <Compile Include="PF\PFStructureRepo.cs" />
+    <Compile Include="PF\ProfitDistributionNewRepo.cs" />
+    <Compile Include="PF\PFSettlementDetailRepo.cs" />
+    <Compile Include="PF\BankBranchRepo.cs" />
+    <Compile Include="PF\PFReportRepo.cs" />
+    <Compile Include="PF\TransactionMediaRepo.cs" />
+    <Compile Include="PF\InvestmentNameRepo.cs" />
+    <Compile Include="PF\BankNameRepo.cs" />
+    <Compile Include="PF\PFSettlementRepo.cs" />
+    <Compile Include="PF\EnumInvestmentTypeRepo.cs" />
+    <Compile Include="PF\InvestmentRepo.cs" />
+    <Compile Include="PF\PFBankDepositRepo.cs" />
+    <Compile Include="PF\PFDetailRepo.cs" />
+    <Compile Include="PF\PreDistributionFundRepo.cs" />
+    <Compile Include="PF\ReturnOnBankInterestRepo.cs" />
+    <Compile Include="PF\SettlementPolicyRepo.cs" />
+    <Compile Include="PF\SalaryPFRepo.cs" />
+    <Compile Include="Common\StructureGroupRepo.cs" />
+    <Compile Include="Payroll\GradeRepo.cs" />
+    <Compile Include="Common\ProjectRepo.cs" />
+    <Compile Include="Common\RoleRepo.cs" />
+    <Compile Include="Common\SectionRepo.cs" />
+    <Compile Include="Common\DepartmentRepo.cs" />
+    <Compile Include="Common\SettingRoleRepo.cs" />
+    <Compile Include="PF\WithdrawRepo.cs" />
+    <Compile Include="Tax\EmloyeeTAXSlabRepo.cs" />
+    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailMonthlyRepo.cs" />
+    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailYearlyRepo.cs" />
+    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailMonthlyRepo.cs" />
+    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailYearlyRepo.cs" />
+    <Compile Include="Tax\Schedule2TaxSlabDetailRepo.cs" />
+    <Compile Include="Tax\Schedule2TaxSlabRepo.cs" />
+    <Compile Include="Tax\Schedule3TaxSlabDetailRepo.cs" />
+    <Compile Include="Tax\Schedule3TaxSlabRepo.cs" />
+    <Compile Include="Tax\SchedulePolicyRepo.cs" />
+    <Compile Include="Tax\EmployeeTaxRepo.cs" />
+    <Compile Include="Tax\EmployeeTaxSlabDetailMonthlyRepo.cs" />
+    <Compile Include="Tax\EmployeeTaxSlabDetailYearlyRepo.cs" />
+    <Compile Include="Tax\SalaryTaxRepo.cs" />
+    <Compile Include="Tax\Schedule1SalaryMonthlyRepo.cs" />
+    <Compile Include="Tax\Schedule1SalaryYearlyRepo.cs" />
+    <Compile Include="Tax\Schedule2HousePropertyMonthlyRepo.cs" />
+    <Compile Include="Tax\Schedule2HousePropertyYearlyRepo.cs" />
+    <Compile Include="Tax\Schedule3InvestmentMonthlyRepo.cs" />
+    <Compile Include="Tax\Schedule3InvestmentYearlyRepo.cs" />
+    <Compile Include="Tax\ScheduleForm10BBMonthlyRepo.cs" />
+    <Compile Include="Tax\ScheduleForm10BBYearlyRepo.cs" />
+    <Compile Include="Tax\AdvanceTaxRepo.cs" />
+    <Compile Include="Tax\TaxDepositRepo.cs" />
+    <Compile Include="Tax\TaxSetupRepo.cs" />
+    <Compile Include="Tax\TaxSlabDetailRepo.cs" />
+    <Compile Include="Tax\TaxSlabRepo.cs" />
+    <Compile Include="Tax\TaxStructureRepo.cs" />
+    <Compile Include="Common\UserInformationRepo.cs" />
+    <Compile Include="Common\FiscalYearRepo.cs" />
+    <Compile Include="Common\SettingRepo.cs" />
+    <Compile Include="Common\SetupRepo.cs" />
+    <Compile Include="Enum\EnumLoanTypeRepo.cs" />
+    <Compile Include="Enum\EnumResultRepo.cs" />
+    <Compile Include="Enum\EnumTrainingCourseRepo.cs" />
+    <Compile Include="Enum\EnumSkillQualityRepo.cs" />
+    <Compile Include="Enum\EnumDistrictRepo.cs" />
+    <Compile Include="Enum\EnumDivisionRepo.cs" />
+    <Compile Include="Enum\EnumTrainingPlaceRepo.cs" />
+    <Compile Include="Enum\EnumNationalityRepo.cs" />
+    <Compile Include="Enum\EnumLanguageFluencyRepo.cs" />
+    <Compile Include="Enum\EnumLanguageCompetencyRepo.cs" />
+    <Compile Include="Enum\EnumImmigrationTypeRepo.cs" />
+    <Compile Include="Enum\EnumYearRepo.cs" />
+    <Compile Include="Enum\EnumTravelTypeRepo.cs" />
+    <Compile Include="Enum\EnumTrainingStatusRepo.cs" />
+    <Compile Include="Enum\EnumSalutationRepo.cs" />
+    <Compile Include="Enum\EnumSalaryPayModeRepo.cs" />
+    <Compile Include="Enum\EnumReligionRepo.cs" />
+    <Compile Include="Enum\EnumMeritalStatusRepo.cs" />
+    <Compile Include="Enum\EnumLeftTypeRepo.cs" />
+    <Compile Include="Enum\EnumLeaveTypeRepo.cs" />
+    <Compile Include="Enum\EnumLeaveApproveStatusRepo.cs" />
+    <Compile Include="Enum\EnumLanguageRepo.cs" />
+    <Compile Include="Enum\EnumGenderRepo.cs" />
+    <Compile Include="Enum\EnumBloodGroupRepo.cs" />
+    <Compile Include="Enum\EnumCountryRepo.cs" />
+    <Compile Include="Enum\EnumDegreeRepo.cs" />
+    <Compile Include="Enum\EnumEmploymentStatusRepo.cs" />
+    <Compile Include="Enum\EnumEmploymentTypeRepo.cs" />
+    <Compile Include="Attendance\AttLogsRepo.cs" />
+    <Compile Include="Enum\EnumSalaryTypeRepo.cs" />
+    <Compile Include="HRM\EmployeeStructureGroupRepo.cs" />
+    <Compile Include="HRM\EmployeeJobRepo.cs" />
+    <Compile Include="Leave\EmployeeLeaveDetailRepo.cs" />
+    <Compile Include="Leave\EmployeeLeaveRepo.cs" />
+    <Compile Include="Leave\EmployeeLeaveStructureRepo.cs" />
+    <Compile Include="HRM\EmployeePersonalDetailRepo.cs" />
+    <Compile Include="HRM\EmployeeImmigrationRepo.cs" />
+    <Compile Include="HRM\EmployeeDependentRepo.cs" />
+    <Compile Include="HRM\DesignationRepo.cs" />
+    <Compile Include="HRM\EmployeeEducationRepo.cs" />
+    <Compile Include="HRM\EmployeeEmergencyContactRepo.cs" />
+    <Compile Include="HRM\EmployeeExtraCurriculumActivityRepo.cs" />
+    <Compile Include="HRM\EmployeeInfoRepo.cs" />
+    <Compile Include="HRM\EmployeeJobHistoryRepo.cs" />
+    <Compile Include="HRM\EmployeeLanguageRepo.cs" />
+    <Compile Include="HRM\EmployeeLeftInformationRepo.cs" />
+    <Compile Include="HRM\EmployeeNomineeRepo.cs" />
+    <Compile Include="HRM\EmployeePermanentAddressBanglaRepo.cs" />
+    <Compile Include="HRM\EmployeePermanentAddressRepo.cs" />
+    <Compile Include="HRM\EmployeePresentAddressBanglaRepo.cs" />
+    <Compile Include="HRM\EmployeePresentAddressRepo.cs" />
+    <Compile Include="HRM\EmployeePromotionRepo.cs" />
+    <Compile Include="HRM\EmployeeReferenceRepo.cs" />
+    <Compile Include="HRM\EmployeeRepo.cs" />
+    <Compile Include="HRM\EmployeeTrainingRepo.cs" />
+    <Compile Include="HRM\EmployeeTransferRepo.cs" />
+    <Compile Include="HRM\EmployeeTravelRepo.cs" />
+    <Compile Include="Payroll\SalaryStructureRepo.cs" />
+    <Compile Include="Leave\LeaveStructureRepo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransferIssueDetailRepo.cs" />
+    <Compile Include="TransferIssueRepo.cs" />
+    <Compile Include="UserRoleRepo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SymServices\SymServices.csproj">
+      <Project>{d45367b5-20cb-40f0-8b22-3730f0bacbf0}</Project>
+      <Name>SymServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SymViewModel\SymViewModel.csproj">
+      <Project>{b98cc664-34bd-4405-b815-ce6f1d9d7b66}</Project>
+      <Name>SymViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,182 @@
+﻿@model SymViewModel.Tax.EmloyeeTAXSlabVM
+@{
+    ViewBag.Title = "Index";
+}
+@using UIHelper.MVC
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Tax Slab</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Emp Code(From)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeFrom", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Emp Code(To)</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("CodeTo", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Designation</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["DepartmentLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control selectDropdown" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["SectionLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control selectDropdown" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>@Session["ProjectLabel"]</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control selectDropdown" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Gender</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("Gender", "/Config/DropDown/Gender", new { @class = " gender form-control" })
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Tax Slab Name</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("TaxSlabId", "/Config/DropDown/TAX_TaxSlab", new { @class = " required taxSlabId form-control" })
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="headrow">
+
+    <button title="Click to Show Employee List" id="Searchbtn" class="btn sym-btn-search">&nbsp;Search</button>
+    &nbsp;
+    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save" hidden="hidden">&nbsp;Save</button>
+    <button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+</div>
+
+<div id="detailsDiv">
+</div>
+<div class="headrow" hidden="hidden">
+    <button type="button" title="Save Data" id="" class="saveJSON sym-btn-save">&nbsp;Save</button>
+</div>
+
+<script>
+    $('#Clear').click(function () {
+        location.reload()
+    });
+
+    $('.saveJSON').click(function () {
+        if (pageSubmitJSON('frmEmloyeeTAXSlab') == 0) {
+            var taxSlabId = $(".taxSlabId :selected").val();
+            if (taxSlabId == "") {
+                ShowResult("Fail", "Please Select Tax Slab First!");
+                return;
+            }
+
+            obj = new Object();
+            obj.taxSlabId = taxSlabId;
+
+
+            var myData = $('#frmEmloyeeTAXSlab').serialize();
+            var url = "/TAX/EmloyeeTAXSlab/Create";
+
+            var param = $.param(obj);
+            url = url + "?" + param;
+
+            submit(url, myData);
+            $(".saveJSON").hide();
+            $(".taxSlabId").val("");
+            Searching();
+        }
+    });
+
+    $("#Searchbtn").click(function () {
+        Searching();
+    });
+
+    function Searching() {
+        var url = '/TAX/EmloyeeTAXSlab/_index';
+
+        var codeFrom = $("#CodeFrom").val();
+        var codeTo = $("#CodeTo").val();
+
+        var departmentId = $("#DepartmentId :selected").val();
+        var sectionId = $("#SectionId :selected").val();
+        var projectId = $("#ProjectId :selected").val();
+        var designationId = $("#DesignationId :selected").val();
+        var gender = $(".gender :selected").val();
+
+        var taxSlabId = $(".taxSlabId :selected").val();
+
+
+        obj = new Object();
+
+        obj.codeFrom = codeFrom;
+        obj.codeTo = codeTo;
+
+        obj.departmentId = departmentId;
+        obj.sectionId = sectionId;
+        obj.projectId = projectId;
+        obj.designationId = designationId;
+        obj.gender = gender;
+        obj.taxSlabId = taxSlabId;
+
+
+        var param = $.param(obj);
+        url = url + "?" + param;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            beforeSend: function () { $(".loading").show(); },
+            complete: function () { $(".loading").fadeOut(200).hide("slow") },
+            success: function (data) {
+                $(' #detailsDiv').html(data);
+
+                $(".saveJSON").show();
+                $(".headrow").show();
+                //ShowResult("Info", " Data load Complete");
+            },
+        });
+    }
+</script>

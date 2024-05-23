@@ -1,0 +1,72 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM  
+@using UIHelper.MVC
+<style>
+    .text-color {
+        position:relative;
+        text-align:center;
+        left: 20%;
+    }
+    .text-color a {
+        color: #ff6a00!important;
+    }
+   .input-group .form-control{
+        padding-top:0px!important;
+        margin-top:0px!important;
+    }
+</style>
+    @if (true)
+    {
+<div class="row">
+    <div  class="col-sm-12 col-md-12" >
+<div class="input-group   col-lg-6  col-md-6  col-sm-6 col-xs-12 text-color" style=""> 
+								<a class="input-group-addon btn btn-primary" data-pager-action='first' id="first"><i class="fa fa-angle-double-left"></i> First</a>
+								<a class="input-group-addon btn btn-primary" data-pager-action='previous' id="precode"><i class="fa fa-angle-left"></i> Previous</a>
+									
+      @Html.SimpleDropDownFor(model => model.Code, "/Config/DropDown/EmployeeCodeName", new {  @class = "form-control selectDropdown empId" })
+    @*<input type="text" placeholder="Code" class="form-control" data-pager-action='pagenum'  id="empId" value="@Model.Code">*@ 
+                                    <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i> </a>
+									<a class="input-group-addon btn btn-primary" data-pager-action='next'  id="nextcode">Next <i class="fa  fa-angle-right"></i></a>
+									<a class="input-group-addon btn btn-primary" data-pager-action='last' id="last">Last <i class="fa  fa-angle-double-right"></i>  </a>
+								</div>
+</div>
+</div>
+    }
+<div id="detailsDiv"></div>
+<script>
+    $(document).ready(function () {
+
+        $(".selectDropdown").select2();
+        $(".selectDropdown").val('@Model.Code').trigger('change'); 
+        $(".selectDropdown").removeClass('form-control');
+
+        $('#empId').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $.get('@Url.Action("EmloyeeDetailFull","EmployeeDetail", new { empId = Model.Id } )', function (data) {
+            $('#detailsDiv').html(data);
+        });
+        $(".nav-pills a").click(function () {
+            $(this).tab('show');
+        });
+        var s = $("#myTab").load($('li.active a[data-toggle="tab"]').attr('href'));
+        $("ul.nav-pills > li > a").on("shown.bs.tab", function (e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        $('#myTab a[href="' + hash + '"]').tab('show');
+        $('a[data-toggle="tab"]').on('shown', function () {
+            //save the latest tab; use cookies if you like 'em better:
+            localStorage.setItem('lastTab', $(this).attr('href'));
+        });
+        //go to the latest tab, if it exists:
+        var lastTab = localStorage.getItem('lastTab');
+        if (lastTab) {
+            $('a[href=' + lastTab + ']').tab('show');
+        }
+        else {
+            // Set the first tab if cookie do not exist
+            $('a[data-toggle="tab"]:first').tab('show');
+        }
+    });
+
+</script>

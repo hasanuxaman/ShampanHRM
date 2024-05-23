@@ -1,0 +1,45 @@
+﻿@model SymViewModel.Tax.Schedule3TaxSlabDetailVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<tr class="schedule3TaxSlabDetail">
+    @using (Html.BeginCollectionItem("schedule3TaxSlabDetailVMs"))
+    { 
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Schedule3TaxSlabId)
+
+        //SlabName
+        //Ceiling
+        //Ratio        
+        <td>
+            @Html.TextBoxFor(model => model.SlabName, new { @placeholder = "Slab Name", @class = " form-control required" })
+            @Html.ValidationMessageFor(model => model.SlabName)
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.EarningCeilingMin, new { @placeholder = "Earning Ceiling (Min)", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.EarningCeilingMin)
+        </td>
+         <td>
+            @Html.TextBoxFor(model => model.EarningCeilingMax, new { @placeholder = "Earning Ceiling (Max)", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.EarningCeilingMax)
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.CeilingMin, new { @placeholder = "Ceiling (Min)", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.CeilingMin)
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.CeilingMax, new { @placeholder = "Ceiling (Max)", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.CeilingMax)
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.Ratio, new { @placeholder = "Ratio", @class = " right NumberCheck form-control required" })
+            @Html.ValidationMessageFor(model => model.Ratio)
+        </td>
+        <td>
+            @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = " form-control " })
+            @Html.ValidationMessageFor(model => model.Remarks)
+        </td>  
+      
+    }
+</tr>

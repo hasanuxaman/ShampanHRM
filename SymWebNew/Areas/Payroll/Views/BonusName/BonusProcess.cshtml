@@ -1,0 +1,102 @@
+﻿
+@using UIHelper.MVC
+ 
+<div class="headrow">
+    <label class="pull-right">Bonus Process</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Bonus Process</p>
+    </div>
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Bonus Type</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("BonusTypeId", "/Config/DropDown/BonusTypeList", new { @class = " form-control" })
+            </div>
+        </div>
+   
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Bonus Structure</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("BonusStructureId", "/Config/DropDown/BonusStructureList", new { @class = " form-control" })
+            </div>
+        </div>
+
+         <div class="col-md-3">
+                    <div class="editor-label">
+                       <label>Process Date</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("ProcessDate", null, new { @placeholder = "Process Date", @class = "required customDatePicker form-control" })
+                    </div>
+                </div>
+         </div>
+    </div>
+    
+<div class="headrow">
+<button type="button" title="Click to Process Bonus" id="saveJSON"  class=" sym-btn-save" >&nbsp;Process</button>
+</div>
+ 
+<script>
+    $(function () {
+        InitDropDowns();
+    });
+
+    $('#saveJSON').click(function () {
+       
+        var bTypeId = $("#BonusTypeId").val();
+        var bStructureId = $("#BonusStructureId").val();
+        var pDate = $("#ProcessDate").val();
+        
+        alert('bTypeId: ' + bTypeId);
+
+        if (bTypeId == 0) {
+            ShowResult("Fail", "Please Select the Bonus Type!");
+            return;
+        }
+        if (bStructureId == 0) {
+            ShowResult("Fail","Please Select the Bonus Structure!");
+            return;
+        }
+
+        
+
+        var url = "/Payroll/BonusName/BonusProcess?bTypeId=" + bTypeId
+        + "&bStructureId=" + bStructureId
+        + "&pDate=" + pDate
+        + '&view=N'
+        ;
+
+        submitNew(url, null);
+       
+    });
+
+    var submitNew = function (url, mydata) {
+
+        $.ajax({
+
+           
+            //type: 'POST',
+            //data: mydata, // #2
+            url: url,
+            success: function (result) {
+                //alert(result);
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+
+</script>

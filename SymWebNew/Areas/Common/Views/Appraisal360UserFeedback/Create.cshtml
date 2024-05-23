@@ -1,0 +1,302 @@
+﻿@using UIHelper.MVC
+@model SymViewModel.Common.Appraisal360FeedBackVM
+
+
+@using (Html.BeginForm("CreateEdit", "Appraisal360UserFeedback", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmFeedBack" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IsFeedbackCompeted)
+
+
+
+    <div class="headrow">
+        <button type="button" title="Update Data" onclick="SaveData()" class="sym-btn-update">&nbsp;Update</button>
+
+        <button type="button" title="Go To Index" data-url="/Common/Appraisal360UserFeedback/Index" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+
+        <button type="button" title="Post Data" onclick="CompletedData()" class="sym-btn-post">&nbsp;Completed</button>
+
+        <label class="pull-right">Appraisal360 User FeedBack  > Edit</label>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+<div class="tab-content">
+        <div id="Sale" class="tab-pane fade  in active">
+            <div class="thinbox formDesign trkMY-0">
+                <div class="th_thinbox">
+                    <p>Basic</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="editor-label">
+                            <label for="UserCode"> Code </label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.UserCode, new { @placeholder = "User Code", @class = " cUserCode  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            <label for="UserName"> Name</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.UserName, new { @placeholder = "User Name", @class = " cUserName  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label">
+                            <label for="FeedBackYear"> Feed Back Year </label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.FeedBackYear, new { @placeholder = "Feed Back Year", @class = " cFeedBackYear  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label">
+                            <label for="PeriodName"> Period Name</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.PeriodName, new { @placeholder = "Period Name", @class = " cPeriodName  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label for="DepartmentName"> Department Name</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.DepartmentName, new { @placeholder = "Department Name", @class = " cDepartmentName  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label for="DesignationName"> Designation Name</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.DesignationName, new { @placeholder = "Designation Name", @class = " cDesignationName  form-control", @readonly = "readonly" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label for="FeedbackName"> Feedback By</label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.FeedbackName, new { @placeholder = "Feedback By Name", @class = " cFeedbackName  form-control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label for="FeedbackBy"> Feedback By Role </label>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.FeedbackBy, new { @class = " cFeedbackBy  form-control", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+
+    <div class="thinbox col-md-12 formDesign trkMY-0">
+        <div class="th_thinbox">
+            <p>Appraisal360 User FeedBack Details</p>
+        </div>
+
+        <div class="fixedParent">
+            @if (Model.Details != null)
+            {
+                <table class="trkFixTables" id="itemTables" style="width:50%">
+                    <thead>
+                    <tr style="height:25px;background:darkgray;">
+                        <th style="text-align:center;">Question</th>
+                        <th style="text-align:center;width:15%">Feedback Value</th>
+              
+                    </tr>
+                    </thead>
+
+                    <tbody id="editorItemRows4">
+                    @foreach (var item in Model.Details)
+                    {
+                        Html.RenderPartial("_detail", item);
+                    }
+                    </tbody>
+                </table>
+
+            }
+        </div>
+
+        <br/>
+    </div>
+    
+
+    <div class="headrow">
+
+        <button type="button" title="Update Data" onclick="SaveData()" class="sym-btn-update">&nbsp;Update</button>
+
+        <button type="button" title="Go To Index" data-url="/Common/Appraisal360UserFeedback/Index" onclick="GoTo(this)" class="sym-btn-detail">&nbsp;Index</button>
+
+        <button type="button" title="Post Data" onclick="CompletedData()" class="sym-btn-post">&nbsp;Completed</button>
+
+    </div>
+
+    </div>
+}
+
+
+<div id="myHigherModal" class="HigherModal"></div>
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            callingFixedTable();
+        });
+
+
+    </script>
+    
+@*--------------------------for save & post method--------------------------*@
+    <script>
+
+            function SaveData() {
+                debugger;
+                var isFeedbackCompeted = $("#IsFeedbackCompeted").val();
+                if (isFeedbackCompeted.toLowerCase() == 'true') {
+                    ShowResult("Fail", "Data Already Completed. Can't Update!");
+                    return;
+                }
+
+                var items = $(".dFeedbackValue").length;
+                if (items == 0) {
+                    ShowResult("Fail", "Please Add Details!");
+                    return;
+                }
+
+
+                pageSubmit('frmFeedBack');
+            };
+
+
+            function CompletedData() {
+                    debugger;
+                    var Id = $("#Id").val();
+
+                    var isFeedbackCompeted = $("#IsFeedbackCompeted").val();
+                    if (isFeedbackCompeted.toLowerCase() == 'true') {
+                        ShowResult("Fail", "Data Already Completed. Can't Update!");
+                        return;
+                    }
+
+                    var questionMSG = "Are you sure to complete this feedback!";
+
+                    Ask(questionMSG, function () {
+                        debugger;
+                        var model = {
+                            Id: Id,
+                        }
+                        debugger;
+                        var url = '/Common/Appraisal360UserFeedback/CompletedFeedBack';
+
+                        $.ajax({
+                            url: url
+                            , data: model
+                            , type: 'Post'
+                            , traditional: true
+                            , beforeSend: function () { $(".loading").show(); }
+                            , success: function (rVM) {
+                                debugger;
+                                ShowResult(rVM[0], rVM[1]);
+                                $("#IsFeedbackCompeted").val('true');
+                            }
+                            , complete: function () { $(".loading").fadeOut(200).hide("slow") }
+
+                        });
+                    });
+                };
+
+
+        </script>
+
+
+    @*--------------------------fixed header column table--------------------------*@
+    <script>
+        function fixedScrolltrkFixedTable(tableId, leftTotal) {
+            $('#' + tableId + ' tbody').scroll(function (e) {
+                var i;
+                var j = 2;
+                for (i = 1; i <= leftTotal; i++) {
+                    $('#' + tableId + ' tbody td:nth-child(' + i + ')').css("z-index", "1");
+                    $('#' + tableId + ' thead th:nth-child(' + i + ')').css("left", $("#" + tableId + " tbody").scrollLeft());
+
+                    $('#' + tableId + ' tbody td:nth-child(' + j + ')').css("z-index", "1");
+                    $('#' + tableId + ' tbody td:nth-child(' + j + ')').css("left", $("#" + tableId + " tbody").scrollLeft());
+                    $('#' + tableId + ' tbody td:nth-child(' + j + ')').css("left", $("#" + tableId + " tbody").scrollLeft());
+                    j++;
+                }
+                $('#' + tableId + ' thead').css("left", -$("#" + tableId + " tbody").scrollLeft());
+
+            });
+        }
+        function settingtrkFixedColumnWidth(tableId, widthArgs) {
+            if (widthArgs == null) {
+                return;
+            }
+            var i;
+            var j = 2;
+            for (i = 1; i <= widthArgs.length; i++) {
+                $('#' + tableId + ' tr td:nth-child(' + j + ')').css("min-width", widthArgs[i - 1] + "px");
+                $('#' + tableId + ' tr th:nth-child(' + i + ')').css("min-width", widthArgs[i - 1] + "px");
+                j++;
+            }
+        }
+        function fixLeftColumns(tableId, leftTotal) {
+            var i;
+            var j = 2;
+            for (i = 1; i <= leftTotal; i++) {
+                //fixed column header style
+                $('#' + tableId + ' thead th:nth-child(' + i + ')').css("height", "20px");
+                $('#' + tableId + ' thead th:nth-child(' + i + ')').css("position", "relative");
+                $('#' + tableId + ' thead th:nth-child(' + i + ')').css("z-index", "2");
+                //fixed column rows style
+                $('#' + tableId + ' tbody tr td:nth-child(' + j + ')').css("height", "20px");
+                $('#' + tableId + ' tbody tr td:nth-child(' + j + ')').css("position", "relative");
+                j++;
+            }
+        }
+        function settingWidth(tableId) {
+            var parentWidth = $('#' + tableId).closest('.fixedParent').width();
+            $('#' + tableId + ' thead').width(parentWidth);
+            $('#' + tableId + ' tbody').width(parentWidth);
+        }
+
+
+        function trkFixedTable(tableId, leftTotal, args) {
+            debugger;
+            settingWidth(tableId);
+            fixLeftColumns(tableId, leftTotal);
+            fixedScrolltrkFixedTable(tableId, leftTotal);
+            settingtrkFixedColumnWidth(tableId, args);
+        }
+        function callingFixedTable() {
+            var args = [150, 150, 120, 100, 100, 100, 100, 135, 100, 100, 100, 100, 150, 100, 100, 100, 150, 150, 100, 100, 150, 100, 100, 100, 100, 100, 100, 100, 100, 150, 200, 150, 150, 150, 150, 150, 150, 150, 150, 100];
+            trkFixedTable("itemTable", 3, args);
+        }
+
+        $(function () {
+            callingFixedTable();
+        })
+
+
+    </script>
+
+ 
+}
+

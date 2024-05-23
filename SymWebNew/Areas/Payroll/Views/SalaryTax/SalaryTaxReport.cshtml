@@ -1,0 +1,339 @@
+﻿@model SymViewModel.Common.ParameterVM
+
+@{
+    ViewBag.Title = "SalaryTaxReport";
+}
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("SalaryTaxReport", "SalaryTax", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmSalaryTax", @target = "_blank" }))
+{
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary TAX Report</p>
+    </div>
+    @Html.HiddenFor(model => model.View)
+
+    <div class="row">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Year</label>
+            </div>
+
+            <div class="editor-field">
+                <div>@Html.TextBox("fYear", @Session["SessionYear"].ToString(), new { @class = "fiscalyearCom form-control" }) </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailId", "/Config/DropDown/DropDownPeriodByFYear?year=" + @Session["SessionYear"].ToString(), new { @class = "required fpDetailsCom form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Fiscal Period(To)</label>
+            </div>
+
+            <div class="editor-field">
+                <div>
+                    @Html.SimpleDropDown("FiscalPeriodDetailIdTo", "//", new { @Text = "test", @class = "required fpDetailsComTo form-control" })
+                </div>
+            </div>
+        </div>
+        @if (identity.IsAdmin || identity.IsPayroll)
+{
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Code(From)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeF", "/Config/DropDown/EmployeeCodeName", new { @class = "codeFCom form-control selectDropdown" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>Emp Code(To)</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("CodeT", "/Config/DropDown/EmployeeCodeName", new { @class = "codeTCom form-control selectDropdown" })
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>Designation</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("DesignationId", "/Config/DropDown/Designation", new { @class = " form-control" })
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <script>
+          
+        </script>
+        @if (identity.IsAdmin || identity.IsPayroll)
+{
+            
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["DepartmentLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("DepartmentId", "/Config/DropDown/Department", new { @class = "departmentsCom form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="editor-label">
+                    <label>@Session["SectionLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("SectionId", "/Config/DropDown/Section", new { @class = "sectionsCom form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-label">
+                    <label>@Session["ProjectLabel"]</label>
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDown("ProjectId", "/Config/DropDown/Project", new { @class = "projectsCom form-control" })
+                </div>
+            </div>
+        }
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Report Group</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("ReportGroup", "/Config/DropDown/PFTaxRptParamName", new { @id = "", @class = "ReportGroup required form-control" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Order By</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("Orderby", "/Config/DropDown/EnumOrderBy?Module=Salary", new { @class = "required form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+       </div>
+</div>
+
+<div class=" headrow">
+    <button title="Click to Show Report" id="sendRpt" data-url="/Payroll/SalaryTax/SalaryTaxReport" class="btn sym-btn-report">&nbsp;Report</button>
+    &nbsp;<button title="Click to Show Employee Tax Statement" id="sendStatement" data-url="/Payroll/SalaryTax/SalaryTaxReport" class="btn sym-btn-report">&nbsp;Employee Statement</button>
+    &nbsp;<button title="Click to Download" id="DownloadExcel" data-url="/Payroll/SalaryTax/DownloadTaxExcel" class="btn sym-btn-Excel-Export">&nbsp;Download</button>
+    &nbsp;<button title="Click to Show Salary Tax List" id ="Searchbtn"  class = "btn sym-btn-search">&nbsp;Search</button>
+    &nbsp;<button title="Clear the Entries" id="Clear" class="sym-btn-clear">&nbsp;Clear</button>
+</div>
+
+<div id="detailsDiv">
+</div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    $(function () {
+        $("#DownloadExcel").click(function () {
+            var url = $(this).attr("data-url");
+            var Id = $(this).attr("Id");
+            excel(Id, url);
+        });
+
+        function excel(Id, url) {
+            var fid = $("#FiscalPeriodDetailId").val();
+            var fidTo = $("#FiscalPeriodDetailIdTo").val();
+            var ProjectId = $("#ProjectId").val();
+            var DepartmentId = $("#DepartmentId").val();
+            var SectionId = $("#SectionId").val();
+            var DesignationId = $("#DesignationId").val();
+            var CodeF = $("#CodeF").val();
+            var CodeT = $("#CodeT").val();
+            var rptPG = $(".ReportGroup option:selected").text();
+            var Orderby = $("#Orderby").val();
+            var Statement = "";
+
+            if (fid == "") {
+                ShowResult('Fail', "Please Select  Fiscal Period From!");
+                return false;
+            }
+            if (fidTo == "0") {
+                ShowResult('Fail', "Please Select  Fiscal Period To!");
+                return false;
+            }
+            $('#View').val("N");
+
+            //var url = $(this).attr("data-url");
+
+            $form = $('#frmSalaryTax');
+            $form.attr("action", url);
+            $form.submit();
+
+
+        }
+       
+    });
+
+</script>
+
+
+    <script>
+
+        $(function () {
+            InitDropdownsCommon();
+            defaultLoad();
+        });
+        function defaultLoad() {
+            $('select.fpDetailsComTo').html("<option value=0>Select</option>");
+        }
+
+
+
+        $(function () {
+            $("#sendRpt, #sendStatement").click(function () {
+                var url = $(this).attr("data-url");
+                var Id = $(this).attr("Id");
+                rpt (Id, url);
+            });
+
+            function rpt(Id, url) {
+                var fid = $("#FiscalPeriodDetailId").val();
+                var fidTo = $("#FiscalPeriodDetailIdTo").val();
+                var ProjectId = $("#ProjectId").val();
+                var DepartmentId = $("#DepartmentId").val();
+                var SectionId = $("#SectionId").val();
+                var DesignationId = $("#DesignationId").val();
+                var CodeF = $("#CodeF").val();
+                var CodeT = $("#CodeT").val();
+                var rptPG = $(".ReportGroup option:selected").text();
+                var Orderby = $("#Orderby").val();
+                var Statement = "";
+
+                if (fid == "") {
+                    ShowResult('Fail', "Please Select  Fiscal Period From!");
+                    return false;
+                }
+                if (fidTo == "0") {
+                    ShowResult('Fail', "Please Select  Fiscal Period To!");
+                    return false;
+                }
+
+                if (Id == "sendRpt") {
+                    if (rptPG == "Select") {
+                        ShowResult('Fail', "Please Select  Report Group!");
+                        return false;
+                    }
+                    if (Orderby == "") {
+                        ShowResult('Fail', "Please Select Order By ");
+                        return false;
+                    }
+                }
+                else if (Id == "sendStatement") {
+                    Statement = "y";
+                }
+
+                url = url + '?fid=' + fid
+               + '&fidTo=' + fidTo
+               + '&ProjectId=' + ProjectId
+               + '&DepartmentId=' + DepartmentId
+               + '&SectionId=' + SectionId
+               + '&DesignationId=' + DesignationId
+               + '&CodeF=' + CodeF
+               + '&CodeT=' + CodeT
+               + '&rptPG=' + rptPG
+               + '&Orderby=' + Orderby
+               + '&view=N'
+               + '&Statement=' + Statement
+
+                var win = window.open(url, '_blank');
+            }
+                //});
+            });
+
+            $("#Clear").on('click', function () {
+                $("#FiscalPeriodDetailId").val("");
+                $("#FiscalPeriodDetailIdTo").val("1");
+                $("#ProjectId").val("1");
+                $("#DepartmentId").val("1");
+                $("#DesignationId").val("1");
+                $("#CodeF").val("1");
+                $("#CodeT").val("1");
+                $(".ReportGroup").val("0");
+                $(".Orderby").val("0");
+            });
+
+            $("#Searchbtn").click(function () {
+                Searching();
+            });
+
+            function Searching() {
+                var fid = $("#FiscalPeriodDetailId").val();
+                var fidTo = $("#FiscalPeriodDetailIdTo").val();
+                if (fid == "") {
+                    ShowResult('Fail', "Please Select  Fiscal Period From!");
+                    return false;
+                }
+
+                if (fidTo == "0") {
+                    ShowResult('Fail', "Please Select  Fiscal Period To!");
+                    return false;
+                }
+
+                var ProjectId = $("#ProjectId").val();
+                var DepartmentId = $("#DepartmentId").val();
+                var SectionId = $("#SectionId").val();
+                var DesignationId = $("#DesignationId").val();
+                var CodeF = $("#CodeF").val();
+                var CodeT = $("#CodeT").val();
+                var Orderby = $("#Orderby").val();
+
+                var url = '/Payroll/SalaryTax/_rptIndexPartial?fid=' + fid
+                  + '&fidTo=' + fidTo
+                  + '&ProjectId=' + ProjectId
+                  + '&DepartmentId=' + DepartmentId
+                  + '&SectionId=' + SectionId
+                  + '&DesignationId=' + DesignationId
+                  + '&CodeF=' + CodeF
+                  + '&CodeT=' + CodeT
+                  + '&Orderby=' + Orderby;
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    beforeSend: function () { $(".loading").show(); },
+                    complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                    success: function (data) {
+                        $('#detailsDiv').html(data);
+                    },
+                });
+            }
+    </script>
+}

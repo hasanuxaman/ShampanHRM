@@ -1,0 +1,112 @@
+﻿@using UIHelper.MVC
+ <div class="headrow">
+        <label class="pull-right">Salary Loan > Edit > New </label>
+    </div>
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Loan</p>
+    </div>
+    <div class="row">
+            <div class="col-sm-2">
+                    <div class="editor-label">
+                        <label>Employee Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("employeeCode", null, new {  @placeholder = "Employee Code", @class ="employeeCode form-control" })
+                    <label id="eremployee" style="color:red;display:none;">Please select employee code</label>
+                    </div>
+            </div>
+                            <div class="col-sm-4">
+                    <div class="editor-label">
+                        <label>Employee </label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("employee", null, new {@onchange = "DDLChech('employee')", @placeholder = "Employee Name", @class ="employee form-control", disabled = "disabled" })
+                        @Html.Hidden("employeeId", null, new {  @class = " employeeId  form-control" })
+                    </div>
+            </div>
+        <div class="col-md-3">
+            <div class="editor-label">
+                <label>Fiscal Period</label>
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDown("FiscalPeriodDetailsId", "/Config/DropDown/DropDownPeriodByYear", new {  @onchange = "DDLChech('FiscalPeriodDetailsId')",@class = "required form-control" })
+                <label id="erFiscalPeriodDetailsId" style="color: red; display: none;">Please select fiscal period</label>
+            </div>
+        </div>
+    </div>
+    <p>
+         <button type="button" title="Add New "    onclick="EmployeeSalaryLoan()" id="" class="sym-btn-add "> Add</button>
+ </p>
+</div>
+<script src="~/Scripts/jquery-1.7.1.js"></script>
+<script>
+    $(function () {
+        $('.employeeCode').autocomplete({ source: '@Url.Action("Employee", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $(".employeeCode").change(function () {
+            var Hurl = '/HRM/EmployeeInfo/EmployeeExist';
+            $.get(Hurl, { term: $('.employeeCode').val() }, function (data) {
+                if (data.toString() == "0") {
+                    $(".employeeCode").val("");
+                    $(".employee").val("");
+                    $(".employeeId").val("");
+                }
+                else {
+                    $(".employee").val(data.split('>')[1]);
+                    $(".employeeId").val(data.split('>')[2]);
+
+                }
+            }, 'JSON');
+        });
+    });
+    
+
+    function DDLChech(val) {
+        $("#er" + val).hide();
+        if ($("#" + val).val() == "") {
+            $("#er" + val).show();
+        }
+    }
+
+
+    function EmployeeSalaryLoan() {
+        if ($(".employeeCode").val() == '') {
+            ShowResult('Fail', 'Please select the Employee first');
+            return;
+        }
+        var error = 0;
+        $("#eremployee").hide();
+        $("#erFiscalPeriodDetailsId").hide();
+
+        if ($(".employeeId").val() == "") {
+            $(".eremployee").show();
+            error++;
+        }
+        if ($("#FiscalPeriodDetailsId").val() == "") {
+            $("#erFiscalPeriodDetailsId").show();
+            error++;
+        }
+
+        if (error > 0) {
+            return;
+        }
+        Ask("Are you sure to process Salary Loan!", function () {
+            var Id = $("#Id").val();
+            var url = "/Payroll/SalaryLoan/SalaryLoanSingle?FiscalPeriodDetailsId=" + $("#FiscalPeriodDetailsId").val() + "&empID=" + $("#employeeId").val();
+            $.ajax({
+                type: "POST",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    var dataAction = "";
+                    if (response[0] != 'Fail') {
+                        dataAction = "redirect";
+                    }
+                    ShowResult(response[0], response[1], dataAction, './')
+                }
+            });
+        }, function () { })
+    }
+</script>

@@ -1,0 +1,149 @@
+﻿@model SymViewModel.Payroll.EmployeeStructureGroupVM
+@using UIHelper.MVC
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>Attendance</p>
+    </div>
+    @Html.HiddenFor(model => model.EmployeeId)
+    <div class="row">
+        <label class="col-sm-3">
+            <label>Employee Group</label>
+        </label>
+        <div class="col-sm-6">
+            @Html.SimpleDropDownFor(model => model.EmployeeGroupId, "/Config/DropDown/GroupList", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-3">
+            @* <input type="button" value="Update" onclick="UpdateEmployeeStructure('EmployeeGroup',this)" class=" btn btn-info" />*@
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('EmployeeGroup',this)" class="Save sym-btn-update">  Update</button>
+        </label>
+    </div>
+</div>
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>Earning Deduction Structure</p>
+    </div>
+    @Html.HiddenFor(model => model.EmployeeId)
+    <div class="row">
+        <label class="col-sm-3">
+            <label>Earning Deduction Structure</label>
+        </label>
+        <div class="col-sm-6">
+            @Html.SimpleDropDownFor(model => model.EarningDeductionStructureId, "/Config/DropDown/EarningDeductionStructureList", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-3">
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('EarningDeductionStructure',this)" class="Save sym-btn-update">  Update</button>
+        </label>
+    </div>
+</div>
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>Leave</p>
+    </div>
+    <div class="row">
+        <label class="col-sm-3">
+            <label>Leave Structure</label>
+        </label>
+        <div class="col-sm-3">
+            @Html.SimpleDropDownFor(model => model.LeaveStructureId, "/Config/DropDown/LeaveStructure", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-1">
+            <label>Year</label>
+        </label>
+        <div class="col-sm-2">
+            @*@Html.DatePicker("year" , new { @placeholder = "Code", @class ="customDatePicker form-control" })*@
+            @Html.SimpleDropDownFor(model => model.year, "/Config/DropDown/DropDownYear", new { @placeholder = "Year", @class = "required form-control" })
+        </div>
+        <label class="col-sm-3">
+            @*   <input type="button" onclick="UpdateEmployeeStructure('LeaveStructure',this)" value="Update" class=" btn btn-info" />*@
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('LeaveStructure',this)" class="Save sym-btn-update">&nbsp;Update</button>
+        </label>
+    </div>
+</div>
+
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>Salary Tax Portion</p>
+    </div>
+    <div class="row">
+        <label class="col-sm-3">
+            <label>Salary Tax Portion</label>
+        </label>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(model => model.TaxPortion, "", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-1">
+            <label>Tax Value</label>
+        </label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(model => model.EmpTaxValue, "", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-3">
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('TaxPortion', this)" class="Save sym-btn-update">&nbsp;Update</button>
+        </label>
+    </div>
+</div>
+
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>Bonus Tax Portion</p>
+    </div>
+    <div class="row">
+        <label class="col-sm-3">
+            <label>Bonus Tax Portion</label>
+        </label>
+        <div class="col-sm-3">
+            @Html.TextBoxFor(model => model.BonusTaxPortion, "", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-1">
+            <label>Bonus Tax Value</label>
+        </label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(model => model.EmpBonusTaxValue, "", new { @class = "required form-control" })
+        </div>
+        <label class="col-sm-3">
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('BonusTaxPortion', this)" class="Save sym-btn-update">&nbsp;Update</button>
+        </label>
+    </div>
+</div>
+
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>Fixed OT</p>
+    </div>
+    <div class="row">
+        <label class="col-sm-3">
+            <label>Fixed OT</label>
+        </label>
+        <div class="col-sm-6">
+            @Html.TextBoxFor(model => model.FixedOT, "", new { @class = "required form-control" })
+        </div>
+
+        <label class="col-sm-3">
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('FixedOT', this)" class="Save sym-btn-update">&nbsp;Update</button>
+        </label>
+    </div>
+</div>
+<div class="thinbox panel">
+    <div class="th_thinbox">
+        <p>GF Applicable</p>
+    </div>
+    <div class="row">
+        <label class="col-sm-3">
+            <label>GF Applicable</label>
+        </label>
+        <div class="col-sm-6">
+            @Html.CheckBoxFor(model => model.IsGFApplicable, new { @class = "required form-control" })
+        </div>
+
+        <label class="col-sm-3">
+            <button type="button" title="Click to Update" onclick="UpdateEmployeeStructure('IsGFApplicable', this)" class="Save sym-btn-update">&nbsp;Update</button>
+        </label>
+    </div>
+</div>
+<script>
+    $(function () {
+        InitDateTimePickers();
+        InitDropDowns();
+    });
+
+</script>

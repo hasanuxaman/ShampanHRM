@@ -1,0 +1,75 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Employee</p>
+    </div>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTable" class="display">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" class="chkAll" />
+                        </th>
+                        <th>Employee Id</th>
+                        <th>Salutation</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>@Session["DepartmentLabel"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+<script>
+    SelectAllForDelete();
+    var oTable = $('#myDataTable').dataTable({
+        "bServerSide": true,
+        "sAjaxSource": "/Payroll/EmployeeBonus/_index?DOJFrom=@Model.DOJFrom&DOJTo=@Model.DOJTo",
+        "bProcessing": true,
+        "aoColumns": [
+                          {
+                              "sName": "Code",
+                              "bSearchable": false,
+                              "bSortable": false,
+                              "sWidth": "12%",
+                              "sClass": "center",
+                              "fnRender": function (oObj) {
+                                  return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                  ;
+                              }
+                          },
+                          {
+                              "sName": "Code",
+                              "bSearchable": true,
+                              "bSortable": false,
+                              "sWidth": "12%",
+                              "sClass": "center",
+                              "fnRender": function (oObj) {
+                                  return '<a  class="innerListLink" href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[1].split('~')[1] + '\">' + oObj.aData[1].split('~')[0] + '</a>'
+                                  ;
+                              }
+                          },
+                        { "sName": "Salutation" },
+                        { "sName": "First Name" },
+                        { "sName": "Last Name" },
+                        { "sName": "Department" }
+        ]
+    });
+    oTable.columnFilter({
+        sPlaceHolder: "head:after",
+        aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                   , { type: "text" }
+                   , { type: "text" }
+                   , { type: "text" }
+                   , { type: "text" }
+                   , { type: "text" }
+                   //, { type: "text" }
+                   //, { type: "date-range" }
+        ]
+    });
+</script>

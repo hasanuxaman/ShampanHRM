@@ -1,0 +1,286 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html>
+<html lang="en">
+    <head id="Head1" runat="server">
+        <meta charset="utf-8" />
+        <link href="<%: Url.Content("~/favicon.ico") %>" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+            <meta charset="utf-8" />
+    <title>ShampanERP-@ViewBag.Title <asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+
+    <script src="/assets/javascripts/jQuery2.1.4.js"></script>
+    <link href="~/assets/NewFolder1/dataTables/demo_table.css" rel="stylesheet" />
+    <link href="<%:Url.Content("~/assets/css/demo_table.css") %>" rel="stylesheet" type="text/css" />
+
+    <link href="<%:Url.Content("~/assets/css/demo_table_jui.css") %>" rel="stylesheet" type="text/css" />
+    <link href="~/assets/stylesheets/dataTables.responsive.css" rel="stylesheet" />
+
+    <link href="~/assets/css/menu.css" rel="stylesheet" />
+
+    <link href="~/assets/css/jquery-ui.css" rel="stylesheet" />
+    <link href="~/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/assets/css/toastr.css" rel="stylesheet" />
+    <link href="~/assets/stylesheets/common.css" rel="stylesheet" />
+     <link href="~/assets/stylesheets/font-awesome.css" rel="stylesheet" />
+
+    <link href="~/assets/css/jquery.ptTimeSelect.css" rel="stylesheet" />
+    <link href="~/assets/css/SymphonyBtn.css" rel="stylesheet" />
+    <link href="~/assets/swf/dataTables.tableTools.css" rel="stylesheet" />
+    <link href="~/assets/css/dataTables.colVis.css" rel="stylesheet" />
+    <link href="~/assets/css/select2.css" rel="stylesheet" />
+        <%: Styles.Render("~/Content/css") %>
+     <style>
+        .LogoutButton {
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+            padding-left: -3px !important;
+        }
+
+        .wth {
+            width: 15%;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            toastr.options.positionClass = 'toast-top-center';
+            var permission = '@Session["permission"]';
+            if (permission == "False") {
+                toastr.error('You Do not have permission to access', 'Permission deny')
+                 <%: ( Session["permission"] = null ) %>;
+            }
+            else {
+            }
+            var result = '@Session["result"]';
+            result = result.split("~");
+            if (result[0] == "Success") {
+                toastr.success(result[1], 'Shampan ERP')
+                <%: Session["result"] = null  %>;
+            }
+            else if (result[0] == "Fail") {
+                toastr.error(result[1], 'Shampan ERP')
+                <%: Session["result"] = null  %>;
+            }
+            else if (result[0] == "Info") {
+                toastr.info(result[1], 'Shampan ERP')
+                <%: Session["result"] = null  %>;
+            }
+            else if (result[0] == "Warning") {
+                toastr.warning(result[1], 'Shampan ERP')
+                <%: Session["result"] = null  %>;
+            }
+           
+            //$(".selectDropdown").select2();
+            //$(".selectDropdown").trigger('change');
+            //$(".selectDropdown").removeClass('form-control');
+            function goBack() {
+                window.history.back();
+            }
+            $(".loading").fadeOut(200).hide("slow") 
+
+        });
+
+
+    </script>
+    </head>
+   <body onload="window.scroll(0, 150)">
+
+   
+    <div id="hrcss1">
+        <div class="content title">
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <img src="/Images/symphonyLogo.png"  width="280" />
+                </div>
+               <%-- <div class="col-sm-6 log-top">
+                    <img style="float: right;" src="/Images/BUYERCOMPANYLOGO.png" />
+                </div>--%>
+            </div>
+        </div>
+      <div class="content white menuheight">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                     <ul class="nav col-xs-4 visible-xs" >
+        <li class="dropdown1" style="padding-top:4px">
+          <a href="#" class=" btn btn-warning " >HRM </a>
+        </li>
+      </ul>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                
+                </div>
+                <!--/.navbar-header-->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Home<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                              <% if ((HttpContext.Current.User.IsInRole("Master") || HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("Account"))){%> 
+                                
+                                    <li><a class="btn btn-info" href="/Common/Home/">Admin</a></li>
+                           <% }%>
+                                <li><a class="btn btn-info" href="/HRM/Home/">HRM</a></li>
+                                <li><a class="btn btn-info" href="/Payroll/Home/">Payroll</a></li>
+                              
+
+                            </ul>
+                        </li>
+                        <li class="dropdown Employee">
+                            <a href="/HRM/EmployeeInfo">Employee</a>
+                        </li>
+
+                        <% if ((HttpContext.Current.User.IsInRole("Master") || HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("Account"))){%>
+                       
+                            <li class="Transfer"><a href="/HRM/Transfer/Transfer">Transfer </a></li>
+                            <li class="Promotion"><a href="/HRM/Promotion/Index">Promotion </a></li>
+                            <li class="Left"><a href="/HRM/Left/Index">Left </a></li>
+                    <% }%>
+                        <li class="dropdown Leave">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Leave <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeave/Leave">Leave Entry</a></li>
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeave">Leave List</a></li>
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeLeave/LeaveSupervisor">Leave List for Supervisor</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                        <li class="dropdown Attendance">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Attendance <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-1">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ul class="multi-column-dropdown">
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeAttendance/AttendanceLog">Attendance Entry</a></li>
+                                            <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeAttendance/AttendanceLogList">Attendance List</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle " data-toggle="dropdown">Reports<b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-3">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-4">
+                                            <ul class="multi-column-dropdown">
+                                               <% if ((HttpContext.Current.User.IsInRole("Master") || HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("Account"))){%>
+                                                {
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmployeeInformationAll">Employee Information All</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmployeeList?RT=EmpList">Employee List</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/ExEmployeeList">Ex Employee List</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmployeeProximityInfo">Employee Proximity Info</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmployeeProfiles">Employee Profiles</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmployeeList?RT=EmpIDCard">Employee ID Card</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpServiceLength">Service Length</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpTransfer">Employee Transfer</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpPromotion">Employee Promotion</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpTraining">Employee Training</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmployeeBloodGroup">Employee Wise Blood Group</a></li>
+                                           <%  }else{ %>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpServiceLength">Service Length</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpTransfer">Employee Transfer</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpPromotion">Employee Promotion</a></li>
+                                                    <li><a class="btn " href="/HRM/EmployeeReport/EmpTraining">Employee Training</a></li>
+                                            <%  } %>
+
+
+                                            </ul>
+
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <ul class="multi-column-dropdown">
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LBEW">Leave Balance (Employee Wise)</a></li>
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LBTW">Leave Balance (Type Wise)</a></li>
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LSEW">Leave Status (Employee Wise)</a></li>
+                                                
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LBEW?RT=LR">Leave Register</a></li>
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/LAF">Application Form</a></li>
+                                            </ul>        
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <ul class="multi-column-dropdown">
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/EA?ReportNo=1&view=Y">Attendance Report(Monthly)</a></li>
+                                                <li><a style="text-align: left;" class="btn btn-info" href="/HRM/EmployeeReport/EA?ReportNo=2&view=Y">Attendance Report(Daily)</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </ul>
+                        </li>
+                        <li><a class="btn " href="/HRM/EmployeeReport/Letters">Letters</a></li>
+                    </ul>
+                     <ul class="nav navbar-nav navbar-right" style="border-left:5px solid #fff">
+                          <li class="dropdown1">
+                   <a href="#" class="dropdown-toggle sym-btn-back" title="Go Back" onclick="goBack()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">&nbsp;Back</a>
+               </li>
+        <li class="dropdown1">
+          <a href="#" class="dropdown-toggle btn btn-warning" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HRM </a>
+        </li>
+      </ul>
+                </div>
+                <!--/.navbar-collapse-->
+            </nav>
+            <!--/.navbar-->
+
+        </div>
+
+<style>
+    .navbar-default .navbar-nav > li.dropdown:hover > a, 
+.navbar-default .navbar-nav > li.dropdown:hover > a:hover,
+.navbar-default .navbar-nav > li.dropdown:hover > a:focus {
+    /*background-color: rgb(231, 231, 231);*/
+    color: rgb(85, 85, 85);
+}
+li.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+</style>
+
+     
+             <div class="contentBody" style="min-height: 400px">
+             <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+        </div>
+
+        <%: Scripts.Render("~/bundles/jquery") %>
+        <asp:ContentPlaceHolder ID="ScriptsSection" runat="server" />
+        </div>
+             <style>
+            .back-to-top {
+                cursor: pointer;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: none;
+            }
+        </style>
+
+        <a id="back-to-top" href="#" class=" back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left">
+            <img src="/Images/gotop.png" style="width: 40px; height: 40px;" /></a>
+     
+        <br />
+        <div class="clearfix"></div>
+        <div class="content black">
+            <p><i class="fa fa-asterisk"></i>Powered By <a href="http://symphonysoftt.com/" target="_blank">Symphony</a>.</p>
+        </div>
+
+       <script src="../../../../assets/javascripts/toastr.js"></script>
+    </body>
+</html>

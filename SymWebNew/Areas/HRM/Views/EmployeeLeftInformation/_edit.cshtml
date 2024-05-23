@@ -1,0 +1,66 @@
+﻿@model SymViewModel.HRM.EmployeeLeftInformationVM
+
+@using (Html.BeginForm(new {@Id = "frmLeft" }))
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.EmployeeId)
+    <div class="thinbox">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LeftType_E)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.LeftType_E)
+                    @Html.ValidationMessageFor(model => model.LeftType_E)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.LeftDate)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.LeftDate)
+                    @Html.ValidationMessageFor(model => model.LeftDate)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Remarks)
+                    @Html.ValidationMessageFor(model => model.Remarks)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IsActive)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive)
+                </div>
+            </div>
+            <div class="col-md-2">
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.IsArchive)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.IsArchive)
+                    @Html.ValidationMessageFor(model => model.IsArchive)
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+         <button type="submit" title="Save Data" class="sym-btn-save">&nbsp;Save</button>
+@*        <input type="submit" class="btn btn-info" value="Save" />*@
+    </p>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

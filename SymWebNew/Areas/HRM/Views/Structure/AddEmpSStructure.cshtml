@@ -1,0 +1,207 @@
+﻿@model SymViewModel.Payroll.EmployeeSalaryStructureDetailVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Add";
+    ViewBag.Location = "EdiAddt"; 
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.EmployeeSalaryStructureId)
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.IsEarning)
+        @Html.HiddenFor(model => model.SalaryType)
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.SalaryTypeId)
+            </label>
+            <div class="col-sm-9">
+                @if (Model.IsEarning == true)
+                {
+                    if (@ViewBag.Type == "E")
+                    {
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=E", new { @class = " form-control required" })
+                    }
+                    else if (@ViewBag.Type == "D")
+                    {
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=E", new { @readonly = "readonly", @class = " form-control required" })
+                    }
+                    else
+                    {
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=E", new { @class = " form-control required" })
+                    }
+
+                }
+                else
+                {
+                    if (@ViewBag.Type == "E")
+                    {
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=D", new { @class = " form-control required" })
+                    }
+                    else if (@ViewBag.Type == "D")
+                    {
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=D", new { @readonly = "readonly", @class = " form-control required" })
+                    }
+                    else
+                    {
+                    @Html.SimpleDropDownFor(model => model.SalaryTypeId, "/Config/DropDown/SalaryType?ET=D", new { @class = " form-control required" })
+
+                    }
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.IsFixed)
+            </label>
+            <div class="col-sm-3 center">
+                @if (@ViewBag.Type == "E")
+                {
+                    @Html.CheckBoxFor(model => model.IsFixed, new { @class = "IsFixed required form-control" })
+                }
+                else if (@ViewBag.Type == "D")
+                {
+                    @Html.CheckBoxFor(model => model.IsFixed, new { @readonly = "readonly", @class = "IsFixed required form-control" })
+                }
+                else
+                {
+                    @Html.CheckBoxFor(model => model.IsFixed, new { @class = "IsFixed required form-control" })
+                
+                }
+
+
+            </div>
+            <div class="col-sm-6">
+                <label>Not Fixed Calculate from Basic</label>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.Portion)
+            </label>
+            <div class="col-sm-9">
+                @if (@ViewBag.Type == "E")
+                {
+                    @Html.TextBoxFor(model => model.Portion, new { @placeholder = "Portion", @class = "Portion required form-control" })
+                }
+                else if (@ViewBag.Type == "D")
+                {
+                    @Html.TextBoxFor(model => model.Portion, new { @placeholder = "Portion", @readonly = "readonly", @class = " Portion required form-control" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Portion, new { @placeholder = "Portion", @class = "Portion required form-control" })
+                     
+                }
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3">
+                @Html.LabelFor(model => model.Remarks)
+            </label>
+            <div class="col-sm-9">
+                @if (@ViewBag.Type == "E")
+                {
+                    @Html.TextBoxFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "  form-control" })           }
+                else if (@ViewBag.Type == "D")
+                {
+                    @Html.TextBoxFor(model => model.Remarks, new { @readonly = "readonly", @placeholder = "Remarks", @class = "  form-control" })            }
+                else
+                {
+                    @Html.TextBoxFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "  form-control" })           }
+
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-5">
+                @if (Model.Id <= 0)
+                { 
+                    <button type="submit" title="Save Data" onclick="pageSubmit('frmess');" class="sym-btn-save">&nbsp;Save</button>}
+                else
+                {
+                    if (@ViewBag.Type == "E")
+                    {
+                    <button type="submit" title="Upedat Data" value="Update" name="Update" class="sym-btn-save">&nbsp;Update</button>
+                        
+                    }
+                    else if (@ViewBag.Type == "D")
+                    {
+                    <button type="submit" title="Upedat Data" value="Delete" name="Delete" class="sym-btn-save">&nbsp;Delete</button>
+                    }
+                }
+            </label>
+            <label class="col-sm-4">
+                <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+
+            </label>
+        </div>
+    </div>
+ 
+}
+<script>
+    $(function () {
+        InitButtons();
+        InitDropDowns();
+        valiDation("frmess");
+
+    });
+    $('.IsFixed').click(function () {
+        var por = $('.Portion').val();
+        if ($('.IsFixed').is(":checked")) {
+
+        }
+        else {
+
+            if (parseFloat(por) > 100) {
+                $('.Portion').val(0);
+            }
+        }
+    });
+
+    $('.Portion').change(function () {
+        var por = $('.Portion').val();
+        if ($('.IsFixed').is(":checked")) {
+
+        }
+        else {
+
+            if (parseFloat(por) > 100) {
+                $('.Portion').val(0);
+            }
+        }
+    });
+
+    //function FixedCheck(sender) {
+    //    if ($(sender).is(":checked")) {
+    //        $(sender).closest('.row').find(".PortionSalaryTypeId option:selected").prop("selected", false);
+    //        $(sender).closest('.row').find(".PortionSalaryTypeId").attr('disabled', true);
+    //    }
+    //    else {
+    //        $(sender).closest('.row').find(".PortionSalaryTypeId").attr('disabled', false);
+    //        $(sender).closest('.row').find(".Portion").trigger('change');
+    //    }
+    //}
+
+    //function SalaryTypePortion(sender) {
+    //    $(sender).closest('div').find('lable').hide();
+    //    if (!isNaN($(sender).val())) {
+    //        if (!$(sender).closest('.row').find(".IsFixed").is(":checked")) {
+    //            if (parseFloat($(sender).val()) > 100) {
+    //                $(sender).val("100.00");
+    //            }
+    //            else if (parseFloat($(sender).val()) < 0) {
+    //                $(sender).val("0.00");
+    //            }
+    //        }
+    //    }
+    //    else {
+    //        $(sender).val("0.00");
+    //        $(sender).closest('div').append('<lable class="" style="color:red">Only numecir value is allowed!<lable>');
+    //    }
+    //}
+</script>

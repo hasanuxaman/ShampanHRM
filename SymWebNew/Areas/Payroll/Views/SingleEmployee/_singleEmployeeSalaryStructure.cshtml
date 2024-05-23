@@ -1,0 +1,45 @@
+﻿@model SymViewModel.Payroll.SingleEmployeeSalaryStructureVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<tr class="pa">
+  @using (Html.BeginCollectionItem("SingleEmployeeSalaryStructureVM"))
+       { 
+        @Html.HiddenFor(model => model.EmployeeId)
+           <th>
+                @Html.DisplayFor(model => model.Name, new { @class = " form-control" })
+                @Html.HiddenFor(model => model.Name, new { @class = " form-control" })
+                @Html.HiddenFor(model => model.FiscalYearDetailId, new { @class = " form-control" })
+                @Html.HiddenFor(model => model.IsEarning, new { @class = " form-control" })
+                @Html.HiddenFor(model => model.IsEditable, new { @class = " form-control" })
+           </th>
+           if (Model.IsEditable == true) { 
+           <td>
+                 @Html.TextBoxFor(model => model.Value, new {  @class = " form-control required", @onChange = "CheckNumeric(this)" })
+                @Html.ValidationMessageFor(model => model.Value)
+           </td>
+           } 
+           else{
+            <td>
+                 @Html.TextBoxFor(model => model.Value, new {  @class = " form-control required", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.Value)
+           </td>
+       }
+         @* <td>
+                @Html.CheckBoxFor(model => model.IsEditable, new {  @class = "calc right portion1 form-control required", @onchange = "minmax1(this,1,100)" })
+                @Html.ValidationMessageFor(model => model.IsEditable)
+           </td>*@
+         <td>
+                @Html.TextAreaFor(model => model.Remarks, new {  @class = " form-control" })
+                @Html.ValidationMessageFor(model => model.Remarks)
+           </td>
+      
+       }
+    </tr>
+<script>
+    $(function () {
+        InitDropDowns();
+    })
+   
+</script>

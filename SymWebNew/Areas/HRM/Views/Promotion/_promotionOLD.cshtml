@@ -1,0 +1,87 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+@{
+    Layout = null;
+}
+<div class="thinbox">
+    <div class="empInfo">
+        <div class="th_thinbox">
+        <p>@Html.ValueFor(model => model.EmpName)</p>   
+        </div>
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+              @*  @Html.HiddenFor(model => model.transferVM.jobjoinDate)*@
+
+                    <div class="editor-label col-md-4 ">
+                        <label><b>Code</b> </label>
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.Code, new { @placeholder = "Employee Code", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Code)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.DesignationName)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextBoxFor(model => model.promotionVM.DesignationName, new { @placeholder = "Employee Designation Name", @class = "  form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.promotionVM.DesignationName)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.GradeId)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.SimpleDropDownFor(model => model.promotionVM.GradeId, "/Config/DropDown/Grade", new { @class = "required form-control", @disabled = "disabled"  })
+                        @Html.ValidationMessageFor(model => model.promotionVM.GradeId)
+                    </div>
+                     <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.IsPromotion)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.CheckBoxFor(model => model.promotionVM.IsPromotion, new { disabled="disabled", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.promotionVM.IsPromotion)
+                    </div>
+                    <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.PromotionDate)
+                    </div>
+                    <div class="editor-field col-md-8">
+                         @*<input type="text" value="@Model.promotionVM.PromotionDate" readOnly="readOnly" class = "pastdate required form-control" />*@
+                        @Html.TextBox("PromotionDate",null, new { @readOnly="readOnly", @class = "pastdate form-control required" })
+                        
+                        @Html.ValidationMessageFor(model => model.promotionVM.PromotionDate)
+                    </div>
+                     <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.Remarks)
+                    </div>
+                    <div class="editor-field col-md-8">
+                        @Html.TextAreaFor(model => model.promotionVM.Remarks, new {disabled="disabled", @class = "form-control",@rows="1" })
+                        @Html.ValidationMessageFor(model => model.promotionVM.Remarks)
+                    </div>
+                     <div class="editor-label col-md-4">
+                        @Html.LabelFor(model => model.promotionVM.FileName)
+                    </div>
+                    <div class="editor-field col-md-8">
+                         @if (Model.promotionVM.FileName != null && Model.promotionVM.FileName != "")
+                    {
+                        @Html.LabelFor(model => model.promotionVM.FileName)
+                        <a target="_blank" href="~/Files/Promotion/@Model.promotionVM.Id@Model.promotionVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30" alt="File" title="File" /></a>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+<script>
+    InitDropDowns();
+    InitDatePickers();
+    fromReadColor("promotionOld");
+    $(function () {
+        $('.pastdate').val('@Model.promotionVM.PromotionDate');
+        if ('@Model.Code' == null || '@Model.Code' == "") {
+            $('#empId').val("");
+        }
+        else {
+            setTimeout(function () { $(".selectDropdown").val('@Model.Code').trigger('change'); }, 200);
+        }
+        // $('#empId').val('@Model.Code~@Model.EmpName');
+    });
+</script>

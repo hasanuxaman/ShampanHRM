@@ -1,0 +1,149 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+
+@{
+    ViewBag.Title = "SingleEmployeeSalary";
+}
+<style>
+    .text-color {
+       margin:auto;
+    }
+    .text-color a {
+        color: #ff6a00!important;
+    }
+   .input-group .form-control{
+        padding-top:0px!important;
+        margin-top:0px!important;
+    }
+
+</style>
+
+          @if (identity.IsAdmin || identity.IsHRM)
+{ 
+              <div class="thinbox">
+<div class="row">
+    <div  class="col-sm-12 col-md-12" >
+<div class="input-group   col-lg-6  col-md-6  col-sm-6 col-xs-12 text-color" style=""> 
+										<a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='first' id="first"><i class="fa fa-angle-double-left"></i> First</a>
+										<a class="input-group-addon btn btn-primary" data-pager-action='previous' id="precode"><i class="fa fa-angle-left"></i> Previous</a>
+											<input type="text" placeholder="Code" class="form-control" data-pager-action='pagenum'  id="empId" value="@Model.Code"> 
+                                            @Html.SimpleDropDown("FiscalYearDetailId", "/Config/DropDown/DropDownPeriodByYear", new {@id="FiscalYearDetailId",@placeholder = "Fiscal Period", @class = "required form-control pull-left" })
+                                            <a class="input-group-addon btn btn-primary" data-pager-action='next' id="current"><i class="fa fa-search"></i> </a>
+											<a class="input-group-addon btn btn-primary" data-pager-action='next'  id="nextcode">Next <i class="fa  fa-angle-right"></i></a>
+											<a class="input-group-addon btn btn-primary hidden-xs" data-pager-action='last' id="last">Last <i class="fa  fa-angle-double-right"></i>  </a>
+										</div>
+</div>
+     </div>
+</div>
+}
+<div id="detailsDiv"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#empId').autocomplete({ source: '@Url.Action("EmployeeCode", "Autocomplete", new { area = "Config" })', minLength: 2 });
+        $.get('@Url.Action("singleEmployee","SingleEmployee", new { empId = Model.Id } )', function (data) {
+            $('#detailsDiv').html(data);
+        });
+        $(".nav-pills a").click(function () {
+            $(this).tab('show');
+        });
+        var s = $("#myTab").load($('li.active a[data-toggle="tab"]').attr('href'));
+        $("ul.nav-pills > li > a").on("shown.bs.tab", function (e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+        var hash = window.location.hash;
+        $('#myTab a[href="' + hash + '"]').tab('show');
+        $('a[data-toggle="tab"]').on('shown', function () {
+            localStorage.setItem('lastTab', $(this).attr('href'));
+        });
+        var lastTab = localStorage.getItem('lastTab');
+        if (lastTab) {
+            $('a[href=' + lastTab + ']').tab('show');
+        }
+        else {
+            $('a[data-toggle="tab"]:first').tab('show');
+        }
+    });
+
+</script>
+  <script>
+
+      $(function () {
+
+          $('#current').click(function () {
+              var empid = $('#empId').val();
+              var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+              if (FiscalYearDetailId=="") {
+                  ShowResult("Fail", "Please Select fiscal year");
+                  return;
+              }
+              $.get("/Payroll/SingleEmployee/singleEmployee?empcode=" + empid + '&btn=current&FiscalYearDetailId=' + FiscalYearDetailId,
+                  function (data) {
+                      $('#detailsDiv').html(data);
+
+                  });
+              //this.href = "/Payroll/SingleEmployee/SingleEmployeeSalary?empcode=" + empid + '&btn=current';
+          });
+          $('#nextcode').click(function () {
+              var empid = $('#empId').val();
+              var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+              if (FiscalYearDetailId == "") {
+                  ShowResult("Fail", "Please Select fiscal year");
+                  return;
+              } $.get("/Payroll/SingleEmployee/singleEmployee?empcode=" + empid + '&btn=next&FiscalYearDetailId=' + FiscalYearDetailId, function (data) {
+                  $('#detailsDiv').html(data);
+              });
+          });
+          $('#precode').click(function () {
+              var empid = $('#empId').val();
+              var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+              if (FiscalYearDetailId == "") {
+                  ShowResult("Fail", "Please Select fiscal year");
+                  return;
+              } $.get("/Payroll/SingleEmployee/singleEmployee?empcode=" + empid + '&btn=previous&FiscalYearDetailId=' + FiscalYearDetailId, function (data) {
+                  $('#detailsDiv').html(data);
+              });
+              //this.href = "/Payroll/SingleEmployee/SingleEmployeeSalary?empcode=" + empid + '&btn=previous';
+              //search();
+          });
+          $('#first').click(function () {
+              var empid = $('#empId').val();
+              var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+              if (FiscalYearDetailId == "") {
+                  ShowResult("Please Select fiscal year", "Please Select fiscal year");
+                  return;
+              } $.get("/Payroll/SingleEmployee/singleEmployee?empcode=" + empid + '&btn=first&FiscalYearDetailId=' + FiscalYearDetailId, function (data) {
+                  $('#detailsDiv').html(data);
+              });
+          });
+          $('#last').click(function () {
+              var empid = $('#empId').val();
+              var FiscalYearDetailId = $('#FiscalYearDetailId').val();
+              if (FiscalYearDetailId == "") {
+                  ShowResult("Fail", "Please Select fiscal year");
+                  return;
+              } $.get("/Payroll/SingleEmployee/singleEmployee?empcode=" + empid + '&btn=last&FiscalYearDetailId=' + FiscalYearDetailId, function (data) {
+                  $('#detailsDiv').html(data);
+              });
+          });
+      });
+
+  </script>
+
+

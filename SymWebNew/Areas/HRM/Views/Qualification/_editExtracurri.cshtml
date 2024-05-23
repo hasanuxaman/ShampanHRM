@@ -1,0 +1,193 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@using (Html.BeginForm("ExtraCurri", "Qualification", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmExtraCurri" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="extraCurri">
+        @Html.HiddenFor(model => model.extraCurriculumVM.EmployeeId)
+        @Html.HiddenFor(model => model.extraCurriculumVM.Id)
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.Skill)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.extraCurriculumVM.Skill, new { @placeholder = "Skill Proficiency", @class = "required form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.Skill)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.SkillQuality_E)
+                </div>
+                <div class="editor-field">
+                    @Html.SimpleDropDownFor(model => model.extraCurriculumVM.SkillQuality_E, "/Config/DropDown/LanguageFluency", new { @placeholder = "Skill/Quality/Level", @class = " form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.SkillQuality_E)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.YearsOfExperience)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.extraCurriculumVM.YearsOfExperience, new { @placeholder = "Years Of Experience", @class ="required form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.YearsOfExperience)
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.Date)
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.extraCurriculumVM.Date, new { @placeholder = "Date", @class ="customDatePicker form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.Date)
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.Institute)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.extraCurriculumVM.Institute, new { @placeholder = "Experience/Institute", @rows = "1", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.Institute)
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.Address)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.extraCurriculumVM.Address, new { @placeholder = "Address",@rows="1", @class ="form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.Address)
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.Achievement)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.extraCurriculumVM.Achievement, new { @placeholder = "Achievement/Award", @rows = "1", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.Achievement)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.extraCurriculumVM.Remarks)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.extraCurriculumVM.Remarks, new { @placeholder = "Remarks",@rows="1", @class ="form-control" })
+                    @Html.ValidationMessageFor(model => model.extraCurriculumVM.Remarks)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(model => model.extraCurriculumVM.FileName)
+                <input type="file" onchange="CheckFileSize(this);" name="extraCurriF" id="extraCurriF" style="width: 200px;" />
+            </div>
+            @if (Model.extraCurriculumVM.FileName != null && Model.extraCurriculumVM.FileName != "")
+            {
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <div class="col-md-6">
+                        <a target="_blank" href="~/Files/ExtraCurriculam/@Model.extraCurriculumVM.Id@Model.extraCurriculumVM.FileName">
+                            <img src="~/assets/Images/files.png" width="30px;" alt="File" title="File" /></a>
+                    </div>
+                    <div class="col-md-6" style="float: left;">
+                        <span onclick="FileDelete(this)"; data-id="@Model.extraCurriculumVM.Id" data-table="8"  data-field="FileName" data-url="~/Files/ExtraCurriculam/@Model.extraCurriculumVM.Id@Model.extraCurriculumVM.FileName">
+                            <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" /></span>
+                    </div>
+                </div>
+            }
+        </div>
+        <p>
+            @*(Model.IsActive && (identity.IsAdmin || identity.IsHRM))*@
+            @if (identity.IsAdmin || identity.IsHRM || identity.IsESSEditPermission)
+            {
+                @*<button type="button" title="Click on for Save"  onclick="pageSubmit('frmExtraCurri');" class="Save sym-btn-save">&nbsp;Save</button>*@
+                <button type="button"  title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>
+                <button type="button"  title="Click on for Edit" onclick="EditExtraCurri();" class="Edit sym-btn-edit">&nbsp;Edit</button>
+                    
+            }
+            <button type="button" title="Click on for Cancel"   id="cancelJSON" class="Cancle sym-btn-cancel">&nbsp;Cancel</button>
+        </p>
+    </div>
+}
+<script>
+    $(function () {
+
+        EditExtraCurri();
+        $(".showHideEX").hide();///////Index page new btn
+        valiDation('frmExtraCurri');
+        InitDropDowns();
+        InitDateTimePickers();
+        var isChange = false;
+        $('.form-control').change(function () {
+            isChange = true;
+        });
+
+        //$('#saveJSON').click(function () {
+        //    if (isChange == true) {
+        //        if (pageSubmitJSON('frmExtraCurri') == 0) {
+        //            var myData = $('#frmExtraCurri').serialize();
+        //            var url = "/HRM/Qualification/ExtraCurri";
+        //            var res = submit(url, myData);
+        //            if (res == true) {
+        //                location.reload();
+        //            }
+        //            isChange = false;
+        //        }
+        //    }
+        //    else {
+        //        ShowResult("Success", "You have no changes for save");
+
+        //    }
+        
+        //});
+        $('#saveJSOND').click(function () {
+            var url = "/HRM/Qualification/ExtraCurri";
+
+            $form = $('#frmExtraCurri');
+
+            $form.attr("action", url);
+            $form.submit();
+
+        });
+   
+    $('#cancelJSON').click(function () {
+        if (isChange == true) {
+            Ask("<h6>You have some changes in this form.</br>Click No to Ignore the chages.</h6>", null, function () {
+                isChange = false;
+                $('#cancelJSON').click();
+            })
+        }
+        else {
+            isChange = false;
+            $("#myExtraCri").html('');
+            $(".showHideEX").show();
+        }
+    }
+    );
+    });
+</script>

@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/MHRM/Views/Shared/_Layout.cshtml";
+}
+ @model SymViewModel.Leave.EmployeeLeaveVM
+    @using UIHelper.MVC
+
+ @using (Html.BeginForm("Index", "Leave", FormMethod.Post, new {  @Id = "frmLeave" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.EmployeeLeaveStructureId)
+        @Html.HiddenFor(model => model.IsApprove)
+        <div class="thinbox">
+            <div class="th_thinbox">
+            <p>Apply Leave</p>   
+            </div>
+            <div class="leave">
+            <div class="row">
+               
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LeaveType_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.LeaveType_E,"/Config/DropDown/LeaveType", new { @placeholder = "Leave Type", @class = "required form-control"})
+                        @*@Html.SimpleDropDownFor(model => model.LeaveType_E,"/Config/DropDown/EmpLeaveType?employeeId=1&year=2016", new { @placeholder = "Code", @class = "required form-control"})*@
+                        @Html.ValidationMessageFor(model => model.LeaveType_E)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FromDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.FromDate, new { @onchange="totalDay();", @placeholder = "From Date", @class = "required customDatePicker form-control"})
+                        @Html.ValidationMessageFor(model => model.FromDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.ToDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.ToDate, new {@onchange="totalDay();", @placeholder = "To Date", @class = "required customDatePicker form-control"})
+                        @Html.ValidationMessageFor(model => model.ToDate)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.TotalLeave)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.TotalLeave, new {@onchange="totalDay();", @readonly="readonly",  @placeholder = "Total Leave", @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.TotalLeave)
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsHalfDay)
+                    </div>
+                    <div class="editor-field center">
+                        @Html.CheckBoxFor(model => model.IsHalfDay, new { @placeholder = "Is It Half Day?", @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.IsHalfDay)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks",@rows="1", @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+        <button type="submit" title="Save Data" value="save" class="Appr sym-btn-save">&nbsp;Save</button>
+        <button type="button" title="Cancel Data" class="  sym-btn-cancel">&nbsp;Cancel</button>
+            </p>
+        </div>
+             
+    }
+<script>
+    $(function () {
+        InitDropDowns();
+        valiDation('frmLeave');
+        InitDateTimePickers();
+        function totalDay() {
+            debugger;
+            if ($("#IsHalfDay").is(':checked')) {
+                $("#ToDate").attr('disabled', true);
+                $("#ToDate").val($("#FromDate").val());
+                $("#TotalLeave").val('.5');
+                return;
+            }
+            else {
+                $("#ToDate").attr('disabled', false);
+            }
+            if ($("#ToDate").val() != "") {
+                
+                //if ($("#FromDate").val() > $("#ToDate").val()) {
+                //    $("#ToDate").val('');
+                //    $("#TotalLeave").val('');
+                //    ShowResult("Fail", "From Date can't be prior to ToDate!");
+                //}
+                debugger;
+                if (new Date($("#FromDate").val()).getTime()>new Date($("#ToDate").val()).getTime()) {
+                    $("#ToDate").val('');
+                    $("#TotalLeave").val('');
+                    ShowResult("Fail", "From Date can't be prior to ToDate!");
+                }
+                else {
+                    debugger;
+                    $("#TotalLeave").val(Math.round((ParseDate($("#ToDate").val()) - ParseDate($("#FromDate").val())) / (1000 * 60 * 60 * 24)) + 1);
+                }
+
+               
+            }
+        }
+        $("#IsHalfDay").on('click', function () {
+            totalDay();
+        });
+
+        function Triger(sender) {
+            $(sender).closest('tr').find('td [name="empId"]').trigger("click");
+        }
+        function PassingYearLength(sender) {
+            if ($(sender).val().length < 4) {
+                $(sender).val("0000");
+                ShowResult("Fail", "Minimum 4 digit required!");
+            }
+        }
+    });
+</script>

@@ -1,0 +1,59 @@
+﻿<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Attendance log</p>
+    </div>
+<div class="row">
+     <input type="button" style="width:65px;" data-url="/HRM/EmployeeAttendance/AttendanceLog" onclick="GoTo(this)"   id="" class=" btn btn-info  " value="New " />
+</div>
+<p></p>
+<div class="row">
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Punch Date</th>
+                            <th>Punch Time</th>
+                            <th>Emp Code</th>
+                            <th>Emp Name</th>
+                            <th>@Session["ProjectLabel"]</th>
+                            <th>@Session["DepartmentLabel"]</th>
+                            <th>Designation</th>
+                            <th>Join Date</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/EmployeeAttendance/_indexAttendanceLogList",
+            "bProcessing": true,
+            "aoColumns": [
+                               {
+                                   "sName": "",
+                               },
+                            {
+                                "sName": "Punch Date",
+                            },
+                            { "sName": "Punch Time" },
+                            { "sName": "Code" },
+                            { "sName": "EmpName" },
+                            { "sName": "Project" },
+                            { "sName": "Department" },
+                            { "sName": "Designation" },
+                            { "sName": "JoinDate" },
+                            { "sName": "Remarks" }
+            ]
+        });
+        SelectAllForDelete();
+    });
+    </script>

@@ -1,0 +1,290 @@
+﻿@{
+    ViewBag.Title = "SalaryStructure";
+    Layout = null;
+}
+
+@*@model IEnumerable<SymViewModel.Payroll.SalaryStructureMatrixVM>*@
+@model SymViewModel.HRM.EmployeeInfoVM
+<style>
+    /*.search-table-outter {border:2px solid red;}*/
+    .search-table {
+        table-layout: fixed;
+        margin: 0px auto 0px auto;
+    }
+
+    .search-table, td, th {
+        border-collapse: collapse;
+        border: 1px solid #777;
+    }
+
+    th {
+        padding: 10px 7px;
+        height: 30px;
+        font-size: 15px;
+        color: #444;
+        background: #62ce4d;
+    }
+
+    td {
+        padding: 5px 5px;
+        height: 30px;
+    }
+
+    .search-table-outter {
+        overflow-x: scroll!important;
+    }
+
+    th, td {
+        min-width: 90px!important;
+    }
+
+    input {
+        width: 80px;
+    }
+
+    .table-fixed thead {
+        width: 97%;
+    }
+
+    .table-fixed tbody {
+        height: 230px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+<div class="search-table-outter " style="height: 400px; width: 100%;">
+
+    <table class="search-table">
+        <thead>
+            <tr>
+                <th>
+                    <b>Update</b>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().SalaryTypeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().DesignationGroupId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().GradeId)
+                </th>
+
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step1Amount)</th>
+
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step1_5Amount)</th>
+
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step2Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step2_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step3Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step3_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step4Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step4_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step5Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step5_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step6Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step6_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step7Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step7_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step8Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step8_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step9Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step9_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step10Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step10_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step11Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step11_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step12Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step12_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step13Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step13_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step14Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step14_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step15Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step15_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step16Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step16_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step17Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step17_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step18Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step18_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step19Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step19_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step20Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step20_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step21Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step21_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step22Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step22_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step23Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step23_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step24Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step24_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step25Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step25_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step26Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step26_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step27Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step27_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step28Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step28_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step29Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step29_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step30Amount)
+                </th>
+                <th>@Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Step30_5Amount)</th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SalaryStructureMatrixVM.FirstOrDefault().Remarks)
+                </th>
+
+                <th>
+                    <b>Update</b>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="detail">
+            @foreach (var item in Model.SalaryStructureMatrixVM)
+            {
+            
+                @Html.Partial("_salaryStructure", item);
+            }
+        </tbody>
+    </table>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $(".update").click(function () {
+
+            var Id = $(this).closest("tr").children().find(".Id").val();
+
+            var GradeId = $(this).closest("tr").children().find(".GradeId").val();
+
+            if (typeof GradeId == "Undefind" || GradeId == null || GradeId == "" || GradeId == " ") {
+                ShowResult("Fail", "Please Select A Grade");
+                return;
+            }
+            var SalaryTypeName = $(this).closest("tr").children().find(".SalaryTypeName").val();
+            var url = "/Payroll/SalaryStructureMatrix/Edit?Id=" + Id + "&GradeId=" + GradeId + "&SalaryTypeName=" + SalaryTypeName;
+            for (var i = 1; i <= 30; i++) {
+                url += "&Step" + i + "Amount=" + $(this).closest("tr").children().find(".Step" + i + "Amount").val();
+            };
+            var remark = $(this).closest("tr").children().find(".Remarks").val()
+            url += "&Remarks=" + remark;
+            ////alert((url);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                beforeSend: function () { $(".loading").show(); },
+                complete: function () { $(".loading").fadeOut(200).hide("slow") },
+                success: function (result) {
+                    var msg1 = result.split('~')[0];
+                    var msg2 = result.split('~')[1];
+                    if (msg1 != "Fail") {
+                        ShowResult("Success", msg2);
+                    }
+                    else {
+                        ShowResult("Fail", msg2);
+                    }
+                },
+            });
+        });
+    });
+</script>
+

@@ -1,0 +1,121 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM  
+@using UIHelper.MVC
+<style>
+    .nav-tabs > li > a{
+        border-right: 1px solid #94c78a;
+        background-color: #94c78a;
+        font-size: 14px;
+         padding: 5px 7px!important;
+    }
+
+        .nav-tabs > li > a:hover {
+            background-color: #45a441 !important;
+            border: medium none;
+            -moz-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            color: #fff;
+        }
+
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background-color: #45a441 !important;
+          font-size: 15px;
+    }
+    .thinbox p span:last-of-type{
+        padding-right:20px;
+        padding-left:20px;
+        width:76%;
+    }
+    .thinbox p span:last-of-type:after {
+    font-family:'Glyphicons Halflings';
+    content: "\e113";
+    /*float: right;*/
+    color: grey;
+
+}
+.thinbox p span.collapsed:after {
+    content:"\e114";
+}
+
+.panel-actions {
+  margin-top: -20px;
+  margin-bottom: 0;
+  text-align: right;
+}
+.panel-actions a {
+  color:#333;
+}
+.panel-fullscreen {
+    display: block;
+    z-index: 9999;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+}
+</style>
+
+@* <div id="">
+    @Html.Partial("_employeeSalaryStructure" ,Model)
+</div>*@
+ <div id="replaceArea">
+    </div>
+ 
+ 
+
+
+@*<div id="employeeLoanStructur">
+    </div> *@  
+
+ @Html.HiddenFor(model => model.Id)
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+
+            var id = $('#Id').val();
+            SelectAllForDelete();
+            $.datepicker.regional[""].dateFormat = 'dd/M/y';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+        });
+    </script>
+<script>
+    $(function () {
+        $("#replaceArea").load('@Url.Action("Structure", "Structure", new { Id=Model.Id})');
+    });
+    function UpdateEmployeeStructure(structure, sender) {
+        var empId = $("#EmployeeId").val();
+        var year = $("#year").val();
+        var TaxPortion = $("#TaxPortion").val();
+        var BonusTaxPortion = $("#BonusTaxPortion").val();
+        var FixedOT = $("#FixedOT").val();
+        var IsGFApplicable = $("#IsGFApplicable").val();
+        var EmpTaxValue = $("#EmpTaxValue").val();
+        var EmpBonusTaxValue = $("#EmpBonusTaxValue").val();
+   
+        var basic = $("#basic").val();
+        var structureId = $(sender).closest('.row').find('select').val();
+        if (structure == "" || empId == "" || structureId == "") {
+            ShowResult("Fail", "Please select structure!");
+            return;
+        }
+        var url = "/HRM/Structure/UpdateEmployeeStructure?structureType=" + structure + "&structureId=" + structureId
+            + "&employeeId=" + empId + "&year=" + year + "&basic=" + basic + "&TaxPortion=" + TaxPortion + "&EmpTaxValue=" + EmpTaxValue
+            + "&BonusTaxPortion=" + BonusTaxPortion + "&EmpBonusTaxValue=" + EmpBonusTaxValue + "&FixedOT=" + FixedOT + "&IsGFApplicable=" + IsGFApplicable;
+        //Ask("Are you sure to Update structure!", function () {
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                    ShowResult("Fail", status);
+                },
+                success: function (response) {
+                    ShowResult("Success", response);
+                }
+            });
+        //});
+    }
+</script>

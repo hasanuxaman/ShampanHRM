@@ -1,0 +1,83 @@
+﻿<div class="headrow">
+        <button type="button" title="Add New Bonus Policy" data-url="/Payroll/BonusStructure/Create" onclick="GoTo(this)" id="" class="sym-btn-add">&nbsp;New</button>
+        <button type="button" title="Delete Bonus Policy" data-url="/Payroll/BonusStructure/BonusStructureDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+ <label class="pull-right">Bonus Policy </label>
+</div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+        <p>Bonus Policy</p>   
+        </div>
+<div class="row">
+        <div id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                     <thead>
+                        <tr>
+                            <th class="center"><input type="checkbox" class="chkAll" /> Select All </th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Bonus Value</th>
+                            <th>Job Age From (Days)</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th style="text-align:left!important">Bonus Value</th>
+                            <th>Job Age From (Days)</th>
+                            <th>Fixed/Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+        </div>
+<div class="headrow">
+        <button type="button" title="Add New Bonus Policy" data-url="/Payroll/BonusStructure/Create" onclick="GoTo(this)" id="" class="sym-btn-add">&nbsp;New</button>
+        <button type="button" title="Delete Bonus Policy" data-url="/Payroll/BonusStructure/BonusStructureDelete" onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove">&nbsp;Delete</button>
+</div>
+<script>
+    $(document).ready(function () {
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/BonusStructure/_index",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "sWidth": "12%",
+                            "sClass": "center",
+                            "fnRender": function (oObj) {
+                                return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a  style="text-decoration:none;" id=""  class="innerListLink  sym-btn-edit-row"  href=\"/Payroll/BonusStructure/Edit/' + oObj.aData[0] + '\"></a>' +
+                                '&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/BonusStructure/BonusStructureDelete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');" class="sym-btn-remove-row"></a>';
+                            }
+                        }
+                            , { "sName": "Code", "sWidth": "15%" }
+                            , { "sName": "Name", "sWidth": "20%" }
+                            , { "sName": "BonusValue", "sClass": "right", "sWidth": "25%" }
+                            , { "sName": "JobAge", "sWidth": "10%" }
+                            , { "sName": "IsFixed", "sWidth": "15%" }
+            ]
+        });
+        oTable.columnFilter({
+            sPlaceHolder: "head:after",
+            aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                       , { type: "text" }
+                       , { type: "text" }
+                       , { type: "number-range" }
+                       , { type: "text" }
+				       , { type: "select", values: ["Fixed", "Rate"] }
+            ]
+        });
+        SelectAllForDelete();
+    });
+    </script>

@@ -1,0 +1,122 @@
+﻿@*
+PolicyName
+JobDurationInMonth
+LastBasicMultipication
+Remarks
+*@
+
+@model SymViewModel.GF.GFPolicyVM
+@using UIHelper.MVC
+@{
+
+    ViewBag.Title = "Create";
+    ViewBag.Location = "Create"; 
+}
+
+@using (Html.BeginForm("CreateEdit", "GFPolicy", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmGFPolicy" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Operation)
+
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>GF Policy</p>
+        </div>
+        <div class="EnumGFPolicy">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PolicyName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.PolicyName, new { @placeholder = "Policy Name", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.PolicyName)
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.JobDurationYearFrom)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.JobDurationYearFrom, new { @placeholder = "Job Duration Year From", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.JobDurationYearFrom)
+                    </div>
+                </div>
+                <div class="col-md-1 text-center">
+                    <div class="editor-label">
+                        &nbsp;
+                    </div>
+                    <div class="editor-field" style="font-size: x-large">
+                        <b><</b>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.JobDurationYearTo)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.JobDurationYearTo, new { @placeholder = "Job Duration Year To", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.JobDurationYearTo)
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.MultipicationFactor)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.MultipicationFactor, new { @placeholder = "Multipication Factor", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.MultipicationFactor)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.IsFixed)
+                    </div>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.IsFixed, new { @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.LastBasicMultipication)
+
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.LastBasicMultipication, new { @placeholder = "Last Basic Multipication", @class = " form-control" })
+
+                        @Html.ValidationMessageFor(model => model.LastBasicMultipication)
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Remarks)
+
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Remarks)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="headrow">
+        &nbsp;
+        <button type="button" title="Save Data" onclick="pageSubmit('frmGFPolicy');" class="sym-btn-save">&nbsp;Save</button>
+        &nbsp;
+        <button type="button" title="Cancel Data" class=" btncancel sym-btn-cancel">&nbsp;Cancel</button>
+    </div>
+}
+<script>
+    $(function () {
+        InitDropDowns();
+        valiDation("frmGFPolicy");
+    });
+
+</script>

@@ -1,0 +1,107 @@
+﻿<div class="headrow">
+        <button type="button" title="Add New Salary Overtime" data-url="/Payroll/SalaryOverTime/Create" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+        <button type="button" title="Delete Salary Overtime" data-url="/Payroll/SalaryOverTime/SalaryOverTimeDelete"  onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+   <label class="pull-right">Salary Overtime </label>
+     @* <div class=" pull-right">
+        <div class="btn-group btn-breadcrumb">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-default"><i class="glyphicon glyphicon-home"></i></a>
+        </div>
+
+    </div>*@
+</div>
+
+
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Salary Overtime List</p>
+    </div>
+    <div>
+                <div  id="container">
+            <div id="demo">
+                <table id="myDataTable" class="display">
+                    <thead ">
+                        <tr>
+                            <th><input type="checkbox" class="chkAll" /> </th>
+                            <th>Period Name</th>
+                            <th >Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+<div class="headrow">
+        <button type="button" title="Add New Salary Overtime" data-url="/Payroll/SalaryOverTime/Create" onclick="GoTo(this)" id="" class="sym-btn-add "> New</button>
+        <button type="button" title="Delete Salary Overtime" data-url="/Payroll/SalaryOverTime/SalaryOverTimeDelete"  onclick="deletedData(this, 'myDataTable');" id="" class="sym-btn-remove"> Delete</button>
+    </div>
+
+
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryOverTime/_SalaryOverTime",
+
+
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                              {
+                                  "sName": "ID",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "sWidth": "11%",
+                                  "fnRender": function (oObj) {
+                                      return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit"  id="" class="innerListLink sym-btn-edit-row" style="text-decoration:none;" href=\"/Payroll/SalaryOverTime/Edit?SalaryOverTimeId=' + oObj.aData[0] + '\"></a>' +
+                                   '&nbsp; <a title="Click on for Delete"  data-url="/Payroll/SalaryOverTime/SalaryOverTimeDelete" onclick="deletedData(this, myDataTable,\'' + oObj.aData[0] + '\');"  class="sym-btn-remove-row"></a>';
+
+                                  }
+                              }
+
+                              , { "sName": "PeriodName" }
+                              , { "sName": "Remarks" }
+            ]
+        });
+    });
+    </script>
+           @* "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+
+                              {
+                                  "sName": "ID",
+                                  "bSearchable": false,
+                                  "bSortable": false,
+                                  "fnRender": function (oObj) {
+
+                                      return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                      ;
+                                  }
+                              },
+                              {
+                                  "sName": "PeriodName",
+                                  "bSearchable": true,
+                                  "bSortable": false,
+                                  "fnRender": function (oObj) {
+
+                                      return '<a  class="innerListLink" href=\"/Payroll/SalaryOverTime/Edit?SalaryOverTimeId=' + oObj.aData[1].split('~')[1] + '\">' + oObj.aData[1].split('~')[0] + '</a>'
+                                      ;
+                                  }
+                              },
+                            { "sName": "Remarks" }
+            ]
+        });
+    });
+    </script>*@

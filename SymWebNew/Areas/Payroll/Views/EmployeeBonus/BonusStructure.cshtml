@@ -1,0 +1,228 @@
+﻿@model SymViewModel.Payroll.BonusStructureVM
+@using UIHelper.MVC
+@Html.ValidationSummary(true)
+<div class="headrow">
+       <button type="submit" title="Save Data"  onclick="EmployeeBonusSet();" class="sym-btn-save">&nbsp;Save</button>
+			<label class="pull-right">EmployeeBonus  > BonusStructure</label>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Bonus Structure</p>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.BranchId)
+                @Html.LabelFor(model => model.Code)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Code, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Name, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.BonusValue)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.BonusValue, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.IsFixed)
+            </div>
+            <div class="editor-field center">
+                @Html.CheckBoxFor(model => model.IsFixed, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PortionSalaryType)
+            </div>
+            <div class="editor-field">
+                @Html.SimpleDropDownFor(model => model.PortionSalaryType, "/Config/DropDown/SalaryPortion", new { @class = "PortionSalaryTypeId form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DOJFrom)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DOJFrom, new { @onchange = "DateCheck(this);",  @class = " customDatePicker form-control", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DOJTo)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DOJTo, new { @onchange = "DateCheck(this);", @class = " customDatePicker form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Remarks)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "  form-control", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+<div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        <label>@Session["ProjectLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("ProjectId","/Config/DropDown/Project", new { @onchange="DDLChech('ProjectId')", @class = "required form-control" })
+                         <label id="erProjectId" style="color:red;display:none;">Please select project</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                       <label>@Session["DepartmentLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("DepartmentId","//", new {@onchange="DDLChech('DepartmentId')", @class = "required form-control" })
+                        <label id="erDepartmentId" style="color:red;display:none;">Please select department</label>
+                         </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                       <label>@Session["SectionLabel"]</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDown("SectionId","//", new {@onchange="DDLChech('SectionId')", @class = "required form-control" })
+                        <label id="erSectionId" style="color:red;display:none;">Please select section</label>
+                    </div>
+                </div>
+                </div>
+</div>
+			<div class="headrow">
+       <button type="submit" title="Save Data"  onclick="EmployeeBonusSet();" class="sym-btn-save">&nbsp;Save</button>
+</div>
+<script>
+    $(function () {
+
+        $('#ProjectId').click(function () {
+            $('#DepartmentId').html("");
+            $('#SectionId').html("");
+            var departments = "";
+            var sections = "";
+            var pid = $('#ProjectId').val();
+            var url1 = "/Config/DropDown/DerparmentByProject/?projectId=" + pid;
+            departments += "<option value=0>Select</option>";
+            departments += "<option value=0_0>=ALL=</option>";
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    departments += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#DepartmentId').html(departments);
+            });
+            sections += "<option value=-1>All Section</option>";
+
+        });
+        $('#DepartmentId').click(function () {
+            $('#SectionId').html("");
+            var sections = "";
+            var pid = $('#ProjectId').val();
+            var did = $('#DepartmentId').val();
+            var url1 = "/Config/DropDown/SectionByDepartment/?projectId=" + pid + "&departmentId=" + did;
+            sections += "<option value=0>Select</option>";
+            sections += "<option value=0_0>=ALL=</option>";
+
+            $.getJSON(url1, function (data) {
+                $.each(data, function (i, state) {
+                    sections += "<option value='" + state.Value + "'>" + state.Text + "</option>";
+                });
+                $('#SectionId').html(sections);
+            });
+        });
+ 
+        valiDation("frmBonusStructure");
+        InitDropDowns();
+        InitDatePickers();
+        var DOJFrom = $("#DOJFrom").val();
+        var DOJTo = $("#DOJTo").val();
+        //$("#EmployeeInfo").load('Url.Action("EmployeeInfo", "EmployeeBonus")' + '?DOJFrom=' + DOJFrom + '&DOJTo=' + DOJTo);
+    });
+
+    function DDLChech(val) {
+        $("#er" + val).hide();
+        if ($("#" + val).val() == "") {
+            $("#er" + val).show();
+        }
+    }
+
+    function EmployeeBonusSet() {
+        if ( $('#DepartmentId').val()  == "0") {
+            ShowResult("Fail", "Please Select Department.");
+            return;
+        }
+        if ( $('#SectionId').val()  == "0") {
+            ShowResult("Fail", "Please Select Section.");
+            return;
+        }
+        var error=0;
+        $("#erProjectId").hide();
+        $("#erDepartmentId").hide();
+        $("#erSectionId").hide();
+
+        if ($("#ProjectId").val()=="") {
+            $("#erProjectId").show();
+            error++;
+        }
+        if ($("#DepartmentId").val()=="") {
+            $("#erDepartmentId").show();
+            error++;
+        }
+        if ($("#SectionId").val()=="") {
+            $("#erSectionId").show();
+            error++;
+        }
+
+        if (error>0) {
+            return;
+        }
+        Ask("Are you sure to process bonus!", function () {
+            var Id = $("#Id").val();
+            var url = "/Payroll/EmployeeBonus/EmployeeBonusSet?bonusStructureId=" + Id + "&ProjectId=" + $("#ProjectId").val() + "&DepartmentId=" + $("#DepartmentId").val() + "&SectionId=" + $("#SectionId").val();
+            $.ajax({
+                type: "GET",
+                url: url,
+                error: function (xhr, status, error) {
+                },
+                success: function (response) {
+                    var dataAction = "";
+                    if (response[0] != 'Fail') {
+                        dataAction = "redirect";
+                    }
+                    ShowResult(response[0], response[1], dataAction, './')
+                }
+            });
+        }, function () { })
+    }
+
+
+    function DateCheck(sender) {
+        var joinDateFrom = ParseDate($("#DOJFrom").val());
+        var joinDateTo = ParseDate($("#DOJTo").val());
+
+        if (joinDateFrom > joinDateTo) {
+            ShowResult("Fail", "Join-Date From can't be prior to Join-Date To!");
+            $(sender).val("");
+        }
+    }
+</script>

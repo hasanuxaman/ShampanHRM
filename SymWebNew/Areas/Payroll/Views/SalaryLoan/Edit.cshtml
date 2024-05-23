@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Edit";
+}
+<div class="headrow">
+ <label class="pull-right">Salary Loan > Edit </label>
+</div>
+<div class="thinbox"> 
+            <div class="th_thinbox">
+        <p>@ViewBag.periodName</p>
+    </div>
+    <p> </p>
+                    <div  id="container">
+                <table id="myDataTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="center">&nbsp;</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Loan Type</th>
+                            <th>Principal Amount</th>
+                            <th>Interest Amount</th>
+                            <th>Istallment Amount</th>
+                        </tr>
+                        <tr>
+                            <th class="center">Actions</th>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Loan Type</th>
+                            <th style="text-align:left!important">Principal Amount</th>
+                            <th style="text-align:left!important">Interest Amount</th>
+                            <th style="text-align:left!important">Istallment Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+        </div>
+    <br />
+
+    <div class="headrow">      
+        <button type="button" data-url="/Payroll/SalaryLoan/SingleSalaryLoanReport" title="Click to see the Report" id="" class=" sendRpt sym-btn-report">&nbsp;Report</button>
+        <button type="button" data-url="/Payroll/SalaryLoan/DownloadSalaryLoanReport" id="" title="Click to Download the Report" class=" sendRpt sym-btn-Excel-Export">&nbsp;Download</button>     
+    </div>
+
+</div>
+@*<div class="headrow">
+</div>*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        SelectAllForDelete();
+        var oTable = $('#myDataTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/Payroll/SalaryLoan/_SalaryLoanDetails?FID=@ViewBag.Id",
+                "bProcessing": true,
+                "aLengthMenu": tablelength(),
+                "bJqueryUI": true,
+                "bAutoWidth": false,
+                "aoColumns": [
+                     {
+                         "sName": "Id",
+                         "bSearchable": false,
+                         "bSortable": false,
+                         "sWidth": "12%",
+                         "sClass": "center",
+                         "fnRender": function (oObj) {
+                             return '<a title="Click on for Edit" id="lnkEdit1" style="text-decoration:none;" Onclick="Edit(this);"  class=" sym-btn-edit-row"  data-Id="' + oObj.aData[0] + '"></a>'
+                             ;
+                             //' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp;  +
+                             //'&nbsp; <a title="Click on for Delete" style="text-decoration:none;" data-url="/Payroll/SalaryLoan/Delete" onclick="deletedData(this, myDataTable,' + oObj.aData[0] + ');"  class="sym-btn-remove-row"></a>';
+                         }
+                     }
+                                , { "sName": "Code", "sWidth": "10%" }
+                                , { "sName": "Name", "sWidth": "20%" }
+                                , { "sName": "LoanType", "sWidth": "10%" }
+                                , { "sName": "PrincipalAmount", "sClass": "right", "sWidth": "18%" }
+                                , { "sName": "InterestAmount", "sClass": "right", "sWidth": "15%" }
+                                , { "sName": "IstallmentAmount", "sClass": "right", "sWidth": "15%" }
+                ]
+            });
+            oTable.columnFilter({
+                sPlaceHolder: "head:after",
+                aoColumns: [{ type: "checkbox", "sClass": "chkAll" }
+                           , { type: "text" }
+                           , { type: "text" }
+                           , { type: "text" }
+                            , { type: "number-range" }
+                            , { type: "number-range" }
+                            , { type: "number-range" }
+                ]
+
+            });
+        });
+        function Edit(sender) {
+            window.location = "/Payroll/SalaryLoan/SingleSalaryLoanEdit?empId=" + $(sender).attr('data-Id') + "&Fid=" + '@ViewBag.Id';
+        }
+    
+
+    $('.sendRpt').click(function (e) {
+
+        var fid = '@ViewBag.Id';
+        var url = $(this).attr("data-url");   
+        url += '?FiscalYearDetailId=' + fid;
+        var win = window.open(url, '_blank');
+      
+    });
+
+
+</script>
+
+}

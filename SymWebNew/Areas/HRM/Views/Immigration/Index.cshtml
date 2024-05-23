@@ -1,0 +1,142 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Location = "Index"; 
+}
+
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Immigration</p>
+    </div>
+    <div>
+        <div id="myImmigration">
+        </div>
+ @if (Model.IsActive && (identity.IsAdmin || identity.IsHRM))
+    {
+           // <input type="button" id="btnDialogIM" class="btn btn-info showHideIM" value="Add" />
+   // <input type="button" style="width:65px;" data-url="/hrm/Immigration/ImmigrationDelete" onclick="deletedData(this, 'myDataTableIM');" id="" class=" showHideIM btn btn-info" value="Delete" />
+     <button type="button"  id="btnDialogIM" title="Add New Immigration info" class="sym-btn-add showHideIM">&nbsp;New</button>
+    <button type="button" title="Delete Checked Immigration info" data-url="/hrm/Immigration/ImmigrationDelete" onclick="deletedData(this, 'myDataTableIM');" class="showHideIM sym-btn-remove">&nbsp;Delete</button>
+    }
+    </div>
+    <p></p>
+    <div id="container">
+        <div id="demo">
+            <table id="myDataTableIM" class="display">
+                <thead>
+                    <tr>
+                        <th class="center" ><input type="checkbox" class="chkAll" />Select All</th>
+                        <th>Immigration Number</th>
+                        <th>Immigration Type</th>
+                        <th>Issued By</th>
+                        <th>Issue Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+</div>
+<script>
+    $(document).ready(function () {
+        //InitCustomDialog();
+        if ('@Session["result"]' != "") {
+            var tt = '@Session["result"]';
+            var tt1 = tt.split("~");
+            //$(".dialog-alert").dialog('open');
+            $("#dialog-msg").append('' + tt1[1]);
+            $(".ui-dialog").addClass('' + tt1[0]);
+        }
+        var oTable = $('#myDataTableIM').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": "/HRM/Immigration/_index/@Model.Id",
+            "bProcessing": true,
+            "aLengthMenu": tablelength(),
+            "bJqueryUI": true,
+            "bAutoWidth": false,
+            "aoColumns": [
+                            {
+                                "sName": "ImmigrationNumber",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "sWidth": "12%",
+                                "sClass": "center",
+                                "fnRender": function (oObj) {
+
+                                    return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[0] + '">&nbsp; <a title="Click on for Edit" style="text-decoration:none;" Onclick="ImmigrationEdit(this);" data-EmployeeId="@Model.Id"  data-Id="' + oObj.aData[0] + '" id=""  class=" innerListLink sym-btn-edit-row"></a>'
+                                    ;
+                                    //org//return ' <input onclick="CheckAll(this)" type="checkbox" data-Id="' + oObj.aData[1].split('~')[1] + '">'
+                                    //;
+                                }
+                            }
+                            @*{
+                                "sName": "ImmigrationNumber",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "fnRender": function (oObj) {
+                                    //return '<input type="button" Onclick="ImmigrationEdit(this);" class="btn btn-info " data-EmployeeId="Model.Id" data-Id="' + oObj.aData[4] + '" value="Show"/>'
+                                    //return '<a  class=" btn btn-primary lnkEdit" href=\"/HRM/EmployeeInfo/Edit/' + oObj.aData[4] + '\">Show</a>'
+                                    return '<Lable Onclick="ImmigrationEdit(this);" class="innerListLink " data-EmployeeId="@Model.Id" data-Id="' + oObj.aData[1].split('~')[1] + '" >' + oObj.aData[1].split('~')[0] + '</Lable>'
+                                }
+                            }*@
+                            , { "sName": "ImmigrationNumber", "sWidth": "25%" }
+                            , { "sName": "ImmigrationType", "sWidth": "20%" }
+                            , { "sName": "IssuedBy", "sWidth": "20%" }
+                            , { "sName": "IssueDate", "sWidth": "20%" }
+            ]
+        });
+        SelectAllForDelete();
+        if ('@ViewBag.mgs' != '') {
+            var msg = '@ViewBag.mgs';
+            msg = msg.split("~");
+            ShowResult(msg[0], msg[1]);
+        }
+    });
+    $('#btnDialogIM').click(function () {
+        // var code = 1;// $('#Id').val();
+        $("#myImmigration").load('@Url.Action("Immigration", "Immigration")' + '?EmployeeId=' + '@Model.Id' + '&Id=0');
+
+     });
+     function ImmigrationEdit(sender) {
+         var EmployeeId = $(sender).attr('data-employeeId');
+         var Id = $(sender).attr('data-Id');
+         $("#myImmigration").load('@Url.Action("Immigration", "Immigration")' + '?EmployeeId=' + EmployeeId + '&Id=' + Id);
+     }
+    function Editimmigration() {
+        if ($(".immigration #immigrationVM_Id").val() <= 0) { $(".immigration .Edit").hide(); fromWriteColor("immigration"); return; }
+        fnReadOnly("immigration");
+        if ($(".immigration").hasClass("readOnly")) {
+            $(".immigration .Save").hide();
+            $(".immigration .Edit").show();
+        }
+        else {
+            $(".immigration .Save").show();
+            $(".immigration .Edit").hide();
+        }
+    }
+    function Cancleimmigration() {
+        $("#myImmigration").html('');
+        $(".showHideIM").show();
+    }
+    var leftMenuActive = "Immigration";
+
+
+
+</script>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SymViewModel.Tax.SchedulePolicyVM>
+<div class="headrow">
+    <button type="button" value="Update" class="saveJSON sym-btn-update">&nbsp;Update</button>
+</div>
+<div class="thinbox">
+    <div class="th_thinbox">
+        <p>Schedule Policy</p>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Line Number</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Schedule No</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Salary Head</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>From Basic</label>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="editor-label">
+                <label>Fixed</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Basic Portion</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Equal Max-Min Amount</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="editor-label">
+                <label>Remarks</label>
+            </div>
+        </div>
+    </div>
+
+
+    @Html.Partial("_detail", Model);
+</div>
+<div class="headrow">
+    <button type="button" value="Update" class="saveJSON sym-btn-update">&nbsp;Update</button>
+</div>
+
+<script>
+    $(function () {
+
+    });
+
+
+
+    $('.saveJSON').click(function () {
+
+
+        var myData = $('#frmSchedulePolicy').serialize();
+        var url = "/TAX/SchedulePolicy/Edit";
+
+        submit(url, myData);
+
+    });
+</script>

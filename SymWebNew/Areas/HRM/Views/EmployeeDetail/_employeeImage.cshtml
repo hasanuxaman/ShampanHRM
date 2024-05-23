@@ -1,0 +1,15 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+<div class="row">
+    <img src= "@Url.Content("~/Files/EmployeeInfo/" + Model.fileName)" id="EmployeeImage" alt="IMAGES" height="200" width="200" />
+    @using (Ajax.BeginForm("EmployeeImage", "EmployeeInfo", null, new AjaxOptions { UpdateTargetId = "FindEmployee" }, new { enctype = "multipart/form-data", id = "frmEmployeeEdit" }))
+    { 
+     <input type="file"  accept=".jpg,.png,.gif,.jpeg" name="file" id="FileUpload" style="width: 200px;" onchange="CheckImageSize(this);ShowpImagePreview(this); " />
+        @*<input type="submit" class="sym-btn-file-upload" value="Pic Save"  style="width: 50%; text-align:center; " />*@
+        <button type="submit" class="sym-btn-file-upload"  style="width: 50%; text-align:center; " title="Save Data" > Pic Save</button>
+        @*<input type="button" onclick="EmployeeImageDelete(this)" data-id="@Model.Id" class="btn btn-info" value="Pic Delete"  style="width: 40.20%; text-align:center; " />*@
+         <button type="button" title="Delete Checked Indent" onclick="EmployeeImageDelete(this)" data-id="@Model.Id" style="width: 40.20%;" class="sym-btn-remove">&nbsp;Delete</button>
+        
+        <input type="hidden" id="employeeId" name="employeeId" value="@Model.Id" />
+    }
+    <h3 style="text-align:center;" >@Model.Salutation_E @Model.MiddleName @Model.LastName</h3>
+</div>

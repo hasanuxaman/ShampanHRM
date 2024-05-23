@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B98CC664-34BD-4405-B815-CE6F1D9D7B66}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SymViewModel</RootNamespace>
+    <AssemblyName>SymViewModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attendance\AttendanceDailyVM.cs" />
+    <Compile Include="Attendance\AttendanceMigrateProcessVM.cs" />
+    <Compile Include="Attendance\AttendanceMigrationVM.cs" />
+    <Compile Include="Attendance\AttendanceRosterDetailVM.cs" />
+    <Compile Include="Attendance\AttendanceRosterVM.cs" />
+    <Compile Include="Attendance\AttendanceRosterAllVM.cs" />
+    <Compile Include="Attendance\AbsentDeductionStructureVM.cs" />
+    <Compile Include="Attendance\AttendanceDailyNewVM.cs" />
+    <Compile Include="Attendance\EarningDeductionStructureVM.cs" />
+    <Compile Include="Attendance\EmployeeDailyAbsenceVM.cs" />
+    <Compile Include="Attendance\EmployeeDailyOvertimeVM.cs" />
+    <Compile Include="Attendance\EmployeeMonthlyAbsenceVM.cs" />
+    <Compile Include="Attendance\DownloadDataVM.cs" />
+    <Compile Include="Attendance\EmployeeMonthlyOvertimeVM.cs" />
+    <Compile Include="Attendance\EmployeeWeeklyHolidayVM.cs" />
+    <Compile Include="Attendance\MonthlyAttendanceVM.cs" />
+    <Compile Include="Attendance\RegularVM.cs" />
+    <Compile Include="Common\AnyModel.cs" />
+    <Compile Include="Common\Appraisal360DetailsVM.cs" />
+    <Compile Include="Common\Appraisal360VM.cs" />
+    <Compile Include="Common\AppraisalMarkSetupsVM.cs" />
+    <Compile Include="Common\AppraisalQuestionsVM.cs" />
+    <Compile Include="Common\AssetVM.cs" />
+    <Compile Include="Common\AutoCompleteVM.cs" />
+    <Compile Include="Common\BankVM.cs" />
+    <Compile Include="Common\BlockEmployerVM.cs" />
+    <Compile Include="Common\BlockJobSeekerVM.cs" />
+    <Compile Include="Common\BranchVM.cs" />
+    <Compile Include="Common\ChartVM.cs" />
+    <Compile Include="Common\CodeVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\CommonMaster.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\CommonVM.cs" />
+    <Compile Include="Common\CompanyProfile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\CompanyVM.cs" />
+    <Compile Include="Common\ConnectionTest.cs" />
+    <Compile Include="Common\DatabaseTableVM.cs" />
+    <Compile Include="Common\DepartmentVM.cs" />
+    <Compile Include="Common\EmailSenderVM.cs" />
+    <Compile Include="Common\EMJobOfferVM.cs" />
+    <Compile Include="Common\EMJobVM.cs" />
+    <Compile Include="Common\ExportImportVM.cs" />
+    <Compile Include="Common\FileModel.cs" />
+    <Compile Include="Common\FiscalYear.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\FiscalYearDetailVM.cs" />
+    <Compile Include="Common\GroupVM.cs" />
+    <Compile Include="Common\InfoAgentVM.cs" />
+    <Compile Include="Common\InfoEmployerVM.cs" />
+    <Compile Include="Common\InfoJobSeekerVM.cs" />
+    <Compile Include="Common\JobCircularVM.cs" />
+    <Compile Include="Common\JQueryDataTableParamModel.cs" />
+    <Compile Include="Common\JQueryDataTableParamVM.cs" />
+    <Compile Include="Common\JSProfileViewVM.cs" />
+    <Compile Include="Common\LeaveTypeVM.cs" />
+    <Compile Include="Common\OtherInfoVM.cs" />
+    <Compile Include="Common\ParameterVM.cs" />
+    <Compile Include="Common\PreEmployementInformationVM.cs" />
+    <Compile Include="Common\ProjectVM.cs" />
+    <Compile Include="Common\PublicApplicantVM.cs" />
+    <Compile Include="Common\ResultVM.cs" />
+    <Compile Include="Common\RolesVM.cs" />
+    <Compile Include="Common\SampleVM.cs" />
+    <Compile Include="Common\SectionVM.cs" />
+    <Compile Include="Common\SettingMaster.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\SettingsVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\SetupMaster.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ShampanIdentityVM.cs" />
+    <Compile Include="Common\SMSSenderVM.cs" />
+    <Compile Include="Common\StructureGroupVM.cs" />
+    <Compile Include="Common\SymUserRollDefaultVM.cs" />
+    <Compile Include="Common\SymUserRollVM.cs" />
+    <Compile Include="Common\TableFieldAlterVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\UserGroupVM.cs" />
+    <Compile Include="Common\UserInformationMaster.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\UserLogsVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\UserRolesVM.cs" />
+    <Compile Include="Common\EmployeeLeaveEncashmentVM.cs" />
+    <Compile Include="Common\ViewAppraisal360VM.cs" />
+    <Compile Include="Enum\EnumEMPTypeVM.cs" />
+    <Compile Include="Enum\EnumForceVM.cs" />
+    <Compile Include="Enum\EnumProfessionalDegreeVM.cs" />
+    <Compile Include="Enum\EnumValue.cs" />
+    <Compile Include="GF\EmployeeGFForfeitureVM.cs" />
+    <Compile Include="GF\EmployeeGFOpeinigVM.cs" />
+    <Compile Include="GF\EmployeeGFPaymentVM.cs" />
+    <Compile Include="GF\EmployeeBreakMonthGFVM.cs" />
+    <Compile Include="Attendance\AttendanceStructureVM.cs" />
+    <Compile Include="Enum\BaseEntity.cs" />
+    <Compile Include="Enum\EnumColumnListVM.cs" />
+    <Compile Include="Enum\EnumReportVM.cs" />
+    <Compile Include="Enum\EnumVoucherTypeVM.cs" />
+    <Compile Include="Enum\EnumOderByVM.cs" />
+    <Compile Include="Enum\EnumSalaryStepVM.cs" />
+    <Compile Include="Enum\EnumSalaryPortionVM.cs" />
+    <Compile Include="GF\EmployeeSettlementVM.cs" />
+    <Compile Include="GF\GFEmployeeProvisionVM.cs" />
+    <Compile Include="GF\GFPolicyVM.cs" />
+    <Compile Include="HRM\DesignationGroupVM.cs" />
+    <Compile Include="HRM\EmployeeAssetVM.cs" />
+    <Compile Include="HRM\EmployeeFilesVM.cs" />
+    <Compile Include="HRM\EmployeeProfessionalDegreeVM.cs" />
+    <Compile Include="HRM\EmployeesHierarchyVM.cs" />
+    <Compile Include="HRM\Events.cs" />
+    <Compile Include="HRM\JournalDetailsModel.cs" />
+    <Compile Include="HRM\JournalHeaders.cs" />
+    <Compile Include="Leave\EmployeeCompensatoryLeaveVM.cs" />
+    <Compile Include="Loan\EmployeeLoanDetailVM.cs" />
+    <Compile Include="Loan\EmployeeLoanVM.cs" />
+    <Compile Include="Loan\SalaryLoanDetailVM.cs" />
+    <Compile Include="Loan\SalaryLoanVM.cs" />
+    <Compile Include="Payroll\BonusProcessVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Payroll\BonusStructureVM.cs" />
+    <Compile Include="Payroll\BonusNameVM.cs" />
+    <Compile Include="Payroll\EarningDeductionTypeVM.cs" />
+    <Compile Include="Payroll\EmployeeEarningLeaveVM.cs" />
+    <Compile Include="Payroll\EmployeeOtherDeductionVM.cs" />
+    <Compile Include="Payroll\EmployeeOtherEarningVM.cs" />
+    <Compile Include="Payroll\ExcelVM.cs" />
+    <Compile Include="Payroll\GLAccountVM.cs" />
+    <Compile Include="Payroll\MultipleSalaryStructureVM.cs" />
+    <Compile Include="Payroll\ProjectAllocationVM.cs" />
+    <Compile Include="Payroll\ProjectAllocationDetailVM.cs" />
+    <Compile Include="Payroll\SageLedgerVM.cs" />
+    <Compile Include="Payroll\SalaryEmployeeVM.cs" />
+    <Compile Include="Payroll\SalaryInformationVM.cs" />
+    <Compile Include="Payroll\SalaryOtherDeductionVM.cs" />
+    <Compile Include="Payroll\SalaryOtherEarningVM.cs" />
+    <Compile Include="Payroll\EmployeeBonusDetailVM.cs" />
+    <Compile Include="Payroll\EmployeeBonusVM.cs" />
+    <Compile Include="Payroll\EmployeeSalaryStructureVM.cs" />
+    <Compile Include="Payroll\GradeVM.cs" />
+    <Compile Include="Attendance\HoliDayVM.cs" />
+    <Compile Include="Enum\EnumLoanTypeVM.cs" />
+    <Compile Include="Enum\EnumResultVM.cs" />
+    <Compile Include="Enum\EnumBloodGroupVM.cs" />
+    <Compile Include="Enum\EnumCountryVM.cs" />
+    <Compile Include="Enum\EnumDegreeVM.cs" />
+    <Compile Include="Enum\EnumDistrictVM.cs" />
+    <Compile Include="Enum\EnumDivisionVM.cs" />
+    <Compile Include="Enum\EnumEmploymentStatusVM.cs" />
+    <Compile Include="Enum\EnumEmploymentTypeVM.cs" />
+    <Compile Include="Enum\EnumGenderVM.cs" />
+    <Compile Include="Enum\EnumImmigrationTypeVM.cs" />
+    <Compile Include="Enum\EnumLanguageCompetencyVM.cs" />
+    <Compile Include="Enum\EnumLanguageFluencyVM.cs" />
+    <Compile Include="Enum\EnumLanguageVM.cs" />
+    <Compile Include="Enum\EnumLeaveApproveStatusVM.cs" />
+    <Compile Include="Enum\EnumLeaveTypeVM.cs" />
+    <Compile Include="Enum\EnumLeftTypeVM.cs" />
+    <Compile Include="Enum\EnumMeritalStatusVM.cs" />
+    <Compile Include="Enum\EnumNationalityVM.cs" />
+    <Compile Include="Enum\EnumReligionVM.cs" />
+    <Compile Include="Enum\EnumSalaryPayModeVM.cs" />
+    <Compile Include="Enum\EnumSalutationVM.cs" />
+    <Compile Include="Enum\EnumSkillQualityVM.cs" />
+    <Compile Include="Enum\EnumTrainingCourseVM.cs" />
+    <Compile Include="Enum\EnumTrainingPlaceVM.cs" />
+    <Compile Include="Enum\EnumTrainingStatusVM.cs" />
+    <Compile Include="Enum\EnumTravelTypeVM.cs" />
+    <Compile Include="Enum\EnumYearVM.cs" />
+    <Compile Include="Attendance\AttLogsVM.cs" />
+    <Compile Include="Payroll\EmployeeSalaryStructureDetailVM.cs" />
+    <Compile Include="Payroll\SalaryEarningDetailVM.cs" />
+    <Compile Include="Payroll\SalaryEarningVM.cs" />
+    <Compile Include="Payroll\SalarySheetVM.cs" />
+    <Compile Include="Payroll\SalaryStructureMatrixVM.cs" />
+    <Compile Include="Payroll\TAX108AVM.cs" />
+    <Compile Include="PF\COAGroupVM.cs" />
+    <Compile Include="PF\EmployeeBreakMonthPFVM.cs" />
+    <Compile Include="PF\EmployeePFForfeitureVM.cs" />
+    <Compile Include="PF\EmployeePFPaymentVM.cs" />
+    <Compile Include="PF\EnumJournalEntryTypeVM.cs" />
+    <Compile Include="PF\GFHeaderVM.cs" />
+    <Compile Include="PF\GLJournalDetailVM.cs" />
+    <Compile Include="PF\GLJournalVM.cs" />
+    <Compile Include="PF\COAVM.cs" />
+    <Compile Include="PF\EmployeePFOpeinigVM.cs" />
+    <Compile Include="PF\GLTransactionDetailVM.cs" />
+    <Compile Include="PF\BankChargeVM.cs" />
+    <Compile Include="PF\InvestmentNameDetailsVM.cs" />
+    <Compile Include="PF\InvestmentRenewVM.cs" />
+    <Compile Include="PF\InvestmentsAccruedVM.cs" />
+    <Compile Include="PF\LoanMonthlyPayment.cs" />
+    <Compile Include="PF\LoanRepaymentToBankVM.cs" />
+    <Compile Include="PF\LoanSattlementVM.cs" />
+    <Compile Include="PF\LoanVM.cs" />
+    <Compile Include="PF\ProfitDistributionNewVM.cs" />
+    <Compile Include="PF\ROIDetailVM.cs" />
+    <Compile Include="PF\PFParameterVM.cs" />
+    <Compile Include="PF\PFSettlementDetailVM.cs" />
+    <Compile Include="PF\WithdrawTypeVM.cs" />
+    <Compile Include="PF\AccountTypeVM.cs" />
+    <Compile Include="PF\BankBranchVM.cs" />
+    <Compile Include="PF\InvestmentNameVM.cs" />
+    <Compile Include="PF\AccountVM.cs" />
+    <Compile Include="PF\PFReportVM.cs" />
+    <Compile Include="PF\TransactionMediaVM.cs" />
+    <Compile Include="PF\BankNameVM.cs" />
+    <Compile Include="PF\PFSettlementVM.cs" />
+    <Compile Include="PF\ProfitDistributionDetailVM.cs" />
+    <Compile Include="PF\ProfitDistributionVM.cs" />
+    <Compile Include="PF\EEHeadVM.cs" />
+    <Compile Include="PF\EETransactionDetailVM.cs" />
+    <Compile Include="PF\EETransactionVM.cs" />
+    <Compile Include="PF\PFBankDepositVM.cs" />
+    <Compile Include="PF\PFDetailVM.cs" />
+    <Compile Include="PF\PreDistributionFundVM.cs" />
+    <Compile Include="PF\SettlementPolicyVM.cs" />
+    <Compile Include="PF\ReservedFundVM.cs" />
+    <Compile Include="PF\ReturnOnBankInterestVM.cs" />
+    <Compile Include="PF\EnumInvestmentTypeVM.cs" />
+    <Compile Include="PF\ForfeitureAccountVM.cs" />
+    <Compile Include="PF\InvestmentVM.cs" />
+    <Compile Include="PF\EmployeePFVM.cs" />
+    <Compile Include="PF\PFStructureVM.cs" />
+    <Compile Include="Payroll\SalaryStructureDetailVM.cs" />
+    <Compile Include="HRM\EmployeeDependentVM.cs" />
+    <Compile Include="HRM\EmployeeImmigrationVM.cs" />
+    <Compile Include="HRM\EmployeeJobVM.cs" />
+    <Compile Include="Leave\EmployeeLeaveBalanceVM.cs" />
+    <Compile Include="Leave\EmployeeLeaveDetailVM.cs" />
+    <Compile Include="Leave\EmployeeLeaveStructureVM.cs" />
+    <Compile Include="Leave\EmployeeLeaveVM.cs" />
+    <Compile Include="HRM\EmployeePersonalDetailVM.cs" />
+    <Compile Include="Payroll\EmployeeStructureGroupVM.cs" />
+    <Compile Include="HRM\EmployeeEducationVM.cs" />
+    <Compile Include="HRM\EmployeeEmergencyContactVM.cs" />
+    <Compile Include="HRM\EmployeeExtraCurriculumActivityVM.cs" />
+    <Compile Include="HRM\EmployeeInfoVM.cs" />
+    <Compile Include="HRM\EmployeeJobHistoryVM.cs" />
+    <Compile Include="HRM\EmployeeLanguageVM.cs" />
+    <Compile Include="HRM\EmployeeLeftInformationVM.cs" />
+    <Compile Include="HRM\EmployeeNomineeVM.cs" />
+    <Compile Include="HRM\EmployeePermanentAddressBanglaVM.cs" />
+    <Compile Include="HRM\EmployeePermanentAddressVM.cs" />
+    <Compile Include="HRM\EmployeePresentAddressBanglaVM.cs" />
+    <Compile Include="HRM\EmployeePresentAddressVM.cs" />
+    <Compile Include="HRM\EmployeePromotionVM.cs" />
+    <Compile Include="HRM\EmployeeReferenceVM.cs" />
+    <Compile Include="HRM\EmployeeTrainingVM.cs" />
+    <Compile Include="HRM\EmployeeTransferVM.cs" />
+    <Compile Include="HRM\EmployeeTravelVM.cs" />
+    <Compile Include="Leave\LeaveStructureDetailVM.cs" />
+    <Compile Include="Leave\LeaveStructureVM.cs" />
+    <Compile Include="Payroll\SalaryStructureVM.cs" />
+    <Compile Include="Enum\EnumSalaryTypeVM.cs" />
+    <Compile Include="PF\SalaryPFDetailVM.cs" />
+    <Compile Include="PF\SalaryPFVM.cs" />
+    <Compile Include="PF\WithdrawVM.cs" />
+    <Compile Include="Tax\Schedule1BonusSalaryVM.cs" />
+    <Compile Include="Tax\Schedule2BonusHousePropertyVM.cs" />
+    <Compile Include="Tax\Schedule3BonusInvestmentVM.cs" />
+    <Compile Include="Tax\EmloyeeTAXSlabVM.cs" />
+    <Compile Include="Tax\EmployeeSchedule2TaxSlabDetailVM.cs" />
+    <Compile Include="Tax\EmployeeSchedule3TaxSlabDetailVM.cs" />
+    <Compile Include="Tax\EmployeeTaxSlabDetailVM.cs" />
+    <Compile Include="Tax\Schedule1SalaryVM.cs" />
+    <Compile Include="Tax\EmployeeTaxVM.cs" />
+    <Compile Include="Tax\SalaryTaxDetailVM.cs" />
+    <Compile Include="Tax\SalaryTaxVM.cs" />
+    <Compile Include="Tax\Schedule2HousePropertyVM.cs" />
+    <Compile Include="Tax\Schedule2TaxSlabDetailVM.cs" />
+    <Compile Include="Tax\Schedule2TaxSlabVM.cs" />
+    <Compile Include="Tax\Schedule3InvestmentVM.cs" />
+    <Compile Include="Tax\Schedule3TaxSlabDetailVM.cs" />
+    <Compile Include="Tax\Schedule3TaxSlabVM.cs" />
+    <Compile Include="Tax\ScheduleForm10BBMonthlyVM.cs" />
+    <Compile Include="Tax\ScheduleForm10BBYearlyVM.cs" />
+    <Compile Include="Tax\SchedulePolicyVM.cs" />
+    <Compile Include="Tax\TaxCalculationVM.cs" />
+    <Compile Include="Tax\AdvanceTaxVM.cs" />
+    <Compile Include="Tax\TaxDepositVM.cs" />
+    <Compile Include="Tax\TaxSetupVM.cs" />
+    <Compile Include="Tax\TaxSlabDetailVM.cs" />
+    <Compile Include="Tax\TaxSlabVM.cs" />
+    <Compile Include="Tax\TaxStructureVM.cs" />
+    <Compile Include="HRM\DesignationVM.cs" />
+    <Compile Include="HRM\EmployeeVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tax\TaxScheduleVM.cs" />
+    <Compile Include="Tax\YearlyTAXVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

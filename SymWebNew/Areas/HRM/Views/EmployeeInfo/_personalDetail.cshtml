@@ -1,0 +1,946 @@
+﻿@model SymViewModel.HRM.EmployeeInfoVM
+@using UIHelper.MVC
+
+@using SymOrdinary
+@using System.Threading;
+@{ 
+    ShampanIdentity identity = null;
+    try
+    {
+        identity = (ShampanIdentity)Thread.CurrentPrincipal.Identity;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("/Home/Index");
+        return;
+    }
+}
+@{
+    ViewBag.Title = "Edit";
+    ViewBag.Location = "Edit"; 
+}
+
+@using (Html.BeginForm("PersonalDetail", "EmployeeInfo", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "frmEmpPersonalD" }))
+{
+    @Html.HiddenFor(model => model.personalDetail.Id)
+    @Html.HiddenFor(model => model.personalDetail.EmployeeId)
+    @Html.ValidationSummary(true)
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Personal Details</p>
+        </div>
+        <div class="personalDetail">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        <label>WD Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.OtherId, new { @placeholder = "Personal Detail Id", @class = " form-control" })
+                    </div>
+                </div>
+         
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        <label>HRMS Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.HRMSCode, new { @placeholder = "Personal HRMS Code", @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        <label>D Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.WDCode, new { @placeholder = "Personal WD Code", @class = " form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        <label>TPN Code</label>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.TPNCode, new { @placeholder = "Personal TPN Code", @class = " form-control" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.NickName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.NickName, new { @placeholder = "Nick Name", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.FatherName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.FatherName, new { @placeholder = "Father Name", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.MotherName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.MotherName, new { @placeholder = "Mother Name", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Nationality_E)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.personalDetail.Nationality_E, "/Config/DropDown/Nationality", new { @placeholder = "Nationality", @class = "required form-control " })
+                    </div>
+                </div>
+
+            </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.DateOfBirth)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.DateOfBirth, new { @placeholder = "Date Of Birth", @onchange = " PersonalDate(this);", @class = "required customDatePicker form-control" })
+                            @*@Html.TextBoxFor(model => model.personalDetail.DateOfBirth, new { @placeholder = "Date Of Birth",  @onchange = "DateOfBirth(this); PersonalDate(this);", @class = "required customDatePicker form-control" })*@
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.PlaceOfBirth)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.PlaceOfBirth, new { @placeholder = "Place of Birth", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.Religion)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.Religion, "/Config/DropDown/Religion", new { @placeholder = "Religion", @class = "required form-control " })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.BloodGroup_E)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.BloodGroup_E, "/Config/DropDown/BloodGroup", new { @placeholder = "Blood Group", @class = "required form-control" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.Gender_E)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.Gender_E, "/Config/DropDown/Gender", new { @placeholder = "Gender", @class = "required form-control " })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            <label>Official Email</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.Email, new { @placeholder = "Official Email", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            <label>Personal Email</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.PersonalEmail, new { @placeholder = "Personal Email", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.MaritalStatus_E)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.MaritalStatus_E, "/Config/DropDown/MeritalStatus", new { @placeholder = "Marital Status", @class = " form-control " })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.MarriageDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.MarriageDate, new { @placeholder = "Marriage Date", @onchange = " PersonalDate(this);", @class = " customDatePicker form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.NoChildren)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.NoChildren, "/Config/DropDown/NoChildren", new { @placeholder = "NoChildren", @class = "form-control " })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.SpouseName)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.SpouseName, new { @placeholder = "Spouse Name", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.SpouseProfession)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.SpouseProfession, new { @placeholder = "Spouse Profession", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.SpouseDateOfBirth)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.SpouseDateOfBirth, new { @placeholder = "Spouse Date of Birth", @class = " customDatePicker form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.SpouseBloodGroup)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.SpouseBloodGroup, "/Config/DropDown/BloodGroup", new { @placeholder = "Blood Group", @class = " form-control" })
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Heightft)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.personalDetail.Heightft, "/Config/DropDown/Feet", new { @placeholder = "Height Feet", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.HeightIn)
+                    </div>
+                    <div class="editor-field">
+                        @Html.SimpleDropDownFor(model => model.personalDetail.HeightIn, "/Config/DropDown/HeightInch", new { @placeholder = "Height Inch", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.Weight)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.Weight, new { @placeholder = "Weight", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.ChestIn)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.ChestIn, new { @placeholder = "Chest Inch", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+
+                <div class="row">
+                    @*<div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.Nationality_E)
+                        </div>
+                        <div class="editor-field">
+                            @Html.SimpleDropDownFor(model => model.personalDetail.Nationality_E, "/Config/DropDown/Nationality", new { @placeholder = "Nationality", @class = "required form-control " })
+                        </div>
+                    </div>*@
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.PersonalContactNo)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.PersonalContactNo, new { @placeholder = "Personal Contact No.", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.CorporateContactNo)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.CorporateContactNo, new { @placeholder = "Corporate Contact No.", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.CorporateContactLimit)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.CorporateContactLimit, new { @placeholder = "Corporate Contact Limit", @class = "form-control NumberCheck" })
+                        </div>
+                    </div>
+                
+
+                   
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.PassportNumber)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.PassportNumber, new { @placeholder = "Passport Number", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.ExpiryDate)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.ExpiryDate, new { @placeholder = "Expiry Date", @onchange = "PersonalDate(this);", @class = "customDatePicker form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Passport File</label>
+                        <input type="file" onchange="CheckFileSize(this);" name="PassportFile" id="PassportFile" style="width: 200px;" />
+                    </div>
+                    @if (Model.personalDetail.PassportFile != null && Model.personalDetail.PassportFile != "")
+                {
+                        <div class="col-md-2">
+                            <label>Passport File</label>
+                            <div class="col-md-6">
+                                <a target="_blank" href="~/Files/PassportFile/@Model.personalDetail.Id@Model.personalDetail.PassportFile">
+                                    <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                                </a>
+                                @*  <iframe class="doc" src="https://docs.google.com/gview?url=~/Files/PassportFile/@Model.personalDetail.Id@Model.personalDetail.PassportFile+&embedded=true" ></iframe>*@
+                            </div>
+                            <div class="col-md-2" style="float: left;">
+                                <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="PassportFile" data-url="~/Files/PassportFile/@Model.personalDetail.Id@Model.personalDetail.PassportFile">
+                                    <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" />
+                                </span>
+                            </div>
+
+                        </div>
+                }
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.TIN)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.TIN, new { @placeholder = "TIN", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.personalDetail.TINFile)
+                        <input type="file" onchange="CheckFileSize(this);" name="TINFile" id="TINFile" style="width: 200px;" />
+                    </div>
+                    @if (Model.personalDetail.TINFile != null && Model.personalDetail.TINFile != "")
+                    {
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.personalDetail.TINFile)
+                            <div class="col-md-6">
+                                <a target="_blank" href="~/Files/TINFile/@Model.personalDetail.Id@Model.personalDetail.TINFile">
+                                    <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                                </a>
+                            </div>
+                            <div class="col-md-6" style="float: left;">
+                                <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="TINFile" data-url="~/Files/TINFile/@Model.personalDetail.Id@Model.personalDetail.TINFile">
+                                    <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                                </span>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.personalDetail.NID)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.personalDetail.NID, new { @onchange = "ValueLength(this);", @placeholder = "NID", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>NID File</label>
+                    <input type="file" onchange="CheckFileSize(this);" name="NIDF" id="NIDF" style="width: 200px;" />
+                </div>
+                @if (Model.personalDetail.NIDFile != null && Model.personalDetail.NIDFile != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.personalDetail.NID, new { @class = "attachment" })
+
+                        <div class="col-md-6">
+                            <a class="" target="_blank" href="~/Files/NID/@Model.personalDetail.Id@Model.personalDetail.NIDFile">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="NIDFile" data-url="~/Files/NID/@Model.personalDetail.Id@Model.personalDetail.NIDFile">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+              
+            </div>
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            <label>Vaccine1 Complete</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.personalDetail.IsVaccineDose1Complete, new { @placeholder = "IsVaccineDose1Complete", @class = "form-control" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Vaccine1 Date</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.VaccineDose1Date, new { @placeholder = "Vaccine1 Date", @class = " customDatePicker form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            <label>Vaccine1 Name</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.VaccineDose1Name, new { @placeholder = "Vaccine1 Name", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.personalDetail.VaccineFile1)
+                        <input type="file" onchange="CheckFileSize(this);" name="VaccineFile1" id="VaccineFile1" style="width: 200px;" />
+                    </div>
+                    @if (Model.personalDetail.VaccineFile1 != null && Model.personalDetail.VaccineFile1 != "")
+                    {
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.personalDetail.VaccineFile1)
+                            <div class="col-md-6">
+                                <a target="_blank" href="~/Files/VaccineFile1/@Model.personalDetail.Id@Model.personalDetail.VaccineFile1">
+                                    <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                                </a>
+                            </div>
+                            <div class="col-md-6" style="float: left;">
+                                <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="VaccineFile1" data-url="~/Files/VaccineFile1/@Model.personalDetail.Id@Model.personalDetail.VaccineFile1">
+                                    <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                                </span>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            <label>Vaccine2 Complete</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.personalDetail.IsVaccineDose2Complete, new { @placeholder = "IsVaccineDose2Complete", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Vaccine2 Date</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.VaccineDose2Date, new { @placeholder = "Vaccine2 Date", @class = " customDatePicker form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            <label>Vaccine2 Name</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.VaccineDose2Name, new { @placeholder = "Vaccine2 Name", @class = "form-control" })
+                        </div>
+                    </div>
+                   <div class="col-md-3">
+                    @Html.LabelFor(model => model.personalDetail.VaccineFiles2)
+                    <input type="file" onchange="CheckFileSize(this);" name="VaccineFiles2" id="VaccineFiles2" style="width: 200px;" />
+                </div>
+                @if (Model.personalDetail.VaccineFiles2 != null && Model.personalDetail.VaccineFiles2 != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.personalDetail.VaccineFiles2)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/VaccineFiles2/@Model.personalDetail.Id@Model.personalDetail.VaccineFiles2">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="VaccineFiles2" data-url="~/Files/VaccineFiles2/@Model.personalDetail.Id@Model.personalDetail.VaccineFiles2">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            <label>Vaccine3 Complete</label>
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.personalDetail.IsVaccineDose3Complete, new { @placeholder = "IsVaccineDose3Complete", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="editor-label">
+                            <label>Vaccine3 Date</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.VaccineDose3Date, new { @placeholder = "Vaccine3 Date", @class = " customDatePicker form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="editor-label">
+                            <label>Vaccine3 Name</label>
+
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.personalDetail.VaccineDose3Name, new { @placeholder = "Vaccine3 Name", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.personalDetail.VaccineFile3)
+                        <input type="file" onchange="CheckFileSize(this);" name="VaccineFile3" id="VaccineFile3" style="width: 200px;" />
+                    </div>
+                    @if (Model.personalDetail.VaccineFile3 != null && Model.personalDetail.VaccineFile3 != "")
+                    {
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.personalDetail.VaccineFile3)
+                            <div class="col-md-6">
+                                <a target="_blank" href="~/Files/VaccineFile3/@Model.personalDetail.Id@Model.personalDetail.VaccineFile3">
+                                    <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                                </a>
+                            </div>
+                            <div class="col-md-6" style="float: left;">
+                                <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="VaccineFile3" data-url="~/Files/VaccineFile3/@Model.personalDetail.Id@Model.personalDetail.VaccineFile3">
+                                    <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-1">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.Smoker)
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.personalDetail.Smoker, new { @placeholder = "Smoker", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.personalDetail.Smoker)
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.IsDisable)
+                        </div>
+                        <div class="editor-field">
+                            @Html.CheckBoxFor(model => model.personalDetail.IsDisable, new { @placeholder = "Is he Disabled?", @onclick = "IsDisabled();", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="IsDisabled">
+                        <div class="col-md-3">
+                            <div class="editor-label">
+                                @Html.LabelFor(model => model.personalDetail.KindsOfDisability)
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextAreaFor(model => model.personalDetail.KindsOfDisability, new { @placeholder = "Kinds Of Disability", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.personalDetail.DisabilityFile)
+                            <input type="file" onchange="CheckFileSize(this);" name="DisabilityFile" id="DisabilityFile" style="width: 200px;" />
+                        </div>
+                        @if (Model.personalDetail.DisabilityFile != null && Model.personalDetail.DisabilityFile != "")
+                    {
+                            <div class="col-md-2">
+                                @Html.LabelFor(model => model.personalDetail.DisabilityFile)
+                                <div class="col-md-6">
+                                    <a target="_blank" href="~/Files/DisabilityFile/@Model.personalDetail.Id@Model.personalDetail.DisabilityFile">
+                                        <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                                    </a>
+                                </div>
+                                <div class="col-md-6" style="float: left;">
+                                    <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="DisabilityFile" data-url="~/Files/DisabilityFile/@Model.personalDetail.Id@Model.personalDetail.DisabilityFile">
+                                        <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                                    </span>
+                                </div>
+                            </div>
+                    }
+                    </div>
+                </div>
+
+            
+            
+            <div class="row">
+
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.personalDetail.Signature)
+                    <input type="file" onchange="CheckFileSize(this);" name="SignatureFile" id="SignatureFile" style="width: 200px;" />
+                </div>
+                @if (Model.personalDetail.Signature != null && Model.personalDetail.Signature != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.personalDetail.SignatureFile)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/SignatureFile/@Model.personalDetail.Id@Model.personalDetail.Signature">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="DisabilityFile" data-url="~/Files/DisabilityFile/@Model.personalDetail.Id@Model.personalDetail.SignatureFile">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+
+                }
+                
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.personalDetail.FingerprintFile)
+                    <input type="file" onchange="CheckFileSize(this);" name="FingerprintFile" id="FingerprintFile" style="width: 200px;" />
+                </div>
+                @if (Model.personalDetail.FingerprintFile != null && Model.personalDetail.FingerprintFile != "")
+                {
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.personalDetail.FingerprintFile)
+                        <div class="col-md-6">
+                            <a target="_blank" href="~/Files/FingerprintFile/@Model.personalDetail.Id@Model.personalDetail.FingerprintFile">
+                                <img class="attachment" src="~/assets/Images/files.png" width="30" alt="File" title="File" />
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="float: left;">
+                            <span onclick="FileDelete(this)" ; data-id="@Model.personalDetail.Id" data-table="1" data-field="FingerprintFile" data-url="~/Files/FingerprintFile/@Model.personalDetail.Id@Model.personalDetail.FingerprintFile">
+                                <img class="attachment" src="~/assets/Images/document_delete.png" width="25px;" alt="File" title="File" />
+                            </span>
+                        </div>
+                    </div>
+                }
+                
+
+                
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.personalDetail.Remarks)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextAreaFor(model => model.personalDetail.Remarks, new { @placeholder = "Remarks", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+
+                <br />
+                @if (identity.IsAdmin || identity.IsHRM )
+            {
+                    @* <p class="actionButton_personal"> </p>*@
+                    <button type="button" title="Edit Data" id="editJSOND" class="sym-btn-edit">&nbsp;Edit </button>
+                    @*<input type="button" value="Save" onclick="pageSubmit(\'frmEmpPersonalD\');" class="Save btn btn-info" />*@
+                    @*<button type="button" onclick="pageSubmit('frmEmpPersonalD');" title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>*@
+                    <button type="button" title="Save Data" id="saveJSOND" class="sym-btn-save">&nbsp;Save </button>
+                    <button type="button" title="Cancel Data" id="cancelJSOND" class=" sym-btn-cancel">&nbsp;Cancel </button>@*
+                                  <button type="button"  title="Save Data" id="empEditP"  class="Save sym-btn-save" >&nbsp;Save</button>
+                <button type="button" title="Edit Data"   onclick="EditpersonalDetail();" class=" Edit sym-btn-edit" >&nbsp;Edit</button>
+                                   <button type="button" title="Cancel Data"   onclick="Cancle();" class="Cancle sym-btn-cancel" >&nbsp;Cancel</button>*@
+            }
+            </div>
+    </div>
+
+}
+
+<script>
+    $(function () {
+        //$('.customDatePicker').datetimepicker({
+        //    minDate: new Date()
+        //});
+    });
+
+    IsDisabled();
+    $(function () {
+        EditpersonalDetail();
+        //InitDropDowns2();
+        var html = "";
+        //InitDatePickersCurrent();
+        valiDation("frmEmpPersonalD");
+        $('.selectDropdown').val('@Model.Code').change();
+        setTimeout(function () {
+            //$('.gender').select2('val', "Other")
+
+        }, 3000);
+
+    });
+
+    var isChange = false;
+    $('.form-control').change(function () {
+        isChange = true;
+        ////alert(('Main-FromCh: ');
+    });
+    $('#cancelJSOND').click(function () {
+        if (isChange == true) {
+            Ask("<h3>You have some changes in this form.</br>Click No for Ignore</h3>", null, function () {
+                isChange = false;
+                location = "/HRM/EmployeeInfo/Edit/" + $('#Id').val();;
+            })
+        }
+        else {
+            isChange = false;
+            location = "/HRM/EmployeeInfo/Edit/" + $('#Id').val();;
+        }
+    });
+    $('#editJSOND').click(function () {
+        $("#saveJSOND").show();
+        $("#cancelJSOND").show();
+        $("#editJSOND").hide();
+        fnReadOnly("personalDetail");
+
+    });
+
+    //$('#saveJSOND').click(function () {
+    //    event.preventDefault();
+    //    //var url = "/HRM/EmployeeInfo/PersonalDetail"
+    //    var url = $(this).closest('form').attr("action");
+    //    alert(url);
+    //    $.ajax({
+    //        url: url,
+    //        type: 'POST',
+    //        dataType: "JSON",
+    //        data: new FormData(this),
+    //        processData: false,
+    //        contentType: false,
+    //        success: function (data, status) {
+    //            ShowResult("Success", "You have no changes for save");
+    //        },
+    //        error: function (xhr, desc, err) {
+    //            console.log("error");
+    //        }
+    //    });
+
+    //    //var a = pageSubmitJSON('frmEmpPersonalD');
+    //    //if (a != 0) {
+    //    //    return;
+    //    //}
+    //    ////if (isChange == false) {
+    //    ////    ShowResult("Success", "You have no changes for save");
+    //    ////    return;
+    //    ////}
+
+    //    ////alert(('Change ' + isChange);
+    //    //if (isChange == true) {
+    //    //    var myData = $('#frmEmpPersonalD').submit();
+    //    //    pageSubmit('frmEmpPersonalD');
+    //    //    //var url = "/HRM/EmployeeInfo/PersonalDetail";
+    //    //    //var res = submit(url, myData);
+
+    //    //    if (res == true) {
+    //    //        location.reload();
+    //    //    }
+    //    //    isChange = false;
+    //    //}
+    //    //else {
+    //    //    ShowResult("Success", "You have no changes for save");
+    //    //}
+    //    //var fileUpload = $(".nidf").get(0);
+    //    //var files = fileUpload.files;
+    //    //// Create FormData object  
+    //    //var fileData = new FormData();
+    //    //fileData.append(files[0].name, files[0]);
+    //    // Looping over all files and add it to FormData object  
+    //    //for (var i = 0; i < files.length; i++) {
+    //    //    fileData.append(files[i].name, files[i]);
+    //    //    //alert((files[i]);
+    //    //}
+    //    //var fd = new FormData();// FormData();
+    //    //var file_data = $('input[type="file"]')[0].files; // for multiple files
+    //    //for (var i = 0; i < file_data.length; i++) {
+    //    //    fd.append("file_" + i, file_data[i]);
+    //    //}
+    //    //var myData = $('#frmEmpPersonalD').serialize();
+
+    //    //var other_data = $('form').serializeArray();
+    //    //$.each(other_data, function (key, input) {
+    //    //    fd.append(input.name, input.value);
+    //    //});
+    //    //fileData.append("vm",myData);
+    //    //var url = "/HRM/EmployeeInfo/PersonalDetail";
+    //    //$.ajax({
+    //    //    url: url,
+    //    //    type: "POST",
+    //    //    //contentType: false, // Not to set any content header  
+    //    //    //processData: false, // Not to process data  
+    //    //    //data: fd,
+    //    //    data: myData,
+    //    //    //data: fileData,
+    //    //    //data: { vm: myData, NIDF: fileData },
+    //    //    success: function (result) {
+    //    //        var msg1 = result.split('~')[0];
+    //    //        var msg2 = result.split('~')[1];
+    //    //        if (msg1 != "Fail") {
+    //    //            ShowResult("Success", msg2);
+    //    //        }
+    //    //        else {
+    //    //            ShowResult("Fail", msg2);
+    //    //        }
+    //    //    },
+    //    //    error: function (err) {
+    //    //        ShowResult("Fail", err);
+    //    //        ////alert((err.statusText);
+    //    //    }
+    //    //});
+
+
+    //    //submitJS(url, myData, nidff);
+    //    //if (isChange == true) { }
+    //    //else {
+    //    //    ShowResult("Success", "You have no changes for save");
+    //    //}
+    //})
+   
+
+
+    $('#saveJSOND').click(function () {
+        var url = "/HRM/EmployeeInfo/PersonalDetail";
+
+        $form = $('#frmEmpPersonalD');
+
+        $form.attr("action", url);
+        $form.submit();
+
+    });
+
+
+    var submitJS = function (url, mydata, mydata1) {
+        //alert((mydata1);
+        $.ajax({
+            type: 'POST',
+            data: { mydata: mydata, NIDF: mydata1 },
+
+            //data: mydata, // #2
+            url: url,
+            success: function (result) {
+                var msg1 = result.split('~')[0];
+                var msg2 = result.split('~')[1];
+                if (msg1 != "Fail") {
+                    ShowResult("Success", msg2);
+                }
+                else {
+                    ShowResult("Fail", msg2);
+                }
+            }
+        });
+    }
+    $(document).on("submit", "form", function (event) {
+        event.preventDefault();
+
+        var url = $(this).attr("action");
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "JSON",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (data, status) {
+                $('#created').html(data); //content loads here
+
+            },
+            error: function (xhr, desc, err) {
+                console.log("error");
+
+            }
+        });
+
+    });
+
+
+    function DateOfBirth(sender) {
+        var selectedDate = ParseDate($(sender).val());
+        var today = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay());
+        if (selectedDate >= today) {
+            $(sender).val("");
+            ShowResult('Fail', "Minimum age should be 18");
+        }
+    }
+    function IsDisabled() {
+        if ($("#personalDetail_IsDisable").is(":checked")) {
+            $(".IsDisabled").show();
+        }
+        else {
+            $("#personalDetail_KindsOfDisability").val("");
+            $("#DisabilityFile").val("");
+            $(".IsDisabled").hide();
+        }
+    }
+
+    function ValueLength(sender) {
+        var nidLength = ($("#personalDetail_NID").val()).length;
+        if (nidLength > 17) {
+            ShowResult("fail", "NID is now " + nidLength + " digits. It can't be more than 17 digits!");
+            $(sender).val("");
+        }
+    }
+
+
+    function PersonalDate(sender) {
+        var birthDate = ParseDate($("#personalDetail_DateOfBirth").val());
+        var expiryDate = ParseDate($("#personalDetail_ExpiryDate").val());
+        var marriageDate = ParseDate($("#personalDetail_MarriageDate").val());
+
+
+        if (birthDate > expiryDate) {
+            ShowResult("Fail", "Birth Date can't be prior to Expiry Date!");
+            $(sender).val("");
+        }
+
+        if (birthDate > marriageDate) {
+            ShowResult("Fail", "Birth Date can't be prior to Marriage Date!");
+            $(sender).val("");
+        }
+
+
+
+
+
+    }
+
+</script>

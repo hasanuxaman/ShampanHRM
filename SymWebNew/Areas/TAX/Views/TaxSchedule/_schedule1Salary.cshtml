@@ -1,0 +1,1033 @@
+﻿@model SymViewModel.Tax.TaxScheduleVM
+@using UIHelper.MVC
+@using (Html.BeginForm("CreateEdit", "TaxSchedule", FormMethod.Post, new { enctype = "multipart/form-data", @Id = "afrmSchedule1Salary" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.Id)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.EmployeeId)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.ProjectId)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.DepartmentId)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.SectionId)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.DesignationId)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.TaxSlabId)
+
+    @Html.HiddenFor(model => model.schedule1SalaryVM.FiscalYearId)
+    @Html.HiddenFor(model => model.schedule1SalaryVM.TransactionType)
+    @Html.HiddenFor(model => model.Operation)
+
+    //@Html.HiddenFor(model => model.permanentAddress.Id)
+    // @Html.HiddenFor(model => model.permanentAddress.EmployeeId)
+
+
+    <div class="headrow">
+        <button type="button" title="Save Data" id="" class="saveJSONSchedule1Salary Save sym-btn-save">&nbsp;Save</button>
+        <label class="pull-right">Schedule1 Salary Monthly</label>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Schedule1 Salary Monthly</p>
+        </div>
+
+        <div class="Schedule1Salary">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-label" style="white-space: pre-line">
+                        @Html.Label("", "Description")
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-label" style="white-space: pre-line">
+                        @Html.Label("", "Amount of Income (Tk.) \n (A)")
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label" style="white-space: pre-line">
+                        @Html.Label("", "Amount of Exempted Income (Tk.) \n (B)")
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="editor-label" style="white-space: pre-line">
+                        @Html.Label("", "Net Taxable Income (Tk.) \n (C=A-B)")
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="editor-label" style="white-space: pre-line">
+                        @Html.Label("", "Remarks")
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description1", "1. Basic pay", new { @placeholder = "Basic pay", @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line1A, new { @placeholder = "Line 1A", @class = "right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line1A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line1B, new { @placeholder = "Line 1B", @class = "right form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line1B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line1C, new { @placeholder = "Line 1C", @class = "right form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line1C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line1Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line1Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description2", "2. Special pay", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line2A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line2A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line2B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line2B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line2C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line2C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line2Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line2Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description3", "3. Arrear", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line3A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line3A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line3B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line3B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line3C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line3C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line3Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line3Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description4", "4. Dearness Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line4A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line4A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line4B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line4B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line4C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line4C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line4Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line4Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description5", "5. House Rent Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line5A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line5A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line5B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line5B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line5C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line5C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line5Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line5Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description6", "6. Medical Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line6A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line6A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line6B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line6B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line6C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line6C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line6Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line6Remarks)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description7", "7. Critical Diseases", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line7A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line7A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line7B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line7B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line7C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line7C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line7Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line7Remarks)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description8", "8. Conveyance Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line8A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line8A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line8B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line8B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line8C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line8C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line8Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line8Remarks)
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description9", "9. Festival Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line9A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line9A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line9B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line9B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line9C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line9C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line9Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line9Remarks)
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description10", "10. Servant Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line10A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line10A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line10B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line10B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line10C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line10C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line10Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line10Remarks)
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description11", "11. Leave Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line11A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line11A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line11B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line11B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line11C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line11C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line11Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line11Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description12", "12. Honorarium / Reward/ Fee", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line12A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line12A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line12B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line12B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line12C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line12C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line12Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line12Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description13", "13. Overtime Allowance", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line13A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line13A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line13B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line13B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line13C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line13C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line13Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line13Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description14", "14. Bonus / Ex-gratia", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line14A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line14A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line14B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line14B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line14C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line14C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line14Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line14Remarks)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description15", "15. Employee’s Contribution to Recognized Provident Fund", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line15A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line15A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line15B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line15B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line15C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line15C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line15Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line15Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description16", "16. Interest accrued on Recognized Provident Fund", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line16A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line16A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line16B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line16B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line16C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line16C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line16Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line16Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description17", "17. Deemed income for transport facility", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line17A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line17A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line17B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line17B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line17C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line17C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line17Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line17Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description18", "18. Deemed income for free furnished/unfurnished accommodation ", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line18A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line18A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line18B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line18B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line18C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line18C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line18Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line18Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description19", "19. Other, if any (give detail)", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line19A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line19A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line19B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line19B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line19C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line19C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line19Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line19Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description20", "20. Leave EnCash", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line20A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line20A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line20B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line20B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line20C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line20C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line20Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line20Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description21", "21. Gratuity", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line21A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line21A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line21B, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line21B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line21C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line21C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line21Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line21Remarks)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextArea("Description22", "22. Worker's Participation Fund", new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line22A, new { @class = " right valA form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line22A)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line22B, new { @class = " right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line22B)
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.Line22C, new { @class = "  right  form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line22C)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.schedule1SalaryVM.Line22Remarks, new { @placeholder = "Remarks", @class = " form-control" })
+                        @Html.ValidationMessageFor(model => model.schedule1SalaryVM.Line22Remarks)
+                    </div>
+                </div>
+            </div>
+            <hr />
+
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-field">
+                    <b>@Html.Label("Total", "Total")</b>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.TotalIncomeAmount, new { @class = " right  form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.TotalIncomeAmount)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.TotalExemptedAmount, new { @class = " right  form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.TotalExemptedAmount)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.TotalIncomeAmount, new { @class = " right  form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.TotalIncomeAmount)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="editor-field">
+                    <b>@Html.Label("Total", "1/3 of Total Income or < 450000")</b>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.OneThird, new { @class = " right  form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.OneThird)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.TotalExemptedAmount, new { @class = " right  form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.TotalExemptedAmount)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.TotalTaxableAmount, new { @class = " right  form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.TotalTaxableAmount)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="thinbox">
+        <div class="th_thinbox">
+            <p>Employee Tax Slab Details</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Slab Name")
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Ceiling Amount")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Monthly Ceiling")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Actual Amount")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Rest Amount")
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Ratio (%)")
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="editor-label" style="white-space: pre-line">
+                    @Html.Label("", "Tax Amount")
+                </div>
+            </div>
+        </div>
+
+        @for (int i = 0; i < Model.EmployeeTaxSlabCount; i++)
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].SlabName, new { @class = " form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].Ceiling, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].MonthlyCeiling, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].ActualAmount, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].RestAmount, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].Ratio, new { @class = " NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.schedule1SalaryVM.employeeTaxSlabDetailVMs[i].TaxAmount, new { @class = " TaxTk  NumberCheck right form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-field">
+                    <b>@Html.TextBox("TotalTaxPayAmount", "Total Tax Pay Amount", new { @class = " form-control", @readonly = "readonly" })</b>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.TotalTaxPayAmount, new { @class = " NumberCheck right TotalTaxPayAmount form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.TotalTaxPayAmount)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-field">
+                    <b>@Html.TextBox("RebateAmountMonthly", "Rebate 3% of Total Taxable Income/10,00,000/Actual Investment*15% (Which ever is lower)", new { @class = " form-control", @readonly = "readonly" })</b>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.RebateAmountMonthly, new { @class = " NumberCheck right TotalTaxPayAmount form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.RebateAmountMonthly)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="editor-field">
+                    <b>@Html.TextBox("FinalTaxAmount", "Final Tax Amount", new { @class = " form-control", @readonly = "readonly" })</b>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+
+            <div class="col-md-2">
+                <div class="editor-field">
+                    <b>@Html.TextBoxFor(model => model.schedule1SalaryVM.FinalTaxAmount, new { @class = " NumberCheck right TotalTaxPayAmount form-control", @readonly = "readonly" })</b>
+                    @Html.ValidationMessageFor(model => model.schedule1SalaryVM.FinalTaxAmount)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="headrow">
+
+        <button type="button" title="Save Data" id="" class="saveJSONSchedule1Salary Save sym-btn-save">&nbsp;Save</button>
+
+    </div>
+}
+
+<script>
+    $(function () {
+        valiDation("afrmSchedule1Salary");
+        //var isChange = false;
+        //$('.form-control').change(function () {
+        //    isChange = true;
+        //});
+
+        $(".NumberCheck").each(function () {
+            this.value = parseFloat(this.value).toFixed(2);
+        });
+
+        @*   var TotalTaxPayAmount = 0;
+        var TotalTaxPayAmountFromServer = 0;
+
+        $(".TaxTk").each(function () {
+            TotalTaxPayAmountFromServer = parseFloat('@Model.schedule1SalaryVM.TotalTaxPayAmount');
+            TotalTaxPayAmount = parseFloat(TotalTaxPayAmount) + parseFloat(this.value);
+
+            if (TotalTaxPayAmount <= 0) {
+                TotalTaxPayAmount = TotalTaxPayAmountFromServer;
+            }
+        });
+
+
+        $(".TotalTaxPayAmount").val(TotalTaxPayAmount);*@
+
+
+        $('.saveJSONSchedule1Salary').click(function () {
+            var FiscalPeriodDetailId = $("#FiscalPeriodDetailId").val();
+            var fYear = $("#fYear").val();
+            if (FiscalPeriodDetailId == "") {
+                ShowResult("Fail", "Please Select the Fiscal Period");
+                return;
+            }
+
+
+            var a = pageSubmitJSON('afrmSchedule1Salary');
+            if (a != 0) {
+                return;
+            }
+            //if (isChange == false) {
+            //    ShowResult("Success", "You have no changes for save");
+            //    return;
+            //}
+            if (pageSubmitJSON('afrmSchedule1Salary') == 0) {
+                var myData = $('#afrmSchedule1Salary').serialize();
+                var url = "/Tax/TaxSchedule/CreateEdit?fydid=" + FiscalPeriodDetailId + "&fYear=" + fYear;
+                submit(url, myData);
+                window.location.reload();
+                $("#FinalTaxAmount").focus();
+            }
+        });
+    });
+
+
+
+</script>
